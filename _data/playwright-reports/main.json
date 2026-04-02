@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-        "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+        "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
       },
       "gitCommit": {
-        "shortHash": "7d06218",
-        "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-        "subject": "Security Sync (#1848)",
-        "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+        "shortHash": "7d7f29b",
+        "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+        "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+        "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
         "author": {
-          "name": "AlecRafs",
-          "email": "116303515+AlecRafs@users.noreply.github.com",
-          "time": 1774896588000
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1775149925000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1774896588000
+          "time": 1775149925000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "commitHash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23761895408"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "commitHash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23912607152"
           },
           "gitCommit": {
-            "shortHash": "7d06218",
-            "hash": "7d062188de8fe5c48b2f1730d07c479c0d132e47",
-            "subject": "Security Sync (#1848)",
-            "body": "Security Sync (#1848)\n\n* Add security sync workflow for Jira and AWS integration\n\n* Test actions\n\n* Update GitHub token in securitysync workflow\n\n* Update Jira token in securitysync.yml\n\n* Modify Jira username and custom fields for sync\n\nUpdated Jira username and custom fields in securitysync.yml.\n\n* Update securitysync workflow triggers and permissions\n\n* Disable manual trigger and schedule in securitysync.yml\n\nComment out manual trigger and schedule for security sync workflow.\n\n* Fix typo in jira-assignee value\n\n* Change JIRA assignee from DFB0 to DSFV\n\n* Update securitysync.yml to enable manual and scheduled runs\n\n---------\n\nCo-authored-by: Nathan O'Donnell <nodonnell@collabralink.com>",
+            "shortHash": "7d7f29b",
+            "hash": "7d7f29bcfd4a4594d2aa94b7ba7a75a96df27581",
+            "subject": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)",
+            "body": "feat(attachment-archive): handle blocked scan attachments and terminal failures (#1850)\n\n* feat(attachment-archive): enhance failure handling for non-clean attachments\n\n- Introduced new failure codes and messages for handling blocked attachments during archive preparation.\n- Updated the `buildAttachmentArchiveCurrent` function to include failure details.\n- Implemented terminal failure classification for non-clean attachment archives, preventing unnecessary rebuilds.\n- Added tests to ensure correct handling of terminal failures and error messages in various scenarios.\n- Refactored related functions for improved clarity and maintainability.\n\n* fix: handle terminal archive failures and improve archive downloads\n\n* fix: stabilize archive hook test and add file-type workspace dep\n\n* fix: wait for archive failure message update in hook test\n\n* feat(attachment): implement handling for blocked attachments during file scanning\n\n- Added new error handling for attachments blocked by file scanning, returning a 409 status code.\n- Introduced a new `AttachmentBlockedByScanError` class for better error management.\n- Updated the `getAttachmentObjectTags` function to retrieve virus scan status tags.\n- Enhanced tests to cover scenarios for blocked attachments and consistent typography for status messages in the UI.\n- Refactored related functions for improved clarity and maintainability.\n\n* refactor(attachment-archive): validate current state with zod and share scan constants\n\n* chore(lint): sort imports for eslint workflow\n\n* feat(attachment-archive): implement message group ID generation for attachment archives\n\n- Added a new function `buildAttachmentArchiveMessageGroupId` to generate a stable, FIFO-compatible message group ID based on the package ID.\n- Updated the `sendAttachmentArchiveRebuildRequest` function to use the new message group ID for SQS messages.\n- Introduced unit tests for the message group ID generation to ensure stability and uniqueness for different package IDs.\n- Enhanced the attachment source worker to handle access denial scenarios with improved error classification and logging.\n- Updated IAM policies to include permissions for object tagging in S3.\n\n* fix(attachment-archive): format remap blocked-scan regression assertion\n\n* feat(attachment-archive): enhance attachment loading with access denial handling\n\n- Added tests to verify behavior when access to the source bucket is denied, distinguishing between clean and infected scan statuses.\n- Updated `loadArchiveAttachment` function to classify access denial errors and throw appropriate failure messages.\n- Improved logging for skipped attachments based on scan results.",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1774896588000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1775149925000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1774896588000
+              "time": 1775149925000
             },
             "branch": "main"
           },
@@ -634,7 +634,7 @@
                   "specs": [
                     {
                       "title": "navigation banner updates",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -649,18 +649,58 @@
                             {
                               "workerIndex": 0,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 4906,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6280,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:53:23.561Z",
+                              "startTime": "2026-04-02T17:24:29.486Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-17e0c-s-navigation-banner-updates-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-79236770153f2bc1774a",
@@ -670,7 +710,7 @@
                     },
                     {
                       "title": "page header",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -683,20 +723,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 1,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 3987,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6455,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:53:28.549Z",
+                              "startTime": "2026-04-02T17:24:37.440Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-578b1--UI-validations-page-header-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-578b1--UI-validations-page-header-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-578b1--UI-validations-page-header-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-d58f6cb96869baa5c8ca",
@@ -706,7 +786,7 @@
                     },
                     {
                       "title": "SPA and Waiver tabs",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -719,20 +799,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 2,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 3843,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6278,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:53:32.551Z",
+                              "startTime": "2026-04-02T17:24:45.552Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-4d124-dations-SPA-and-Waiver-tabs-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-4d124-dations-SPA-and-Waiver-tabs-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-4d124-dations-SPA-and-Waiver-tabs-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-aaa4291f7cccb505955c",
@@ -742,7 +862,7 @@
                     },
                     {
                       "title": "search field",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -755,20 +875,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 3,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2900,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6412,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:53:36.407Z",
+                              "startTime": "2026-04-02T17:24:53.454Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-61417-UI-validations-search-field-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-61417-UI-validations-search-field-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-61417-UI-validations-search-field-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-09e909a1a6477cabd9dc",
@@ -778,7 +938,7 @@
                     },
                     {
                       "title": "columns button",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -791,20 +951,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 4,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2824,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6332,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:53:39.320Z",
+                              "startTime": "2026-04-02T17:25:01.512Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1f836--validations-columns-button-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1f836--validations-columns-button-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1f836--validations-columns-button-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-c2aaa2e70a91136deaa4",
@@ -814,7 +1014,7 @@
                     },
                     {
                       "title": "filters buttons",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -827,20 +1027,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 5,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 3872,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6343,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:53:42.156Z",
+                              "startTime": "2026-04-02T17:25:09.499Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-0e4b7-validations-filters-buttons-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-0e4b7-validations-filters-buttons-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-0e4b7-validations-filters-buttons-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-ccbb295142dad4447f3d",
@@ -850,7 +1090,7 @@
                     },
                     {
                       "title": "export button",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -863,20 +1103,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 6,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2807,
-                              "errors": [],
+                              "status": "failed",
+                              "duration": 6308,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
+                                {
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                }
+                              ],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:53:46.041Z",
+                              "startTime": "2026-04-02T17:25:17.478Z",
                               "annotations": [],
-                              "attachments": []
+                              "attachments": [
+                                {
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d0cac-I-validations-export-button-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d0cac-I-validations-export-button-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d0cac-I-validations-export-button-shared/trace.zip"
+                                }
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-292b179a233e813cb1fa",
@@ -901,7 +1181,7 @@
                           "specs": [
                             {
                               "title": "column headers",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -914,20 +1194,60 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 7,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3052,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 6473,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 72,
+                                          "line": 25
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 72,
+                                            "line": 25
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:53:48.859Z",
+                                      "startTime": "2026-04-02T17:25:25.396Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-9e08d-d-table-spas-column-headers-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-9e08d-d-table-spas-column-headers-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-9e08d-d-table-spas-column-headers-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 72,
+                                        "line": 25
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-9b54b2f13ec47145f067",
@@ -937,7 +1257,7 @@
                             },
                             {
                               "title": "table data",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -950,20 +1270,60 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 8,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2746,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 6346,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 72,
+                                          "line": 25
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 72,
+                                            "line": 25
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:53:51.922Z",
+                                      "startTime": "2026-04-02T17:25:33.485Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d26ce-board-table-spas-table-data-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d26ce-board-table-spas-table-data-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-d26ce-board-table-spas-table-data-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 72,
+                                        "line": 25
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-9832e54ed6bc6e875887",
@@ -973,7 +1333,7 @@
                             },
                             {
                               "title": "table footer",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -986,20 +1346,60 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 9,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2710,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 6304,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 72,
+                                          "line": 25
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 72,
+                                            "line": 25
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:53:54.679Z",
+                                      "startTime": "2026-04-02T17:25:41.441Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1d713-ard-table-spas-table-footer-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1d713-ard-table-spas-table-footer-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-1d713-ard-table-spas-table-footer-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 72,
+                                        "line": 25
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-6a9fe6fd1870cdaf3e89",
@@ -1017,7 +1417,7 @@
                           "specs": [
                             {
                               "title": "column headers",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -1030,20 +1430,76 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 10,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3217,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 31354,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 72,
+                                          "line": 25
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 72,
+                                            "line": 25
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 18,
+                                            "line": 138
+                                          },
+                                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n  136 |\n  137 |           test.describe(\"waivers\", () => {\n> 138 |             test.beforeEach(async ({ page }) => {\n      |                  ^\n  139 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n  140 |             });\n  141 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:138:18"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 64,
+                                            "line": 139
+                                          },
+                                          "message": "Error: locator.click: Test ended.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'Waivers' })\u001b[22m\n\n\n  137 |           test.describe(\"waivers\", () => {\n  138 |             test.beforeEach(async ({ page }) => {\n> 139 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n      |                                                                ^\n  140 |             });\n  141 |\n  142 |             test(\"column headers\", async ({ page }) => {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:139:64"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:53:57.400Z",
+                                      "startTime": "2026-04-02T17:25:49.370Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-72375-able-waivers-column-headers-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-72375-able-waivers-column-headers-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-72375-able-waivers-column-headers-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 72,
+                                        "line": 25
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-a626b6eed07fdecc9042",
@@ -1053,7 +1509,7 @@
                             },
                             {
                               "title": "table data",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -1066,20 +1522,76 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 11,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2900,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 31436,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 72,
+                                          "line": 25
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 72,
+                                            "line": 25
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 18,
+                                            "line": 138
+                                          },
+                                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n  136 |\n  137 |           test.describe(\"waivers\", () => {\n> 138 |             test.beforeEach(async ({ page }) => {\n      |                  ^\n  139 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n  140 |             });\n  141 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:138:18"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 64,
+                                            "line": 139
+                                          },
+                                          "message": "Error: locator.click: Test ended.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'Waivers' })\u001b[22m\n\n\n  137 |           test.describe(\"waivers\", () => {\n  138 |             test.beforeEach(async ({ page }) => {\n> 139 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n      |                                                                ^\n  140 |             });\n  141 |\n  142 |             test(\"column headers\", async ({ page }) => {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:139:64"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:00.629Z",
+                                      "startTime": "2026-04-02T17:26:22.396Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-3ade6-rd-table-waivers-table-data-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-3ade6-rd-table-waivers-table-data-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-3ade6-rd-table-waivers-table-data-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 72,
+                                        "line": 25
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-61809a8110fdeff7508e",
@@ -1089,7 +1601,7 @@
                             },
                             {
                               "title": "table footer",
-                              "ok": true,
+                              "ok": false,
                               "tags": [
                                 "CI"
                               ],
@@ -1102,20 +1614,76 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 12,
                                       "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2959,
-                                      "errors": [],
+                                      "status": "failed",
+                                      "duration": 31450,
+                                      "error": {
+                                        "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                        "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                        "location": {
+                                          "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                          "column": 72,
+                                          "line": 25
+                                        },
+                                        "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                                      },
+                                      "errors": [
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 72,
+                                            "line": 25
+                                          },
+                                          "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 18,
+                                            "line": 138
+                                          },
+                                          "message": "\u001b[31mTest timeout of 30000ms exceeded while running \"beforeEach\" hook.\u001b[39m\n\n  136 |\n  137 |           test.describe(\"waivers\", () => {\n> 138 |             test.beforeEach(async ({ page }) => {\n      |                  ^\n  139 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n  140 |             });\n  141 |\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:138:18"
+                                        },
+                                        {
+                                          "location": {
+                                            "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                            "column": 64,
+                                            "line": 139
+                                          },
+                                          "message": "Error: locator.click: Test ended.\nCall log:\n\u001b[2m  - waiting for getByRole('tab', { name: 'Waivers' })\u001b[22m\n\n\n  137 |           test.describe(\"waivers\", () => {\n  138 |             test.beforeEach(async ({ page }) => {\n> 139 |               await page.getByRole(\"tab\", { name: \"Waivers\" }).click();\n      |                                                                ^\n  140 |             });\n  141 |\n  142 |             test(\"column headers\", async ({ page }) => {\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:139:64"
+                                        }
+                                      ],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:03.541Z",
+                                      "startTime": "2026-04-02T17:26:55.500Z",
                                       "annotations": [],
-                                      "attachments": []
+                                      "attachments": [
+                                        {
+                                          "name": "video",
+                                          "contentType": "video/webm",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-7af1b--table-waivers-table-footer-shared/video.webm"
+                                        },
+                                        {
+                                          "name": "error-context",
+                                          "contentType": "text/markdown",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-7af1b--table-waivers-table-footer-shared/error-context.md"
+                                        },
+                                        {
+                                          "name": "trace",
+                                          "contentType": "application/zip",
+                                          "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-7af1b--table-waivers-table-footer-shared/trace.zip"
+                                        }
+                                      ],
+                                      "errorLocation": {
+                                        "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                        "column": 72,
+                                        "line": 25
+                                      }
                                     }
                                   ],
-                                  "status": "expected"
+                                  "status": "unexpected"
                                 }
                               ],
                               "id": "e31090cf21ac3d2f1505-b5476ccae199bfd768d0",
@@ -1137,7 +1705,7 @@
                   "specs": [
                     {
                       "title": "Download Exports for stateSubmitter user",
-                      "ok": true,
+                      "ok": false,
                       "tags": [
                         "CI"
                       ],
@@ -1150,30 +1718,60 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 13,
                               "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 5928,
-                              "errors": [],
-                              "stdout": [
+                              "status": "failed",
+                              "duration": 6438,
+                              "error": {
+                                "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n",
+                                "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72",
+                                "location": {
+                                  "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                  "column": 72,
+                                  "line": 25
+                                },
+                                "snippet": "\u001b[0m \u001b[90m 23 |\u001b[39m         dashboardPage \u001b[33m=\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mDashboardPage\u001b[39m(page)\u001b[33m;\u001b[39m\n \u001b[90m 24 |\u001b[39m         \u001b[36mawait\u001b[39m page\u001b[33m.\u001b[39mgoto(\u001b[32m\"/dashboard\"\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 25 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"heading\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"Dashboard\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m    |\u001b[39m                                                                        \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 26 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByRole(\u001b[32m\"tab\"\u001b[39m\u001b[33m,\u001b[39m { name\u001b[33m:\u001b[39m \u001b[32m\"SPAs\"\u001b[39m }))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 27 |\u001b[39m         \u001b[36mawait\u001b[39m expect(page\u001b[33m.\u001b[39mgetByTestId(\u001b[32m\"os-table\"\u001b[39m))\u001b[33m.\u001b[39mtoBeVisible()\u001b[33m;\u001b[39m\n \u001b[90m 28 |\u001b[39m       })\u001b[33m;\u001b[39m\u001b[0m"
+                              },
+                              "errors": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-03_30_2026.csv\"\n"
+                                  "location": {
+                                    "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                    "column": 72,
+                                    "line": 25
+                                  },
+                                  "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mlocator\u001b[39m\u001b[2m).\u001b[22mtoBeVisible\u001b[2m(\u001b[22m\u001b[2m)\u001b[22m failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 5000ms\nError: element(s) not found\n\nCall log:\n\u001b[2m  - Expect \"toBeVisible\" with timeout 5000ms\u001b[22m\n\u001b[2m  - waiting for getByRole('heading', { name: 'Dashboard' })\u001b[22m\n\n\n  23 |         dashboardPage = new DashboardPage(page);\n  24 |         await page.goto(\"/dashboard\");\n> 25 |         await expect(page.getByRole(\"heading\", { name: \"Dashboard\" })).toBeVisible();\n     |                                                                        ^\n  26 |         await expect(page.getByRole(\"tab\", { name: \"SPAs\" })).toBeVisible();\n  27 |         await expect(page.getByTestId(\"os-table\")).toBeVisible();\n  28 |       });\n    at /home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts:25:72"
                                 }
                               ],
+                              "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:06.511Z",
+                              "startTime": "2026-04-02T17:27:28.651Z",
                               "annotations": [],
                               "attachments": [
                                 {
-                                  "name": "metadata",
-                                  "contentType": "application/json",
-                                  "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
+                                  "name": "video",
+                                  "contentType": "video/webm",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-81c90-rts-for-stateSubmitter-user-shared/video.webm"
+                                },
+                                {
+                                  "name": "error-context",
+                                  "contentType": "text/markdown",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-81c90-rts-for-stateSubmitter-user-shared/error-context.md"
+                                },
+                                {
+                                  "name": "trace",
+                                  "contentType": "application/zip",
+                                  "path": "/home/runner/work/macpro-mako/macpro-mako/test/test-results/e2e-specs-dashboard-Dashbo-81c90-rts-for-stateSubmitter-user-shared/trace.zip"
                                 }
-                              ]
+                              ],
+                              "errorLocation": {
+                                "file": "/home/runner/work/macpro-mako/macpro-mako/test/e2e/specs/dashboard.spec.ts",
+                                "column": 72,
+                                "line": 25
+                              }
                             }
                           ],
-                          "status": "expected"
+                          "status": "unexpected"
                         }
                       ],
                       "id": "e31090cf21ac3d2f1505-a2db929c6434ad64d2d1",
@@ -1213,15 +1811,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2999,
+                              "duration": 6114,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:12.451Z",
+                              "startTime": "2026-04-02T17:27:36.734Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1249,15 +1847,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2742,
+                              "duration": 4022,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:15.460Z",
+                              "startTime": "2026-04-02T17:27:42.945Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1285,15 +1883,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2878,
+                              "duration": 4187,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:18.215Z",
+                              "startTime": "2026-04-02T17:27:46.979Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1321,15 +1919,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2840,
+                              "duration": 4102,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:21.106Z",
+                              "startTime": "2026-04-02T17:27:51.179Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1357,15 +1955,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2757,
+                              "duration": 4078,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:23.958Z",
+                              "startTime": "2026-04-02T17:27:55.293Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1393,15 +1991,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2797,
+                              "duration": 3890,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:26.725Z",
+                              "startTime": "2026-04-02T17:27:59.382Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1429,15 +2027,15 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2709,
+                              "duration": 4138,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:29.532Z",
+                              "startTime": "2026-04-02T17:28:03.284Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1480,15 +2078,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3047,
+                                      "duration": 4331,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:32.251Z",
+                                      "startTime": "2026-04-02T17:28:07.436Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1516,15 +2114,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2721,
+                                      "duration": 3998,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:35.315Z",
+                                      "startTime": "2026-04-02T17:28:11.781Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1552,15 +2150,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2777,
+                                      "duration": 4004,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:38.049Z",
+                                      "startTime": "2026-04-02T17:28:15.791Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1596,15 +2194,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3014,
+                                      "duration": 4469,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:40.836Z",
+                                      "startTime": "2026-04-02T17:28:19.807Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1632,15 +2230,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2953,
+                                      "duration": 4141,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:43.862Z",
+                                      "startTime": "2026-04-02T17:28:24.288Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1668,15 +2266,15 @@
                                   "projectName": "shared",
                                   "results": [
                                     {
-                                      "workerIndex": 0,
+                                      "workerIndex": 14,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2920,
+                                      "duration": 3450,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-03-30T18:54:46.830Z",
+                                      "startTime": "2026-04-02T17:28:28.442Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1716,19 +2314,19 @@
                           "projectName": "shared",
                           "results": [
                             {
-                              "workerIndex": 0,
+                              "workerIndex": 14,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5312,
+                              "duration": 9679,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-03_30_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_02_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-03-30T18:54:49.760Z",
+                              "startTime": "2026-04-02T17:28:31.906Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,11 +2356,11 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-03-30T18:53:11.452Z",
-    "duration": 103735.12999999999,
-    "expected": 28,
+    "startTime": "2026-04-02T17:24:13.312Z",
+    "duration": 268367.239,
+    "expected": 14,
     "skipped": 0,
-    "unexpected": 0,
+    "unexpected": 14,
     "flaky": 0
   }
 }
