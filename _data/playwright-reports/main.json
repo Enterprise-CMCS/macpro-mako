@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-        "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+        "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
       },
       "gitCommit": {
-        "shortHash": "8443c74",
-        "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-        "subject": "Update Working Team to Platform Team (#1855)",
-        "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+        "shortHash": "8726acf",
+        "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+        "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+        "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
         "author": {
-          "name": "AlecRafs",
-          "email": "116303515+AlecRafs@users.noreply.github.com",
-          "time": 1775239020000
+          "name": "James Dinh",
+          "email": "james.d@globalalliantinc.com",
+          "time": 1775253910000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1775239020000
+          "time": 1775253910000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "commitHash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23956338172"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/8726acf92686154e8fcca67ebb28b25839596f95",
+            "commitHash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/23963936001"
           },
           "gitCommit": {
-            "shortHash": "8443c74",
-            "hash": "8443c74c84c2d2460c9df6394c9c450008b52f18",
-            "subject": "Update Working Team to Platform Team (#1855)",
-            "body": "Update Working Team to Platform Team (#1855)\n\nUpdate Working Team to Platform Team",
+            "shortHash": "8726acf",
+            "hash": "8726acf92686154e8fcca67ebb28b25839596f95",
+            "subject": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)",
+            "body": "Fix(vulnerability-updates): remediate ECR image vulns and clean up stale CDK asset images (#1856)\n\n* commit destroy cleanup\n\n* cleanup\n\n* cleanup update files\n\n* Update cdk-asset-image-cleanup.yml\n\n* fux\n\n* Update cleanup-cdk-asset-images.sh",
             "author": {
-              "name": "AlecRafs",
-              "email": "116303515+AlecRafs@users.noreply.github.com",
-              "time": 1775239020000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1775253910000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1775239020000
+              "time": 1775253910000
             },
             "branch": "main"
           },
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3118,
+                              "duration": 4177,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:00:42.342Z",
+                              "startTime": "2026-04-03T22:10:27.485Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2846,
+                              "duration": 3152,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:00:45.551Z",
+                              "startTime": "2026-04-03T22:10:31.754Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2923,
+                              "duration": 3087,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:00:48.408Z",
+                              "startTime": "2026-04-03T22:10:34.920Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2909,
+                              "duration": 2962,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:00:51.343Z",
+                              "startTime": "2026-04-03T22:10:38.019Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2792,
+                              "duration": 2925,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:00:54.264Z",
+                              "startTime": "2026-04-03T22:10:40.994Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -830,12 +830,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3111,
+                              "duration": 3122,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:00:57.068Z",
+                              "startTime": "2026-04-03T22:10:43.932Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2785,
+                              "duration": 3064,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:00.192Z",
+                              "startTime": "2026-04-03T22:10:47.066Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3251,
+                                      "duration": 3439,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:02.988Z",
+                                      "startTime": "2026-04-03T22:10:50.141Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2841,
+                                      "duration": 3984,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:06.251Z",
+                                      "startTime": "2026-04-03T22:10:53.593Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2877,
+                                      "duration": 3060,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:09.104Z",
+                                      "startTime": "2026-04-03T22:10:57.590Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3229,
+                                      "duration": 3724,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:11.992Z",
+                                      "startTime": "2026-04-03T22:11:00.662Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3018,
+                                      "duration": 4313,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:15.236Z",
+                                      "startTime": "2026-04-03T22:11:04.400Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3077,
+                                      "duration": 3369,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:18.265Z",
+                                      "startTime": "2026-04-03T22:11:08.726Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1153,7 +1153,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5879,
+                              "duration": 6719,
                               "errors": [],
                               "stdout": [
                                 {
@@ -1162,7 +1162,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:21.354Z",
+                              "startTime": "2026-04-03T22:11:12.108Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3124,
+                              "duration": 3175,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:27.246Z",
+                              "startTime": "2026-04-03T22:11:18.842Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2896,
+                              "duration": 4017,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:30.385Z",
+                              "startTime": "2026-04-03T22:11:22.028Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1293,7 +1293,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:33.295Z",
+                              "startTime": "2026-04-03T22:11:26.057Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2930,
+                              "duration": 3152,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:36.274Z",
+                              "startTime": "2026-04-03T22:11:29.035Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2936,
+                              "duration": 2988,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:39.217Z",
+                              "startTime": "2026-04-03T22:11:32.198Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3002,
+                              "duration": 2899,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:42.166Z",
+                              "startTime": "2026-04-03T22:11:35.199Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2927,
+                              "duration": 3118,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:01:45.180Z",
+                              "startTime": "2026-04-03T22:11:38.110Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3075,
+                                      "duration": 3305,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:48.120Z",
+                                      "startTime": "2026-04-03T22:11:41.239Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2872,
+                                      "duration": 3011,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:51.205Z",
+                                      "startTime": "2026-04-03T22:11:44.557Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2914,
+                                      "duration": 2962,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:54.088Z",
+                                      "startTime": "2026-04-03T22:11:47.578Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3351,
+                                      "duration": 3465,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:01:57.013Z",
+                                      "startTime": "2026-04-03T22:11:50.551Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2948,
+                                      "duration": 3237,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:02:00.376Z",
+                                      "startTime": "2026-04-03T22:11:54.029Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3151,
+                                      "duration": 3437,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-03T18:02:03.338Z",
+                                      "startTime": "2026-04-03T22:11:57.281Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1719,7 +1719,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 6203,
+                              "duration": 7480,
                               "errors": [],
                               "stdout": [
                                 {
@@ -1728,7 +1728,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-03T18:02:06.500Z",
+                              "startTime": "2026-04-03T22:12:00.732Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-03T18:00:19.736Z",
-    "duration": 113069.398,
+    "startTime": "2026-04-03T22:10:01.689Z",
+    "duration": 126632.451,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
