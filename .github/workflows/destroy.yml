@@ -9,22 +9,83 @@ on:
         required: true
 
 jobs:
+  resolve_stage:
+    runs-on: ubuntu-22.04
+    outputs:
+      stage: ${{ steps.resolve.outputs.stage }}
+      classification: ${{ steps.resolve.outputs.classification }}
+      should_destroy: ${{ steps.resolve.outputs.should_destroy }}
+    steps:
+      - name: Resolve and validate stage
+        id: resolve
+        shell: bash
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_ENVIRONMENT: ${{ inputs.environment || '' }}
+          EVENT_REF_TYPE: ${{ github.event.ref_type || '' }}
+          EVENT_REF: ${{ github.event.ref || '' }}
+        run: |
+          set -euo pipefail
+
+          stage=""
+
+          if [[ -n "${INPUT_ENVIRONMENT}" ]]; then
+            stage="${INPUT_ENVIRONMENT}"
+          elif [[ "${EVENT_NAME}" == "delete" && "${EVENT_REF_TYPE}" == "branch" ]]; then
+            stage="${EVENT_REF}"
+          fi
+
+          echo "stage=${stage}" >> "$GITHUB_OUTPUT"
+          echo "Resolved stage: '${stage}'"
+
+          if [[ -z "${stage}" ]]; then
+            echo "classification=invalid" >> "$GITHUB_OUTPUT"
+            echo "should_destroy=false" >> "$GITHUB_OUTPUT"
+            if [[ "${EVENT_NAME}" == "workflow_dispatch" ]]; then
+              echo "::error::Missing required environment input for workflow_dispatch."
+              exit 1
+            fi
+            echo "No branch stage resolved for this event. Skipping destroy."
+            exit 0
+          fi
+
+          if [[ "${stage}" == "main" || "${stage}" == "val" || "${stage}" == "production" ]]; then
+            echo "classification=protected" >> "$GITHUB_OUTPUT"
+            echo "should_destroy=false" >> "$GITHUB_OUTPUT"
+            echo "::error::Stage '${stage}' is protected and cannot be destroyed."
+            exit 1
+          fi
+
+          if [[ "${stage}" == skipci* ]]; then
+            echo "classification=invalid" >> "$GITHUB_OUTPUT"
+            echo "should_destroy=false" >> "$GITHUB_OUTPUT"
+            echo "Stage '${stage}' is skipci-prefixed. Skipping destroy."
+            exit 0
+          fi
+
+          if [[ ! "${stage}" =~ ^[a-z][a-z0-9-]*$ ]]; then
+            echo "classification=invalid" >> "$GITHUB_OUTPUT"
+            echo "should_destroy=false" >> "$GITHUB_OUTPUT"
+            if [[ "${EVENT_NAME}" == "delete" ]]; then
+              echo "Stage '${stage}' is invalid for CloudFormation stack naming; skipping delete-event destroy."
+              exit 0
+            fi
+            echo "::error::Invalid stage '${stage}'. Stage must match ^[a-z][a-z0-9-]*$."
+            exit 1
+          fi
+
+          echo "classification=destroyable" >> "$GITHUB_OUTPUT"
+          echo "should_destroy=true" >> "$GITHUB_OUTPUT"
+          echo "Stage '${stage}' is destroyable."
+
   destroy:
-    if: |
-      (
-        github.event.ref_type == 'branch' &&
-        (!startsWith(github.event.ref, 'skipci')) &&
-        (!contains(fromJson('["main", "staging", "production"]'), github.event.ref))
-      ) ||
-      (
-        inputs.environment != '' &&
-        (!contains(fromJson('["main", "staging", "production"]'), inputs.environment))
-      )
+    needs: resolve_stage
+    if: ${{ needs.resolve_stage.outputs.should_destroy == 'true' }}
     runs-on: ubuntu-22.04
     environment:
-      name: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
+      name: ${{ needs.resolve_stage.outputs.stage }}
     env:
-      STAGE_NAME: ${{ inputs.environment || (startsWith(github.event.ref, 'snyk-') && 'snyk' || github.event.ref) }}
+      STAGE_NAME: ${{ needs.resolve_stage.outputs.stage }}
     permissions:
       id-token: write
       contents: write

@@ -19,6 +19,7 @@ import fs from "fs/promises";
 import path from "path";
 
 import { parseAttachmentArchiveCurrent } from "../lib/attachment-archive/archive-manifest";
+import { buildAttachmentArchiveMessageGroupId } from "../lib/attachment-archive/rebuild-queue";
 import {
   buildSyntheticScannerInvokePayload,
   isManualCleanRetagEligible,
@@ -29,6 +30,13 @@ import {
   AttachmentArchivePackageManifest,
   AttachmentArchiveSectionManifest,
 } from "../lib/attachment-archive/types";
+import {
+  getArchiveBaseReadBucket,
+  getArchiveOverlayPrefix,
+  getEphemeralArchiveOverlayBucket,
+  isSharedArchiveStage,
+} from "../lib/stacks/archive-bucket-routing";
+import { resolveAttachmentReadStage } from "../lib/stacks/legacy-attachment-bucket-map";
 
 type ScriptOptions = {
   allFailed: boolean;
@@ -38,6 +46,13 @@ type ScriptOptions = {
   stage: string;
   waitForRebuild: boolean;
   writeAuditPath?: string;
+};
+
+type ArchiveStorageConfig = {
+  baseReadBucketName: string;
+  keyPrefix: string;
+  usesOverlay: boolean;
+  writeBucketName: string;
 };
 
 type CurrentEntry = {
@@ -189,8 +204,14 @@ function getNestedStackName(resources: StackResourceSummary[], logicalIdPart: st
   return match.PhysicalResourceId.split("/")[1] || match.PhysicalResourceId;
 }
 
-async function getMainScannerFunctionName(project: string) {
-  const rootResources = await listStackResources(`${project}-main`);
+async function getScannerFunctionName({
+  project,
+  readStage,
+}: {
+  project: string;
+  readStage: string;
+}) {
+  const rootResources = await listStackResources(`${project}-${readStage}`);
   const uploadsNestedStackName = getNestedStackName(rootResources, "uploadsNestedStack");
   const nestedResources = await listStackResources(uploadsNestedStackName);
   const match = nestedResources.find(
@@ -201,7 +222,7 @@ async function getMainScannerFunctionName(project: string) {
   );
 
   if (!match?.PhysicalResourceId) {
-    throw new Error("Unable to locate the main-stage ClamAV scanner lambda");
+    throw new Error(`Unable to locate the ClamAV scanner lambda for stage ${readStage}`);
   }
 
   return match.PhysicalResourceId;
@@ -221,16 +242,69 @@ async function getRebuildQueueUrl(project: string, stage: string) {
   return response.QueueUrl;
 }
 
+function getArchiveStorageConfig({
+  accountId,
+  project,
+  stage,
+}: {
+  accountId: string;
+  project: string;
+  stage: string;
+}): ArchiveStorageConfig {
+  const baseReadBucket = getArchiveBaseReadBucket(project, stage, accountId);
+
+  if (isSharedArchiveStage(stage)) {
+    return {
+      baseReadBucketName: baseReadBucket.name,
+      keyPrefix: "",
+      usesOverlay: false,
+      writeBucketName: baseReadBucket.name,
+    };
+  }
+
+  const overlayBucket = getEphemeralArchiveOverlayBucket(project, accountId);
+  return {
+    baseReadBucketName: baseReadBucket.name,
+    keyPrefix: getArchiveOverlayPrefix(stage),
+    usesOverlay: true,
+    writeBucketName: overlayBucket.name,
+  };
+}
+
+function normalizeArchiveKeyPrefix(keyPrefix?: string) {
+  return (keyPrefix || "").replace(/^\/+|\/+$/g, "");
+}
+
+function applyArchiveKeyPrefix(key: string, keyPrefix?: string) {
+  const normalizedPrefix = normalizeArchiveKeyPrefix(keyPrefix);
+  return normalizedPrefix ? `${normalizedPrefix}/${key}` : key;
+}
+
+function removeArchiveKeyPrefix(key: string, keyPrefix?: string) {
+  const normalizedPrefix = normalizeArchiveKeyPrefix(keyPrefix);
+  if (!normalizedPrefix) {
+    return key;
+  }
+
+  const expectedPrefix = `${normalizedPrefix}/`;
+  return key.startsWith(expectedPrefix) ? key.slice(expectedPrefix.length) : key;
+}
+
 async function listArchiveCurrentKeys({
   archiveBucketName,
+  keyPrefix,
   packageId,
 }: {
   archiveBucketName: string;
+  keyPrefix?: string;
   packageId?: string;
 }) {
   const keys: string[] = [];
   let continuationToken: string | undefined;
-  const prefix = packageId ? `package/${encodeURIComponent(packageId)}/` : "package/";
+  const prefix = applyArchiveKeyPrefix(
+    packageId ? `package/${encodeURIComponent(packageId)}/` : "package/",
+    keyPrefix,
+  );
 
   do {
     const response = await s3Client.send(
@@ -243,7 +317,7 @@ async function listArchiveCurrentKeys({
 
     for (const object of response.Contents || []) {
       if (object.Key?.endsWith("/current.json")) {
-        keys.push(object.Key);
+        keys.push(removeArchiveKeyPrefix(object.Key, keyPrefix));
       }
     }
 
@@ -270,19 +344,21 @@ async function getJsonObject<T>({ bucket, key }: { bucket: string; key: string }
 
 async function loadFailedCurrentEntries({
   archiveBucketName,
+  keyPrefix,
   packageId,
 }: {
   archiveBucketName: string;
+  keyPrefix?: string;
   packageId?: string;
 }) {
-  const currentKeys = await listArchiveCurrentKeys({ archiveBucketName, packageId });
+  const currentKeys = await listArchiveCurrentKeys({ archiveBucketName, keyPrefix, packageId });
   const entries: CurrentEntry[] = [];
 
   for (const currentKey of currentKeys) {
     const body = await s3Client.send(
       new GetObjectCommand({
         Bucket: archiveBucketName,
-        Key: currentKey,
+        Key: applyArchiveKeyPrefix(currentKey, keyPrefix),
       }),
     );
     const text = await body.Body?.transformToString();
@@ -444,7 +520,7 @@ async function queuePackageRebuild({
         packageId,
         source: "backfill",
       }),
-      MessageGroupId: packageId,
+      MessageGroupId: buildAttachmentArchiveMessageGroupId(packageId),
       QueueUrl: queueUrl,
     }),
   );
@@ -452,12 +528,14 @@ async function queuePackageRebuild({
 
 async function readCurrentStatusesForPackage({
   archiveBucketName,
+  keyPrefix,
   packageId,
 }: {
   archiveBucketName: string;
+  keyPrefix?: string;
   packageId: string;
 }) {
-  const keys = await listArchiveCurrentKeys({ archiveBucketName, packageId });
+  const keys = await listArchiveCurrentKeys({ archiveBucketName, keyPrefix, packageId });
   const statuses: Record<string, AttachmentArchiveCurrent["status"]> = {};
 
   for (const key of keys) {
@@ -466,7 +544,7 @@ async function readCurrentStatusesForPackage({
         await s3Client.send(
           new GetObjectCommand({
             Bucket: archiveBucketName,
-            Key: key,
+            Key: applyArchiveKeyPrefix(key, keyPrefix),
           }),
         )
       ).Body?.transformToString(),
@@ -481,16 +559,22 @@ async function readCurrentStatusesForPackage({
 
 async function waitForPackageReady({
   archiveBucketName,
+  keyPrefix,
   packageId,
 }: {
   archiveBucketName: string;
+  keyPrefix?: string;
   packageId: string;
 }) {
   const start = Date.now();
   let sawActiveRebuild = false;
 
   while (Date.now() - start < POLL_TIMEOUT_MS) {
-    const statuses = await readCurrentStatusesForPackage({ archiveBucketName, packageId });
+    const statuses = await readCurrentStatusesForPackage({
+      archiveBucketName,
+      keyPrefix,
+      packageId,
+    });
     const values = Object.values(statuses);
 
     if (values.length > 0 && values.every((status) => status === "READY")) {
@@ -510,7 +594,7 @@ async function waitForPackageReady({
 
   return {
     ready: false,
-    statuses: await readCurrentStatusesForPackage({ archiveBucketName, packageId }),
+    statuses: await readCurrentStatusesForPackage({ archiveBucketName, keyPrefix, packageId }),
   };
 }
 
@@ -528,13 +612,35 @@ async function main() {
   const auditEntries: RepairAuditEntry[] = [];
 
   const accountId = await getAccountId();
-  const archiveBucketName = `${options.project}-${options.stage}-attachment-archives-${accountId}`;
-  const sourceBucketName = `${options.project}-main-attachments-${accountId}`;
-  const scannerFunctionName = await getMainScannerFunctionName(options.project);
+  const readStage = resolveAttachmentReadStage(options.stage);
+  const archiveStorage = getArchiveStorageConfig({
+    accountId,
+    project: options.project,
+    stage: options.stage,
+  });
+  const sourceBucketName = `${options.project}-${readStage}-attachments-${accountId}`;
+  const scannerFunctionName = await getScannerFunctionName({
+    project: options.project,
+    readStage,
+  });
+  console.info(
+    JSON.stringify({
+      event: "attachment_scan_repair_resolved_config",
+      stage: options.stage,
+      effectiveAttachmentReadStage: readStage,
+      sourceBucketName,
+      scannerFunctionName,
+      archiveWriteBucketName: archiveStorage.writeBucketName,
+      archiveBaseReadBucketName: archiveStorage.baseReadBucketName,
+      archiveKeyPrefix: archiveStorage.keyPrefix,
+      archiveUsesOverlay: archiveStorage.usesOverlay,
+    }),
+  );
   const rebuildQueueUrl = await getRebuildQueueUrl(options.project, options.stage);
 
   const failedEntries = await loadFailedCurrentEntries({
-    archiveBucketName,
+    archiveBucketName: archiveStorage.writeBucketName,
+    keyPrefix: archiveStorage.keyPrefix,
     packageId: options.packageId,
   });
 
@@ -669,7 +775,8 @@ async function main() {
 
   if (options.waitForRebuild && options.packageId) {
     const result = await waitForPackageReady({
-      archiveBucketName,
+      archiveBucketName: archiveStorage.writeBucketName,
+      keyPrefix: archiveStorage.keyPrefix,
       packageId: options.packageId,
     });
 
@@ -684,11 +791,17 @@ async function main() {
 
   const summary = {
     applyRetag: options.applyRetag,
-    archiveBucketName,
+    archiveBaseReadBucketName: archiveStorage.baseReadBucketName,
+    archiveBucketName: archiveStorage.writeBucketName,
+    archiveKeyPrefix: archiveStorage.keyPrefix,
+    archiveUsesOverlay: archiveStorage.usesOverlay,
     blockedObjectCount: blocked.length,
+    effectiveAttachmentReadStage: readStage,
     failedCurrentCount: failedEntries.length,
     packageIdsQueued: Array.from(packageIdsToRebuild).sort(),
     scannerFunctionName,
+    scannerStage: readStage,
+    stage: options.stage,
     sourceBucketName,
     writeAuditPath: options.writeAuditPath,
   };

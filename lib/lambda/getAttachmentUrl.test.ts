@@ -342,15 +342,20 @@ describe("Lambda Handler", () => {
     warnSpy.mockRestore();
   });
 
-  it("should return 500 when the canonical remapped bucket returns access denied", async () => {
+  it("should return 409 when the resolved attachment is blocked by file scanning", async () => {
     process.env.LEGACY_ATTACHMENT_BUCKET_MAP = JSON.stringify({
       [ATTACHMENT_BUCKET_NAME]: "mako-main-attachments-test",
     });
-    mockSend.mockRejectedValueOnce({
-      name: "AccessDenied",
-      message: "Access Denied",
-      $metadata: { httpStatusCode: 403 },
-    });
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
+    mockSend
+      .mockRejectedValueOnce({
+        name: "AccessDenied",
+        message: "Access Denied",
+        $metadata: { httpStatusCode: 403 },
+      })
+      .mockResolvedValueOnce({
+        TagSet: [{ Key: "virusScanStatus", Value: "INFECTED" }],
+      });
 
     const event = {
       body: JSON.stringify({
@@ -365,6 +370,46 @@ describe("Lambda Handler", () => {
     const res = await handler(event);
 
     expect(vi.mocked(getSignedUrl)).not.toHaveBeenCalled();
+    expect(mockSend).toHaveBeenCalledTimes(2);
+    expect(res.statusCode).toEqual(409);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message:
+          "Unable to download this attachment because file scanning did not complete successfully.",
+      }),
+    );
+    expect(warnSpy).toHaveBeenCalledWith(expect.stringContaining("attachment_blocked_by_scan"));
+    warnSpy.mockRestore();
+  });
+
+  it("should return 500 when the canonical remapped bucket returns access denied", async () => {
+    process.env.LEGACY_ATTACHMENT_BUCKET_MAP = JSON.stringify({
+      [ATTACHMENT_BUCKET_NAME]: "mako-main-attachments-test",
+    });
+    mockSend
+      .mockRejectedValueOnce({
+        name: "AccessDenied",
+        message: "Access Denied",
+        $metadata: { httpStatusCode: 403 },
+      })
+      .mockResolvedValueOnce({
+        TagSet: [{ Key: "virusScanStatus", Value: "CLEAN" }],
+      });
+
+    const event = {
+      body: JSON.stringify({
+        id: WITHDRAWN_CHANGELOG_ITEM_ID,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "doc001",
+        filename: "contract_amendment_2024.pdf",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(vi.mocked(getSignedUrl)).not.toHaveBeenCalled();
+    expect(mockSend).toHaveBeenCalledTimes(2);
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
   });

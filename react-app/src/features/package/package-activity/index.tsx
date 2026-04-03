@@ -22,6 +22,8 @@ import { sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
 
+const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
+
 type AttachmentDetailsProps = {
   id: string;
   packageId: string;
@@ -66,8 +68,15 @@ type SubmissionProps = {
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
   const { attachments = [], id, packageId, additionalInformation } = packageActivity;
-  const { archiveErrorMessage, attachmentErrorMessage, onArchive, onUrl, loading } =
-    useAttachmentService({ packageId });
+  const {
+    archiveErrorMessage,
+    archiveWarningMessage,
+    attachmentErrorMessage,
+    onArchive,
+    onUrl,
+    loading,
+  } = useAttachmentService({ packageId });
+  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
 
   return (
     <div className="flex flex-col gap-6">
@@ -94,7 +103,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           <p>No information submitted</p>
         )}
         {attachmentErrorMessage && (
-          <p role="alert" className="mt-2 text-red-700">
+          <p role="alert" className={`mt-2 ${attachmentStatusMessageClassName}`}>
             {attachmentErrorMessage}
           </p>
         )}
@@ -119,9 +128,9 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           >
             Download section attachments
           </Button>
-          {archiveErrorMessage && (
-            <p role="alert" className="text-red-700">
-              {archiveErrorMessage}
+          {archiveMessage && (
+            <p role="alert" className={attachmentStatusMessageClassName}>
+              {archiveMessage}
             </p>
           )}
         </>
@@ -169,7 +178,10 @@ type DownloadAllButtonProps = {
 };
 
 const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButtonProps) => {
-  const { archiveErrorMessage, loading, onArchive } = useAttachmentService({ packageId });
+  const { archiveErrorMessage, archiveWarningMessage, loading, onArchive } = useAttachmentService({
+    packageId,
+  });
+  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
 
   if (submissionChangelog?.length === 0) {
     return null;
@@ -209,9 +221,9 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
       >
         Download all attachments
       </Button>
-      {archiveErrorMessage && (
-        <p role="alert" className="justify-self-end text-red-700">
-          {archiveErrorMessage}
+      {archiveMessage && (
+        <p role="alert" className={`justify-self-end ${attachmentStatusMessageClassName}`}>
+          {archiveMessage}
         </p>
       )}
     </>

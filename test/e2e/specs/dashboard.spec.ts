@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, type Page, test, type TestInfo } from "@playwright/test";
 import path from "path";
 
 import { envRoleUsers } from "@/lib/envRoleUsers";
@@ -10,6 +10,56 @@ let dashboardPage: DashboardPage;
 const ENV = process.env.PW_ENV || "local";
 const users = envRoleUsers[ENV];
 
+async function attachDashboardSetupDiagnostics(page: Page, testInfo: TestInfo, role: string) {
+  const [currentUrl, pageTitle, signInButtonVisible, submitButtonVisible, dashboardHeadingVisible] =
+    await Promise.all([
+      Promise.resolve(page.url()),
+      page.title().catch(() => "unavailable"),
+      page
+        .getByTestId("sign-in-button-d")
+        .isVisible()
+        .catch(() => false),
+      page
+        .getByRole("button", { name: "submit" })
+        .isVisible()
+        .catch(() => false),
+      page
+        .getByRole("heading", { name: "Dashboard" })
+        .isVisible()
+        .catch(() => false),
+    ]);
+
+  const diagnostics = {
+    role,
+    env: ENV,
+    currentUrl,
+    pageTitle,
+    signInButtonVisible,
+    submitButtonVisible,
+    dashboardHeadingVisible,
+  };
+
+  await testInfo.attach("dashboard-beforeeach-diagnostics", {
+    body: JSON.stringify(diagnostics, null, 2),
+    contentType: "application/json",
+  });
+
+  try {
+    const screenshot = await page.screenshot({ fullPage: true });
+    await testInfo.attach("dashboard-beforeeach-screenshot", {
+      body: screenshot,
+      contentType: "image/png",
+    });
+  } catch (screenshotError) {
+    await testInfo.attach("dashboard-beforeeach-screenshot-error", {
+      body: String(screenshotError),
+      contentType: "text/plain",
+    });
+  }
+
+  console.error("[dashboard.beforeEach] Dashboard readiness check failed", diagnostics);
+}
+
 for (const [role, user] of Object.entries(users)) {
   if (!user.capabilities.includes("dashboard")) continue;
 
@@ -19,12 +69,18 @@ for (const [role, user] of Object.entries(users)) {
     });
 
     test.describe(`${role} dashboard`, () => {
-      test.beforeEach(async ({ page }) => {
+      test.beforeEach(async ({ page }, testInfo) => {
         dashboardPage = new DashboardPage(page);
-        await page.goto("/dashboard");
-        await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
-        await expect(page.getByRole("tab", { name: "SPAs" })).toBeVisible();
-        await expect(page.getByTestId("os-table")).toBeVisible();
+        await page.goto("/dashboard", { waitUntil: "domcontentloaded" });
+
+        try {
+          await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible();
+          await expect(page.getByRole("tab", { name: "SPAs" })).toBeVisible();
+          await expect(page.getByTestId("os-table")).toBeVisible();
+        } catch (error) {
+          await attachDashboardSetupDiagnostics(page, testInfo, role);
+          throw error;
+        }
       });
 
       test.describe("UI validations", {}, () => {

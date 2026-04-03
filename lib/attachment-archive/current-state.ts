@@ -1,3 +1,7 @@
+import {
+  getAttachmentArchiveFailureMessage,
+  isTerminalAttachmentArchiveFailure,
+} from "./failure-state";
 import { AttachmentArchiveCurrent } from "./types";
 
 export const LEGACY_IN_PROGRESS_STALE_AFTER_MS = 30 * 60 * 1000;
@@ -5,6 +9,7 @@ export const LEGACY_IN_PROGRESS_STALE_AFTER_MS = 30 * 60 * 1000;
 export type AttachmentArchiveCurrentResolution =
   | { action: "ready" }
   | { action: "in_progress"; status: "PENDING" | "RUNNING" }
+  | { action: "failed"; message: string }
   | { action: "rebuild"; reason: string };
 
 function getUpdatedAtMs(current: AttachmentArchiveCurrent): number | undefined {
@@ -40,6 +45,13 @@ export function resolveAttachmentArchiveCurrentState({
   }
 
   if (current.status === "FAILED") {
+    if (isTerminalAttachmentArchiveFailure(current)) {
+      return {
+        action: "failed",
+        message: getAttachmentArchiveFailureMessage(current),
+      };
+    }
+
     return { action: "rebuild", reason: "failed" };
   }
 

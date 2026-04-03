@@ -88,23 +88,25 @@ import { baseURL } from "./baseURLs";
 import { createStorageState } from "./createStorageState";
 import { envRoleUsers } from "./envRoleUsers";
 
-const ENV = process.env.PW_ENV || "local";
+const configuredEnv = process.env.PW_ENV || "local";
+const isCi = Boolean(process.env.CI);
+const effectiveEnv = isCi ? "ci" : configuredEnv;
 const stage = process.env.STAGE_NAME || "main";
 const project = process.env.PROJECT;
 const deploymentOutput = await getDeploymentOutput(stage, project);
 
 let rootURL;
 
-if (process.env.CI) {
-  process.env.PW_ENV = "ci";
+if (isCi) {
+  process.env.PW_ENV = effectiveEnv;
   rootURL = deploymentOutput.applicationEndpointUrl;
 } else {
-  rootURL = baseURL[ENV];
+  rootURL = baseURL[effectiveEnv];
 }
 
 export default async function globalSetup() {
-  const roles = Object.keys(envRoleUsers[ENV] || {});
+  const roles = Object.keys(envRoleUsers[effectiveEnv] || {});
   for (const role of roles) {
-    await createStorageState(ENV, rootURL, role);
+    await createStorageState(effectiveEnv, rootURL, role);
   }
 }

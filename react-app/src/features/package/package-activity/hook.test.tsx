@@ -78,7 +78,7 @@ describe("useAttachmentService", () => {
   it("returns the archive url immediately when the archive is ready", async () => {
     vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
       status: "READY",
-      filename: "testPackage-attachments.zip",
+      filename: "testPackage - Mon Mar 23 2026.zip",
       url: "http://example.com/archive.zip",
     });
 
@@ -89,35 +89,62 @@ describe("useAttachmentService", () => {
     await expect(result.current.onArchive({ scope: "all" })).resolves.toBe(
       "http://example.com/archive.zip",
     );
+    expect(result.current.archiveWarningMessage).toBeUndefined();
   });
 
   it("polls pending archive responses until a ready archive is available", async () => {
     vi.useFakeTimers();
+    try {
+      const getAttachmentArchiveSpy = vi
+        .spyOn(api, "getAttachmentArchive")
+        .mockResolvedValueOnce({
+          status: "PENDING",
+          pollAfterSeconds: 1,
+        })
+        .mockResolvedValueOnce({
+          status: "READY",
+          filename: "testPackage - Mon Mar 23 2026.zip",
+          url: "http://example.com/archive.zip",
+        });
 
-    const getAttachmentArchiveSpy = vi
-      .spyOn(api, "getAttachmentArchive")
-      .mockResolvedValueOnce({
-        status: "PENDING",
-        pollAfterSeconds: 1,
-      })
-      .mockResolvedValueOnce({
-        status: "READY",
-        filename: "testPackage-attachments.zip",
-        url: "http://example.com/archive.zip",
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
       });
+
+      const archivePromise = result.current.onArchive({ scope: "all" });
+
+      await vi.advanceTimersByTimeAsync(1000);
+
+      await expect(archivePromise).resolves.toBe("http://example.com/archive.zip");
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("stores an archive warning message when the archive is ready with omitted attachments", async () => {
+    vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
+      status: "READY",
+      filename: "testPackage - Mon Mar 23 2026.zip",
+      url: "http://example.com/archive.zip",
+      warningMessage:
+        "Some attachments in this download are no longer available and were not included.",
+    });
 
     const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
       wrapper,
     });
 
-    const archivePromise = result.current.onArchive({ scope: "all" });
+    await expect(result.current.onArchive({ scope: "all" })).resolves.toBe(
+      "http://example.com/archive.zip",
+    );
 
-    await vi.advanceTimersByTimeAsync(1000);
-
-    await expect(archivePromise).resolves.toBe("http://example.com/archive.zip");
-    expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
-
-    vi.useRealTimers();
+    await waitFor(() => {
+      expect(result.current.archiveWarningMessage).toBe(
+        "Some attachments in this download are no longer available and were not included.",
+      );
+    });
+    expect(result.current.archiveErrorMessage).toBeUndefined();
   });
 
   it("stores an archive error message when archive generation fails", async () => {
@@ -137,5 +164,43 @@ describe("useAttachmentService", () => {
       expect(result.current.archiveErrorMessage).toBe("Archive generation failed");
     });
     expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  it("stops polling when the backend returns a terminal archive failure", async () => {
+    vi.useFakeTimers();
+    try {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+
+      const getAttachmentArchiveSpy = vi
+        .spyOn(api, "getAttachmentArchive")
+        .mockResolvedValueOnce({
+          status: "PENDING",
+          pollAfterSeconds: 1,
+        })
+        .mockResolvedValueOnce({
+          status: "FAILED",
+          message:
+            "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+        });
+
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
+      });
+
+      const archivePromise = result.current.onArchive({ scope: "all" });
+      await vi.advanceTimersByTimeAsync(1000);
+
+      await expect(archivePromise).resolves.toBeUndefined();
+      vi.useRealTimers();
+      await waitFor(() => {
+        expect(result.current.archiveErrorMessage).toBe(
+          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+        );
+      });
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 });
