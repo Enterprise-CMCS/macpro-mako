@@ -75,6 +75,8 @@ while IFS= read -r task_definition; do
   while IFS= read -r image; do
     if [[ "$image" == "${REPOSITORY_URI}:"* ]]; then
       echo "${image#${REPOSITORY_URI}:}" >> "$REFERENCED_TAGS_FILE"
+    elif [[ "$image" == "${REPOSITORY_URI}"@sha256:* ]]; then
+      add_referenced_digest "sha256:${image##*@sha256:}"
     fi
   done < <(
     aws ecs describe-task-definition \
