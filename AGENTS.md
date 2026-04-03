@@ -37,8 +37,10 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 ### Environment setup
 
 - `direnv allow .` — load shared environment variables for the workspace.
+- `nvm use` — switch to the Node version pinned in `.nvmrc` (`v20.17.0` at time of writing).
 - `./run install` — install dependencies across packages with Bun.
 - `bun run build` — compile TypeScript across workspaces before packaging Lambdas or synthesizing CDK.
+- If `./run` reports `node not found` or a version mismatch, run `direnv allow .` and/or `nvm use` before retrying.
 
 ### UI workflows
 
@@ -83,6 +85,12 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 - Follow Conventional Commit prefixes (`feat:`, `fix:`, `chore:`) to keep semantic-release automation intact.
 - Before pushing, run `bun run lint` and `./run test`; include `cdk diff` summaries when infrastructure changes.
 - Pull requests should describe context, solution, linked Jira/GitHub work, and testing evidence (logs or screenshots).
+
+## Jira Formatting
+
+- When creating or updating Jira work items, use real paragraphs and bullet lists so the description reads cleanly in Jira.
+- Do not write literal `\n` sequences into issue text; send actual newline characters or ADF-formatted content instead.
+- Keep issue descriptions concise, structured, and professional, with clear sections for context, findings, next steps, and acceptance criteria when needed.
 
 ## Security & Configuration Tips
 

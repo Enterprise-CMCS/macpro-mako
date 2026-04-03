@@ -85,19 +85,28 @@ const defaultApiGetRoleRequestsHandler = http.get(
     }
     if (role === "cmsroleapprover") {
       roles = roleDocs.filter(
-        (roleObj) => !["cmsroleapprover", "systemadmin"].includes(roleObj?.role),
+        (roleObj) =>
+          !!roleObj && !!roleObj.role && !["cmsroleapprover", "systemadmin"].includes(roleObj.role),
       );
     }
     if (role === "statesystemadmin") {
-      roles = getFilteredRoleDocsByState(profile?.[0]?._source.territory || "");
+      const territory = profile?.[0]?._source?.territory;
+      roles = territory ? getFilteredRoleDocsByState(territory) : [];
     }
 
     const rolesWithNames = roles
       // remove the current user from the list
-      .filter((roleObj) => roleObj.email !== user.email)
+      .filter((roleObj) => !!roleObj && roleObj.email !== user.email)
       // add the email and fullName to each role in the list
       .map((roleObj) => {
-        const email = roleObj?.id?.split("_")[0];
+        if (!roleObj) {
+          return {
+            email: "unknown@example.com",
+            fullName: "Unknown",
+          };
+        }
+
+        const email = roleObj.id?.split("_")[0] ?? roleObj.email ?? "unknown@example.com";
         const fullName = osUsers[email]?._source?.fullName || "Unknown";
 
         return {
@@ -174,14 +183,22 @@ const defaultApiSubmitRoleRequestsHandler = http.post<PathParams, SubmitRoleRequ
       requestRoleChange,
     } = await request.json();
 
+    if (!email || !state || !roleToUpdate || !eventType) {
+      return new HttpResponse("Missing required role request fields.", { status: 400 });
+    }
+    const currentRole = latestActiveRoleObj.role;
+    if (!currentRole) {
+      return new HttpResponse("No active role found for user", { status: 403 });
+    }
+
     let status: string;
-    if (!requestRoleChange && canUpdateAccess(latestActiveRoleObj.role, roleToUpdate)) {
+    if (!requestRoleChange && canUpdateAccess(currentRole, roleToUpdate)) {
       if (grantAccess === true || grantAccess === false) {
         status = grantAccess ? "active" : "denied";
       } else {
         return new HttpResponse("Invalid or missing grantAccess value.", { status: 400 });
       }
-    } else if (requestRoleChange && canRequestAccess(latestActiveRoleObj.role)) {
+    } else if (requestRoleChange && canRequestAccess(currentRole)) {
       status = "pending";
     } else {
       return new HttpResponse("You are not authorized to perform this action.", { status: 403 });
@@ -226,18 +243,39 @@ const defaultGetApproversHandler = http.post<PathParams, UserProfileRequestBody>
     const approverGroups: Record<string, Record<string, ApproverGroup[]>> = {};
 
     for (const roleItem of roles) {
+      if (!roleItem) {
+        continue;
+      }
+
       const originalRole = roleItem.role;
+      if (!originalRole) {
+        continue;
+      }
+
       const approverRole = getApprovingRole(originalRole);
+      if (!approverRole) {
+        continue;
+      }
+
       const approverDocs = getFilteredRoleDocsByRole(approverRole);
 
       for (const doc of approverDocs) {
+        if (!doc) {
+          continue;
+        }
+
         const territory = doc.territory;
+        const email = doc.email;
+        if (!territory || !email) {
+          continue;
+        }
+
         const group = (approverGroups[originalRole] ??= {});
 
-        const fullName = osUsers[doc.email]?._source?.fullName || "Unknown";
+        const fullName = osUsers[email]?._source?.fullName || "Unknown";
 
         (group[territory] ??= []).push({
-          email: doc.email,
+          email,
           fullName,
           territory,
         });

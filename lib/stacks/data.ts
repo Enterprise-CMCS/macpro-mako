@@ -15,6 +15,7 @@ interface DataStackProps extends cdk.NestedStackProps {
   stage: string;
   stack: string;
   isDev: boolean;
+  attachmentArchiveRebuildQueue: cdk.aws_sqs.IQueue;
   vpc: cdk.aws_ec2.IVpc;
   privateSubnets: cdk.aws_ec2.ISubnet[];
   brokerString: string;
@@ -49,6 +50,7 @@ export class Data extends cdk.NestedStack {
       stage,
       stack,
       isDev,
+      attachmentArchiveRebuildQueue,
       vpc,
       privateSubnets,
       brokerString,
@@ -564,6 +566,8 @@ export class Data extends cdk.NestedStack {
           role: sharedLambdaRole,
           useVpc: true,
           environment: {
+            ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
+            ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME: `${topicNamespace}aws.onemac.migration.cdc`,
             osDomain: `https://${openSearchDomainEndpoint}`,
             indexNamespace,
           },
@@ -596,6 +600,7 @@ export class Data extends cdk.NestedStack {
     });
 
     dataQualitySchedule.addTarget(new targets.LambdaFunction(dataQualityExport));
+    attachmentArchiveRebuildQueue.grantSendMessages(sharedLambdaRole);
 
     const stateMachineRole = new cdk.aws_iam.Role(this, "StateMachineRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("states.amazonaws.com"),
