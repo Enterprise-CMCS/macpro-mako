@@ -32,9 +32,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Validate stage name
+        id: validate-stage
+        run: |
+          if [[ "$STAGE_NAME" =~ ^[a-z][a-z0-9-]*$ ]]; then
+            echo "valid=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          echo "valid=false" >> "$GITHUB_OUTPUT"
+          echo "Skipping destroy for ref '$STAGE_NAME' because it is not a valid stage name."
+
       - uses: ./.github/actions/setup
+        if: steps.validate-stage.outputs.valid == 'true'
 
       - name: Configure AWS credentials
+        if: steps.validate-stage.outputs.valid == 'true'
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
@@ -42,4 +55,5 @@ jobs:
           role-duration-seconds: 10800
 
       - name: Destroy
+        if: steps.validate-stage.outputs.valid == 'true'
         run: run destroy --stage $STAGE_NAME --verify false
