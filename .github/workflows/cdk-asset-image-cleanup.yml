@@ -46,7 +46,7 @@ jobs:
           else
             echo "DELETE_IMAGES=true" >> "$GITHUB_ENV"
             echo "CRITICAL_ONLY=false" >> "$GITHUB_ENV"
-            echo "MIN_IMAGE_AGE_DAYS=7" >> "$GITHUB_ENV"
+            echo "MIN_IMAGE_AGE_DAYS=30" >> "$GITHUB_ENV"
           fi
 
       - name: Report and optionally delete unreferenced CDK asset images
