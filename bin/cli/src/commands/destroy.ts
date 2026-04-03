@@ -1,6 +1,7 @@
 import {
   CloudFormationClient,
   DeleteStackCommand,
+  DescribeStacksCommand,
   waitUntilStackDeleteComplete,
 } from "@aws-sdk/client-cloudformation";
 import {
@@ -14,6 +15,58 @@ import { checkIfAuthenticated, confirmDestroyCommand, project, region } from "..
 
 const waitForStackDeleteComplete = async (client: CloudFormationClient, stackName: string) => {
   return waitUntilStackDeleteComplete({ client, maxWaitTime: 3600 }, { StackName: stackName });
+};
+
+const STAGE_NAME_PATTERN = /^[a-z][a-z0-9-]*$/;
+const PROTECTED_STAGES = new Set(["main", "val", "production"]);
+
+const isStackDoesNotExistError = (error: unknown): boolean => {
+  if (!error || typeof error !== "object") return false;
+
+  const normalizedError = error as {
+    Code?: string;
+    Error?: { Code?: string; Message?: string };
+    message?: string;
+    name?: string;
+  };
+
+  const code = normalizedError.Code ?? normalizedError.Error?.Code ?? normalizedError.name;
+  const message = `${normalizedError.message ?? ""} ${normalizedError.Error?.Message ?? ""}`;
+
+  return code === "ValidationError" && /does not exist/i.test(message);
+};
+
+const resolveDestroyTarget = (rawStage: string): { stage: string; stackName: string } => {
+  const stage = rawStage.trim();
+  const stackName = `${project}-${stage}`;
+
+  console.log(`Resolved destroy target stage '${stage}' for stack '${stackName}'.`);
+
+  if (!STAGE_NAME_PATTERN.test(stage)) {
+    console.log(
+      `Error: Invalid stage '${stage}'. Stage must match ${STAGE_NAME_PATTERN.source} before destroy is allowed.`,
+    );
+    process.exit(1);
+  }
+
+  if (PROTECTED_STAGES.has(stage)) {
+    console.log(`Error: Destruction of protected stage '${stage}' is not allowed.`);
+    process.exit(1);
+  }
+
+  return { stage, stackName };
+};
+
+const stackExists = async (client: CloudFormationClient, stackName: string): Promise<boolean> => {
+  try {
+    await client.send(new DescribeStacksCommand({ StackName: stackName }));
+    return true;
+  } catch (error) {
+    if (isStackDoesNotExistError(error)) {
+      return false;
+    }
+    throw error;
+  }
 };
 
 export const destroy = {
@@ -67,30 +120,44 @@ export const destroy = {
     verify: boolean;
     secgroup: boolean;
   }) => {
+    const { stage: resolvedStage, stackName } = resolveDestroyTarget(stage);
+
     await checkIfAuthenticated();
 
-    const stackName = `${project}-${stage}`;
+    const client = new CloudFormationClient({ region });
 
-    if (/prod/i.test(stage)) {
-      console.log("Error: Destruction of production stages is not allowed.");
+    try {
+      if (!(await stackExists(client, stackName))) {
+        console.log(`Stack ${stackName} does not exist. Nothing to destroy.`);
+        return;
+      }
+    } catch (error) {
+      console.warn(`Error checking stack existence for ${stackName}`, error);
       process.exit(1);
     }
 
     if (verify) await confirmDestroyCommand(stackName);
 
-    const client = new CloudFormationClient({ region });
-    await client.send(new DeleteStackCommand({ StackName: stackName }));
+    try {
+      await client.send(new DeleteStackCommand({ StackName: stackName }));
+    } catch (error) {
+      console.warn(`Error initiating deletion for stack ${stackName}`, error);
+      process.exit(1);
+    }
+
     console.log(`Stack ${stackName} delete initiated.`);
 
     if (wait) {
       console.log(`Waiting for stack ${stackName} to be deleted...`);
       const result = await waitForStackDeleteComplete(client, stackName);
-      console.log(
-        result.state === "SUCCESS"
-          ? `Stack ${stackName} deleted successfully.`
-          : `Error: Stack ${stackName} deletion failed.`,
-      );
-      if (secgroup) await deleteSecurityGroup(project, stage);
+
+      if (result.state === "SUCCESS") {
+        console.log(`Stack ${stackName} deleted successfully.`);
+        if (secgroup) await deleteSecurityGroup(project, resolvedStage);
+      } else {
+        console.log(`Error: Stack ${stackName} deletion failed.`);
+        process.exit(1);
+      }
     } else {
       console.log(
         `Stack ${stackName} delete initiated. Not waiting for completion as --wait is set to false.`,

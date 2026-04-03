@@ -29,8 +29,27 @@ if ! which bun > /dev/null ; then
 	exit 1
 fi
 
-# Ensure packages are up to date.
-bun install
+install_all_dependencies() {
+	bun install
+	(
+		cd lib/attachment-archive
+		bun install
+	)
+}
+
+ensure_dependencies_installed() {
+	if [ ! -d node_modules ]; then
+		echo "Project dependencies are missing. Run './run install' first."
+		exit 1
+	fi
+}
+
+if [ "${1:-}" = "install" ]; then
+	install_all_dependencies
+	exit 0
+fi
+
+ensure_dependencies_installed
 
 # build and run dev.ts
-bun build:cli && node ./.build_run/src/run.js "$@"
+bun run build:cli && node ./.build_run/src/run.js "$@"

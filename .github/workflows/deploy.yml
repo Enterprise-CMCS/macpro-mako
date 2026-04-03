@@ -117,7 +117,7 @@ jobs:
       - deploy
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-    if: ${{ github.ref != 'refs/heads/production' }}
+    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
     env:
       JSON_ARTIFACT_ID: json-playwright-report
       HTML_ARTIFACT_ID: html-playwright-report
@@ -271,9 +271,6 @@ jobs:
         uses: actions/checkout@v3
 
       - uses: ./.github/actions/setup
-
-      - name: Install
-        run: bun install
 
       - name: Release
         run: bun semantic-release

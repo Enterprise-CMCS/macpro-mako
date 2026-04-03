@@ -180,42 +180,38 @@ describe("Dashboard", () => {
 
     it("should handle switching to the Waiver tab", async () => {
       const isWaiver = true;
+      const waiverTab = await screen.findByRole("tab", { name: "Waivers" });
 
-      await waitFor(async () => {
-        const waiverTab = await screen.findByRole("tab", { name: "Waivers" });
-        await user.click(waiverTab);
-
-        expect(waiverTab).toBeInTheDocument();
-        expect(waiverTab.getAttribute("aria-selected")).toEqual("true");
-      });
+      await user.click(waiverTab);
+      await waitFor(() => expect(waiverTab.getAttribute("aria-selected")).toEqual("true"));
 
       const spaTab = screen.queryByRole("tab", { name: "SPAs" });
       expect(spaTab).toBeInTheDocument();
       expect(spaTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByTestId("os-table");
-      verifyColumns(table, hasActions, isWaiver, waiverHits.total.value);
-      verifyPagination(waiverHits.total.value);
+      await waitFor(() => {
+        const table = screen.getByTestId("os-table");
+        verifyColumns(table, hasActions, isWaiver, waiverHits.total.value);
+        verifyPagination(waiverHits.total.value);
+      });
     });
 
     it("should handle switching back to the SPA tab", async () => {
       const isWaiver = false;
+      const spaTab = await screen.findByRole("tab", { name: "SPAs" });
 
-      await waitFor(async () => {
-        const spaTab = await screen.findByRole("tab", { name: "SPAs" });
-        await user.click(spaTab);
-
-        expect(spaTab).toBeInTheDocument();
-        expect(spaTab.getAttribute("aria-selected")).toEqual("true");
-      });
+      await user.click(spaTab);
+      await waitFor(() => expect(spaTab.getAttribute("aria-selected")).toEqual("true"));
 
       const waiverTab = screen.queryByRole("tab", { name: "Waivers" });
       expect(waiverTab).toBeInTheDocument();
       expect(waiverTab.getAttribute("aria-selected")).toEqual("false");
 
-      const table = screen.getByTestId("os-table");
-      verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
-      verifyPagination(spaHits.total.value);
+      await waitFor(() => {
+        const table = screen.getByTestId("os-table");
+        verifyColumns(table, hasActions, isWaiver, spaHits.total.value);
+        verifyPagination(spaHits.total.value);
+      });
     });
 
     it("should handle clicking the New Submission link", async () => {

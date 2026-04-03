@@ -1,4 +1,5 @@
 export * from "./useSearch";
+export * from "./getAttachmentArchive";
 export * from "./useGetForm";
 export * from "./useGetItem";
 export * from "./useGetUser";
