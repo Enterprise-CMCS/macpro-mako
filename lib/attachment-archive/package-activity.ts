@@ -18,6 +18,10 @@ export function getArchiveEligibleChangelogEntries(
     .filter((document) => !document.isAdminChange);
 }
 
+function getArchiveEntryTimestamp(entry: opensearch.changelog.Document) {
+  return typeof entry.timestamp === "number" ? entry.timestamp : undefined;
+}
+
 function getSectionAttachments(
   entry: opensearch.changelog.Document,
 ): AttachmentArchiveSourceAttachment[] {
@@ -37,18 +41,31 @@ export function buildAttachmentArchiveSections({
   packageId: string;
   changelog: opensearch.changelog.ItemResult[];
 }): AttachmentArchiveSectionDescriptor[] {
-  return getArchiveEligibleChangelogEntries(changelog).reduce<AttachmentArchiveSectionDescriptor[]>(
-    (sections, entry, index) => {
-      const attachments = getSectionAttachments(entry);
-      if (attachments.length === 0) {
-        return sections;
+  return getArchiveEligibleChangelogEntries(changelog)
+    .map((entry, originalIndex) => ({
+      attachments: getSectionAttachments(entry),
+      entry,
+      originalIndex,
+      timestamp: getArchiveEntryTimestamp(entry),
+    }))
+    .filter(({ attachments }) => attachments.length > 0)
+    .sort((left, right) => {
+      if (
+        left.timestamp !== undefined &&
+        right.timestamp !== undefined &&
+        left.timestamp !== right.timestamp
+      ) {
+        return left.timestamp - right.timestamp;
       }
 
+      return left.originalIndex - right.originalIndex;
+    })
+    .map(({ attachments, entry }, index) => {
       const sectionNumber = index + 1;
       const sectionLabel = getPackageActivityLabelSlug(entry.event);
       const sectionFolderName = buildSectionArchiveFolderName({ sectionNumber, sectionLabel });
 
-      sections.push({
+      return {
         packageId,
         attachments,
         sectionId: entry.id,
@@ -60,12 +77,8 @@ export function buildAttachmentArchiveSections({
           sectionNumber,
           sectionLabel,
         }),
-      });
-
-      return sections;
-    },
-    [],
-  );
+      };
+    });
 }
 
 export function getAttachmentArchiveSectionById({

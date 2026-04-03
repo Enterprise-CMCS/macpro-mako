@@ -372,6 +372,34 @@ describe("getAttachmentArchive handler", () => {
     );
   });
 
+  it("returns a terminal archive failure without queuing another rebuild", async () => {
+    getRequestedAttachmentArchiveStatus.mockResolvedValue({
+      needsRebuild: false,
+      response: {
+        status: "FAILED",
+        message:
+          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      },
+    });
+
+    const event = {
+      body: JSON.stringify({ id: WITHDRAWN_CHANGELOG_ITEM_ID, scope: "all" }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toBe(
+      JSON.stringify({
+        status: "FAILED",
+        message:
+          "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+      }),
+    );
+    expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
+  });
+
   it("returns a 500 response when archive lookup throws unexpectedly", async () => {
     getRequestedAttachmentArchiveStatus.mockRejectedValue(new Error("boom"));
 

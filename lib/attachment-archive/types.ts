@@ -1,5 +1,14 @@
-export type AttachmentArchiveScope = "all" | "section";
-export type AttachmentArchiveStatus = "PENDING" | "RUNNING" | "READY" | "FAILED";
+export const ATTACHMENT_ARCHIVE_SCOPES = ["all", "section"] as const;
+export type AttachmentArchiveScope = (typeof ATTACHMENT_ARCHIVE_SCOPES)[number];
+
+export const ATTACHMENT_ARCHIVE_STATUSES = ["PENDING", "RUNNING", "READY", "FAILED"] as const;
+export type AttachmentArchiveStatus = (typeof ATTACHMENT_ARCHIVE_STATUSES)[number];
+
+export const ATTACHMENT_ARCHIVE_FAILURE_CODES = [
+  "ALL_ATTACHMENTS_UNAVAILABLE",
+  "ATTACHMENT_NOT_CLEAN",
+] as const;
+export type AttachmentArchiveFailureCode = (typeof ATTACHMENT_ARCHIVE_FAILURE_CODES)[number];
 export const ATTACHMENT_ARCHIVE_BUILD_VERSION = 2;
 
 export interface AttachmentArchiveSourceAttachment {
@@ -63,6 +72,14 @@ export type AttachmentArchiveManifest =
   | AttachmentArchiveSectionManifest
   | AttachmentArchivePackageManifest;
 
+export interface AttachmentArchiveBlockedAttachment {
+  bucket: string;
+  key: string;
+  filename: string;
+  title: string;
+  virusScanStatus?: string;
+}
+
 export interface AttachmentArchiveCurrent {
   version: 2;
   scope: AttachmentArchiveScope;
@@ -71,12 +88,17 @@ export interface AttachmentArchiveCurrent {
   artifactKey: string;
   manifestKey: string;
   attachmentCount: number;
+  appendedAttachmentCount?: number;
+  skippedAttachmentCount?: number;
   updatedAt: string;
   executionArn?: string;
   sectionId?: string;
   sectionNumber?: number;
   sectionLabel?: string;
   sectionFolderName?: string;
+  failureCode?: AttachmentArchiveFailureCode;
+  failureMessage?: string;
+  blockedAttachment?: AttachmentArchiveBlockedAttachment;
   errorMessage?: string;
 }
 

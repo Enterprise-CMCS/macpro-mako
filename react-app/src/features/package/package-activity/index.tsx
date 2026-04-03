@@ -160,6 +160,8 @@ const getDraftPackageActivity = (
   };
 };
 
+const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
+
 type AttachmentDetailsProps = {
   id: string;
   packageId: string;
@@ -204,8 +206,18 @@ type SubmissionProps = {
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
   const { attachments = [], id, packageId, additionalInformation } = packageActivity;
-  const { archiveErrorMessage, attachmentErrorMessage, onArchive, onUrl, loading } =
-    useAttachmentService({ packageId, preferDraft: packageActivity.isSyntheticDraft });
+  const {
+    archiveErrorMessage,
+    archiveWarningMessage,
+    attachmentErrorMessage,
+    onArchive,
+    onUrl,
+    loading,
+  } = useAttachmentService({
+    packageId,
+    preferDraft: packageActivity.isSyntheticDraft,
+  });
+  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
 
   return (
     <div className="flex flex-col gap-6">
@@ -232,7 +244,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           <p>No information submitted</p>
         )}
         {attachmentErrorMessage && (
-          <p role="alert" className="mt-2 text-red-700">
+          <p role="alert" className={`mt-2 ${attachmentStatusMessageClassName}`}>
             {attachmentErrorMessage}
           </p>
         )}
@@ -257,9 +269,9 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           >
             Download section attachments
           </Button>
-          {archiveErrorMessage && (
-            <p role="alert" className="text-red-700">
-              {archiveErrorMessage}
+          {archiveMessage && (
+            <p role="alert" className={attachmentStatusMessageClassName}>
+              {archiveMessage}
             </p>
           )}
         </>
@@ -312,10 +324,11 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
     return acc.concat(packageActivity.attachments);
   }, []);
   const preferDraft = packageActivities.some((packageActivity) => packageActivity.isSyntheticDraft);
-  const { archiveErrorMessage, loading, onArchive } = useAttachmentService({
+  const { archiveErrorMessage, archiveWarningMessage, loading, onArchive } = useAttachmentService({
     packageId,
     preferDraft,
   });
+  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
 
   if (attachmentsAggregate.length === 0) {
     return null;
@@ -347,9 +360,9 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
       >
         Download all attachments
       </Button>
-      {archiveErrorMessage && (
-        <p role="alert" className="justify-self-end text-red-700">
-          {archiveErrorMessage}
+      {archiveMessage && (
+        <p role="alert" className={`justify-self-end ${attachmentStatusMessageClassName}`}>
+          {archiveMessage}
         </p>
       )}
     </>

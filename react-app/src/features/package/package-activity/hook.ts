@@ -61,6 +61,7 @@ export const useAttachmentService = ({
   );
   const [archiveLoading, setArchiveLoading] = useState(false);
   const [archiveErrorMessage, setArchiveErrorMessage] = useState<string | undefined>();
+  const [archiveWarningMessage, setArchiveWarningMessage] = useState<string | undefined>();
   const [attachmentErrorMessage, setAttachmentErrorMessage] = useState<string | undefined>();
 
   const onUrl = async (attachment: Attachments[number]) => {
@@ -81,6 +82,7 @@ export const useAttachmentService = ({
     sectionId,
   }: AttachmentArchiveRequest): Promise<string | undefined> => {
     setArchiveErrorMessage(undefined);
+    setArchiveWarningMessage(undefined);
     setArchiveLoading(true);
 
     try {
@@ -90,6 +92,7 @@ export const useAttachmentService = ({
         });
 
         if (response.status === "READY") {
+          setArchiveWarningMessage(response.warningMessage);
           return response.url;
         }
 
@@ -116,6 +119,7 @@ export const useAttachmentService = ({
   return {
     attachmentErrorMessage,
     archiveErrorMessage,
+    archiveWarningMessage,
     error,
     loading: isLoading || archiveLoading,
     onArchive,

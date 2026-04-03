@@ -17,6 +17,10 @@ import {
 import { getAttachmentBucketMap } from "../attachment-archive/bucket-routing";
 import { resolveAttachmentArchiveCurrentState } from "../attachment-archive/current-state";
 import {
+  getAttachmentArchiveWarningMessage,
+  isTerminalAttachmentArchiveFailure,
+} from "../attachment-archive/failure-state";
+import {
   buildAttachmentArchiveSections,
   getAttachmentArchiveSectionById,
 } from "../attachment-archive/package-activity";
@@ -150,10 +154,12 @@ async function buildReadyResponse({
   archiveBucketName,
   artifactKey,
   fileName,
+  warningMessage,
 }: {
   archiveBucketName: string;
   artifactKey: string;
   fileName: string;
+  warningMessage?: string;
 }) {
   const url = await getSignedUrl(
     archiveBucketClient,
@@ -169,6 +175,7 @@ async function buildReadyResponse({
     status: "READY" as const,
     filename: fileName,
     url,
+    ...(warningMessage ? { warningMessage } : {}),
   };
 }
 
@@ -500,6 +507,11 @@ async function resolveArchiveArtifactForRead({
       status: "PENDING" | "RUNNING";
     }
   | {
+      action: "failed";
+      current?: AttachmentArchiveCurrent;
+      message: string;
+    }
+  | {
       action: "rebuild";
       current?: AttachmentArchiveCurrent;
       reason: string;
@@ -535,6 +547,15 @@ async function resolveArchiveArtifactForRead({
     };
   }
 
+  const writeFailure =
+    writeResolution.action === "failed"
+      ? {
+          action: "failed" as const,
+          current: writeCurrent,
+          message: writeResolution.message,
+        }
+      : undefined;
+
   if (
     baseReadBucketName !== writeBucketName ||
     artifact.baseCurrentKey !== artifact.currentKey ||
@@ -567,12 +588,24 @@ async function resolveArchiveArtifactForRead({
         status: baseResolution.status,
       };
     }
+
+    if (baseResolution.action === "failed") {
+      return {
+        action: "failed",
+        current: baseCurrent,
+        message: baseResolution.message,
+      };
+    }
+  }
+
+  if (writeFailure) {
+    return writeFailure;
   }
 
   return {
     action: "rebuild",
     current: writeCurrent,
-    reason: writeResolution.reason,
+    reason: writeResolution.action === "rebuild" ? writeResolution.reason : "rebuild_required",
   };
 }
 
@@ -619,6 +652,17 @@ async function ensureArchiveArtifact({
       current: resolution.current,
       started: false,
       status: resolution.status,
+    };
+  }
+
+  if (resolution.action === "failed") {
+    return {
+      artifact,
+      artifactBucketName: writeBucketName,
+      artifactKey: artifact.artifactKey,
+      current: resolution.current,
+      started: false,
+      status: "FAILED",
     };
   }
 
@@ -734,6 +778,7 @@ export async function getRequestedAttachmentArchiveStatus({
         archiveBucketName: resolution.bucketName,
         artifactKey: resolution.artifactKey,
         fileName: artifact.downloadFilename,
+        warningMessage: getAttachmentArchiveWarningMessage(resolution.current),
       }),
       needsRebuild: false,
     };
@@ -744,6 +789,16 @@ export async function getRequestedAttachmentArchiveStatus({
       response: {
         status: "PENDING" as const,
         pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
+      },
+      needsRebuild: false,
+    };
+  }
+
+  if (resolution.action === "failed") {
+    return {
+      response: {
+        status: "FAILED" as const,
+        message: resolution.message,
       },
       needsRebuild: false,
     };
@@ -904,6 +959,13 @@ export async function markAttachmentArchiveFailed({
     return {
       skipped: true,
       reason: "hash_mismatch",
+    };
+  }
+
+  if (isTerminalAttachmentArchiveFailure(current)) {
+    return {
+      skipped: true,
+      reason: "preserve_terminal_failure",
     };
   }
 

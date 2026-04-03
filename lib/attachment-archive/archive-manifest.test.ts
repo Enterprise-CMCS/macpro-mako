@@ -11,7 +11,11 @@ import {
   getPackageArchiveRootFolderName,
   parseAttachmentArchiveCurrent,
 } from "./archive-manifest";
-import { ATTACHMENT_ARCHIVE_BUILD_VERSION } from "./types";
+import {
+  ATTACHMENT_ARCHIVE_BUILD_VERSION,
+  ATTACHMENT_ARCHIVE_FAILURE_CODES,
+  ATTACHMENT_ARCHIVE_STATUSES,
+} from "./types";
 
 describe("attachment archive manifest helpers", () => {
   it("builds a stable section hash regardless of source attachment order", () => {
@@ -163,9 +167,13 @@ describe("attachment archive manifest helpers", () => {
         "hash",
       ),
     ).toBe("package/MD-25-2525-IJJJ/section/abc/hash.zip");
-    expect(getArchiveDownloadFilename({ packageId: "MD-25-2525-IJJJ", scope: "all" })).toBe(
-      "MD-25-2525-IJJJ-attachments.zip",
-    );
+    expect(
+      getArchiveDownloadFilename({
+        packageId: "MD-25-2525-IJJJ",
+        scope: "all",
+        now: new Date("2026-03-23T18:00:00.000Z"),
+      }),
+    ).toBe("MD-25-2525-IJJJ - Mon Mar 23 2026.zip");
     expect(
       getArchiveDownloadFilename({
         packageId: "MD-25-2525-IJJJ",
@@ -184,15 +192,62 @@ describe("attachment archive manifest helpers", () => {
       artifactKey: "artifact.zip",
       manifestKey: "manifest.json",
       attachmentCount: 2,
+      appendedAttachmentCount: 1,
+      skippedAttachmentCount: 1,
       executionArn: "arn:aws:states:us-east-1:123456789012:execution:test:archive",
       sectionId: "section-a",
       sectionNumber: 1,
       sectionLabel: "initial-package-submitted",
       sectionFolderName: "section-1-initial-package-submitted",
+      failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+      failureMessage:
+        "The attachments in this section are no longer available, so this download could not be created.",
     });
+
+    for (const status of ATTACHMENT_ARCHIVE_STATUSES) {
+      const candidate = {
+        ...current,
+        status,
+      };
+      expect(parseAttachmentArchiveCurrent(JSON.stringify(candidate))).toEqual(candidate);
+    }
+
+    for (const failureCode of ATTACHMENT_ARCHIVE_FAILURE_CODES) {
+      const candidate = {
+        ...current,
+        failureCode,
+      };
+      expect(parseAttachmentArchiveCurrent(JSON.stringify(candidate))).toEqual(candidate);
+    }
 
     expect(parseAttachmentArchiveCurrent(JSON.stringify(current))).toEqual(current);
     expect(parseAttachmentArchiveCurrent("not-json")).toBeUndefined();
     expect(parseAttachmentArchiveCurrent(JSON.stringify({ status: "READY" }))).toBeUndefined();
+    expect(
+      parseAttachmentArchiveCurrent(
+        JSON.stringify({
+          ...current,
+          status: "NOT_A_REAL_STATUS",
+        }),
+      ),
+    ).toBeUndefined();
+    expect(
+      parseAttachmentArchiveCurrent(
+        JSON.stringify({
+          ...current,
+          failureCode: "NOT_A_REAL_FAILURE_CODE",
+        }),
+      ),
+    ).toBeUndefined();
+    expect(
+      parseAttachmentArchiveCurrent(
+        JSON.stringify({
+          ...current,
+          blockedAttachment: {
+            bucket: "bucket-only",
+          },
+        }),
+      ),
+    ).toBeUndefined();
   });
 });
