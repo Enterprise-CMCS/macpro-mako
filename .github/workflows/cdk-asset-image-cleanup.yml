@@ -1,0 +1,53 @@
+name: CDK Asset Image Cleanup
+
+on:
+  schedule:
+    - cron: "30 8 * * *"
+  workflow_dispatch:
+    inputs:
+      delete_images:
+        description: "Set to true to delete candidate images. false runs a report only."
+        required: true
+        default: "false"
+      critical_only:
+        description: "Set to true to only target images with CRITICAL findings."
+        required: true
+        default: "true"
+      min_image_age_days:
+        description: "Minimum age in days before an unreferenced image can be deleted."
+        required: true
+        default: "3"
+
+jobs:
+  cdk-asset-image-cleanup:
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: read
+    env:
+      AWS_REGION: us-east-1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+
+      - name: Configure cleanup mode
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "DELETE_IMAGES=${{ inputs.delete_images }}" >> "$GITHUB_ENV"
+            echo "CRITICAL_ONLY=${{ inputs.critical_only }}" >> "$GITHUB_ENV"
+            echo "MIN_IMAGE_AGE_DAYS=${{ inputs.min_image_age_days }}" >> "$GITHUB_ENV"
+          else
+            echo "DELETE_IMAGES=true" >> "$GITHUB_ENV"
+            echo "CRITICAL_ONLY=false" >> "$GITHUB_ENV"
+            echo "MIN_IMAGE_AGE_DAYS=30" >> "$GITHUB_ENV"
+          fi
+
+      - name: Report and optionally delete unreferenced CDK asset images
+        run: ./scripts/cleanup-cdk-asset-images.sh
