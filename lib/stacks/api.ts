@@ -880,7 +880,7 @@ export class Api extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["s3:GetObject"],
+              actions: ["s3:GetObject", "s3:GetObjectTagging"],
               resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
             }),
             new cdk.aws_iam.PolicyStatement({
@@ -924,6 +924,7 @@ export class Api extends cdk.NestedStack {
         environment: {
           LEGACY_ATTACHMENT_BUCKET_MAP: legacyAttachmentBucketMap,
           LEGACY_S3_ACCESS_ROLE_ARN: legacyS3AccessRoleArn,
+          TZ: "America/New_York",
         },
       },
     );

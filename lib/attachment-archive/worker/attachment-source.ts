@@ -6,12 +6,14 @@ import {
 } from "../attachment-errors";
 import { AttachmentBucketMap, resolveTargetBucket } from "../bucket-routing";
 import { AttachmentArchiveSourceAttachment } from "../types";
+import { classifyAttachmentArchiveAccessFailure } from "./failure-classification";
 
 interface LoadArchiveAttachmentParams<TBody> {
   attachment: AttachmentArchiveSourceAttachment;
   attachmentBucketMap: AttachmentBucketMap;
   consumer: string;
   getAttachmentBody: (bucket: string, key: string) => Promise<TBody>;
+  getObjectTags?: (bucket: string, key: string) => Promise<Record<string, string>>;
   logInfo?: (message: string) => void;
   logWarn?: (message: string) => void;
 }
@@ -56,6 +58,7 @@ export async function loadArchiveAttachment<TBody>({
   attachmentBucketMap,
   consumer,
   getAttachmentBody,
+  getObjectTags,
   logInfo = console.info,
   logWarn = console.warn,
 }: LoadArchiveAttachmentParams<TBody>): Promise<LoadArchiveAttachmentResult<TBody>> {
@@ -79,6 +82,23 @@ export async function loadArchiveAttachment<TBody>({
         skipped: false,
       };
     } catch (error) {
+      if (isAttachmentAccessDeniedError(error) && getObjectTags) {
+        const remappedFailure = await classifyAttachmentArchiveAccessFailure({
+          attachment: {
+            ...attachment,
+            bucket: resolution.destinationBucket,
+          },
+          error,
+          getObjectTags,
+        });
+
+        if (remappedFailure) {
+          throw Object.assign(new Error(remappedFailure.failureMessage), remappedFailure, {
+            cause: error,
+          });
+        }
+      }
+
       // If the mirrored legacy bucket is missing the object, S3 may surface either
       // a not-found or access-denied style error depending on bucket permissions.
       // In both cases we want to fall back to the original legacy upload bucket.
@@ -106,6 +126,23 @@ export async function loadArchiveAttachment<TBody>({
       skipped: false,
     };
   } catch (error) {
+    if (resolution.remapped && isAttachmentAccessDeniedError(error) && getObjectTags) {
+      const sourceFailure = await classifyAttachmentArchiveAccessFailure({
+        attachment: {
+          ...attachment,
+          bucket: resolution.sourceBucket,
+        },
+        error,
+        getObjectTags,
+      });
+
+      if (sourceFailure) {
+        throw Object.assign(new Error(sourceFailure.failureMessage), sourceFailure, {
+          cause: error,
+        });
+      }
+    }
+
     if (
       isAttachmentAccessDeniedError(error) &&
       !isLegacyAttachmentUnavailableError(resolution.sourceBucket, error)
