@@ -138,7 +138,7 @@ export class DeploymentConfig {
       typeof config.smartLinkUrl === "string" &&
       typeof config.macproLinkUrl === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
-      typeof config.externalApiAuthSecretArn === "string" &&
+      typeof config.externalApiAuthSecretArn === "string" && // pragma: allowlist secret
       typeof config.useSharedOpenSearch === "boolean" &&
       typeof config.vpcName === "string"
     );
