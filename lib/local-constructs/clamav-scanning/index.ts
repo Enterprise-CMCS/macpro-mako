@@ -153,12 +153,13 @@ export class ClamScanScanner extends Construct {
     const clamscanDefsLogGroup = new logs.LogGroup(this, `${id}ClamDefsLogGroup`, {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
+    const clamAvImageCacheBust = "2026-04-06-runtime-without-npm";
 
     const clamDefsLambda = new DockerImageFunction(this, "ServerlessClamDefs", {
       code: DockerImageCode.fromImageAsset(__dirname, {
         cmd: ["dist/defs.handler"],
         buildArgs: {
-          CACHE_BUST: "2025-12-01-cve-2025-7783",
+          CACHE_BUST: clamAvImageCacheBust,
         },
       }),
       timeout: cdk.Duration.minutes(1),
@@ -180,7 +181,7 @@ export class ClamScanScanner extends Construct {
     const clamscanLambda = new DockerImageFunction(this, "ServerlessClamscan", {
       code: DockerImageCode.fromImageAsset(__dirname, {
         buildArgs: {
-          CACHE_BUST: "2025-12-01-cve-2025-7783",
+          CACHE_BUST: clamAvImageCacheBust,
         },
       }),
       timeout: cdk.Duration.minutes(1),
