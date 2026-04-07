@@ -29,12 +29,16 @@ describe("notifyAttachmentArchiveIntegrity", () => {
   const originalReportPrefix = process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX;
   const originalStageName = process.env.STAGE_NAME;
   const originalEmailAddressLookupSecretName = process.env.emailAddressLookupSecretName;
+  const originalAwsRegion = process.env.AWS_REGION;
+  const originalAwsDefaultRegion = process.env.AWS_DEFAULT_REGION;
 
   beforeEach(() => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = "archive-write-bucket";
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = "archive-integrity";
     process.env.STAGE_NAME = "main";
     process.env.emailAddressLookupSecretName = "emailAddresses"; // pragma: allowlist secret
+    process.env.AWS_REGION = "us-east-1";
+    process.env.AWS_DEFAULT_REGION = "us-east-1";
     getSecretMock.mockReset();
     s3SendSpy.mockReset();
     sesSendSpy.mockReset();
@@ -45,6 +49,8 @@ describe("notifyAttachmentArchiveIntegrity", () => {
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = originalReportPrefix;
     process.env.STAGE_NAME = originalStageName;
     process.env.emailAddressLookupSecretName = originalEmailAddressLookupSecretName;
+    process.env.AWS_REGION = originalAwsRegion;
+    process.env.AWS_DEFAULT_REGION = originalAwsDefaultRegion;
   });
 
   function mockS3(objectStore: S3ObjectStore, putStore: S3ObjectStore) {
