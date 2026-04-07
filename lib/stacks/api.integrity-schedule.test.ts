@@ -50,10 +50,10 @@ function buildApiTemplate({ stage, isDev }: { stage: string; isDev: boolean }) {
     alertsTopic,
     attachmentsBucket,
     brokerString: "broker-1:9092,broker-2:9092",
-    dbInfoSecretName: "mako-db",
+    dbInfoSecretName: "mako-db", // pragma: allowlist secret
     legacyS3AccessRoleArn: "arn:aws:iam::123456789012:role/test-legacy-role",
-    emailAddressLookupSecretName: "emailAddresses",
-    notificationSecretName: "mako-main",
+    emailAddressLookupSecretName: "emailAddresses", // pragma: allowlist secret
+    notificationSecretName: "mako-main", // pragma: allowlist secret
     notificationSecretArn:
       "arn:aws:secretsmanager:us-east-1:123456789012:secret:mako-main-notifications",
   });

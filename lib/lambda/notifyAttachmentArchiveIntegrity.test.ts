@@ -34,7 +34,7 @@ describe("notifyAttachmentArchiveIntegrity", () => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = "archive-write-bucket";
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = "archive-integrity";
     process.env.STAGE_NAME = "main";
-    process.env.emailAddressLookupSecretName = "emailAddresses";
+    process.env.emailAddressLookupSecretName = "emailAddresses"; // pragma: allowlist secret
     getSecretMock.mockReset();
     s3SendSpy.mockReset();
     sesSendSpy.mockReset();
