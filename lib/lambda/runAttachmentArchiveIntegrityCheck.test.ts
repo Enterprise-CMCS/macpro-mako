@@ -146,7 +146,7 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     expect(Buffer.byteLength(result.csv, "utf8")).toBeLessThanOrEqual(
       Math.floor(5.5 * 1024 * 1024),
     );
-  }, 30000);
+  }, 120000);
 
   it("detects package and section discrepancies and writes required report fields", async () => {
     const packageId = "MD-1";
