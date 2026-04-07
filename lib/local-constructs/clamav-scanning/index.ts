@@ -153,7 +153,7 @@ export class ClamScanScanner extends Construct {
     const clamscanDefsLogGroup = new logs.LogGroup(this, `${id}ClamDefsLogGroup`, {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
-    const clamAvImageCacheBust = "2026-04-03-fast-xml-parser-5-5-8";
+    const clamAvImageCacheBust = "2026-04-06-runtime-without-npm";
 
     const clamDefsLambda = new DockerImageFunction(this, "ServerlessClamDefs", {
       code: DockerImageCode.fromImageAsset(__dirname, {
