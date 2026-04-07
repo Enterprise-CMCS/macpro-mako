@@ -24,7 +24,11 @@ WORKDIR ${LAMBDA_TASK_ROOT}
 RUN (dnf install -y clamav clamd || microdnf install -y clamav clamd || yum install -y clamav clamd) \
     && (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
     && (dnf clean all || microdnf clean all || yum clean all) \
-    && rm -rf /var/cache/dnf
+    && rm -rf /var/cache/dnf \
+    # npm is not required to execute the bundled Lambda handlers and keeping it
+    # in the runtime image leaves known vulnerable transitive packages behind.
+    && rm -rf /var/lang/lib/node_modules/npm \
+    && rm -f /var/lang/bin/npm /var/lang/bin/npx /usr/local/bin/npm /usr/local/bin/npx
 
 COPY --from=builder ${LAMBDA_TASK_ROOT}/dist ./dist
 COPY src/conf/clamd.conf /etc/clamd.d/scan.conf
