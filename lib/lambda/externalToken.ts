@@ -7,7 +7,7 @@ import { issueClientCredentialsAccessToken } from "./external-auth/service";
 type TokenRequest = {
   grantType: string;
   clientId: string;
-  clientSecret: string;
+  clientCredential: string;
 };
 
 function errorResponse(
@@ -49,7 +49,7 @@ function parseBody(event: APIGatewayProxyEvent): TokenRequest | ReturnType<typeo
 
   const grantType = body.grant_type ?? body.grantType;
   const clientId = body.client_id ?? body.clientId;
-  const clientSecret = body.client_secret ?? body.clientSecret;
+  const clientCredential = body.client_secret ?? body.clientSecret;
 
   if (typeof grantType !== "string" || grantType.trim() === "") {
     return errorResponse(400, "invalid_request", "grant_type is required.");
@@ -63,14 +63,14 @@ function parseBody(event: APIGatewayProxyEvent): TokenRequest | ReturnType<typeo
     return errorResponse(400, "invalid_request", "client_id is required.");
   }
 
-  if (typeof clientSecret !== "string" || clientSecret.trim() === "") { // pragma: allowlist secret
-    return errorResponse(400, "invalid_request", "client_secret is required.");
+  if (typeof clientCredential !== "string" || clientCredential.trim() === "") {
+    return errorResponse(400, "invalid_request", "client_secret is required."); // pragma: allowlist secret
   }
 
   return {
     grantType,
     clientId: clientId.trim(),
-    clientSecret,
+    clientCredential,
   };
 }
 
@@ -89,7 +89,7 @@ export const handler = async (event: APIGatewayProxyEvent) => {
   try {
     const tokenResult = await issueClientCredentialsAccessToken(
       parsedBody.clientId,
-      parsedBody.clientSecret,
+      parsedBody.clientCredential,
     );
     if (!tokenResult) {
       return errorResponse(401, "invalid_client", "Invalid client credentials.");
