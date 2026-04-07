@@ -6,15 +6,15 @@ on:
   workflow_dispatch:
     inputs:
       delete_images:
-        description: "Set to true to delete candidate images. false runs a report only."
+        description: "Set to true to delete candidate ECR image digests from the shared CDK bootstrap repo. false runs a dry run."
         required: true
         default: "false"
       critical_only:
-        description: "Set to true to only target images with CRITICAL findings."
+        description: "Set to true to only target candidate ECR image digests with CRITICAL findings."
         required: true
         default: "true"
       min_image_age_days:
-        description: "Minimum age in days before an unreferenced image can be deleted."
+        description: "Minimum age in days before an unreferenced ECR image digest can be deleted."
         required: true
         default: "3"
 
@@ -48,6 +48,11 @@ jobs:
             echo "CRITICAL_ONLY=false" >> "$GITHUB_ENV"
             echo "MIN_IMAGE_AGE_DAYS=30" >> "$GITHUB_ENV"
           fi
+
+      - name: Describe cleanup scope
+        run: |
+          echo "This workflow only operates on ECR image digests in the shared CDK bootstrap repository."
+          echo "It does not delete IAM roles, S3 buckets, stacks, or other AWS resources."
 
       - name: Report and optionally delete unreferenced CDK asset images
         run: ./scripts/cleanup-cdk-asset-images.sh
