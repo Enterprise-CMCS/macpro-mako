@@ -122,6 +122,25 @@ describe("generatePresignedDownloadUrl", () => {
     });
   });
 
+  it("builds a safe content-disposition header for unicode filenames", async () => {
+    vi.mocked(getSignedUrl).mockResolvedValueOnce("https://signed.example.com/doc.pdf");
+
+    await generatePresignedDownloadUrl(
+      "mako-main-attachments-635052997545",
+      "c021cc44-b244-48d4-8135-a97a17333e70.png",
+      "Screenshot 2026-02-19 at 1.13.37\u202fPM.png",
+      120,
+    );
+
+    const getObjectCall = vi.mocked(getSignedUrl).mock.calls[0]?.[1] as GetObjectCommand & {
+      input?: { ResponseContentDisposition?: string };
+    };
+
+    expect(getObjectCall.input?.ResponseContentDisposition).toBe(
+      `attachment; filename="Screenshot 2026-02-19 at 1.13.37 PM.png"; filename*=UTF-8''Screenshot%202026-02-19%20at%201.13.37%E2%80%AFPM.png`,
+    );
+  });
+
   it("maps HeadObject access denied errors to typed S3 access errors", async () => {
     mockS3Send.mockRejectedValueOnce({
       name: "AccessDenied",

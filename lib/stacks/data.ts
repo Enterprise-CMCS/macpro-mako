@@ -410,16 +410,6 @@ export class Data extends cdk.NestedStack {
       return fn;
     };
 
-    // ==========================================
-    // DataExchange Secret - MuleSoft outbound credentials
-    // Stores the endpoint URL and API key provided by MuleSoft
-    // ==========================================
-    const dataExchangeSecret = new cdk.aws_secretsmanager.Secret(this, "DataExchangeSecret", {
-      secretName: `${project}/${stage}/dataExchange-credentials`, // pragma: allowlist secret
-      description:
-        "Credentials for outbound MuleSoft dataExchange endpoint (endpoint URL and API key)",
-    });
-
     const sharedLambdaRole = new cdk.aws_iam.Role(this, "SharedLambdaExecutionRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
       managedPolicies: [
@@ -467,12 +457,6 @@ export class Data extends cdk.NestedStack {
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
-            // Permission to read dataExchange credentials from Secrets Manager
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["secretsmanager:GetSecretValue"],
-              resources: [dataExchangeSecret.secretArn],
-            }),
           ],
         }),
       },
@@ -490,28 +474,16 @@ export class Data extends cdk.NestedStack {
 
     const lambdaFunctions = Object.entries(functionConfigs).reduce(
       (acc, [name, config]) => {
-        // Base environment for all sink Lambdas
-        const environment: Record<string, string> = {
-          osDomain: `https://${openSearchDomainEndpoint}`,
-          indexNamespace,
-        };
-
-        // Add dataExchange environment variables for sinkMain
-        // The secret contains the MuleSoft endpoint URL and API key
-        if (name === "sinkMain") {
-          // Secret name containing MuleSoft credentials (endpoint and apiKey)
-          environment.dataExchangeSecretName = dataExchangeSecret.secretName;
-        }
-
-        environment.ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL = attachmentArchiveRebuildQueue.queueUrl;
-        environment.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME =
-          `${topicNamespace}aws.onemac.migration.cdc`;
-
         acc[name] = createLambda({
           id: name,
           role: sharedLambdaRole,
           useVpc: true,
-          environment,
+          environment: {
+            ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
+            ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME: `${topicNamespace}aws.onemac.migration.cdc`,
+            osDomain: `https://${openSearchDomainEndpoint}`,
+            indexNamespace,
+          },
           provisionedConcurrency: !props.isDev ? config.provisionedConcurrency : 0,
         });
         return acc;

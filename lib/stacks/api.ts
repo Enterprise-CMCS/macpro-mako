@@ -42,9 +42,6 @@ interface ApiStackProps extends cdk.NestedStackProps {
   externalApiAuthSecretArn: DeploymentConfigProperties["externalApiAuthSecretArn"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
-  // IDM/Okta configuration for dataSink authorizer
-  idmClientIssuer: DeploymentConfigProperties["idmClientIssuer"];
-  idmClientId: DeploymentConfigProperties["idmClientId"];
 }
 
 export class Api extends cdk.NestedStack {
@@ -79,8 +76,6 @@ export class Api extends cdk.NestedStack {
       dbInfoSecretName,
       notificationSecretName,
       notificationSecretArn,
-      idmClientIssuer,
-      idmClientId,
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
@@ -276,6 +271,99 @@ export class Api extends cdk.NestedStack {
         }),
       },
     });
+
+    const externalAttachmentDownloadRole = new cdk.aws_iam.Role(
+      this,
+      "ExternalAttachmentDownloadRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          ExternalAttachmentDownloadPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "es:ESHttpHead",
+                  "es:ESHttpPost",
+                  "es:ESHttpGet",
+                  "es:ESHttpPatch",
+                  "es:ESHttpDelete",
+                  "es:ESHttpPut",
+                ],
+                resources: [`${openSearchDomainArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["sts:AssumeRole"],
+                resources: [legacyS3AccessRoleArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${attachmentsBucket.bucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${sharedAttachmentReadBucket.arn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveBaseReadBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveBaseReadBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["sqs:SendMessage"],
+                resources: [attachmentArchiveRebuildQueue.queueArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["states:DescribeExecution"],
+                resources: [
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive:*`,
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive-historical-backfill:*`,
+                ],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [externalApiAuthSecretArn],
+              }),
+            ],
+          }),
+        },
+      },
+    );
 
     const attachmentArchiveRequestRole = new cdk.aws_iam.Role(
       this,
@@ -518,7 +606,12 @@ export class Api extends cdk.NestedStack {
           legacyS3AccessRoleArn,
           indexNamespace,
           externalApiAuthSecretArn,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
+          ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
         },
+        role: externalAttachmentDownloadRole,
       },
       {
         id: "getAttachmentArchive",
@@ -1321,72 +1414,6 @@ export class Api extends cdk.NestedStack {
       },
     );
 
-    // ==========================================
-    // DataSink Lambda - IAM Role with OpenSearch permissions
-    // ==========================================
-    const dataSinkLambdaRole = new cdk.aws_iam.Role(this, "DataSinkLambdaRole", {
-      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
-      managedPolicies: [
-        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaBasicExecutionRole",
-        ),
-        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-          "service-role/AWSLambdaVPCAccessExecutionRole",
-        ),
-        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
-      ],
-      inlinePolicies: {
-        DataSinkPolicy: new cdk.aws_iam.PolicyDocument({
-          statements: [
-            // OpenSearch permissions for idempotency and storage
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: [
-                "es:ESHttpHead",
-                "es:ESHttpPost",
-                "es:ESHttpGet",
-                "es:ESHttpPatch",
-                "es:ESHttpDelete",
-                "es:ESHttpPut",
-              ],
-              resources: [`${openSearchDomainArn}/*`],
-            }),
-          ],
-        }),
-      },
-    });
-
-    // DataSink Lambda Log Group
-    const dataSinkLogGroup = new cdk.aws_logs.LogGroup(this, "dataSinkLogGroup", {
-      logGroupName: `/aws/lambda/${project}-${stage}-${stack}-dataSink`,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
-    // DataSink Lambda Function
-    const dataSinkLambda = new NodejsFunction(this, "dataSink", {
-      runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
-      functionName: `${project}-${stage}-${stack}-dataSink`,
-      depsLockFilePath: join(__dirname, "../../bun.lockb"),
-      entry: join(__dirname, "../lambda/dataSink.ts"),
-      handler: "handler",
-      role: dataSinkLambdaRole,
-      environment: {
-        osDomain: `https://${openSearchDomainEndpoint}`,
-        indexNamespace,
-      },
-      timeout: cdk.Duration.seconds(30),
-      memorySize: 1024,
-      retryAttempts: 0,
-      vpc: vpc,
-      securityGroups: [lambdaSecurityGroup],
-      vpcSubnets: { subnets: privateSubnets },
-      logGroup: dataSinkLogGroup,
-      bundling: commonBundlingOptions,
-    });
-
-    // Add dataSink to lambdas object for alarm creation
-    lambdas["dataSink"] = dataSinkLambda;
-
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
@@ -1477,48 +1504,6 @@ export class Api extends cdk.NestedStack {
       },
     });
 
-    // ==========================================
-    // DataSink API Resource with IDM/Okta JWT Authorization
-    // Validates IDM-issued JWTs using a Lambda authorizer
-    // ==========================================
-    const dataSinkResource = api.root.addResource("dataSink");
-
-    const dataSinkAuthorizerLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "dataSinkAuthorizerLogGroup",
-      {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-dataSink-authorizer`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
-
-    const dataSinkJwtAuthorizer = new NodejsFunction(this, "dataSinkJwtAuthorizer", {
-      runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
-      functionName: `${project}-${stage}-${stack}-dataSink-authorizer`,
-      depsLockFilePath: join(__dirname, "../../bun.lockb"),
-      entry: join(__dirname, "../lambda/authorizers/idmJwtAuthorizer.ts"),
-      handler: "handler",
-      timeout: cdk.Duration.seconds(10),
-      memorySize: 256,
-      environment: {
-        IDM_ISSUER: idmClientIssuer,
-        IDM_AUDIENCE: idmClientId,
-      },
-      logGroup: dataSinkAuthorizerLogGroup,
-      bundling: commonBundlingOptions,
-    });
-
-    const dataSinkTokenAuthorizer = new cdk.aws_apigateway.TokenAuthorizer(
-      this,
-      "DataSinkTokenAuthorizer",
-      {
-        handler: dataSinkJwtAuthorizer,
-        authorizerName: `${project}-${stage}-${stack}-dataSink-authorizer`,
-        identitySource: cdk.aws_apigateway.IdentitySource.header("Authorization"),
-        resultsCacheTtl: cdk.Duration.minutes(5),
-      },
-    );
-
     const externalTokenAuthorizer = new cdk.aws_apigateway.TokenAuthorizer(
       this,
       "ExternalTokenAuthorizer",
@@ -1528,99 +1513,6 @@ export class Api extends cdk.NestedStack {
         resultsCacheTtl: cdk.Duration.minutes(5),
       },
     );
-
-    const dataSinkIntegration = new cdk.aws_apigateway.LambdaIntegration(dataSinkLambda, {
-      proxy: true,
-      credentialsRole: apiGatewayRole,
-    });
-
-    // Add POST method with IDM/Okta authorization
-    dataSinkResource.addMethod("POST", dataSinkIntegration, {
-      authorizationType: cdk.aws_apigateway.AuthorizationType.CUSTOM,
-      authorizer: dataSinkTokenAuthorizer,
-      methodResponses: [
-        {
-          statusCode: "202",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-            "method.response.header.Access-Control-Allow-Methods": true,
-          },
-        },
-        {
-          statusCode: "400",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-          },
-        },
-        {
-          statusCode: "401",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-          },
-        },
-        {
-          statusCode: "403",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-          },
-        },
-        {
-          statusCode: "500",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-          },
-        },
-      ],
-    });
-
-    // ==========================================
-    // checkIdentifierUsage - Public API (no auth, no API key)
-    // Allows external systems (WMS, MACPro) to check for duplicate IDs
-    // ==========================================
-    const checkIdentifierUsageResource = api.root.addResource("checkIdentifierUsage");
-
-    const checkIdentifierUsageIntegration = new cdk.aws_apigateway.LambdaIntegration(
-      lambdas.checkIdentifierUsage,
-      {
-        proxy: true,
-        credentialsRole: apiGatewayRole,
-      },
-    );
-
-    // Add GET method - fully public (no IAM auth, no API key)
-    checkIdentifierUsageResource.addMethod("GET", checkIdentifierUsageIntegration, {
-      authorizationType: cdk.aws_apigateway.AuthorizationType.NONE,
-      apiKeyRequired: false,
-      methodResponses: [
-        {
-          statusCode: "200",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-            "method.response.header.Access-Control-Allow-Methods": true,
-          },
-        },
-        {
-          statusCode: "400",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-          },
-        },
-        {
-          statusCode: "500",
-          responseParameters: {
-            "method.response.header.Access-Control-Allow-Origin": true,
-            "method.response.header.Access-Control-Allow-Headers": true,
-          },
-        },
-      ],
-    });
 
     type RouteAuthorization = "IAM" | "NONE" | "CUSTOM";
     type ApiResourceDefinition = {
@@ -1669,6 +1561,12 @@ export class Api extends cdk.NestedStack {
         method: "POST",
         authorizationType: "CUSTOM",
         authorizer: externalTokenAuthorizer,
+      },
+      checkIdentifierUsage: {
+        path: "checkIdentifierUsage",
+        lambda: lambdas.checkIdentifierUsage,
+        method: "GET",
+        authorizationType: "IAM",
       },
       requestBaseCMSAccess: {
         path: "requestBaseCMSAccess",

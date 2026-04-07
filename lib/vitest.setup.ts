@@ -66,10 +66,6 @@ beforeEach(() => {
   process.env.idmAuthzApiEndpoint = "https://dimAuthzEndpoint.com";
   process.env.externalApiAuthSecretArn =
     "arn:aws:secretsmanager:us-east-1:123456789012:secret:test-external-api-auth";
-
-  // DataSink environment variables
-  process.env.idempotencyTableName = "test-idempotency-table";
-  process.env.smartTopicName = "test-smart-topic";
 });
 
 afterEach(() => {

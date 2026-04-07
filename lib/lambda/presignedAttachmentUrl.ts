@@ -43,6 +43,30 @@ export function isS3ObjectAccessError(error: unknown): error is S3ObjectAccessEr
   return candidate.kind === "S3_OBJECT_ACCESS" && [403, 404].includes(candidate.s3Status || 0);
 }
 
+function getAsciiFilename(filename: string) {
+  const sanitized = filename
+    .normalize("NFKD")
+    .replace(/[^\x20-\x7E]+/g, "_")
+    .replace(/["\\]/g, "_")
+    .trim();
+
+  return sanitized || "download";
+}
+
+function encodeContentDispositionFilename(filename: string) {
+  return encodeURIComponent(filename).replace(
+    /['()*]/g,
+    (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
+  );
+}
+
+export function buildResponseContentDisposition(filename: string) {
+  const asciiFilename = getAsciiFilename(filename);
+  const encodedFilename = encodeContentDispositionFilename(filename);
+
+  return `attachment; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`;
+}
+
 function mapS3ObjectAccessError(
   error: unknown,
   bucket: string,
@@ -122,7 +146,7 @@ export async function generatePresignedDownloadUrl(
   const getObjectCommand = new GetObjectCommand({
     Bucket: bucket,
     Key: key,
-    ResponseContentDisposition: `filename ="${filename}"`,
+    ResponseContentDisposition: buildResponseContentDisposition(filename),
   });
 
   return getSignedUrl(client, getObjectCommand, {
