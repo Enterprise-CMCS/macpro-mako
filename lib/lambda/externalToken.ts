@@ -63,8 +63,8 @@ function parseBody(event: APIGatewayProxyEvent): TokenRequest | ReturnType<typeo
     return errorResponse(400, "invalid_request", "client_id is required.");
   }
 
-  if (typeof clientSecret !== "string" || clientSecret.trim() === "") {
-    return errorResponse(400, "invalid_request", "client_secret is required."); // pragma: allowlist secret
+  if (typeof clientSecret !== "string" || clientSecret.trim() === "") { // pragma: allowlist secret
+    return errorResponse(400, "invalid_request", "client_secret is required.");
   }
 
   return {
