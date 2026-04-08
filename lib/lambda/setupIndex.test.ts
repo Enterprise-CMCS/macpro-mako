@@ -32,13 +32,12 @@ describe("handler", () => {
       `${OPENSEARCH_INDEX_NAMESPACE}legacyinsights`,
       `${OPENSEARCH_INDEX_NAMESPACE}users`,
       `${OPENSEARCH_INDEX_NAMESPACE}roles`,
-      `${OPENSEARCH_INDEX_NAMESPACE}datasink`,
     ];
 
     for (const index of expectedIndices) {
       expect(createIndexSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, index);
     }
-    expect(createIndexSpy).toHaveBeenCalledTimes(10);
+    expect(createIndexSpy).toHaveBeenCalledTimes(9);
 
     expect(updateMappingSpy).toHaveBeenCalledWith(
       OPENSEARCH_DOMAIN,
@@ -52,8 +51,7 @@ describe("handler", () => {
         submissionDate: { type: "date" },
       },
     );
-    // main index and datasink index both have field mappings
-    expect(updateMappingSpy).toHaveBeenCalledTimes(2);
+    expect(updateMappingSpy).toHaveBeenCalledTimes(1);
 
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
