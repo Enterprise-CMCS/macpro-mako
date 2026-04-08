@@ -23,7 +23,7 @@
     "e2e:ui": "turbo e2e:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
     "test": "vitest --project=lib --project=email --project=ui",
-    "test:coverage": "bun run test --coverage",
+    "test:coverage": "bun run test --coverage --pool=forks",
     "test:ui": "bun run test --ui",
     "test:storybook": "cd react-app && bun run test-storybook",
     "cdk:watch": "cdk watch -c stage=${STAGE:-local} --no-rollback",
