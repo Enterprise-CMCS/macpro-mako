@@ -63,6 +63,22 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     process.env.STAGE_NAME = originalStageName;
   });
 
+  it("throws when STAGE_NAME is missing", async () => {
+    delete process.env.STAGE_NAME;
+
+    await expect(handler()).rejects.toThrow(
+      "ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME",
+    );
+  });
+
+  it("throws when STAGE_NAME is blank", async () => {
+    process.env.STAGE_NAME = "   ";
+
+    await expect(handler()).rejects.toThrow(
+      "ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME",
+    );
+  });
+
   function mockS3({
     objectStore,
     listedKeys,

@@ -53,6 +53,26 @@ describe("notifyAttachmentArchiveIntegrity", () => {
     process.env.AWS_DEFAULT_REGION = originalAwsDefaultRegion;
   });
 
+  it("throws when STAGE_NAME is missing", async () => {
+    delete process.env.STAGE_NAME;
+
+    await expect(
+      handler({
+        mode: "failure",
+      }),
+    ).rejects.toThrow("ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME");
+  });
+
+  it("throws when STAGE_NAME is blank", async () => {
+    process.env.STAGE_NAME = "   ";
+
+    await expect(
+      handler({
+        mode: "failure",
+      }),
+    ).rejects.toThrow("ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME");
+  });
+
   function mockS3(objectStore: S3ObjectStore, putStore: S3ObjectStore) {
     s3SendSpy.mockImplementation(async (command: any) => {
       const commandName = command.constructor.name;

@@ -88,6 +88,15 @@ const DISCREPANCY_CSV_COLUMNS: Array<keyof AttachmentArchiveIntegrityDiscrepancy
   "actualValue",
 ];
 
+function getIntegrityStageName() {
+  const stage = process.env.STAGE_NAME?.trim();
+  if (!stage) {
+    throw new Error("ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME");
+  }
+
+  return stage;
+}
+
 function getStorageConfig(): ArchiveStorageConfig {
   const writeBucketName = process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME;
   if (!writeBucketName) {
@@ -99,7 +108,7 @@ function getStorageConfig(): ArchiveStorageConfig {
   const reportPrefix = (
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX || "archive-integrity"
   ).replace(/^\/+|\/+$/g, "");
-  const stage = (process.env.STAGE_NAME || process.env.stage || "unknown").trim();
+  const stage = getIntegrityStageName();
 
   return {
     writeBucketName,
