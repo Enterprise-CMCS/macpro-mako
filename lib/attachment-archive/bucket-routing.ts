@@ -81,7 +81,7 @@ export function createAttachmentBucketClientFactory({
   const clientCache = new Map<string, Promise<S3Client>>();
   const stsClient = new STSClient({ region });
 
-  return async (bucket: string) => {
+  return async (bucket: string): Promise<S3Client> => {
     const cachedClient = clientCache.get(bucket);
     if (cachedClient) {
       return cachedClient;

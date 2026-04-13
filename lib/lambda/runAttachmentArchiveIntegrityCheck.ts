@@ -554,28 +554,6 @@ function parseSectionIdFromCurrentKey(key: string) {
   return match ? decodeArchivePathComponent(match[1]) : undefined;
 }
 
-function parseSectionIdFromZipKey(key: string) {
-  const match = key.match(/^package\/[^/]+\/section\/([^/]+)\/.+\.zip$/);
-  return match ? decodeArchivePathComponent(match[1]) : undefined;
-}
-
-function createSectionZipCounts(keys: string[]) {
-  const zipKeys = keys.filter((key) => key.endsWith(".zip"));
-  const sectionZipKeys = new Map<string, string[]>();
-  for (const key of zipKeys) {
-    const sectionId = parseSectionIdFromZipKey(key);
-    if (!sectionId) {
-      continue;
-    }
-
-    const values = sectionZipKeys.get(sectionId) || [];
-    values.push(key);
-    sectionZipKeys.set(sectionId, values);
-  }
-
-  return sectionZipKeys;
-}
-
 async function evaluatePackageDiscrepancies({
   storage,
   packageContext,
@@ -654,7 +632,6 @@ async function evaluatePackageDiscrepancies({
     );
   }
 
-  const sectionZipCounts = createSectionZipCounts(packageKeys);
   const actualSectionFileSets = new Map<string, Set<string>>();
   const actualSectionManifestById = new Map<string, AttachmentArchiveSectionManifest>();
 
@@ -675,21 +652,6 @@ async function evaluatePackageDiscrepancies({
     });
     if (!currentState) {
       continue;
-    }
-
-    const expectedZipCount = 1;
-    const actualZipCount = (sectionZipCounts.get(sectionId) || []).length;
-    if (actualZipCount !== expectedZipCount) {
-      discrepancies.push(
-        buildDiscrepancy({
-          packageContext,
-          sectionId,
-          issueScope: "Section",
-          discrepancyType: "SECTION_ZIP_COUNT_MISMATCH",
-          expectedValue: `${expectedZipCount}`,
-          actualValue: `${actualZipCount}`,
-        }),
-      );
     }
 
     if (currentState.current.status !== "READY") {

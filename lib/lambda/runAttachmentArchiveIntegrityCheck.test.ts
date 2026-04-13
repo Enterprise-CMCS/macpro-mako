@@ -385,7 +385,7 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
         discrepancyType: "SECTION_CROSS_SECTION_BLEED",
       }),
     );
-    expect(discrepancies).toContainEqual(
+    expect(discrepancies).not.toContainEqual(
       expect.objectContaining({
         discrepancyType: "SECTION_ZIP_COUNT_MISMATCH",
       }),
