@@ -102,6 +102,7 @@ export class ParentStack extends cdk.Stack {
       dbInfoSecretName: props.dbInfoSecretName,
       legacyS3AccessRoleArn: props.legacyS3AccessRoleArn,
       externalApiAuthSecretArn: props.externalApiAuthSecretArn,
+      emailAddressLookupSecretName: props.emailAddressLookupSecretName,
       lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
       topicNamespace,
       indexNamespace,

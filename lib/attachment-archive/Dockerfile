@@ -1,9 +1,9 @@
-FROM oven/bun:1.3.11
+FROM oven/bun:1.3.11-alpine
 
 # Refresh base OS packages so rebuilt images pick up available security fixes.
-RUN apt-get update \
-    && apt-get upgrade -y \
-    && rm -rf /var/lib/apt/lists/*
+RUN apk update \
+    && apk upgrade \
+    && rm -rf /var/cache/apk/*
 
 WORKDIR /app
 
