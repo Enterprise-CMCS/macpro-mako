@@ -39,6 +39,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   brokerString: DeploymentConfigProperties["brokerString"];
   dbInfoSecretName: DeploymentConfigProperties["dbInfoSecretName"];
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
+  emailAddressLookupSecretName: DeploymentConfigProperties["emailAddressLookupSecretName"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
 }
@@ -64,6 +65,7 @@ export class Api extends cdk.NestedStack {
       privateSubnets,
       brokerString,
       legacyS3AccessRoleArn,
+      emailAddressLookupSecretName,
       lambdaSecurityGroup,
       topicNamespace,
       indexNamespace,
@@ -372,6 +374,101 @@ export class Api extends cdk.NestedStack {
                 effect: cdk.aws_iam.Effect.ALLOW,
                 actions: ["s3:ListBucket"],
                 resources: [archiveWriteBucketArn],
+              }),
+            ],
+          }),
+        },
+      },
+    );
+
+    const attachmentArchiveIntegrityRole = new cdk.aws_iam.Role(
+      this,
+      "AttachmentArchiveIntegrityRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          AttachmentArchiveIntegrityPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "es:ESHttpHead",
+                  "es:ESHttpPost",
+                  "es:ESHttpGet",
+                  "es:ESHttpPatch",
+                  "es:ESHttpDelete",
+                  "es:ESHttpPut",
+                ],
+                resources: [`${openSearchDomainArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject", "s3:PutObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveBaseReadBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveBaseReadBucketArn],
+              }),
+            ],
+          }),
+        },
+      },
+    );
+
+    const attachmentArchiveIntegrityNotificationRole = new cdk.aws_iam.Role(
+      this,
+      "AttachmentArchiveIntegrityNotificationRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          AttachmentArchiveIntegrityNotificationPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject", "s3:PutObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["ses:SendRawEmail"],
+                resources: ["*"],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [
+                  `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${emailAddressLookupSecretName}-*`,
+                ],
               }),
             ],
           }),
@@ -774,6 +871,34 @@ export class Api extends cdk.NestedStack {
         role: attachmentArchiveRequestRole,
         timeoutSeconds: 900,
         memorySize: 2048,
+      },
+      {
+        id: "runAttachmentArchiveIntegrityCheck",
+        entry: join(__dirname, "../lambda/runAttachmentArchiveIntegrityCheck.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+          STAGE_NAME: stage,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
+          ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX: "archive-integrity",
+        },
+        role: attachmentArchiveIntegrityRole,
+        timeoutSeconds: 900,
+        memorySize: 2048,
+      },
+      {
+        id: "notifyAttachmentArchiveIntegrity",
+        entry: join(__dirname, "../lambda/notifyAttachmentArchiveIntegrity.ts"),
+        environment: {
+          STAGE_NAME: stage,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX: "archive-integrity",
+          emailAddressLookupSecretName,
+        },
+        role: attachmentArchiveIntegrityNotificationRole,
+        timeoutSeconds: 300,
       },
     ];
 
@@ -1276,6 +1401,156 @@ export class Api extends cdk.NestedStack {
         stateMachineType: cdk.aws_stepfunctions.StateMachineType.STANDARD,
       },
     );
+
+    const archiveIntegrityStateMachineLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      "AttachmentArchiveIntegrityStateMachineLogGroup",
+      {
+        logGroupName: `/aws/vendedlogs/states/${project}-${stage}-${stack}-attachment-archive-integrity`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
+
+    const runAttachmentArchiveIntegrityCheckTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
+      this,
+      "RunAttachmentArchiveIntegrityCheckTask",
+      {
+        lambdaFunction: lambdas.runAttachmentArchiveIntegrityCheck,
+        payloadResponseOnly: true,
+        resultPath: "$.runResult",
+      },
+    );
+
+    const notifyAttachmentArchiveIntegrityDiscrepanciesTask =
+      new cdk.aws_stepfunctions_tasks.LambdaInvoke(
+        this,
+        "NotifyAttachmentArchiveIntegrityDiscrepanciesTask",
+        {
+          lambdaFunction: lambdas.notifyAttachmentArchiveIntegrity,
+          payloadResponseOnly: true,
+          payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+            mode: "discrepancy",
+            "runResult.$": "$.runResult",
+          }),
+          resultPath: "$.notification",
+        },
+      );
+
+    const notifyAttachmentArchiveIntegrityFailureTask =
+      new cdk.aws_stepfunctions_tasks.LambdaInvoke(
+        this,
+        "NotifyAttachmentArchiveIntegrityFailureTask",
+        {
+          lambdaFunction: lambdas.notifyAttachmentArchiveIntegrity,
+          payloadResponseOnly: true,
+          payload: cdk.aws_stepfunctions.TaskInput.fromObject({
+            mode: "failure",
+            "input.$": "$",
+          }),
+          resultPath: "$.failureNotification",
+        },
+      );
+
+    const attachmentArchiveIntegrityFailure = new cdk.aws_stepfunctions.Fail(
+      this,
+      "AttachmentArchiveIntegrityFailure",
+      {
+        cause: "Attachment archive integrity workflow failed.",
+        error: "AttachmentArchiveIntegrityFailure",
+      },
+    );
+    notifyAttachmentArchiveIntegrityFailureTask.next(attachmentArchiveIntegrityFailure);
+
+    runAttachmentArchiveIntegrityCheckTask.addCatch(notifyAttachmentArchiveIntegrityFailureTask, {
+      errors: ["States.ALL"],
+      resultPath: "$.error",
+    });
+    notifyAttachmentArchiveIntegrityDiscrepanciesTask.addCatch(
+      notifyAttachmentArchiveIntegrityFailureTask,
+      {
+        errors: ["States.ALL"],
+        resultPath: "$.error",
+      },
+    );
+
+    const attachmentArchiveIntegrityNoDiscrepancies = new cdk.aws_stepfunctions.Succeed(
+      this,
+      "AttachmentArchiveIntegrityNoDiscrepancies",
+    );
+    const attachmentArchiveIntegrityCompleted = new cdk.aws_stepfunctions.Succeed(
+      this,
+      "AttachmentArchiveIntegrityCompleted",
+    );
+    const attachmentArchiveIntegrityHasDiscrepanciesChoice = new cdk.aws_stepfunctions.Choice(
+      this,
+      "AttachmentArchiveIntegrityHasDiscrepancies",
+    );
+    attachmentArchiveIntegrityHasDiscrepanciesChoice
+      .when(
+        cdk.aws_stepfunctions.Condition.numberGreaterThan("$.runResult.discrepancyCount", 0),
+        notifyAttachmentArchiveIntegrityDiscrepanciesTask.next(attachmentArchiveIntegrityCompleted),
+      )
+      .otherwise(attachmentArchiveIntegrityNoDiscrepancies);
+
+    const archiveIntegrityStateMachine = new cdk.aws_stepfunctions.StateMachine(
+      this,
+      "AttachmentArchiveIntegrityStateMachine",
+      {
+        definitionBody: cdk.aws_stepfunctions.DefinitionBody.fromChainable(
+          runAttachmentArchiveIntegrityCheckTask.next(
+            attachmentArchiveIntegrityHasDiscrepanciesChoice,
+          ),
+        ),
+        stateMachineName: `${project}-${stage}-${stack}-attachment-archive-integrity`,
+        logs: {
+          destination: archiveIntegrityStateMachineLogGroup,
+          includeExecutionData: true,
+          level: cdk.aws_stepfunctions.LogLevel.ALL,
+        },
+        stateMachineType: cdk.aws_stepfunctions.StateMachineType.STANDARD,
+      },
+    );
+
+    const shouldCreateAttachmentArchiveIntegritySchedule = !isDev && isSharedArchiveStage(stage);
+
+    if (shouldCreateAttachmentArchiveIntegritySchedule) {
+      const attachmentArchiveIntegrityScheduleRole = new cdk.aws_iam.Role(
+        this,
+        "AttachmentArchiveIntegrityScheduleRole",
+        {
+          assumedBy: new cdk.aws_iam.ServicePrincipal("scheduler.amazonaws.com"),
+          inlinePolicies: {
+            AttachmentArchiveIntegritySchedulePolicy: new cdk.aws_iam.PolicyDocument({
+              statements: [
+                new cdk.aws_iam.PolicyStatement({
+                  effect: cdk.aws_iam.Effect.ALLOW,
+                  actions: ["states:StartExecution"],
+                  resources: [archiveIntegrityStateMachine.stateMachineArn],
+                }),
+              ],
+            }),
+          },
+        },
+      );
+
+      new cdk.aws_scheduler.CfnSchedule(this, "AttachmentArchiveIntegrityDailySchedule", {
+        description: "Run OneMAC attachment archive integrity check daily.",
+        flexibleTimeWindow: {
+          mode: "OFF",
+        },
+        name: `${project}-${stage}-${stack}-attachment-archive-integrity-daily`,
+        scheduleExpression: "cron(0 2 * * ? *)",
+        scheduleExpressionTimezone: "America/New_York",
+        state: "ENABLED",
+        target: {
+          arn: archiveIntegrityStateMachine.stateMachineArn,
+          input: JSON.stringify({
+            source: "daily-integrity-schedule",
+          }),
+          roleArn: attachmentArchiveIntegrityScheduleRole.roleArn,
+        },
+      });
+    }
 
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
