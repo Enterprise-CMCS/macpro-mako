@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-        "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+        "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
       },
       "gitCommit": {
-        "shortHash": "5c5aa55",
-        "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-        "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-        "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+        "shortHash": "7a42eda",
+        "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+        "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+        "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
         "author": {
-          "name": "James Dinh",
-          "email": "james.d@globalalliantinc.com",
-          "time": 1776182841000
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1776264799000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1776182841000
+          "time": 1776264799000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "commitHash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24409765122"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "commitHash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24461516155"
           },
           "gitCommit": {
-            "shortHash": "5c5aa55",
-            "hash": "5c5aa5592e6b43ffc57c07335a5033b56ee20695",
-            "subject": "fix(sechub update): move attachment-archive worker to alpine bun image",
-            "body": "fix(sechub update): move attachment-archive worker to alpine bun image",
+            "shortHash": "7a42eda",
+            "hash": "7a42edadda0d35d5a55cd393882a37de3b2ab58a",
+            "subject": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)",
+            "body": "feat(attachment-archive): add scheduled integrity checks and CSV alerts (#1862)\n\n* feat(attachment-archive): add daily integrity checks and CSV alerting\n\n- add integrity check and notification lambdas with S3 summary/report persistence\n\n- send discrepancy-only SES raw emails with CSV attachments from Secrets Manager emailAddresses\n\n- create EventBridge Scheduler + Step Functions flow gated to main/val/production\n\n- add unit and CDK tests for discrepancy logic, truncation fallback, and schedule behavior\n\nOY2-38818\n\n* test(repo): allowlist detect-secrets false positives in fixtures\n\n* test(lambda): increase oversized CSV test timeout for CI\n\n* test(lambda): set AWS region in notify integrity tests\n\n* fix(attachment-archive): align sdk types and ignore retained zips\n\n* fix(api): require STAGE_NAME for archive integrity lambdas",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776182841000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776264799000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776182841000
+              "time": 1776264799000
             },
             "branch": "main"
           },
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3010,
+                              "duration": 3076,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:03.079Z",
+                              "startTime": "2026-04-15T15:02:06.399Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2846,
+                              "duration": 2787,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:06.179Z",
+                              "startTime": "2026-04-15T15:02:09.571Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2849,
+                              "duration": 2863,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:09.036Z",
+                              "startTime": "2026-04-15T15:02:12.370Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2865,
+                              "duration": 2854,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:11.897Z",
+                              "startTime": "2026-04-15T15:02:15.246Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2783,
+                              "duration": 2769,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:14.774Z",
+                              "startTime": "2026-04-15T15:02:18.112Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -835,7 +835,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:17.569Z",
+                              "startTime": "2026-04-15T15:02:20.891Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2762,
+                              "duration": 2775,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:20.418Z",
+                              "startTime": "2026-04-15T15:02:23.740Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3027,
+                                      "duration": 2985,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:12:23.191Z",
+                                      "startTime": "2026-04-15T15:02:26.526Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2790,
+                                      "duration": 2901,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:12:26.230Z",
+                                      "startTime": "2026-04-15T15:02:29.522Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2856,
+                                      "duration": 2767,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:12:29.032Z",
+                                      "startTime": "2026-04-15T15:02:32.435Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3366,
+                                      "duration": 3151,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:12:31.900Z",
+                                      "startTime": "2026-04-15T15:02:35.215Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2928,
+                                      "duration": 2995,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:12:35.278Z",
+                                      "startTime": "2026-04-15T15:02:38.378Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2946,
+                                      "duration": 2897,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:12:38.220Z",
+                                      "startTime": "2026-04-15T15:02:41.384Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1153,16 +1153,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5732,
+                              "duration": 5381,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-04_14_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-04_15_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:41.178Z",
+                              "startTime": "2026-04-15T15:02:44.294Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3110,
+                              "duration": 2894,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:46.923Z",
+                              "startTime": "2026-04-15T15:02:49.688Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2824,
+                              "duration": 2776,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:50.045Z",
+                              "startTime": "2026-04-15T15:02:52.594Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1288,12 +1288,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3025,
+                              "duration": 2800,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:52.883Z",
+                              "startTime": "2026-04-15T15:02:55.383Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2955,
+                              "duration": 2724,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:55.922Z",
+                              "startTime": "2026-04-15T15:02:58.195Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2812,
+                              "duration": 2919,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:12:58.887Z",
+                              "startTime": "2026-04-15T15:03:00.929Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2942,
+                              "duration": 2907,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:13:01.710Z",
+                              "startTime": "2026-04-15T15:03:03.858Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2820,
+                              "duration": 2825,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:13:04.662Z",
+                              "startTime": "2026-04-15T15:03:06.775Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3272,
+                                      "duration": 2945,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:13:07.492Z",
+                                      "startTime": "2026-04-15T15:03:09.610Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2846,
+                                      "duration": 2758,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:13:10.776Z",
+                                      "startTime": "2026-04-15T15:03:12.568Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2911,
+                                      "duration": 2826,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:13:13.633Z",
+                                      "startTime": "2026-04-15T15:03:15.337Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3299,
+                                      "duration": 3117,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:13:16.555Z",
+                                      "startTime": "2026-04-15T15:03:18.173Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3000,
+                                      "duration": 2140,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:13:19.865Z",
+                                      "startTime": "2026-04-15T15:03:21.303Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3124,
+                                      "duration": 2935,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-14T16:13:22.877Z",
+                                      "startTime": "2026-04-15T15:03:23.455Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1719,16 +1719,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5992,
+                              "duration": 5422,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_14_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_15_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-14T16:13:26.013Z",
+                              "startTime": "2026-04-15T15:03:26.401Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-14T16:11:40.093Z",
-    "duration": 112021.15000000001,
+    "startTime": "2026-04-15T15:01:47.109Z",
+    "duration": 104813.356,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
