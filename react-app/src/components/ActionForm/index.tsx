@@ -640,7 +640,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         };
       }
 
-      queryClient.removeQueries({ queryKey: ["record", normalizedId] });
+      const didDraftIdChange = !rawDraftId || rawDraftId.toUpperCase() !== normalizedId;
+
+      if (didDraftIdChange) {
+        queryClient.removeQueries({ queryKey: ["record", normalizedId] });
+      }
       if (draftId && draftId !== normalizedId) {
         queryClient.removeQueries({ queryKey: ["record", draftId] });
       }
@@ -665,7 +669,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       form.reset(formValues);
 
-      if (!rawDraftId || rawDraftId.toUpperCase() !== normalizedId) {
+      if (didDraftIdChange) {
         const nextSearch = new URLSearchParams(search);
         nextSearch.set("draftId", normalizedId);
         skipNavigationPromptRef.current = true;

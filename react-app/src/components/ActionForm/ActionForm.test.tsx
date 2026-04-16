@@ -819,6 +819,7 @@ describe("ActionForm", () => {
   test("uses and rolls optimistic concurrency values while saving an existing draft", async () => {
     const user = userEvent.setup();
     const draftId = "NY-25-2342";
+    const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
     const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
       data: {
         _id: draftId,
@@ -899,7 +900,11 @@ describe("ActionForm", () => {
         ifPrimaryTerm: 1,
       }),
     );
+    expect(removeQueriesSpy).not.toHaveBeenCalledWith({
+      queryKey: ["record", draftId],
+    });
 
+    removeQueriesSpy.mockRestore();
     useGetItemSpy.mockRestore();
     saveDraftSpy.mockRestore();
   });
