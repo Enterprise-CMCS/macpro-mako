@@ -8,6 +8,7 @@ import {
   TEST_CHIP_SPA_ITEM,
   TEST_MED_SPA_ITEM,
   TEST_MED_SPA_RAI_ITEM,
+  TEST_STATE_SUBMITTER_EMAIL,
   testReviewer,
 } from "mocks";
 import items from "mocks/data/items";
@@ -62,10 +63,10 @@ const apiModule = await import("@/api");
 const { deleteDraft } = apiModule;
 const { banner, userPrompt } = await import("@/components");
 
-const setup = async (submission: opensearch.main.Document, id: string, isLockedDraft = false) => {
+const setup = async (submission: opensearch.main.Document, id: string) => {
   await renderFormWithPackageSectionAsync(
     <DetailCardWrapper title="Package Actions">
-      <PackageActionsCard submission={submission} id={id} isLockedDraft={isLockedDraft} />
+      <PackageActionsCard submission={submission} id={id} />
     </DetailCardWrapper>,
     id,
   );
@@ -95,9 +96,15 @@ describe("", () => {
       stateStatus: "Draft",
       cmsStatus: "Draft",
       event: "new-medicaid-submission",
+      draft: {
+        savedAt: "2026-03-26T00:00:00.000Z",
+        createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+        createdByName: "State Submitter",
+        data: {},
+      },
     };
 
-    it("should show review-draft and delete actions for drafts", async () => {
+    it("should show continue and delete actions for drafts", async () => {
       await setup(draftSubmission, TEST_MED_SPA_ITEM._id);
 
       expect(
@@ -106,15 +113,6 @@ describe("", () => {
         "href",
         `/new-submission/spa/medicaid/create?draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
       );
-      expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
-    });
-
-    it("should only show delete draft actions for locked drafts", async () => {
-      await setup(draftSubmission, TEST_MED_SPA_ITEM._id, true);
-
-      expect(
-        screen.queryByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }),
-      ).not.toBeInTheDocument();
       expect(screen.getByRole("button", { name: DRAFT_DELETE_ACTION_LABEL })).toBeInTheDocument();
     });
 

@@ -32,7 +32,6 @@ vi.mock("@/api", async () => {
   const actual = await vi.importActual<typeof import("@/api")>("@/api");
   return {
     ...actual,
-    itemExists: vi.fn().mockResolvedValue(false),
   };
 });
 
@@ -54,14 +53,12 @@ vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
 }));
 
 const { banner, userPrompt } = await import("@/components");
-const { itemExists } = await import("@/api");
 const { deleteDraft } = await import("@/api/deleteDraft");
 const { sendGAEvent } = await import("@/utils/ReactGA/SendGAEvent");
 import { MemoryRouter } from "react-router";
 
 beforeEach(() => {
   vi.clearAllMocks();
-  vi.mocked(itemExists).mockResolvedValue(false);
 });
 
 describe("CellDetailsLink GA event", () => {
@@ -218,6 +215,12 @@ describe("renderCells", () => {
         stateStatus: "Draft",
         cmsStatus: "Draft",
         event: "new-medicaid-submission",
+        draft: {
+          savedAt: "2026-03-26T00:00:00.000Z",
+          createdByEmail: TEST_STATE_SUBMITTER_USER.email,
+          createdByName: "State Submitter",
+          data: {},
+        },
       };
 
       it("should show draft actions for draft records", async () => {
@@ -234,37 +237,6 @@ describe("renderCells", () => {
             name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
           }),
         ).toBeInTheDocument();
-      });
-
-      it("should only show delete draft for locked draft records", async () => {
-        vi.mocked(itemExists).mockResolvedValueOnce(true);
-        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
-
-        await user.click(screen.getByLabelText("Available package actions"));
-
-        await waitFor(() => {
-          expect(screen.queryByText(DRAFT_CONTINUE_ACTION_LABEL)).not.toBeInTheDocument();
-        });
-        expect(
-          screen.getByRole("menuitem", {
-            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
-          }),
-        ).toBeInTheDocument();
-      });
-
-      it("shows a loading state while checking whether a draft is locked", async () => {
-        vi.mocked(itemExists).mockImplementationOnce(() => new Promise(() => {}));
-        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
-
-        await user.click(screen.getByLabelText("Available package actions"));
-
-        expect(await screen.findByText("Loading actions...")).toBeInTheDocument();
-        expect(screen.queryByText(DRAFT_CONTINUE_ACTION_LABEL)).not.toBeInTheDocument();
-        expect(
-          screen.queryByRole("menuitem", {
-            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
-          }),
-        ).not.toBeInTheDocument();
       });
 
       it("should open a delete confirmation modal for draft actions", async () => {

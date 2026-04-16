@@ -27,7 +27,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
       schema={formSchemas["contracting-amendment"]}
       title="1915(b)(4) FFS Selective Contracting Waiver Amendment Details"
       breadcrumbText="1915(b)(4) FFS Selective Contracting Waiver Amendment"
-      fields={({ control, isDraftMode }) => (
+      fields={({ control }) => (
         <>
           <div className="flex flex-col">
             <FormLabel className="font-semibold" htmlFor="1975b">
@@ -95,7 +95,6 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
                   <Input
                     ref={field.ref}
                     value={field.value}
-                    disabled={isDraftMode}
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>

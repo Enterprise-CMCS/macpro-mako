@@ -7,13 +7,12 @@ export const DRAFT_DELETE_ACTION_LABEL = "Delete Package";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
   "This action cannot be undone. Are you sure you want to delete this draft package?";
-export const DRAFT_LOCKED_ALERT_TITLE = "This package is locked";
+export const DRAFT_ID_CONFLICT_MESSAGE =
+  "This package ID is already in use. Update the ID before saving or submitting.";
 export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
-  `Since you are not the Draft Owner, are you sure you want to take this action on ${packageId}?`;
+  `Since you are not the creator or latest updater, are you sure you want to take this action on ${packageId}?`;
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
-  `Since you are not the Draft Owner, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
-export const getDraftLockedMessage = (packageId: string) =>
-  `A package with ID ${packageId} has already been submitted to CMS. This package can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`;
+  `Since you are not the creator or latest updater, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
 
 const EVENT_TO_DRAFT_PATH: Record<string, string> = {
   "new-medicaid-submission": "/new-submission/spa/medicaid/create",

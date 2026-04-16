@@ -22,7 +22,7 @@ export const InitialForm = () => (
     schema={formSchemas["capitated-initial"]}
     title="1915(b) Comprehensive (Capitated) Initial Waiver Details"
     breadcrumbText="1915(b) Comprehensive (Capitated) Initial Waiver"
-    fields={({ control, isDraftMode }) => (
+    fields={({ control }) => (
       <>
         <div className="flex flex-col">
           <FormLabel className="font-semibold" htmlFor="1975b">
@@ -60,7 +60,6 @@ export const InitialForm = () => (
                 <Input
                   ref={field.ref}
                   value={field.value}
-                  disabled={isDraftMode}
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>

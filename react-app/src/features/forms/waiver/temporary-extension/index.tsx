@@ -159,7 +159,6 @@ export const TemporaryExtensionForm = () => {
                     className="max-w-sm"
                     ref={field.ref}
                     value={field.value}
-                    disabled={form.isDraftMode}
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
                 </FormControl>

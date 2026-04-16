@@ -57,6 +57,7 @@ const saveDraftEventSchema = z
     body: z
       .object({
         id: z.string().trim().min(1),
+        originalDraftId: z.string().trim().min(1).optional(),
         event: z.string(),
         authority: z.string().optional(),
         draftData: z.record(z.unknown()),
@@ -68,6 +69,12 @@ const saveDraftEventSchema = z
   .passthrough();
 
 export type SaveDraftEvent = APIGatewayEvent & z.infer<typeof saveDraftEventSchema>;
+
+const DRAFT_ID_CONFLICT_MESSAGE =
+  "This package ID is already in use. Update the ID before saving or submitting.";
+
+const DRAFT_CONCURRENCY_MESSAGE =
+  "Draft was updated by another user. Refresh this page and try saving again.";
 
 const resolveAuthority = (
   eventName: DraftableEvent,
@@ -127,7 +134,15 @@ export const handler = authenticatedMiddy({
     });
   }
 
-  const { id, event: eventName, authority, draftData, ifSeqNo, ifPrimaryTerm } = event.body;
+  const {
+    id,
+    originalDraftId,
+    event: eventName,
+    authority,
+    draftData,
+    ifSeqNo,
+    ifPrimaryTerm,
+  } = event.body;
   if (!draftableEvents.includes(eventName as DraftableEvent)) {
     return response({
       statusCode: 400,
@@ -136,6 +151,7 @@ export const handler = authenticatedMiddy({
   }
 
   const normalizedId = id.toUpperCase();
+  const normalizedOriginalDraftId = originalDraftId?.toUpperCase();
   const stateCode = normalizedId.slice(0, 2);
 
   if (!context.authenticatedUser || !isStateUser(context.authenticatedUser)) {
@@ -155,6 +171,10 @@ export const handler = authenticatedMiddy({
 
   const existingMainPackage = await getPackage(normalizedId);
   const existingDraftPackage = await getDraftPackage(normalizedId);
+  const sourceDraftPackage =
+    normalizedOriginalDraftId && normalizedOriginalDraftId !== normalizedId
+      ? await getDraftPackage(normalizedOriginalDraftId)
+      : existingDraftPackage;
 
   if (
     existingMainPackage &&
@@ -164,7 +184,25 @@ export const handler = authenticatedMiddy({
   ) {
     return response({
       statusCode: 409,
-      body: { message: `Record with id ${normalizedId} already exists.` },
+      body: { message: DRAFT_ID_CONFLICT_MESSAGE },
+    });
+  }
+
+  if (normalizedOriginalDraftId && !isActiveDraft(sourceDraftPackage)) {
+    return response({
+      statusCode: 404,
+      body: { message: "No record found for the given id" },
+    });
+  }
+
+  const isSavingExistingDraftAtSameId =
+    normalizedOriginalDraftId !== undefined && normalizedOriginalDraftId === normalizedId;
+  const hasActiveDraftAtTarget = isActiveDraft(existingDraftPackage);
+
+  if (hasActiveDraftAtTarget && !isSavingExistingDraftAtSameId) {
+    return response({
+      statusCode: 409,
+      body: { message: DRAFT_ID_CONFLICT_MESSAGE },
     });
   }
 
@@ -196,9 +234,8 @@ export const handler = authenticatedMiddy({
     });
   }
 
-  const hasActiveDraftInDraftIndex = isActiveDraft(existingDraftPackage);
-  const activeExistingDraft = hasActiveDraftInDraftIndex ? existingDraftPackage : undefined;
-  const hasActiveExistingDraft = Boolean(activeExistingDraft);
+  const hasActiveSourceDraft = isActiveDraft(sourceDraftPackage);
+  const activeSourceDraft = hasActiveSourceDraft ? sourceDraftPackage : undefined;
   const hasDeletedDraftInDraftIndex = isDeletedDraft(existingDraftPackage);
 
   const hasVersionFromRequest =
@@ -215,29 +252,41 @@ export const handler = authenticatedMiddy({
     typeof existingDraftPackage?._seq_no === "number" &&
     typeof existingDraftPackage?._primary_term === "number";
 
-  if (hasActiveExistingDraft) {
+  if (hasActiveSourceDraft) {
     if (!hasVersionFromRequest) {
       return response({
         statusCode: 409,
-        body: {
-          message: "Draft was updated by another user. Refresh this page and try saving again.",
-        },
+        body: { message: DRAFT_CONCURRENCY_MESSAGE },
       });
     }
 
+    const hasVersionInSourceDraft =
+      typeof sourceDraftPackage?._seq_no === "number" &&
+      typeof sourceDraftPackage?._primary_term === "number";
+
     if (
-      hasVersionInExistingDraft &&
-      (ifSeqNo !== activeExistingDraft?._seq_no ||
-        ifPrimaryTerm !== activeExistingDraft?._primary_term)
+      hasVersionInSourceDraft &&
+      (ifSeqNo !== activeSourceDraft?._seq_no || ifPrimaryTerm !== activeSourceDraft?._primary_term)
     ) {
       return response({
         statusCode: 409,
-        body: {
-          message: "Draft was updated by another user. Refresh this page and try saving again.",
-        },
+        body: { message: DRAFT_CONCURRENCY_MESSAGE },
       });
     }
   }
+
+  const sourceDraft = activeSourceDraft?._source?.draft;
+  const createdAt = sourceDraft?.createdAt ?? sourceDraft?.savedAt ?? savedAt;
+  const createdByEmail =
+    sourceDraft?.createdByEmail ??
+    sourceDraft?.draftOwnerEmail ??
+    activeSourceDraft?._source?.submitterEmail ??
+    user.email;
+  const createdByName =
+    sourceDraft?.createdByName ??
+    sourceDraft?.draftOwnerName ??
+    activeSourceDraft?._source?.submitterName ??
+    user.fullName;
 
   const record = {
     id: normalizedId,
@@ -259,15 +308,21 @@ export const handler = authenticatedMiddy({
     event: draftEventName,
     draft: {
       savedAt,
-      draftOwnerEmail: user.email,
-      draftOwnerName: user.fullName,
+      createdAt,
+      createdByEmail,
+      createdByName,
+      updatedAt: savedAt,
+      updatedByEmail: user.email,
+      updatedByName: user.fullName,
+      draftOwnerEmail: createdByEmail,
+      draftOwnerName: createdByName,
       data: draftData,
     },
   };
 
   const { domain, index } = getDomainAndNamespace("draftmain");
   const shouldUpsert = existingDraftPackage?.found !== true;
-  const shouldUseCompareAndWrite = hasActiveDraftInDraftIndex;
+  const shouldUseCompareAndWrite = hasActiveDraftAtTarget && isSavingExistingDraftAtSameId;
   const shouldReplaceDeletedDraft = hasDeletedDraftInDraftIndex;
   const deletedDraftVersion =
     shouldReplaceDeletedDraft && hasVersionInExistingDraft
@@ -305,13 +360,59 @@ export const handler = authenticatedMiddy({
     if (isVersionConflictError(error)) {
       return response({
         statusCode: 409,
-        body: {
-          message: "Draft was updated by another user. Refresh this page and try saving again.",
-        },
+        body: { message: DRAFT_CONCURRENCY_MESSAGE },
       });
     }
 
     throw error;
+  }
+
+  if (normalizedOriginalDraftId && normalizedOriginalDraftId !== normalizedId) {
+    try {
+      await os.updateData(domain, {
+        index,
+        id: normalizedOriginalDraftId,
+        refresh: true,
+        ...(hasVersionFromRequest && requestVersion ? requestVersion : {}),
+        body: {
+          doc: {
+            deleted: true,
+            changedDate: savedAt,
+            makoChangedDate: savedAt,
+            statusDate: savedAt,
+          },
+          doc_as_upsert: false,
+        },
+      });
+    } catch (error) {
+      try {
+        await os.updateData(domain, {
+          index,
+          id: normalizedId,
+          refresh: true,
+          body: {
+            doc: {
+              deleted: true,
+              changedDate: savedAt,
+              makoChangedDate: savedAt,
+              statusDate: savedAt,
+            },
+            doc_as_upsert: false,
+          },
+        });
+      } catch {
+        // Best effort rollback. The user-facing result remains a concurrency conflict.
+      }
+
+      if (isVersionConflictError(error)) {
+        return response({
+          statusCode: 409,
+          body: { message: DRAFT_CONCURRENCY_MESSAGE },
+        });
+      }
+
+      throw error;
+    }
   }
 
   const updateResult = (updateResponse as any)?.body ?? updateResponse;

@@ -1,12 +1,6 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { screen, waitFor } from "@testing-library/react";
-import {
-  ADMIN_CHANGE_ITEM,
-  ADMIN_ITEM_ID,
-  helpDeskUser,
-  mockUseGetUser,
-  setMockUsername,
-} from "mocks";
+import { ADMIN_CHANGE_ITEM, ADMIN_ITEM_ID, mockUseGetUser } from "mocks";
 import { SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -17,7 +11,6 @@ import { renderWithQueryClient, renderWithQueryClientAndMemoryRouter } from "@/u
 
 import { DetailsContent, packageDetailsLoader } from ".";
 
-const itemExistsSpy = vi.spyOn(rootApi, "itemExists");
 const useGetPackageActionsSpy = vi.spyOn(rootApi, "useGetPackageActions");
 const useRootGetUserSpy = vi.spyOn(rootApi, "useGetUser");
 const useGetItemSpy = vi.spyOn(rootApi, "useGetItem");
@@ -29,7 +22,6 @@ const makeMockUserResult = () => {
 
 describe("package details", () => {
   beforeEach(() => {
-    itemExistsSpy.mockResolvedValue(false);
     useGetPackageActionsSpy.mockReturnValue({
       data: { actions: [] },
       isLoading: false,
@@ -169,92 +161,5 @@ describe("package details", () => {
       expect(router.state.location.pathname).toBe("/dashboard");
     });
     expect(screen.getByText("dashboard test")).toBeInTheDocument();
-  });
-
-  it("shows the locked-draft alert on package details when a matching SEA package exists", async () => {
-    vi.spyOn(api, "useGetUser").mockImplementation(() => makeMockUserResult());
-    itemExistsSpy.mockResolvedValue(true);
-    useGetItemSpy.mockReturnValue({
-      data: {
-        _id: ADMIN_ITEM_ID,
-        found: true,
-        _source: {
-          id: ADMIN_ITEM_ID,
-          authority: "Medicaid SPA",
-          state: "MD",
-          seatoolStatus: SEATOOL_STATUS.DRAFT,
-          stateStatus: "Draft",
-          cmsStatus: "Draft",
-          changedDate: "2026-03-20T00:00:00.000Z",
-          makoChangedDate: "2026-03-20T00:00:00.000Z",
-          statusDate: "2026-03-20T00:00:00.000Z",
-          origin: "OneMAC",
-          submitterName: "State Submitter",
-          submitterEmail: "submitter@example.com",
-          changelog: [],
-          draft: {
-            savedAt: "2026-03-20T00:00:00.000Z",
-            draftOwnerEmail: "submitter@example.com",
-            draftOwnerName: "State Submitter",
-            data: { id: ADMIN_ITEM_ID },
-          },
-        },
-      },
-      isLoading: false,
-      error: null,
-    } as any);
-
-    renderWithQueryClient(<DetailsContent id={ADMIN_ITEM_ID} preferDraft />);
-
-    expect(await screen.findByText("This package is locked")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This package can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`,
-      ),
-    ).toBeInTheDocument();
-  });
-
-  it("shows the locked-draft alert to helpdesk users on package details", async () => {
-    await setMockUsername(helpDeskUser);
-    vi.spyOn(api, "useGetUser").mockImplementation(() => makeMockUserResult());
-    itemExistsSpy.mockResolvedValue(true);
-    useGetItemSpy.mockReturnValue({
-      data: {
-        _id: ADMIN_ITEM_ID,
-        found: true,
-        _source: {
-          id: ADMIN_ITEM_ID,
-          authority: "Medicaid SPA",
-          state: "MD",
-          seatoolStatus: SEATOOL_STATUS.DRAFT,
-          stateStatus: "Draft",
-          cmsStatus: "Draft",
-          changedDate: "2026-03-20T00:00:00.000Z",
-          makoChangedDate: "2026-03-20T00:00:00.000Z",
-          statusDate: "2026-03-20T00:00:00.000Z",
-          origin: "OneMAC",
-          submitterName: "State Submitter",
-          submitterEmail: "submitter@example.com",
-          changelog: [],
-          draft: {
-            savedAt: "2026-03-20T00:00:00.000Z",
-            draftOwnerEmail: "submitter@example.com",
-            draftOwnerName: "State Submitter",
-            data: { id: ADMIN_ITEM_ID },
-          },
-        },
-      },
-      isLoading: false,
-      error: null,
-    } as any);
-
-    renderWithQueryClient(<DetailsContent id={ADMIN_ITEM_ID} preferDraft />);
-
-    expect(await screen.findByText("This package is locked")).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        `A package with ID ${ADMIN_ITEM_ID} has already been submitted to CMS. This package can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`,
-      ),
-    ).toBeInTheDocument();
   });
 });

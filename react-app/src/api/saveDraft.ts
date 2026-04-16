@@ -4,6 +4,7 @@ import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 export type SaveDraftPayload = {
   id: string;
+  originalDraftId?: string;
   event: string;
   authority?: string;
   draftData: Record<string, unknown>;

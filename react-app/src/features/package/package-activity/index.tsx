@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import {
   formatDateToET,
@@ -139,25 +139,58 @@ const getDraftAttachments = (
   });
 };
 
-const getDraftPackageActivity = (
+const getDraftPackageActivities = (
   submission?: opensearch.main.Document,
-): PackageActivityRecord | null => {
-  if (!submission || submission.seatoolStatus !== "Draft") {
-    return null;
+): PackageActivityRecord[] => {
+  if (!submission || submission.seatoolStatus !== SEATOOL_STATUS.DRAFT) {
+    return [];
   }
 
   const attachments = getDraftAttachments(submission);
+  const draft = submission.draft;
+  const createdByName = draft?.createdByName ?? draft?.draftOwnerName ?? submission.submitterName;
+  const createdByEmail =
+    draft?.createdByEmail ?? draft?.draftOwnerEmail ?? submission.submitterEmail;
+  const createdAt = draft?.createdAt ?? draft?.savedAt ?? submission.makoChangedDate;
+  const updatedByName = draft?.updatedByName ?? submission.submitterName;
+  const updatedByEmail = draft?.updatedByEmail ?? submission.submitterEmail;
+  const updatedAt = draft?.updatedAt ?? draft?.savedAt ?? submission.makoChangedDate;
+  const updatedByDifferentUser = Boolean(
+    updatedByName &&
+      (updatedByEmail
+        ? updatedByEmail.toLowerCase() !== createdByEmail?.toLowerCase()
+        : updatedByName !== createdByName),
+  );
+  const additionalInformation = draft?.data?.additionalInformation as string | undefined;
 
-  return {
+  const createdActivity: PackageActivityRecord = {
     id: `${submission.id}-draft-activity`,
     packageId: submission.id,
-    label: "Draft Saved",
-    submitterName: submission.submitterName,
-    timestamp: submission.draft?.savedAt ?? submission.makoChangedDate,
-    attachments,
-    additionalInformation: submission.draft?.data?.additionalInformation as string | undefined,
+    label: "Created",
+    submitterName: createdByName,
+    timestamp: createdAt,
+    attachments: updatedByDifferentUser ? [] : attachments,
+    additionalInformation: updatedByDifferentUser ? undefined : additionalInformation,
     isSyntheticDraft: true,
   };
+
+  if (!updatedByDifferentUser) {
+    return [createdActivity];
+  }
+
+  return [
+    createdActivity,
+    {
+      id: `${submission.id}-draft-updated-activity`,
+      packageId: submission.id,
+      label: "Updated",
+      submitterName: updatedByName,
+      timestamp: updatedAt,
+      attachments,
+      additionalInformation,
+      isSyntheticDraft: true,
+    },
+  ];
 };
 
 const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
@@ -402,8 +435,7 @@ export const PackageActivities = ({ id, changelog, submission }: PackageActiviti
       return changelogWithoutAdminChanges;
     }
 
-    const draftPackageActivity = getDraftPackageActivity(submission);
-    return draftPackageActivity ? [draftPackageActivity] : [];
+    return getDraftPackageActivities(submission);
   }, [changelog, submission]);
 
   return (

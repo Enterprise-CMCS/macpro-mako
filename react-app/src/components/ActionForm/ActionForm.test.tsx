@@ -3,11 +3,10 @@ import userEvent from "@testing-library/user-event";
 import {
   EXISTING_ITEM_PENDING_ID,
   GET_ERROR_ITEM_ID,
-  helpDeskUser,
   setDefaultReviewer,
   setDefaultStateSubmitter,
-  setMockUsername,
   SUBMISSION_ERROR_ITEM_ID,
+  TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
@@ -17,6 +16,7 @@ import { z } from "zod";
 import * as api from "@/api";
 import * as components from "@/components";
 import { queryClient } from "@/utils";
+import { DRAFT_ID_CONFLICT_MESSAGE, getNonOwnerDraftWarningModalBody } from "@/utils/drafts";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -830,6 +830,8 @@ describe("ActionForm", () => {
           seatoolStatus: SEATOOL_STATUS.DRAFT,
           draft: {
             savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
             data: { id: draftId },
           },
         },
@@ -878,6 +880,7 @@ describe("ActionForm", () => {
       1,
       expect.objectContaining({
         id: draftId,
+        originalDraftId: draftId,
         event: "new-medicaid-submission",
         ifSeqNo: 5,
         ifPrimaryTerm: 1,
@@ -890,6 +893,7 @@ describe("ActionForm", () => {
       2,
       expect.objectContaining({
         id: draftId,
+        originalDraftId: draftId,
         event: "new-medicaid-submission",
         ifSeqNo: 6,
         ifPrimaryTerm: 1,
@@ -955,6 +959,8 @@ describe("ActionForm", () => {
           seatoolStatus: SEATOOL_STATUS.DRAFT,
           draft: {
             savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
             data: { id: draftId },
           },
           changelog: [],
@@ -1043,7 +1049,7 @@ describe("ActionForm", () => {
       expect(userPromptSpy).toHaveBeenCalledWith(
         expect.objectContaining({
           header: "Confirm action",
-          body: `Since you are not the Draft Owner, are you sure you want to take this action on ${draftId}?`,
+          body: getNonOwnerDraftWarningModalBody(draftId),
           acceptButtonText: "Yes, continue",
           cancelButtonText: "Cancel",
         }),
@@ -1062,104 +1068,7 @@ describe("ActionForm", () => {
     useGetItemSpy.mockRestore();
   });
 
-  test("shows a lock banner on open and disables draft actions when a matching SEA package exists", async () => {
-    const draftId = "MD-26-7685-P";
-    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
-    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
-      data: {
-        _id: draftId,
-        found: true,
-        _source: {
-          id: draftId,
-          seatoolStatus: SEATOOL_STATUS.DRAFT,
-          draft: {
-            savedAt: "2026-03-12T00:00:00.000Z",
-            data: { id: draftId },
-          },
-        },
-      },
-      isLoading: false,
-      error: null,
-    } as any);
-    vi.mocked(api.itemExists).mockResolvedValue(true);
-
-    await renderFormWithPackageSectionAsync(
-      <ActionForm
-        title="Draft lock test"
-        schema={z.object({
-          id: z.string().min(1),
-        })}
-        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
-        defaultValues={{ id: draftId }}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
-        breadcrumbText="Example Breadcrumb"
-      />,
-      undefined,
-      "Medicaid SPA",
-      `draftId=${draftId}`,
-    );
-
-    expect(screen.getByText("This package is locked")).toBeInTheDocument();
-    expect(screen.getByLabelText("Package ID")).toBeDisabled();
-    expect(screen.getByTestId("save-draft-form")).toBeDisabled();
-    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
-    expect(bannerSpy).not.toHaveBeenCalled();
-
-    useGetItemSpy.mockRestore();
-  });
-
-  test("shows the lock banner to helpdesk users when a conflicting draft is opened", async () => {
-    const draftId = "MD-26-7685-P";
-    await setMockUsername(helpDeskUser);
-    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
-      data: {
-        _id: draftId,
-        found: true,
-        _source: {
-          id: draftId,
-          seatoolStatus: SEATOOL_STATUS.DRAFT,
-          draft: {
-            savedAt: "2026-03-12T00:00:00.000Z",
-            data: { id: draftId },
-          },
-        },
-      },
-      isLoading: false,
-      error: null,
-    } as any);
-    vi.mocked(api.itemExists).mockResolvedValue(true);
-
-    await renderFormWithPackageSectionAsync(
-      <ActionForm
-        title="Draft lock test"
-        schema={z.object({
-          id: z.string().min(1),
-        })}
-        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
-        defaultValues={{ id: draftId }}
-        documentPollerArgs={{
-          property: () => "id",
-          documentChecker: () => true,
-        }}
-        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
-        conditionsDeterminingUserAccess={[() => true]}
-        breadcrumbText="Example Breadcrumb"
-      />,
-      undefined,
-      "Medicaid SPA",
-      `draftId=${draftId}`,
-    );
-
-    expect(screen.getByText("This package is locked")).toBeInTheDocument();
-
-    useGetItemSpy.mockRestore();
-  });
-
-  test("shows a friendly lock message if a draft save races with a new SEA submission", async () => {
+  test("shows duplicate ID conflict on draft save and re-enables actions after the ID changes", async () => {
     const user = userEvent.setup();
     const draftId = "MD-26-7685-P";
     const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
@@ -1172,6 +1081,8 @@ describe("ActionForm", () => {
           seatoolStatus: SEATOOL_STATUS.DRAFT,
           draft: {
             savedAt: "2026-03-12T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
             data: { id: draftId },
           },
         },
@@ -1179,15 +1090,12 @@ describe("ActionForm", () => {
       isLoading: false,
       error: null,
     } as any);
-    vi.spyOn(api, "saveDraft").mockRejectedValue({
-      response: {
-        status: 409,
-      },
-    });
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+    vi.mocked(api.itemExists).mockResolvedValue(true);
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
-        title="Draft lock test"
+        title="Draft conflict test"
         schema={z.object({
           id: z.string().min(1),
         })}
@@ -1207,12 +1115,23 @@ describe("ActionForm", () => {
 
     await user.click(screen.getByTestId("save-draft-form"));
 
-    await waitFor(() => expect(screen.getByText("This package is locked")).toBeInTheDocument());
-    expect(screen.getByLabelText("Package ID")).toBeDisabled();
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Unable to save package",
+          body: DRAFT_ID_CONFLICT_MESSAGE,
+          variant: "destructive",
+        }),
+      ),
+    );
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Package ID")).not.toBeDisabled();
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
-    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
-    expect(screen.getByTestId("draft-save-status")).toHaveTextContent("Draft locked");
-    expect(bannerSpy).not.toHaveBeenCalled();
+    expect(screen.getByTestId("draft-save-status")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+
+    await user.type(screen.getByLabelText("Package ID"), "-NEW");
+
+    await waitFor(() => expect(screen.getByTestId("save-draft-form")).not.toBeDisabled());
 
     useGetItemSpy.mockRestore();
   });

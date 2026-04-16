@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
@@ -11,9 +11,6 @@ import { z } from "zod";
 import { itemExists, saveDraft, useGetItem, useGetUserDetails } from "@/api";
 import {
   ActionFormDescription,
-  Alert,
-  AlertDescription,
-  AlertTitle,
   Banner,
   banner,
   BreadCrumbs,
@@ -34,11 +31,7 @@ import {
 import { useNavigationPrompt } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
-import {
-  DRAFT_LOCKED_ALERT_TITLE,
-  getDraftLockedMessage,
-  getNonOwnerDraftWarningModalBody,
-} from "@/utils/drafts";
+import { DRAFT_ID_CONFLICT_MESSAGE, getNonOwnerDraftWarningModalBody } from "@/utils/drafts";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -72,7 +65,6 @@ export type FormArg<Schema extends SchemaWithEnforcableProps> = UseFormReturn<
 
 export type ActionFormFieldsArg<Schema extends SchemaWithEnforcableProps> = FormArg<Schema> & {
   isDraftMode: boolean;
-  isDraftLocked: boolean;
 };
 
 type DraftOptions = {
@@ -198,7 +190,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const hasPromptedNonOwnerDraftActionRef = useRef(false);
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
-  const [hasDetectedDraftConflict, setHasDetectedDraftConflict] = useState(false);
+  const [draftIdConflict, setDraftIdConflict] = useState<string | null>(null);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -216,21 +208,22 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     { enabled: isDraftMode },
     { includeDraft: true, preferDraft: true },
   );
-  const { data: hasConflictingMainPackage = false, isLoading: isConflictingMainPackageLoading } =
-    useQuery({
-      queryKey: ["draft-main-conflict", draftId],
-      queryFn: () => itemExists(draftId ?? ""),
-      enabled: isDraftMode && Boolean(draftId),
-    });
-  const draftOwnerEmail =
-    draftRecord?._source?.draft?.draftOwnerEmail ?? draftRecord?._source?.submitterEmail;
+  const draftCreatorEmail =
+    draftRecord?._source?.draft?.createdByEmail ??
+    draftRecord?._source?.draft?.draftOwnerEmail ??
+    draftRecord?._source?.submitterEmail;
+  const draftUpdaterEmail =
+    draftRecord?._source?.draft?.updatedByEmail ??
+    draftRecord?._source?.submitterEmail ??
+    draftCreatorEmail;
   const draftPackageIdForWarning = draftRecord?._source?.id ?? draftId ?? id ?? "this package";
-  const draftConflictMessage = getDraftLockedMessage(draftPackageIdForWarning);
+  const currentUserEmail = userObj?.email?.toLowerCase();
   const isNonOwnerDraftUser = Boolean(
     isDraftMode &&
-      draftOwnerEmail &&
-      userObj?.email &&
-      draftOwnerEmail.toLowerCase() !== userObj.email.toLowerCase(),
+      currentUserEmail &&
+      ![draftCreatorEmail, draftUpdaterEmail].some(
+        (email) => email?.toLowerCase() === currentUserEmail,
+      ),
   );
 
   const navigateAwayFromDraft = useCallback(() => {
@@ -267,6 +260,21 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       ...defaultValues,
     },
   });
+  const idPath = draftOptions?.idPath ?? "id";
+  const watchedDraftIdValue = draftEnabled
+    ? form.watch(idPath as FieldPath<z.TypeOf<Schema>>)
+    : undefined;
+  const watchedDraftId =
+    typeof watchedDraftIdValue === "string" ? watchedDraftIdValue.trim().toUpperCase() : "";
+  const isDraftIdConflictActive = Boolean(
+    draftIdConflict && watchedDraftId && draftIdConflict === watchedDraftId,
+  );
+
+  useEffect(() => {
+    if (!draftIdConflict) return;
+    if (!watchedDraftId || watchedDraftId === draftIdConflict) return;
+    setDraftIdConflict(null);
+  }, [draftIdConflict, watchedDraftId]);
 
   useEffect(() => {
     const previousDraftId = previousDraftIdRef.current;
@@ -279,7 +287,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       if (previousDraftId !== null) {
         setDraftSaveStatus(null);
       }
-      setHasDetectedDraftConflict(false);
+      setDraftIdConflict(null);
       draftVersionRef.current = {};
       previousDraftIdRef.current = draftId;
       return;
@@ -290,7 +298,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (shouldClearDraftSaveStatus) {
       setDraftSaveStatus(null);
     }
-    setHasDetectedDraftConflict(false);
+    setDraftIdConflict(null);
     draftVersionRef.current = {};
     previousDraftIdRef.current = draftId;
   }, [draftId, isDraftMode]);
@@ -333,9 +341,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
     return false;
   };
-
-  const isDraftLockedByExistingPackage =
-    isDraftMode && (hasConflictingMainPackage || hasDetectedDraftConflict);
 
   useEffect(() => {
     const draftData = draftRecord?._source?.draft?.data as
@@ -406,23 +411,79 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const { mutateAsync: saveDraftAsync, isLoading: isSavingDraft } = useMutation({
-    mutationFn: (payload: { id: string; event: string; authority?: string; draftData: any }) =>
-      saveDraft(payload),
+    mutationFn: (payload: Parameters<typeof saveDraft>[0]) => saveDraft(payload),
   });
 
-  const onSubmit = form.handleSubmit(async (formData) => {
-    if (isDraftLockedByExistingPackage) {
-      return;
+  const showDraftIdConflict = useCallback((conflictingId: string) => {
+    setDraftIdConflict(conflictingId);
+    banner({
+      header: "Unable to save package",
+      body: DRAFT_ID_CONFLICT_MESSAGE,
+      variant: "destructive",
+      pathnameToDisplayOn: window.location.pathname,
+    });
+    setDraftSaveStatus({
+      variant: "error",
+      message: DRAFT_ID_CONFLICT_MESSAGE,
+    });
+    if (typeof window.scrollTo === "function") {
+      window.scrollTo(0, 0);
     }
+  }, []);
 
+  const validateDraftIdAvailability = useCallback(
+    async (rawId: string) => {
+      const normalizedId = rawId.trim().toUpperCase();
+      if (!normalizedId) return false;
+
+      const exists = await itemExists(normalizedId, {
+        includeDrafts: true,
+        allowDraftId: draftId ?? undefined,
+      });
+
+      if (exists) {
+        showDraftIdConflict(normalizedId);
+        return false;
+      }
+
+      setDraftIdConflict(null);
+      return true;
+    },
+    [draftId, showDraftIdConflict],
+  );
+
+  const getResolvedDraftId = useCallback(
+    (formValues: Record<string, unknown>) => {
+      const idValue = getValueByPath(formValues, idPath);
+      const idFromForm = typeof idValue === "string" ? idValue.trim() : "";
+      const fallbackDraftId = isDraftMode ? draftId : undefined;
+      return idFromForm || fallbackDraftId || "";
+    },
+    [draftId, idPath, isDraftMode],
+  );
+
+  const onSubmit = form.handleSubmit(async (formData) => {
     if (!canProceedWithNonOwnerDraftAction()) {
       return;
     }
 
     try {
+      if (draftEnabled) {
+        const resolvedId = getResolvedDraftId(formData as Record<string, unknown>);
+        if (!resolvedId || !(await validateDraftIdAvailability(resolvedId))) {
+          return;
+        }
+      }
+
       try {
         await mutateAsync(formData);
       } catch (error) {
+        if (draftEnabled && error?.response?.status === 409) {
+          const resolvedId = getResolvedDraftId(formData as Record<string, unknown>);
+          showDraftIdConflict(resolvedId || draftId || id || "");
+          return;
+        }
+
         if (error?.response?.status === 413) {
           throw Error(
             "Upload failed: Your submission is too large. Try uploading fewer files at a time or shortening long file names.",
@@ -487,9 +548,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const handleSaveDraft = async () => {
     if (!draftEnabled || !draftOptions?.event) return;
     if (saveDraftInFlightRef.current) return;
-    if (isDraftLockedByExistingPackage) {
-      return;
-    }
     if (!canProceedWithNonOwnerDraftAction()) return;
 
     setDraftSaveStatus({
@@ -510,24 +568,21 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           message,
         });
       };
-      const idPath = draftOptions.idPath ?? "id";
-      const shouldValidateIdField = !isDraftMode;
-      if (shouldValidateIdField) {
-        const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
-
-        if (!isIdValid) {
-          failDraftSave("Please enter a valid ID before saving.");
-          return;
-        }
-      }
-
       const formValues = form.getValues();
-      const idValue = getValueByPath(formValues as Record<string, unknown>, idPath);
-      const idFromForm = typeof idValue === "string" ? idValue.trim() : "";
-      const fallbackDraftId = isDraftMode ? draftId : undefined;
-      const resolvedId = idFromForm || fallbackDraftId;
+      const resolvedId = getResolvedDraftId(formValues as Record<string, unknown>);
 
       if (!resolvedId) {
+        failDraftSave("Please enter a valid ID before saving.");
+        return;
+      }
+
+      if (!(await validateDraftIdAvailability(resolvedId))) {
+        return;
+      }
+
+      const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
+
+      if (!isIdValid) {
         failDraftSave("Please enter a valid ID before saving.");
         return;
       }
@@ -564,6 +619,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       const saveResponse = await saveDraftAsync({
         id: normalizedId,
+        originalDraftId: draftId ?? undefined,
         event: draftOptions.event,
         authority: typeof authorityValue === "string" ? authorityValue : undefined,
         draftData: formValues as Record<string, unknown>,
@@ -581,6 +637,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       queryClient.removeQueries({ queryKey: ["record", normalizedId] });
+      if (draftId && draftId !== normalizedId) {
+        queryClient.removeQueries({ queryKey: ["record", draftId] });
+      }
 
       banner({
         header: "Progress saved",
@@ -607,7 +666,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     } catch (error) {
       const errorMessage = (() => {
         if (error?.response?.status === 409) {
-          return draftConflictMessage;
+          return DRAFT_ID_CONFLICT_MESSAGE;
         }
 
         const message =
@@ -615,18 +674,17 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           (error instanceof Error ? error.message : String(error));
 
         if (/already exists/i.test(message)) {
-          return draftConflictMessage;
+          return DRAFT_ID_CONFLICT_MESSAGE;
         }
 
         return error instanceof Error ? error.message : "Unable to save. Try again.";
       })();
-      const isDraftConflictError = errorMessage === draftConflictMessage;
+      const isDraftConflictError = errorMessage === DRAFT_ID_CONFLICT_MESSAGE;
 
       if (isDraftConflictError) {
-        setHasDetectedDraftConflict(true);
-        if (typeof window.scrollTo === "function") {
-          window.scrollTo(0, 0);
-        }
+        const formValues = form.getValues();
+        const resolvedId = getResolvedDraftId(formValues as Record<string, unknown>);
+        showDraftIdConflict(resolvedId.toUpperCase());
       } else {
         banner({
           header: "Unable to save Draft",
@@ -637,7 +695,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
       setDraftSaveStatus({
         variant: "error",
-        message: isDraftConflictError ? "Draft locked" : errorMessage,
+        message: errorMessage,
       });
     } finally {
       saveDraftInFlightRef.current = false;
@@ -699,7 +757,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <LoadingSpinner />;
   }
 
-  if (isDraftMode && (isDraftLoading || isConflictingMainPackageLoading)) {
+  if (isDraftMode && isDraftLoading) {
     return <LoadingSpinner />;
   }
 
@@ -718,8 +776,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <Navigate to="/" replace />;
   }
 
-  console.log();
-
   return (
     <SimplePageContainer>
       <BreadCrumbs
@@ -735,13 +791,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       {form.formState.isSubmitting && <LoadingSpinner />}
       <Form {...form}>
         <form onSubmit={onSubmit} className="my-6 space-y-8 mx-auto justify-center flex flex-col">
-          {isDraftLockedByExistingPackage && (
-            <Alert variant="destructive">
-              <AlertTitle>{DRAFT_LOCKED_ALERT_TITLE}</AlertTitle>
-              <AlertDescription>{draftConflictMessage}</AlertDescription>
-            </Alert>
-          )}
-          <fieldset disabled={isDraftLockedByExistingPackage} className="space-y-8">
+          <fieldset className="space-y-8">
             <SectionCard testId="detail-section" title={title}>
               <div>
                 {areFieldsRequired && <RequiredFieldDescription />}
@@ -749,11 +799,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   {formDescription}
                 </ActionFormDescription>
               </div>
-              <Fields
-                {...form}
-                isDraftMode={isDraftMode}
-                isDraftLocked={isDraftLockedByExistingPackage}
-              />
+              <Fields {...form} isDraftMode={isDraftMode} />
             </SectionCard>
             {attachmentsFromSchema.length > 0 && (
               <ActionFormAttachments
@@ -838,13 +884,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                       <button
                         type="button"
                         className={`w-[128.36px] py-3 px-5 gap-2.5 rounded border-2 font-semibold text-sm transition ${
-                          isSavingDraft || isDraftLockedByExistingPackage
+                          isSavingDraft || isDraftIdConflictActive
                             ? "border-gray-300 text-gray-400 bg-gray-100 cursor-not-allowed"
                             : "border-blue-700 text-blue-700 bg-white hover:bg-slate-50"
                         }`}
                         onClick={handleSaveDraft}
-                        disabled={isSavingDraft || isDraftLockedByExistingPackage}
-                        aria-disabled={isSavingDraft || isDraftLockedByExistingPackage}
+                        disabled={isSavingDraft || isDraftIdConflictActive}
+                        aria-disabled={isSavingDraft || isDraftIdConflictActive}
                         data-testid="save-draft-form"
                       >
                         Save
@@ -857,11 +903,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                           ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
                           : undefined
                       }
-                      disabled={!form.formState.isValid || isDraftLockedByExistingPackage}
-                      aria-disabled={!form.formState.isValid || isDraftLockedByExistingPackage}
+                      disabled={!form.formState.isValid || isDraftIdConflictActive}
+                      aria-disabled={!form.formState.isValid || isDraftIdConflictActive}
                       data-testid="submit-action-form"
                       className={`w-[181.75px] py-3 px-5 gap-2.5 rounded font-semibold text-sm transition ${
-                        !form.formState.isValid || isDraftLockedByExistingPackage
+                        !form.formState.isValid || isDraftIdConflictActive
                           ? "bg-gray-300 text-white cursor-not-allowed"
                           : "bg-blue-700 text-white hover:bg-blue-800"
                       }`}
@@ -895,8 +941,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                   className="px-12"
                   type="button"
                   onClick={handleSaveDraft}
-                  disabled={isSavingDraft || isDraftLockedByExistingPackage}
-                  aria-disabled={isSavingDraft || isDraftLockedByExistingPackage}
+                  disabled={isSavingDraft || isDraftIdConflictActive}
+                  aria-disabled={isSavingDraft || isDraftIdConflictActive}
                   data-testid="save-draft-form"
                 >
                   Save
@@ -910,8 +956,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
                     ? () => userPrompt({ ...promptPreSubmission, onAccept: onSubmit })
                     : undefined
                 }
-                disabled={!form.formState.isValid || isDraftLockedByExistingPackage}
-                aria-disabled={!form.formState.isValid || isDraftLockedByExistingPackage}
+                disabled={!form.formState.isValid || isDraftIdConflictActive}
+                aria-disabled={!form.formState.isValid || isDraftIdConflictActive}
                 data-testid="submit-action-form"
               >
                 {effectiveSubmitButtonLabel}

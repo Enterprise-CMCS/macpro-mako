@@ -33,7 +33,7 @@ export const ChipDetailsForm = () => {
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
       breadcrumbText="Submit new CHIP Eligibility SPA"
-      fields={({ control, isDraftLocked, isDraftMode }) => (
+      fields={({ control }) => (
         <>
           <FormField
             control={control}
@@ -60,7 +60,6 @@ export const ChipDetailsForm = () => {
                     className="max-w-sm"
                     ref={field.ref}
                     value={field.value}
-                    disabled={isDraftMode}
                     aria-describedby="spa-id-formatting-desc"
                     onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                   />
@@ -78,7 +77,7 @@ export const ChipDetailsForm = () => {
               return (
                 <FormItem className="w-full sm:max-w-[460px] relative">
                   <FormLabel className="font-bold">CHIP Submission Type</FormLabel>
-                  <Select value={selectedValues.join(", ")} disabled={isDraftLocked}>
+                  <Select value={selectedValues.join(", ")}>
                     <FormControl>
                       <SelectTrigger
                         showIcon={false}

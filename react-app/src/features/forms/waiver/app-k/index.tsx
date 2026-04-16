@@ -24,7 +24,7 @@ export const AppKAmendmentForm = () => (
     title="1915(c) Appendix K Amendment Details"
     breadcrumbText="Request a 1915(c) Appendix K Amendment"
     schema={formSchemas["app-k"]}
-    fields={({ control, isDraftMode }) => (
+    fields={({ control }) => (
       <>
         <div>
           <p className="mt-4 font-bold">
@@ -93,7 +93,6 @@ export const AppKAmendmentForm = () => (
                 <Input
                   ref={field.ref}
                   value={field.value}
-                  disabled={isDraftMode}
                   onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                 />
               </FormControl>

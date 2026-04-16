@@ -118,7 +118,7 @@ describe("package details", () => {
     });
   });
 
-  it("shows Draft Owner instead of Submitted By for draft packages", async () => {
+  it("shows Created By instead of Submitted By for draft packages", async () => {
     setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
 
     const draftSubmission = {
@@ -129,16 +129,16 @@ describe("package details", () => {
       submitterName: "Latest Saver",
       draft: {
         savedAt: "2026-03-06T00:00:00.000Z",
-        draftOwnerName: "Original Draft Owner",
+        createdByName: "Original Draft Creator",
         data: { id: TEST_1915B_ITEM._source.id },
       },
     } as opensearch.main.Document;
 
     await setup(draftSubmission);
 
-    expect(screen.getByText("Draft Owner")).toBeInTheDocument();
+    expect(screen.getByText("Created By")).toBeInTheDocument();
     expect(screen.queryByText("Submitted By")).not.toBeInTheDocument();
-    expect(screen.getByText("Original Draft Owner")).toBeInTheDocument();
+    expect(screen.getByText("Original Draft Creator")).toBeInTheDocument();
   });
 
   it("shows Proposed Effective Date from draft data for draft packages", async () => {

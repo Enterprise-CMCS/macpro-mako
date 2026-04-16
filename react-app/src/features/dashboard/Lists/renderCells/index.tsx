@@ -1,12 +1,10 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link } from "react-router";
 import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
-import { itemExists } from "@/api";
 import { deleteDraft } from "@/api/deleteDraft";
 import { banner, userPrompt } from "@/components";
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN, queryClient } from "@/utils";
@@ -74,21 +72,18 @@ const ActionMenuCell = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const canDeleteDraft = data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
-  const shouldCheckDraftConflict = canDeleteDraft && !!draftLink;
-  const { data: hasConflictingMainPackage, isLoading: isDraftConflictLoading } = useQuery({
-    queryKey: ["draft-main-conflict", data.id],
-    queryFn: () => itemExists(data.id),
-    enabled: shouldCheckDraftConflict && isOpen,
-  });
-  const isResolvingDraftActions = shouldCheckDraftConflict && isOpen && isDraftConflictLoading;
-  const canContinueDraft = shouldCheckDraftConflict && hasConflictingMainPackage === false;
+  const canContinueDraft = canDeleteDraft && !!draftLink;
   const actions = canDeleteDraft ? [] : getAvailableActions(user, data);
-  const draftOwnerEmail = data.draft?.draftOwnerEmail ?? data.submitterEmail;
+  const draftCreatorEmail =
+    data.draft?.createdByEmail ?? data.draft?.draftOwnerEmail ?? data.submitterEmail;
+  const draftUpdaterEmail = data.draft?.updatedByEmail ?? data.submitterEmail;
+  const currentUserEmail = user.email?.toLowerCase();
   const isNonOwnerDraftUser = Boolean(
     canDeleteDraft &&
-      draftOwnerEmail &&
-      user.email &&
-      draftOwnerEmail.toLowerCase() !== user.email.toLowerCase(),
+      currentUserEmail &&
+      ![draftCreatorEmail, draftUpdaterEmail].some(
+        (email) => email?.toLowerCase() === currentUserEmail,
+      ),
   );
 
   const handleDraftDelete = () => {
@@ -156,15 +151,7 @@ const ActionMenuCell = ({
       >
         {canDeleteDraft ? (
           <>
-            {isResolvingDraftActions && (
-              <DropdownMenu.Item
-                disabled
-                className="text-gray-500 flex select-none items-center rounded-sm px-2 py-2 text-sm"
-              >
-                Loading actions...
-              </DropdownMenu.Item>
-            )}
-            {canContinueDraft && !isDraftConflictLoading && (
+            {canContinueDraft && (
               <DropdownMenu.Item
                 asChild
                 aria-label={`${DRAFT_CONTINUE_ACTION_LABEL} for ${data.id}`}
@@ -185,17 +172,15 @@ const ActionMenuCell = ({
                 </Link>
               </DropdownMenu.Item>
             )}
-            {!isResolvingDraftActions && (
-              <DropdownMenu.Item asChild aria-label={`${DRAFT_DELETE_ACTION_LABEL} for ${data.id}`}>
-                <button
-                  onClick={handleDraftDelete}
-                  className="text-blue-500 text-left flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
-                  type="button"
-                >
-                  {DRAFT_DELETE_ACTION_LABEL}
-                </button>
-              </DropdownMenu.Item>
-            )}
+            <DropdownMenu.Item asChild aria-label={`${DRAFT_DELETE_ACTION_LABEL} for ${data.id}`}>
+              <button
+                onClick={handleDraftDelete}
+                className="text-blue-500 text-left flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
+                type="button"
+              >
+                {DRAFT_DELETE_ACTION_LABEL}
+              </button>
+            </DropdownMenu.Item>
           </>
         ) : (
           actions.map((action, idx) => {

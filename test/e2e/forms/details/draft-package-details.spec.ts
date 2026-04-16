@@ -13,7 +13,6 @@ import { TestUserDataWithRole } from "../../../../mocks/index.d";
 
 const filePath = "../test/fixtures/upload-sample.png";
 const CHIP_DRAFT_ID = "MD-25-9001-IJJJ";
-const LOCKED_CHIP_DRAFT_ID = "MD-25-9002-IJJJ";
 
 type DraftRecord = {
   _id: string;
@@ -37,11 +36,12 @@ type DraftRecord = {
       savedAt: string;
       draftOwnerName: string;
       draftOwnerEmail: string;
+      createdByName: string;
+      createdByEmail: string;
       data: Record<string, unknown>;
     };
     changelog: [];
     deleted?: boolean;
-    mockHasConflictingMainPackage?: boolean;
   };
 };
 
@@ -53,13 +53,11 @@ const buildDraftRecord = ({
   event = "new-chip-details-submission",
   authority = "CHIP SPA",
   draftData,
-  locked = false,
 }: {
   id: string;
   event?: string;
   authority?: string;
   draftData: Record<string, unknown>;
-  locked?: boolean;
 }): DraftRecord => {
   const savedAt = new Date().toISOString();
   const submitterEmail = getUserAttribute(testStateSubmitter, "email");
@@ -91,10 +89,11 @@ const buildDraftRecord = ({
         savedAt,
         draftOwnerName: submitterName,
         draftOwnerEmail: submitterEmail,
+        createdByName: submitterName,
+        createdByEmail: submitterEmail,
         data: draftData,
       },
       changelog: [],
-      ...(locked ? { mockHasConflictingMainPackage: true } : {}),
     },
   };
 };
@@ -277,7 +276,7 @@ test.describe("Draft Package Details", { tag: ["@drafts", "@e2e"] }, () => {
     await expect(page.getByRole("heading", { name: "Package Activity (1)" })).toBeVisible();
     await expect(page.getByText("Continue Package")).toBeVisible();
     await expect(page.getByText("Delete Package")).toBeVisible();
-    await expect(page.getByText("Draft Owner")).toBeVisible();
+    await expect(page.getByText("Created By")).toBeVisible();
     await expect(page.getByText("CHIP Eligibility Template")).toBeVisible();
     await expect(page.getByText("Download all attachments")).toBeVisible();
 
@@ -290,59 +289,5 @@ test.describe("Draft Package Details", { tag: ["@drafts", "@e2e"] }, () => {
     await expect(page.getByTestId("banner-body")).toContainText(
       `Draft for ${CHIP_DRAFT_ID} has been deleted.`,
     );
-  });
-
-  test("locked chip drafts disable save and submit on the edit form", async ({
-    page,
-    worker,
-    http,
-  }) => {
-    const lockedDraft = buildDraftRecord({
-      id: LOCKED_CHIP_DRAFT_ID,
-      draftData: {
-        id: LOCKED_CHIP_DRAFT_ID,
-        proposedEffectiveDate: Date.UTC(2026, 2, 27),
-      },
-      locked: true,
-    });
-
-    worker.use(
-      http.post(`${API_ENDPOINT}/item`, async ({ request }) => {
-        const { id } = (await request.json()) as { id: string };
-        const normalizedId = id?.trim().toUpperCase();
-
-        if (normalizedId === lockedDraft._source.id) {
-          return HttpResponse.json(lockedDraft);
-        }
-
-        return new HttpResponse(null, { status: 404 });
-      }),
-      http.post(`${API_ENDPOINT}/itemExists`, async ({ request }) => {
-        const { id, includeDrafts } = (await request.json()) as {
-          id: string;
-          includeDrafts?: boolean;
-        };
-        const normalizedId = id?.trim().toUpperCase();
-        const isLockedDraft = normalizedId === lockedDraft._source.id;
-
-        return HttpResponse.json({
-          exists: includeDrafts ? isLockedDraft : isLockedDraft,
-          ...(includeDrafts && isLockedDraft ? { status: lockedDraft._source.seatoolStatus } : {}),
-        });
-      }),
-    );
-
-    await page.goto(
-      `/new-submission/spa/chip/create/chip-details?origin=spas&draftId=${LOCKED_CHIP_DRAFT_ID}`,
-    );
-
-    await expect(page.getByText("This package is locked")).toBeVisible();
-    await expect(
-      page.getByText(
-        `A package with ID ${LOCKED_CHIP_DRAFT_ID} has already been submitted to CMS. This package can no longer be saved or submitted in OneMAC. Delete this package if you no longer need it.`,
-      ),
-    ).toBeVisible();
-    await expect(page.getByTestId("save-draft-form")).toBeDisabled();
-    await expect(page.getByTestId("submit-action-form")).toBeDisabled();
   });
 });

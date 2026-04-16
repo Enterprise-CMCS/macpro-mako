@@ -89,7 +89,7 @@ describe("Package Activity", () => {
     );
 
     expect(screen.getByText("Package Activity (1)")).toBeInTheDocument();
-    expect(screen.getByText("Draft Saved By George Harrison")).toBeInTheDocument();
+    expect(screen.getByText("Created By George Harrison")).toBeInTheDocument();
     expect(screen.getByText("CMS-179 Form")).toBeInTheDocument();
     expect(screen.getByText("SPA Pages")).toBeInTheDocument();
     expect(screen.getByText("cms-179.pdf")).toBeInTheDocument();
@@ -287,9 +287,42 @@ describe("Package Activity", () => {
     );
 
     expect(screen.getByText("Package Activity (1)")).toBeInTheDocument();
-    expect(screen.getByText("Draft Saved By George Harrison")).toBeInTheDocument();
+    expect(screen.getByText("Created By George Harrison")).toBeInTheDocument();
     expect(screen.getByText("Saved draft notes")).toBeInTheDocument();
     expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+  });
+
+  it("shows created and latest updated draft activity when another user saved the draft", async () => {
+    const draftSubmission = {
+      id: "MD-26-0005-P",
+      seatoolStatus: "Draft",
+      submitterName: "Ringo Starr",
+      submitterEmail: "ringo@example.com",
+      draft: {
+        savedAt: "2026-03-03T19:09:56.000Z",
+        createdAt: "2026-03-01T19:09:56.000Z",
+        createdByName: "George Harrison",
+        createdByEmail: "george@example.com",
+        updatedAt: "2026-03-03T19:09:56.000Z",
+        updatedByName: "Ringo Starr",
+        updatedByEmail: "ringo@example.com",
+        data: {
+          additionalInformation: "Latest saved draft notes",
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.getByText("Package Activity (2)")).toBeInTheDocument();
+    expect(screen.getByText("Created By George Harrison")).toBeInTheDocument();
+    expect(screen.getByText("Updated By Ringo Starr")).toBeInTheDocument();
+    await userEvent.click(screen.getByRole("button", { name: /Updated By Ringo Starr/ }));
+    expect(screen.getByText("Latest saved draft notes")).toBeInTheDocument();
   });
 
   it("shows draft attachments and saved additional information together", async () => {

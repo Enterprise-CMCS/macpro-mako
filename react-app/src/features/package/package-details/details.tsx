@@ -5,6 +5,7 @@ import {
   formatDateToET,
   formatDateToUTC,
   isCmsUser,
+  isHelpDeskUser,
   isStateUser,
 } from "shared-utils";
 
@@ -248,14 +249,21 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
   //possibly add details new drop down here
   ...(() => {
     const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
-    const draftAwareName = isDraft
-      ? (submission.draft?.draftOwnerName ?? submission.submitterName)
-      : submission.submitterName;
+    const createdByName =
+      submission.draft?.createdByName ??
+      submission.draft?.draftOwnerName ??
+      submission.submitterName;
+    const canViewCreatedBy = isDraft ? isStateUser(user) || isHelpDeskUser(user) : true;
 
     return [
       {
-        label: isDraft ? "Draft Owner" : "Submitted By",
-        value: <p className="text-lg">{draftAwareName || BLANK_VALUE}</p>,
+        label: isDraft ? "Created By" : "Submitted By",
+        value: (
+          <p className="text-lg">
+            {(isDraft ? createdByName : submission.submitterName) || BLANK_VALUE}
+          </p>
+        ),
+        canView: canViewCreatedBy,
       },
       {
         label: "CPOC",

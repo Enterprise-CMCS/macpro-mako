@@ -22,7 +22,7 @@ export const MedicaidForm = () => {
       schema={formSchemas["new-medicaid-submission"]}
       title="Medicaid SPA Details"
       breadcrumbText="Submit new Medicaid SPA"
-      fields={({ control, isDraftMode }) => (
+      fields={({ control }) => (
         <>
           <FormField
             control={control}
@@ -50,7 +50,6 @@ export const MedicaidForm = () => {
                       className="max-w-sm"
                       ref={field.ref}
                       value={field.value}
-                      disabled={isDraftMode}
                       aria-describedby="spa-id-formatting-desc"
                       onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
                     />

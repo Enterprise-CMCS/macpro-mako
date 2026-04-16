@@ -23,29 +23,29 @@ import {
 
 type PackageActionsCardProps = {
   id: string;
-  isLockedDraft?: boolean;
   submission: opensearch.main.Document;
 };
 
-export const PackageActionsCard = ({
-  submission,
-  id,
-  isLockedDraft = false,
-}: PackageActionsCardProps) => {
+export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
   const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const draftLink = isDraft ? getDraftEditLink(submission) : null;
-  const draftOwnerEmail = submission.draft?.draftOwnerEmail ?? submission.submitterEmail;
+  const draftCreatorEmail =
+    submission.draft?.createdByEmail ??
+    submission.draft?.draftOwnerEmail ??
+    submission.submitterEmail;
+  const draftUpdaterEmail = submission.draft?.updatedByEmail ?? submission.submitterEmail;
+  const currentUserEmail = oneMacUser?.user?.email?.toLowerCase();
   const isNonOwnerDraftUser = Boolean(
     isDraft &&
-      draftOwnerEmail &&
-      oneMacUser?.user?.email &&
-      draftOwnerEmail.toLowerCase() !== oneMacUser.user.email.toLowerCase(),
+      currentUserEmail &&
+      ![draftCreatorEmail, draftUpdaterEmail].some(
+        (email) => email?.toLowerCase() === currentUserEmail,
+      ),
   );
-  const canManageDraft =
-    isDraft && !!oneMacUser?.user && isStateUser(oneMacUser.user) && (!!draftLink || isLockedDraft);
+  const canManageDraft = isDraft && !!oneMacUser?.user && isStateUser(oneMacUser.user);
   const draftDashboardLink = getDraftDashboardLink(submission);
 
   const { data, isLoading } = useGetPackageActions(id, {
@@ -104,7 +104,7 @@ export const PackageActionsCard = ({
     return (
       <nav className="my-3 sm:text-nowrap sm:min-w-min" aria-labelledby="package-actions-heading">
         <ul className="my-3">
-          {!isLockedDraft && draftLink && (
+          {draftLink && (
             <li className="py-2">
               <Link
                 state={{
