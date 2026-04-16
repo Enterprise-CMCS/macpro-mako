@@ -455,6 +455,7 @@ describe("Package Activity", () => {
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
+      archiveWarningMessage: undefined,
       loading: false,
       onArchive,
       onUrl: vi.fn(),
@@ -519,6 +520,7 @@ describe("Package Activity", () => {
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
+      archiveWarningMessage: undefined,
       loading: false,
       onArchive,
       onUrl: vi.fn(),

@@ -1,3 +1,4 @@
+import type { GetObjectTaggingCommandOutput } from "@aws-sdk/client-s3";
 import { GetObjectCommand, GetObjectTaggingCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
@@ -186,14 +187,13 @@ async function getAttachmentObjectTags(
   key: string,
 ): Promise<Record<string, string>> {
   const client = await getClient(bucket);
-  const response = await client.send(
-    new GetObjectTaggingCommand({
-      Bucket: bucket,
-      Key: key,
-    }),
-  );
+  const command = new GetObjectTaggingCommand({
+    Bucket: bucket,
+    Key: key,
+  }) as unknown as Parameters<typeof client.send>[0];
+  const taggingResponse = (await client.send(command)) as GetObjectTaggingCommandOutput;
 
-  return (response.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
+  return (taggingResponse.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
     if (tag.Key && tag.Value) {
       acc[tag.Key] = tag.Value;
     }
