@@ -1003,7 +1003,7 @@ describe("ActionForm", () => {
     useGetItemSpy.mockRestore();
   });
 
-  test("shows warning modal when a non-owner opens a draft and allows continue", async () => {
+  test("shows warning modal when a non-owner saves a draft and allows continue", async () => {
     const user = userEvent.setup();
     const draftId = "NY-25-2342";
     const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
@@ -1024,6 +1024,12 @@ describe("ActionForm", () => {
       error: null,
     } as any);
     const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+      seqNo: 1,
+      primaryTerm: 1,
+    });
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
@@ -1045,6 +1051,9 @@ describe("ActionForm", () => {
       `draftId=${draftId}`,
     );
 
+    expect(userPromptSpy).not.toHaveBeenCalled();
+    await user.click(screen.getByTestId("save-draft-form"));
+
     await waitFor(() =>
       expect(userPromptSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -1065,7 +1074,65 @@ describe("ActionForm", () => {
     await user.click(screen.getByTestId("save-draft-form"));
 
     expect(userPromptSpy).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
     useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("does not show the non-owner warning for a legacy draft owned by the current user name", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-26-0108-P";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            draftOwnerName: "Stateuser Tester",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Legacy Draft Owner Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(userPromptSpy).not.toHaveBeenCalled();
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
   });
 
   test("shows duplicate ID conflict on draft save and re-enables actions after the ID changes", async () => {
@@ -1177,6 +1244,7 @@ describe("ActionForm", () => {
       `draftId=${draftId}`,
     );
 
+    await userEvent.click(screen.getByTestId("save-draft-form"));
     await waitFor(() => expect(userPromptSpy).toHaveBeenCalledTimes(1));
     const firstPromptArgs = userPromptSpy.mock.calls[0][0] as {
       onCancel?: () => void;

@@ -15,6 +15,7 @@ import {
   DRAFT_DELETE_MODAL_HEADER,
   getDraftEditLink,
   getNonOwnerDraftDeleteModalBody,
+  isCurrentUserDraftActor,
 } from "@/utils/drafts";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -74,16 +75,23 @@ const ActionMenuCell = ({
   const canDeleteDraft = data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
   const canContinueDraft = canDeleteDraft && !!draftLink;
   const actions = canDeleteDraft ? [] : getAvailableActions(user, data);
-  const draftCreatorEmail =
-    data.draft?.createdByEmail ?? data.draft?.draftOwnerEmail ?? data.submitterEmail;
-  const draftUpdaterEmail = data.draft?.updatedByEmail ?? data.submitterEmail;
-  const currentUserEmail = user.email?.toLowerCase();
   const isNonOwnerDraftUser = Boolean(
     canDeleteDraft &&
-      currentUserEmail &&
-      ![draftCreatorEmail, draftUpdaterEmail].some(
-        (email) => email?.toLowerCase() === currentUserEmail,
-      ),
+      user.email &&
+      !isCurrentUserDraftActor(user, [
+        {
+          email: data.draft?.createdByEmail ?? data.draft?.draftOwnerEmail,
+          name: data.draft?.createdByName ?? data.draft?.draftOwnerName,
+        },
+        {
+          email: data.draft?.updatedByEmail,
+          name: data.draft?.updatedByName,
+        },
+        {
+          email: data.submitterEmail,
+          name: data.submitterName,
+        },
+      ]),
   );
 
   const handleDraftDelete = () => {

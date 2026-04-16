@@ -19,6 +19,7 @@ import {
   getDraftDashboardLink,
   getDraftEditLink,
   getNonOwnerDraftDeleteModalBody,
+  isCurrentUserDraftActor,
 } from "@/utils/drafts";
 
 type PackageActionsCardProps = {
@@ -32,18 +33,23 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
   const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const draftLink = isDraft ? getDraftEditLink(submission) : null;
-  const draftCreatorEmail =
-    submission.draft?.createdByEmail ??
-    submission.draft?.draftOwnerEmail ??
-    submission.submitterEmail;
-  const draftUpdaterEmail = submission.draft?.updatedByEmail ?? submission.submitterEmail;
-  const currentUserEmail = oneMacUser?.user?.email?.toLowerCase();
   const isNonOwnerDraftUser = Boolean(
     isDraft &&
-      currentUserEmail &&
-      ![draftCreatorEmail, draftUpdaterEmail].some(
-        (email) => email?.toLowerCase() === currentUserEmail,
-      ),
+      oneMacUser?.user?.email &&
+      !isCurrentUserDraftActor(oneMacUser.user, [
+        {
+          email: submission.draft?.createdByEmail ?? submission.draft?.draftOwnerEmail,
+          name: submission.draft?.createdByName ?? submission.draft?.draftOwnerName,
+        },
+        {
+          email: submission.draft?.updatedByEmail,
+          name: submission.draft?.updatedByName,
+        },
+        {
+          email: submission.submitterEmail,
+          name: submission.submitterName,
+        },
+      ]),
   );
   const canManageDraft = isDraft && !!oneMacUser?.user && isStateUser(oneMacUser.user);
   const draftDashboardLink = getDraftDashboardLink(submission);

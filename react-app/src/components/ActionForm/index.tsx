@@ -31,7 +31,11 @@ import {
 import { useNavigationPrompt } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
-import { DRAFT_ID_CONFLICT_MESSAGE, getNonOwnerDraftWarningModalBody } from "@/utils/drafts";
+import {
+  DRAFT_ID_CONFLICT_MESSAGE,
+  getNonOwnerDraftWarningModalBody,
+  isCurrentUserDraftActor,
+} from "@/utils/drafts";
 import { CheckDocumentFunction, documentPoller } from "@/utils/Poller/documentPoller";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -191,6 +195,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
   const [draftIdConflict, setDraftIdConflict] = useState<string | null>(null);
+  const [currentSessionDraftActor, setCurrentSessionDraftActor] = useState<{
+    email?: string | null;
+    name?: string | null;
+  } | null>(null);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -208,22 +216,29 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     { enabled: isDraftMode },
     { includeDraft: true, preferDraft: true },
   );
-  const draftCreatorEmail =
-    draftRecord?._source?.draft?.createdByEmail ??
-    draftRecord?._source?.draft?.draftOwnerEmail ??
-    draftRecord?._source?.submitterEmail;
-  const draftUpdaterEmail =
-    draftRecord?._source?.draft?.updatedByEmail ??
-    draftRecord?._source?.submitterEmail ??
-    draftCreatorEmail;
+  const draftCreatorActor = {
+    email:
+      draftRecord?._source?.draft?.createdByEmail ?? draftRecord?._source?.draft?.draftOwnerEmail,
+    name: draftRecord?._source?.draft?.createdByName ?? draftRecord?._source?.draft?.draftOwnerName,
+  };
+  const draftUpdaterActor = {
+    email: draftRecord?._source?.draft?.updatedByEmail,
+    name: draftRecord?._source?.draft?.updatedByName,
+  };
+  const legacyDraftSubmitterActor = {
+    email: draftRecord?._source?.submitterEmail,
+    name: draftRecord?._source?.submitterName,
+  };
   const draftPackageIdForWarning = draftRecord?._source?.id ?? draftId ?? id ?? "this package";
-  const currentUserEmail = userObj?.email?.toLowerCase();
   const isNonOwnerDraftUser = Boolean(
     isDraftMode &&
-      currentUserEmail &&
-      ![draftCreatorEmail, draftUpdaterEmail].some(
-        (email) => email?.toLowerCase() === currentUserEmail,
-      ),
+      userObj?.email &&
+      !isCurrentUserDraftActor(userObj, [
+        draftCreatorActor,
+        draftUpdaterActor,
+        legacyDraftSubmitterActor,
+        currentSessionDraftActor ?? {},
+      ]),
   );
 
   const navigateAwayFromDraft = useCallback(() => {
@@ -289,6 +304,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
       setDraftIdConflict(null);
       draftVersionRef.current = {};
+      setCurrentSessionDraftActor(null);
       previousDraftIdRef.current = draftId;
       return;
     }
@@ -300,6 +316,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
     setDraftIdConflict(null);
     draftVersionRef.current = {};
+    setCurrentSessionDraftActor(null);
     previousDraftIdRef.current = draftId;
   }, [draftId, isDraftMode]);
 
@@ -315,19 +332,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       };
     }
   }, [draftRecord, isDraftMode]);
-
-  useEffect(() => {
-    if (!isNonOwnerDraftUser || hasConfirmedNonOwnerDraftAction) {
-      return;
-    }
-
-    if (hasPromptedNonOwnerDraftActionRef.current) {
-      return;
-    }
-
-    hasPromptedNonOwnerDraftActionRef.current = true;
-    promptNonOwnerDraftAction();
-  }, [hasConfirmedNonOwnerDraftAction, isNonOwnerDraftUser, promptNonOwnerDraftAction]);
 
   const canProceedWithNonOwnerDraftAction = () => {
     if (!isNonOwnerDraftUser || hasConfirmedNonOwnerDraftAction) {
@@ -653,6 +657,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           hour: "numeric",
           minute: "2-digit",
         }).format(new Date())}`,
+      });
+      setCurrentSessionDraftActor({
+        email: userObj?.email,
+        name: userObj?.fullName,
       });
 
       form.reset(formValues);

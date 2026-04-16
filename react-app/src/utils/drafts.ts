@@ -14,6 +14,47 @@ export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
   `Since you are not the creator or latest updater, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
 
+type DraftActorIdentity = {
+  email?: string | null;
+  name?: string | null;
+};
+
+type CurrentUserIdentity = {
+  email?: string | null;
+  fullName?: string | null;
+  name?: string | null;
+  given_name?: string | null;
+  family_name?: string | null;
+};
+
+const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
+const normalizeName = (name?: string | null) => name?.trim().toLowerCase() || "";
+
+export const isCurrentUserDraftActor = (
+  currentUser: CurrentUserIdentity | null | undefined,
+  actors: DraftActorIdentity[],
+) => {
+  const currentEmail = normalizeEmail(currentUser?.email);
+  const currentName = normalizeName(
+    currentUser?.fullName ??
+      currentUser?.name ??
+      [currentUser?.given_name, currentUser?.family_name].filter(Boolean).join(" "),
+  );
+
+  return actors.some((actor) => {
+    const actorEmail = normalizeEmail(actor.email);
+
+    if (currentEmail && actorEmail) {
+      return currentEmail === actorEmail;
+    }
+
+    // Legacy draft records may only have an owner name. Only fall back to name
+    // matching when the actor email is absent so explicit email ownership wins.
+    const actorName = normalizeName(actor.name);
+    return !actorEmail && currentName && actorName === currentName;
+  });
+};
+
 const EVENT_TO_DRAFT_PATH: Record<string, string> = {
   "new-medicaid-submission": "/new-submission/spa/medicaid/create",
   "new-chip-submission": "/new-submission/spa/chip/create",
