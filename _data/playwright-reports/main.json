@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-        "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+        "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
       },
       "gitCommit": {
-        "shortHash": "dbd808a",
-        "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-        "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-        "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+        "shortHash": "bb229b3",
+        "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+        "subject": "chore(archive): fix integrity formatting",
+        "body": "chore(archive): fix integrity formatting\n",
         "author": {
-          "name": "James Dinh",
-          "email": "james.d@globalalliantinc.com",
-          "time": 1776356857000
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1776375593000
         },
         "committer": {
-          "name": "GitHub",
-          "email": "noreply@github.com",
-          "time": 1776356857000
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1776375593000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "commitHash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24521746990"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "commitHash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24535448760"
           },
           "gitCommit": {
-            "shortHash": "dbd808a",
-            "hash": "dbd808a92cb39d91eb74643f270f4bd58ca72d63",
-            "subject": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
-            "body": "fix(clamAV ): remove vulnerable runtime artifacts from ClamAV image",
+            "shortHash": "bb229b3",
+            "hash": "bb229b3b8e74e424bb5cb57d648785b23665a1a1",
+            "subject": "chore(archive): fix integrity formatting",
+            "body": "chore(archive): fix integrity formatting\n",
             "author": {
-              "name": "James Dinh",
-              "email": "james.d@globalalliantinc.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "committer": {
-              "name": "GitHub",
-              "email": "noreply@github.com",
-              "time": 1776356857000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1776375593000
             },
             "branch": "main"
           },
@@ -650,12 +650,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3070,
+                              "duration": 4123,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:32:31.050Z",
+                              "startTime": "2026-04-16T21:45:52.136Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -686,12 +686,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2943,
+                              "duration": 3834,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:32:34.216Z",
+                              "startTime": "2026-04-16T21:45:56.349Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -722,12 +722,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2917,
+                              "duration": 4030,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:32:37.173Z",
+                              "startTime": "2026-04-16T21:46:00.198Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -758,12 +758,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3898,
+                              "duration": 3941,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:32:40.105Z",
+                              "startTime": "2026-04-16T21:46:04.239Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -794,12 +794,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3868,
+                              "duration": 3967,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:32:44.016Z",
+                              "startTime": "2026-04-16T21:46:08.193Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -830,12 +830,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2868,
+                              "duration": 3960,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:32:47.896Z",
+                              "startTime": "2026-04-16T21:46:12.171Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -866,12 +866,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2826,
+                              "duration": 2951,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:32:50.778Z",
+                              "startTime": "2026-04-16T21:46:16.143Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -917,12 +917,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3359,
+                                      "duration": 4306,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:32:53.615Z",
+                                      "startTime": "2026-04-16T21:46:19.106Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -953,12 +953,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2817,
+                                      "duration": 3905,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:32:56.986Z",
+                                      "startTime": "2026-04-16T21:46:23.423Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -989,12 +989,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2761,
+                                      "duration": 2996,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:32:59.817Z",
+                                      "startTime": "2026-04-16T21:46:27.339Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1033,12 +1033,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3263,
+                                      "duration": 4499,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:02.593Z",
+                                      "startTime": "2026-04-16T21:46:30.348Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1069,12 +1069,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3077,
+                                      "duration": 4249,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:05.872Z",
+                                      "startTime": "2026-04-16T21:46:34.864Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1105,12 +1105,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3044,
+                                      "duration": 4240,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:08.965Z",
+                                      "startTime": "2026-04-16T21:46:39.127Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1153,7 +1153,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 7270,
+                              "duration": 7827,
                               "errors": [],
                               "stdout": [
                                 {
@@ -1162,7 +1162,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:12.021Z",
+                              "startTime": "2026-04-16T21:46:43.381Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1216,12 +1216,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3109,
+                              "duration": 4219,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:19.305Z",
+                              "startTime": "2026-04-16T21:46:51.221Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1252,12 +1252,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4842,
+                              "duration": 3101,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:22.427Z",
+                              "startTime": "2026-04-16T21:46:55.450Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1288,12 +1288,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3037,
+                              "duration": 2798,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:27.282Z",
+                              "startTime": "2026-04-16T21:46:58.564Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1324,12 +1324,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2978,
+                              "duration": 4177,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:30.333Z",
+                              "startTime": "2026-04-16T21:47:01.376Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1360,12 +1360,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2904,
+                              "duration": 4081,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:33.322Z",
+                              "startTime": "2026-04-16T21:47:05.563Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1396,12 +1396,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3852,
+                              "duration": 2937,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:36.238Z",
+                              "startTime": "2026-04-16T21:47:09.657Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1432,12 +1432,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2867,
+                              "duration": 2769,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:33:40.101Z",
+                              "startTime": "2026-04-16T21:47:12.605Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1483,12 +1483,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3224,
+                                      "duration": 3062,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:42.981Z",
+                                      "startTime": "2026-04-16T21:47:15.385Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1519,12 +1519,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2889,
+                                      "duration": 3860,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:46.216Z",
+                                      "startTime": "2026-04-16T21:47:18.458Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1555,12 +1555,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2963,
+                                      "duration": 2928,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:49.116Z",
+                                      "startTime": "2026-04-16T21:47:22.329Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1599,12 +1599,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3349,
+                                      "duration": 4474,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:52.090Z",
+                                      "startTime": "2026-04-16T21:47:25.268Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1635,12 +1635,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2991,
+                                      "duration": 4154,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:55.450Z",
+                                      "startTime": "2026-04-16T21:47:29.754Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1671,12 +1671,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3102,
+                                      "duration": 4077,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-16T16:33:58.454Z",
+                                      "startTime": "2026-04-16T21:47:33.923Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1719,7 +1719,7 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 6180,
+                              "duration": 9229,
                               "errors": [],
                               "stdout": [
                                 {
@@ -1728,7 +1728,7 @@
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-16T16:34:01.568Z",
+                              "startTime": "2026-04-16T21:47:38.012Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1758,8 +1758,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-16T16:32:08.422Z",
-    "duration": 119426.23400000001,
+    "startTime": "2026-04-16T21:45:24.920Z",
+    "duration": 142419.13199999998,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
