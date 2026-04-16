@@ -125,6 +125,7 @@ describe("notifyAttachmentArchiveIntegrity", () => {
           runTimestamp: "2026-04-06T08:00:00.000Z",
           status: "SUCCESS",
           packagesScanned: 10,
+          packagesTotal: 10,
           sectionsScanned: 20,
           discrepancyCount: 2,
           discrepancyTypeCounts: {
@@ -137,6 +138,7 @@ describe("notifyAttachmentArchiveIntegrity", () => {
           ],
           reportBucketName: "archive-write-bucket",
           reportPrefix: "archive-integrity/main/runs/2026/04/06/run-1",
+          checkpointKey: "archive-integrity/main/runs/2026/04/06/run-1/checkpoint.json",
           discrepancyJsonKey: "archive-integrity/main/runs/2026/04/06/run-1/discrepancies.json",
           discrepancyCsvKey: csvKey,
           discrepancyCsvFilename: "discrepancies.csv",
@@ -205,12 +207,14 @@ describe("notifyAttachmentArchiveIntegrity", () => {
           runTimestamp: "2026-04-06T08:00:00.000Z",
           status: "SUCCESS",
           packagesScanned: 2,
+          packagesTotal: 2,
           sectionsScanned: 4,
           discrepancyCount: 0,
           discrepancyTypeCounts: {},
           topDiscrepancyTypes: [],
           reportBucketName: "archive-write-bucket",
           reportPrefix: "archive-integrity/main/runs/2026/04/06/run-2",
+          checkpointKey: "archive-integrity/main/runs/2026/04/06/run-2/checkpoint.json",
           discrepancyJsonKey: "archive-integrity/main/runs/2026/04/06/run-2/discrepancies.json",
           discrepancyCsvKey: "archive-integrity/main/runs/2026/04/06/run-2/discrepancies.csv",
           discrepancyCsvFilename: "discrepancies.csv",
@@ -288,7 +292,7 @@ describe("notifyAttachmentArchiveIntegrity", () => {
     expect(summary.notificationStatus).toBe("SENT");
   });
 
-  it("updates existing run summary on failure when runResult provides summary location", async () => {
+  it("uses an existing running summary to preserve progress on failure", async () => {
     getSecretMock.mockResolvedValue(
       JSON.stringify({
         sourceEmail: ['"OneMAC Alerts" <source@example.com>'],
@@ -304,8 +308,9 @@ describe("notifyAttachmentArchiveIntegrity", () => {
           runId: "run-3",
           stage: "main",
           runTimestamp: "2026-04-06T08:00:00.000Z",
-          status: "SUCCESS",
+          status: "RUNNING",
           packagesScanned: 3,
+          packagesTotal: 8,
           sectionsScanned: 6,
           discrepancyCount: 2,
           discrepancyTypeCounts: {
@@ -314,6 +319,8 @@ describe("notifyAttachmentArchiveIntegrity", () => {
           topDiscrepancyTypes: [{ type: "PACKAGE_FILE_MISSING", count: 2 }],
           reportBucketName: "archive-write-bucket",
           reportPrefix: "archive-integrity/main/runs/2026/04/06/run-3",
+          checkpointKey: "archive-integrity/main/runs/2026/04/06/run-3/checkpoint.json",
+          lastProcessedPackageId: "MD-1234",
           discrepancyJsonKey: "archive-integrity/main/runs/2026/04/06/run-3/discrepancies.json",
           discrepancyCsvKey: "archive-integrity/main/runs/2026/04/06/run-3/discrepancies.csv",
           discrepancyCsvFilename: "discrepancies.csv",
@@ -344,10 +351,15 @@ describe("notifyAttachmentArchiveIntegrity", () => {
     });
 
     expect(sesSendSpy).toHaveBeenCalledTimes(1);
+    const command = sesSendSpy.mock.calls[0][0];
+    const rawData = Buffer.from((command.input as any).RawMessage.Data).toString("utf8");
+    expect(rawData).toContain("Packages scanned: 3/8");
+    expect(rawData).toContain("Last processed package: MD-1234");
     const updatedSummary = JSON.parse(
       putStore.get(toStoreKey("archive-write-bucket", summaryKey)) || "{}",
     );
     expect(updatedSummary.runId).toBe("run-3");
+    expect(updatedSummary.status).toBe("FAILED");
     expect(updatedSummary.notificationStatus).toBe("SENT");
     expect(updatedSummary.errorMessage).toContain("SES delivery failed");
   });

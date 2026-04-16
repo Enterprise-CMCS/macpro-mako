@@ -1618,10 +1618,20 @@ export class Api extends cdk.NestedStack {
       this,
       "AttachmentArchiveIntegrityCompleted",
     );
+    const attachmentArchiveIntegrityInProgress = new cdk.aws_stepfunctions.Choice(
+      this,
+      "AttachmentArchiveIntegrityInProgress",
+    );
     const attachmentArchiveIntegrityHasDiscrepanciesChoice = new cdk.aws_stepfunctions.Choice(
       this,
       "AttachmentArchiveIntegrityHasDiscrepancies",
     );
+    attachmentArchiveIntegrityInProgress
+      .when(
+        cdk.aws_stepfunctions.Condition.stringEquals("$.runResult.status", "IN_PROGRESS"),
+        runAttachmentArchiveIntegrityCheckTask,
+      )
+      .otherwise(attachmentArchiveIntegrityHasDiscrepanciesChoice);
     attachmentArchiveIntegrityHasDiscrepanciesChoice
       .when(
         cdk.aws_stepfunctions.Condition.numberGreaterThan("$.runResult.discrepancyCount", 0),
@@ -1634,9 +1644,7 @@ export class Api extends cdk.NestedStack {
       "AttachmentArchiveIntegrityStateMachine",
       {
         definitionBody: cdk.aws_stepfunctions.DefinitionBody.fromChainable(
-          runAttachmentArchiveIntegrityCheckTask.next(
-            attachmentArchiveIntegrityHasDiscrepanciesChoice,
-          ),
+          runAttachmentArchiveIntegrityCheckTask.next(attachmentArchiveIntegrityInProgress),
         ),
         stateMachineName: `${project}-${stage}-${stack}-attachment-archive-integrity`,
         logs: {

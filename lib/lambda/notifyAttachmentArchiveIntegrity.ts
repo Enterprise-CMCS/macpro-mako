@@ -389,12 +389,14 @@ function createFailureSummary({
     runTimestamp,
     status: "FAILED",
     packagesScanned: 0,
+    packagesTotal: 0,
     sectionsScanned: 0,
     discrepancyCount: 0,
     discrepancyTypeCounts: {},
     topDiscrepancyTypes: [],
     reportBucketName,
     reportPrefix: runReportPrefix,
+    checkpointKey: "",
     discrepancyJsonKey: "",
     discrepancyCsvKey: "",
     discrepancyCsvFilename: "discrepancies.csv",
@@ -441,26 +443,33 @@ function buildDiscrepancyEmailBody(summary: AttachmentArchiveIntegrityRunSummary
 }
 
 function buildFailureEmailBody({
-  stage,
-  runId,
+  summary,
   summaryKey,
   message,
 }: {
-  stage: string;
-  runId: string;
+  summary: AttachmentArchiveIntegrityRunSummary;
   summaryKey?: string;
   message: string;
 }) {
-  return [
+  const lines = [
     "OneMAC archive integrity check failed.",
     "",
-    `Stage: ${stage}`,
-    `Run id: ${runId}`,
+    `Stage: ${summary.stage}`,
+    `Run id: ${summary.runId}`,
     summaryKey ? `Summary key: ${summaryKey}` : "Summary key: unavailable",
-    "",
-    "Error details:",
-    message,
-  ].join("\n");
+    summary.packagesTotal > 0
+      ? `Packages scanned: ${summary.packagesScanned}/${summary.packagesTotal}`
+      : `Packages scanned: ${summary.packagesScanned}`,
+    `Sections scanned: ${summary.sectionsScanned}`,
+    `Discrepancies found so far: ${summary.discrepancyCount}`,
+  ];
+
+  if (summary.lastProcessedPackageId) {
+    lines.push(`Last processed package: ${summary.lastProcessedPackageId}`);
+  }
+
+  lines.push("", "Error details:", message);
+  return lines.join("\n");
 }
 
 async function handleDiscrepancyNotification(event: IntegrityNotificationEvent) {
@@ -572,6 +581,9 @@ async function handleFailureNotification(event: IntegrityNotificationEvent) {
     throw new Error("Failure notification could not resolve summaryKey");
   }
   const resolvedSummaryKey = summaryKey;
+  if (summary.status === "RUNNING") {
+    summary.status = "FAILED";
+  }
 
   try {
     await sendRawEmail({
@@ -581,8 +593,7 @@ async function handleFailureNotification(event: IntegrityNotificationEvent) {
       toEmailHeaders: recipients.toEmailHeaders,
       subject: `[${summary.stage}] OneMAC Archive Integrity Check Failed`,
       bodyText: buildFailureEmailBody({
-        stage: summary.stage,
-        runId: summary.runId,
+        summary,
         summaryKey: resolvedSummaryKey,
         message: parsedFailure.message,
       }),

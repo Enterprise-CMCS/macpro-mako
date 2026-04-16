@@ -1,6 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { Template } from "aws-cdk-lib/assertions";
-import { describe, it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { Api } from "./api";
 import { getLegacyAttachmentBucketMapParameterName } from "./legacy-attachment-bucket-map";
@@ -80,6 +80,29 @@ describe("Api attachment archive integrity scheduling", () => {
       template.hasResourceProperties("AWS::Lambda::Function", {
         FunctionName: `mako-${stage}-api-notifyAttachmentArchiveIntegrity`,
       });
+      const integrityStateMachines = template.findResources("AWS::StepFunctions::StateMachine", {
+        Properties: {
+          StateMachineName: `mako-${stage}-api-attachment-archive-integrity`,
+        },
+      });
+      const integrityStateMachine = Object.values(integrityStateMachines)[0] as {
+        Properties?: {
+          DefinitionString?: {
+            "Fn::Join"?: [string, Array<string | Record<string, unknown>>];
+          };
+        };
+      };
+      expect(integrityStateMachine).toBeDefined();
+      const definitionParts =
+        integrityStateMachine.Properties?.DefinitionString?.["Fn::Join"]?.[1] || [];
+      const definitionString = definitionParts
+        .map((part) => (typeof part === "string" ? part : JSON.stringify(part)))
+        .join("");
+
+      expect(definitionString).toContain('"StartAt":"RunAttachmentArchiveIntegrityCheckTask"');
+      expect(definitionString).toContain('"Next":"AttachmentArchiveIntegrityInProgress"');
+      expect(definitionString).toContain('"StringEquals":"IN_PROGRESS"');
+      expect(definitionString).toContain('"Default":"AttachmentArchiveIntegrityHasDiscrepancies"');
     }, 30000);
   }
 
