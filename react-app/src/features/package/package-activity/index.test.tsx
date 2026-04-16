@@ -321,7 +321,9 @@ describe("Package Activity", () => {
     expect(screen.getByText("Package Activity (2)")).toBeInTheDocument();
     expect(screen.getByText("Created By George Harrison")).toBeInTheDocument();
     expect(screen.getByText("Updated By Ringo Starr")).toBeInTheDocument();
-    await userEvent.click(screen.getByRole("button", { name: /Updated By Ringo Starr/ }));
+    const activityButtons = screen.getAllByRole("button");
+    expect(activityButtons[0]).toHaveTextContent("Updated By Ringo Starr");
+    expect(activityButtons[1]).toHaveTextContent("Created By George Harrison");
     expect(screen.getByText("Latest saved draft notes")).toBeInTheDocument();
   });
 

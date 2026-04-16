@@ -179,7 +179,6 @@ const getDraftPackageActivities = (
   }
 
   return [
-    createdActivity,
     {
       id: `${submission.id}-draft-updated-activity`,
       packageId: submission.id,
@@ -190,6 +189,7 @@ const getDraftPackageActivities = (
       additionalInformation,
       isSyntheticDraft: true,
     },
+    createdActivity,
   ];
 };
 
