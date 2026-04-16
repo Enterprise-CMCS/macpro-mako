@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.64% </span>
+                <span class="strong">78.4% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>132/170</span>
+                <span class='fraction'>138/176</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">57.14% </span>
+                <span class="strong">59.45% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>60/105</span>
+                <span class='fraction'>66/111</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">77.38% </span>
+                <span class="strong">78.16% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>130/168</span>
+                <span class='fraction'>136/174</span>
             </div>
         
             
@@ -693,7 +693,18 @@
 <a name='L628'></a><a href='#L628'>628</a>
 <a name='L629'></a><a href='#L629'>629</a>
 <a name='L630'></a><a href='#L630'>630</a>
-<a name='L631'></a><a href='#L631'>631</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L631'></a><a href='#L631'>631</a>
+<a name='L632'></a><a href='#L632'>632</a>
+<a name='L633'></a><a href='#L633'>633</a>
+<a name='L634'></a><a href='#L634'>634</a>
+<a name='L635'></a><a href='#L635'>635</a>
+<a name='L636'></a><a href='#L636'>636</a>
+<a name='L637'></a><a href='#L637'>637</a>
+<a name='L638'></a><a href='#L638'>638</a>
+<a name='L639'></a><a href='#L639'>639</a>
+<a name='L640'></a><a href='#L640'>640</a>
+<a name='L641'></a><a href='#L641'>641</a>
+<a name='L642'></a><a href='#L642'>642</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1100,6 +1111,8 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1144,8 +1157,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1156,6 +1167,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1267,10 +1287,12 @@
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -1714,12 +1736,14 @@ function createFailureSummary({
     runTimestamp,
     status: "FAILED",
     packagesScanned: 0,
+    packagesTotal: 0,
     sectionsScanned: 0,
     discrepancyCount: 0,
     discrepancyTypeCounts: {},
     topDiscrepancyTypes: [],
     reportBucketName,
     reportPrefix: runReportPrefix,
+    checkpointKey: "",
     discrepancyJsonKey: "",
     discrepancyCsvKey: "",
     discrepancyCsvFilename: "discrepancies.csv",
@@ -1766,26 +1790,33 @@ function buildDiscrepancyEmailBody(summary: AttachmentArchiveIntegrityRunSummary
 }
 &nbsp;
 function buildFailureEmailBody({
-  stage,
-  runId,
+  summary,
   summaryKey,
   message,
 }: {
-  stage: string;
-  runId: string;
+  summary: AttachmentArchiveIntegrityRunSummary;
   summaryKey?: string;
   message: string;
 }) {
-  return [
+  const lines = [
     "OneMAC archive integrity check failed.",
     "",
-    `Stage: ${stage}`,
-    `Run id: ${runId}`,
+    `Stage: ${summary.stage}`,
+    `Run id: ${summary.runId}`,
     summaryKey ? `Summary key: ${summaryKey}` : <span class="branch-1 cbranch-no" title="branch not covered" >"Summary key: unavailable",</span>
-    "",
-    "Error details:",
-    message,
-  ].join("\n");
+    summary.packagesTotal &gt; 0
+      ? `Packages scanned: ${summary.packagesScanned}/${summary.packagesTotal}`
+      : `Packages scanned: ${summary.packagesScanned}`,
+    `Sections scanned: ${summary.sectionsScanned}`,
+    `Discrepancies found so far: ${summary.discrepancyCount}`,
+  ];
+&nbsp;
+  if (summary.lastProcessedPackageId) {
+    lines.push(`Last processed package: ${summary.lastProcessedPackageId}`);
+  }
+&nbsp;
+  lines.push("", "Error details:", message);
+  return lines.join("\n");
 }
 &nbsp;
 async function handleDiscrepancyNotification(event: IntegrityNotificationEvent) {
@@ -1897,6 +1928,9 @@ async function handleFailureNotification(event: IntegrityNotificationEvent) {
 <span class="cstat-no" title="statement not covered" >    throw new Error("Failure notification could not resolve summaryKey");</span>
   }
   const resolvedSummaryKey = summaryKey;
+  if (summary.status === "RUNNING") {
+    summary.status = "FAILED";
+  }
 &nbsp;
   try {
     await sendRawEmail({
@@ -1906,8 +1940,7 @@ async function handleFailureNotification(event: IntegrityNotificationEvent) {
       toEmailHeaders: recipients.toEmailHeaders,
       subject: `[${summary.stage}] OneMAC Archive Integrity Check Failed`,
       bodyText: buildFailureEmailBody({
-        stage: summary.stage,
-        runId: summary.runId,
+        summary,
         summaryKey: resolvedSummaryKey,
         message: parsedFailure.message,
       }),
@@ -1960,7 +1993,7 @@ export const handler = async (event: IntegrityNotificationEvent) =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-04-16T16:35:00.510Z
+                at 2026-04-16T21:48:11.182Z
             </div>
         <script src="../../prettify.js"></script>
         <script>
