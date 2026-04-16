@@ -13,6 +13,7 @@ export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
   `Since you are not the creator or latest updater, are you sure you want to take this action on ${packageId}?`;
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
   `Since you are not the creator or latest updater, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
+const DRAFT_CONTINUE_CONFIRMATION_STORAGE_KEY_PREFIX = "onemac:draft-continue-confirmed";
 
 type DraftActorIdentity = {
   email?: string | null;
@@ -29,6 +30,31 @@ type CurrentUserIdentity = {
 
 const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
 const normalizeName = (name?: string | null) => name?.trim().toLowerCase() || "";
+const normalizePackageId = (packageId?: string | null) => packageId?.trim().toUpperCase() || "";
+
+const getDraftContinueConfirmationKey = (packageId: string, email?: string | null) =>
+  `${DRAFT_CONTINUE_CONFIRMATION_STORAGE_KEY_PREFIX}:${normalizePackageId(packageId)}:${normalizeEmail(email)}`;
+
+export const markDraftContinueConfirmed = (packageId: string, email?: string | null) => {
+  try {
+    sessionStorage.setItem(getDraftContinueConfirmationKey(packageId, email), "true");
+  } catch {
+    // Ignore storage failures; the save/submit prompt remains as a fallback.
+  }
+};
+
+export const consumeDraftContinueConfirmed = (packageId: string, email?: string | null) => {
+  try {
+    const key = getDraftContinueConfirmationKey(packageId, email);
+    const wasConfirmed = sessionStorage.getItem(key) === "true";
+    if (wasConfirmed) {
+      sessionStorage.removeItem(key);
+    }
+    return wasConfirmed;
+  } catch {
+    return false;
+  }
+};
 
 export const isCurrentUserDraftActor = (
   currentUser: CurrentUserIdentity | null | undefined,

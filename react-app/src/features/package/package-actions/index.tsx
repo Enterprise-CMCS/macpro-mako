@@ -1,3 +1,4 @@
+import { type MouseEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
 import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { isStateUser } from "shared-utils";
@@ -19,7 +20,9 @@ import {
   getDraftDashboardLink,
   getDraftEditLink,
   getNonOwnerDraftDeleteModalBody,
+  getNonOwnerDraftWarningModalBody,
   isCurrentUserDraftActor,
+  markDraftContinueConfirmed,
 } from "@/utils/drafts";
 
 type PackageActionsCardProps = {
@@ -53,6 +56,9 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   );
   const canManageDraft = isDraft && !!oneMacUser?.user && isStateUser(oneMacUser.user);
   const draftDashboardLink = getDraftDashboardLink(submission);
+  const draftLinkState = {
+    from: `${location.pathname}${location.search}`,
+  };
 
   const { data, isLoading } = useGetPackageActions(id, {
     retry: false,
@@ -106,6 +112,29 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
     });
   };
 
+  const handleContinueDraft = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (!draftLink || !isNonOwnerDraftUser) {
+      return;
+    }
+
+    event.preventDefault();
+
+    userPrompt({
+      header: "Confirm action",
+      body: getNonOwnerDraftWarningModalBody(id),
+      acceptButtonText: "Yes, continue",
+      cancelButtonText: "Cancel",
+      cancelVariant: "link",
+      onCancel: () => {
+        // Keep users on package details when they dismiss the continue draft modal.
+      },
+      onAccept: () => {
+        markDraftContinueConfirmed(id, oneMacUser?.user?.email);
+        navigate(draftLink, { state: draftLinkState });
+      },
+    });
+  };
+
   if (isDraft && canManageDraft) {
     return (
       <nav className="my-3 sm:text-nowrap sm:min-w-min" aria-labelledby="package-actions-heading">
@@ -113,10 +142,9 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
           {draftLink && (
             <li className="py-2">
               <Link
-                state={{
-                  from: `${location.pathname}${location.search}`,
-                }}
+                state={draftLinkState}
                 to={draftLink}
+                onClick={handleContinueDraft}
                 className="text-sky-700 font-semibold text-lg hover:underline hover:decoration-inherit"
               >
                 {DRAFT_CONTINUE_ACTION_LABEL}

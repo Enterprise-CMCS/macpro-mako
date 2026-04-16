@@ -16,7 +16,11 @@ import { z } from "zod";
 import * as api from "@/api";
 import * as components from "@/components";
 import { queryClient } from "@/utils";
-import { DRAFT_ID_CONFLICT_MESSAGE, getNonOwnerDraftWarningModalBody } from "@/utils/drafts";
+import {
+  DRAFT_ID_CONFLICT_MESSAGE,
+  getNonOwnerDraftWarningModalBody,
+  markDraftContinueConfirmed,
+} from "@/utils/drafts";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -39,6 +43,7 @@ describe("ActionForm", () => {
     setDefaultStateSubmitter();
     vi.clearAllMocks();
     vi.spyOn(api, "itemExists").mockResolvedValue(false);
+    sessionStorage.clear();
     window.gtag = vi.fn();
   });
 
@@ -1075,11 +1080,68 @@ describe("ActionForm", () => {
       onAccept: () => void;
     };
     expect(firstPromptArgs.body).not.toMatch(/delete draft package/i);
+    expect(saveDraftSpy).not.toHaveBeenCalled();
     firstPromptArgs.onAccept();
-    await user.click(screen.getByTestId("save-draft-form"));
 
     expect(userPromptSpy).toHaveBeenCalledTimes(1);
     await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("does not show the non-owner warning after the user confirms from Continue Package", async () => {
+    const user = userEvent.setup();
+    const draftId = "NY-25-2342";
+    markDraftContinueConfirmed(draftId, TEST_STATE_SUBMITTER_EMAIL);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            draftOwnerEmail: "someone.else@example.com",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft owner test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(userPromptSpy).not.toHaveBeenCalled();
     useGetItemSpy.mockRestore();
     saveDraftSpy.mockRestore();
   });

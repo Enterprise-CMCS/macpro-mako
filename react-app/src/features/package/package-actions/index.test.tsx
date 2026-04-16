@@ -23,6 +23,7 @@ import {
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
   getNonOwnerDraftDeleteModalBody,
+  getNonOwnerDraftWarningModalBody,
 } from "@/utils/drafts";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
@@ -76,6 +77,7 @@ describe("", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockNavigate.mockReset();
+    sessionStorage.clear();
     setDefaultStateSubmitter();
   });
 
@@ -154,6 +156,48 @@ describe("", () => {
           acceptButtonText: "Delete",
           cancelButtonText: "Cancel",
           cancelVariant: "link",
+        }),
+      );
+    });
+
+    it("should prompt non-owner draft users before continuing from package details", async () => {
+      const nonOwnerDraftSubmission: opensearch.main.Document = {
+        ...draftSubmission,
+        draft: {
+          savedAt: "2026-03-20T00:00:00.000Z",
+          draftOwnerEmail: "someoneelse@example.com",
+          draftOwnerName: "Someone Else",
+          data: {},
+        },
+      };
+
+      await setup(nonOwnerDraftSubmission, TEST_MED_SPA_ITEM._id);
+
+      screen.getByRole("link", { name: DRAFT_CONTINUE_ACTION_LABEL }).click();
+
+      expect(userPrompt).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Confirm action",
+          body: getNonOwnerDraftWarningModalBody(TEST_MED_SPA_ITEM._id),
+          acceptButtonText: "Yes, continue",
+          cancelButtonText: "Cancel",
+          cancelVariant: "link",
+        }),
+      );
+      expect(mockNavigate).not.toHaveBeenCalled();
+
+      const promptData = vi.mocked(userPrompt).mock.calls.at(-1)?.[0];
+      promptData?.onAccept?.();
+
+      expect(mockNavigate).toHaveBeenCalledWith(
+        expect.objectContaining({
+          pathname: "/new-submission/spa/medicaid/create",
+          search: `draftId=${TEST_MED_SPA_ITEM._id}&origin=spas`,
+        }),
+        expect.objectContaining({
+          state: expect.objectContaining({
+            from: expect.any(String),
+          }),
         }),
       );
     });

@@ -19,6 +19,7 @@ import {
   DRAFT_DELETE_MODAL_BODY,
   DRAFT_DELETE_MODAL_HEADER,
   getNonOwnerDraftDeleteModalBody,
+  getNonOwnerDraftWarningModalBody,
 } from "@/utils/drafts";
 import {
   renderWithMemoryRouter,
@@ -59,6 +60,7 @@ import { MemoryRouter } from "react-router";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  sessionStorage.clear();
 });
 
 describe("CellDetailsLink GA event", () => {
@@ -285,6 +287,37 @@ describe("renderCells", () => {
             header: DRAFT_DELETE_MODAL_HEADER,
             body: getNonOwnerDraftDeleteModalBody(nonOwnerDraftItem.id),
             acceptButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            cancelVariant: "link",
+          }),
+        );
+      });
+
+      it("should prompt non-owner draft users before continuing from the dashboard", async () => {
+        const nonOwnerDraftItem: opensearch.main.Document = {
+          ...draftItem,
+          draft: {
+            savedAt: "2026-03-26T00:00:00.000Z",
+            draftOwnerEmail: "someoneelse@example.com",
+            draftOwnerName: "Someone Else",
+            data: {},
+          },
+        };
+
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", nonOwnerDraftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+        await user.click(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_CONTINUE_ACTION_LABEL} for ${nonOwnerDraftItem.id}`,
+          }),
+        );
+
+        expect(userPrompt).toHaveBeenCalledWith(
+          expect.objectContaining({
+            header: "Confirm action",
+            body: getNonOwnerDraftWarningModalBody(nonOwnerDraftItem.id),
+            acceptButtonText: "Yes, continue",
             cancelButtonText: "Cancel",
             cancelVariant: "link",
           }),

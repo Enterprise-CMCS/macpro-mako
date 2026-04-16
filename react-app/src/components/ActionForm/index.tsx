@@ -32,6 +32,7 @@ import { useNavigationPrompt } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
 import {
+  consumeDraftContinueConfirmed,
   DRAFT_ID_CONFLICT_MESSAGE,
   getNonOwnerDraftWarningModalBody,
   isCurrentUserDraftActor,
@@ -187,11 +188,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const isStickyFooterEnabled = useFeatureFlag("STICKY_FORM_FOOTER");
   const [footerTriggerElement, setFooterTriggerElement] = useState<HTMLDivElement | null>(null);
   const [isFooterFixed, setIsFooterFixed] = useState(false);
-  const [hasConfirmedNonOwnerDraftAction, setHasConfirmedNonOwnerDraftAction] = useState(false);
   const [draftSaveStatus, setDraftSaveStatus] = useState<DraftSaveStatus | null>(null);
   const previousDraftIdRef = useRef<string | null>(null);
   const draftSaveStatusRef = useRef<HTMLParagraphElement | null>(null);
+  const hasConfirmedNonOwnerDraftActionRef = useRef(false);
   const hasPromptedNonOwnerDraftActionRef = useRef(false);
+  const pendingNonOwnerDraftActionRef = useRef<(() => void) | null>(null);
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
   const [draftIdConflict, setDraftIdConflict] = useState<string | null>(null);
@@ -257,9 +259,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       cancelButtonText: "Cancel",
       cancelVariant: "link",
       onAccept: () => {
-        setHasConfirmedNonOwnerDraftAction(true);
+        hasConfirmedNonOwnerDraftActionRef.current = true;
+        hasPromptedNonOwnerDraftActionRef.current = false;
+        const pendingAction = pendingNonOwnerDraftActionRef.current;
+        pendingNonOwnerDraftActionRef.current = null;
+        pendingAction?.();
       },
-      onCancel: navigateAwayFromDraft,
+      onCancel: () => {
+        pendingNonOwnerDraftActionRef.current = null;
+        navigateAwayFromDraft();
+      },
     });
   }, [draftPackageIdForWarning, navigateAwayFromDraft]);
 
@@ -298,7 +307,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (!isDraftMode) {
       hasAppliedDraftRef.current = false;
       hasPromptedNonOwnerDraftActionRef.current = false;
-      setHasConfirmedNonOwnerDraftAction(false);
+      hasConfirmedNonOwnerDraftActionRef.current = false;
+      pendingNonOwnerDraftActionRef.current = null;
       if (previousDraftId !== null) {
         setDraftSaveStatus(null);
       }
@@ -310,7 +320,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
     hasAppliedDraftRef.current = false;
     hasPromptedNonOwnerDraftActionRef.current = false;
-    setHasConfirmedNonOwnerDraftAction(false);
+    hasConfirmedNonOwnerDraftActionRef.current = false;
+    pendingNonOwnerDraftActionRef.current = null;
     if (shouldClearDraftSaveStatus) {
       setDraftSaveStatus(null);
     }
@@ -319,6 +330,15 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     setCurrentSessionDraftActor(null);
     previousDraftIdRef.current = draftId;
   }, [draftId, isDraftMode]);
+
+  useEffect(() => {
+    if (!isNonOwnerDraftUser || !draftId || !userObj?.email) return;
+
+    if (consumeDraftContinueConfirmed(draftId, userObj.email)) {
+      hasConfirmedNonOwnerDraftActionRef.current = true;
+      hasPromptedNonOwnerDraftActionRef.current = false;
+    }
+  }, [draftId, isNonOwnerDraftUser, userObj?.email]);
 
   useEffect(() => {
     if (!isDraftMode || !draftRecord) {
@@ -333,10 +353,12 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
   }, [draftRecord, isDraftMode]);
 
-  const canProceedWithNonOwnerDraftAction = () => {
-    if (!isNonOwnerDraftUser || hasConfirmedNonOwnerDraftAction) {
+  const canProceedWithNonOwnerDraftAction = (pendingAction?: () => void) => {
+    if (!isNonOwnerDraftUser || hasConfirmedNonOwnerDraftActionRef.current) {
       return true;
     }
+
+    pendingNonOwnerDraftActionRef.current = pendingAction ?? null;
 
     if (!hasPromptedNonOwnerDraftActionRef.current) {
       hasPromptedNonOwnerDraftActionRef.current = true;
@@ -467,7 +489,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   );
 
   const onSubmit = form.handleSubmit(async (formData) => {
-    if (!canProceedWithNonOwnerDraftAction()) {
+    if (!canProceedWithNonOwnerDraftAction(onSubmit)) {
       return;
     }
 
@@ -552,7 +574,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const handleSaveDraft = async () => {
     if (!draftEnabled || !draftOptions?.event) return;
     if (saveDraftInFlightRef.current) return;
-    if (!canProceedWithNonOwnerDraftAction()) return;
+    if (!canProceedWithNonOwnerDraftAction(handleSaveDraft)) return;
 
     setDraftSaveStatus({
       variant: "saving",

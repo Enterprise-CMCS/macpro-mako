@@ -1,7 +1,7 @@
 import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useState } from "react";
-import { Link } from "react-router";
+import { type MouseEvent, useState } from "react";
+import { Link, useNavigate } from "react-router";
 import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
@@ -15,7 +15,9 @@ import {
   DRAFT_DELETE_MODAL_HEADER,
   getDraftEditLink,
   getNonOwnerDraftDeleteModalBody,
+  getNonOwnerDraftWarningModalBody,
   isCurrentUserDraftActor,
+  markDraftContinueConfirmed,
 } from "@/utils/drafts";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
@@ -72,9 +74,13 @@ const ActionMenuCell = ({
   user: FullUser;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const canDeleteDraft = data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
   const canContinueDraft = canDeleteDraft && !!draftLink;
   const actions = canDeleteDraft ? [] : getAvailableActions(user, data);
+  const draftLinkState = {
+    from: `${window.location.pathname}${window.location.search}`,
+  };
   const isNonOwnerDraftUser = Boolean(
     canDeleteDraft &&
       user.email &&
@@ -138,6 +144,34 @@ const ActionMenuCell = ({
     });
   };
 
+  const handleContinueDraft = (event: MouseEvent<HTMLAnchorElement>) => {
+    sendGAEvent("dash_ellipsis_click", {
+      action: "continue-package",
+    });
+
+    if (!draftLink || !isNonOwnerDraftUser) {
+      return;
+    }
+
+    event.preventDefault();
+    setIsOpen(false);
+
+    userPrompt({
+      header: "Confirm action",
+      body: getNonOwnerDraftWarningModalBody(data.id),
+      acceptButtonText: "Yes, continue",
+      cancelButtonText: "Cancel",
+      cancelVariant: "link",
+      onCancel: () => {
+        // Keep users on the dashboard when they dismiss the continue draft modal.
+      },
+      onAccept: () => {
+        markDraftContinueConfirmed(data.id, user.email);
+        navigate(draftLink, { state: draftLinkState });
+      },
+    });
+  };
+
   return (
     <DropdownMenu.Root open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenu.DropdownMenuTrigger
@@ -165,14 +199,8 @@ const ActionMenuCell = ({
                 aria-label={`${DRAFT_CONTINUE_ACTION_LABEL} for ${data.id}`}
               >
                 <Link
-                  onClick={() =>
-                    sendGAEvent("dash_ellipsis_click", {
-                      action: "continue-package",
-                    })
-                  }
-                  state={{
-                    from: `${window.location.pathname}${window.location.search}`,
-                  }}
+                  onClick={handleContinueDraft}
+                  state={draftLinkState}
                   to={draftLink}
                   className="text-blue-500 flex select-none items-center rounded-sm px-2 py-2 text-sm hover:bg-accent"
                 >
