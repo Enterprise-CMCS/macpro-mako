@@ -1381,10 +1381,12 @@ async function finalizeRun({
   keys: IntegrityRunKeys;
   checkpoint: AttachmentArchiveIntegrityCheckpoint;
 }): Promise<AttachmentArchiveIntegrityRunResult> {
-  const chunkKeys = (await listKeys({
-    bucket: storage.writeBucketName,
-    prefix: keys.chunkPrefix,
-  })).sort();
+  const chunkKeys = (
+    await listKeys({
+      bucket: storage.writeBucketName,
+      prefix: keys.chunkPrefix,
+    })
+  ).sort();
   const discrepancies: AttachmentArchiveIntegrityDiscrepancy[] = [];
 
   for (const chunkKey of chunkKeys) {
@@ -1497,7 +1499,8 @@ export const handler = async (
     for (let index = startIndex; index < runState.packageIds.length; index += 1) {
       if (
         processedPackageIds.length >= DEFAULT_BATCH_SIZE ||
-        (processedPackageIds.length > 0 && getRemainingTimeInMillis(context) < MIN_REMAINING_TIME_MS)
+        (processedPackageIds.length > 0 &&
+          getRemainingTimeInMillis(context) < MIN_REMAINING_TIME_MS)
       ) {
         break;
       }

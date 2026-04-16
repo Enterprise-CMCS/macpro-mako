@@ -345,7 +345,9 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
 
   it("creates checkpoint files on the first invocation and resumes to completion", async () => {
     const fixtures = [buildValidPackageFixture("MD-1"), buildValidPackageFixture("MD-2")];
-    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(fixtures.map((fixture) => fixture.packageId));
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(
+      fixtures.map((fixture) => fixture.packageId),
+    );
     createPackageMocks(fixtures);
 
     const { objectStore, listedKeys, existingObjects } = buildArchiveStores(fixtures);
@@ -444,7 +446,9 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
 
   it("preserves completed progress in the failed summary when a resumed run errors", async () => {
     const fixtures = [buildValidPackageFixture("MD-4"), buildValidPackageFixture("MD-5")];
-    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(fixtures.map((fixture) => fixture.packageId));
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(
+      fixtures.map((fixture) => fixture.packageId),
+    );
     createPackageMocks(fixtures);
     getPackageChangelogMock.mockImplementation(async (packageId: string) => {
       if (packageId === "MD-5") {

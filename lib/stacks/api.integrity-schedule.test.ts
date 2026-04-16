@@ -93,7 +93,8 @@ describe("Api attachment archive integrity scheduling", () => {
         };
       };
       expect(integrityStateMachine).toBeDefined();
-      const definitionParts = integrityStateMachine.Properties?.DefinitionString?.["Fn::Join"]?.[1] || [];
+      const definitionParts =
+        integrityStateMachine.Properties?.DefinitionString?.["Fn::Join"]?.[1] || [];
       const definitionString = definitionParts
         .map((part) => (typeof part === "string" ? part : JSON.stringify(part)))
         .join("");
