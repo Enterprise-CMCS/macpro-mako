@@ -212,6 +212,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const {
     data: draftRecord,
     isLoading: isDraftLoading,
+    isFetched: isDraftFetched,
     error: draftError,
   } = useGetItem(
     draftId ?? "",
@@ -633,6 +634,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const normalizedId = resolvedId.toUpperCase();
       const authorityPath = draftOptions.authorityPath ?? "authority";
       const authorityValue = getValueByPath(formValues as Record<string, unknown>, authorityPath);
+      const savedAt = new Date().toISOString();
       const draftVersionPayload =
         isDraftMode &&
         typeof draftVersionRef.current.seqNo === "number" &&
@@ -663,10 +665,55 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       const didDraftIdChange = !rawDraftId || rawDraftId.toUpperCase() !== normalizedId;
+      const sourceDraft = draftRecord?._source?.draft;
 
-      if (didDraftIdChange) {
-        queryClient.removeQueries({ queryKey: ["record", normalizedId] });
-      }
+      queryClient.setQueryData(["record", normalizedId, "preferDraft"], {
+        _id: normalizedId,
+        ...(typeof saveResponse?.seqNo === "number" && { _seq_no: saveResponse.seqNo }),
+        ...(typeof saveResponse?.primaryTerm === "number" && {
+          _primary_term: saveResponse.primaryTerm,
+        }),
+        found: true,
+        _source: {
+          ...draftRecord?._source,
+          id: normalizedId,
+          authority:
+            typeof authorityValue === "string" ? authorityValue : draftRecord?._source?.authority,
+          state: normalizedId.slice(0, 2),
+          deleted: false,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            ...sourceDraft,
+            savedAt,
+            createdAt: sourceDraft?.createdAt ?? sourceDraft?.savedAt ?? savedAt,
+            createdByEmail:
+              sourceDraft?.createdByEmail ??
+              sourceDraft?.draftOwnerEmail ??
+              draftRecord?._source?.submitterEmail ??
+              userObj?.email,
+            createdByName:
+              sourceDraft?.createdByName ??
+              sourceDraft?.draftOwnerName ??
+              draftRecord?._source?.submitterName ??
+              userObj?.fullName,
+            updatedAt: savedAt,
+            updatedByEmail: userObj?.email,
+            updatedByName: userObj?.fullName,
+            draftOwnerEmail:
+              sourceDraft?.createdByEmail ??
+              sourceDraft?.draftOwnerEmail ??
+              draftRecord?._source?.submitterEmail ??
+              userObj?.email,
+            draftOwnerName:
+              sourceDraft?.createdByName ??
+              sourceDraft?.draftOwnerName ??
+              draftRecord?._source?.submitterName ??
+              userObj?.fullName,
+            data: formValues,
+          },
+        },
+      });
+
       if (draftId && draftId !== normalizedId) {
         queryClient.removeQueries({ queryKey: ["record", draftId] });
       }
@@ -797,7 +844,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   if (
     isDraftMode &&
-    (draftError || !draftRecord || draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT)
+    (draftError ||
+      (isDraftFetched &&
+        (!draftRecord || draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT)))
   ) {
     return <Navigate to="/dashboard" replace />;
   }

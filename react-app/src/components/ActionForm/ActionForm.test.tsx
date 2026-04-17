@@ -738,6 +738,7 @@ describe("ActionForm", () => {
     const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
     const bannerSpy = vi.spyOn(components, "banner");
     const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
+    const setQueryDataSpy = vi.spyOn(queryClient, "setQueryData");
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
@@ -771,7 +772,21 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(screen.getByTestId("draft-save-status")).toHaveTextContent(/^Progress saved at /),
     );
-    expect(removeQueriesSpy).toHaveBeenCalledWith({
+    expect(setQueryDataSpy).toHaveBeenCalledWith(
+      ["record", "MD-00-0001", "preferDraft"],
+      expect.objectContaining({
+        _id: "MD-00-0001",
+        found: true,
+        _source: expect.objectContaining({
+          id: "MD-00-0001",
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: expect.objectContaining({
+            data: expect.objectContaining({ id: "MD-00-0001" }),
+          }),
+        }),
+      }),
+    );
+    expect(removeQueriesSpy).not.toHaveBeenCalledWith({
       queryKey: ["record", "MD-00-0001"],
     });
 
