@@ -14,6 +14,7 @@ import { DetailsContent, packageDetailsLoader } from ".";
 const useGetPackageActionsSpy = vi.spyOn(rootApi, "useGetPackageActions");
 const useRootGetUserSpy = vi.spyOn(rootApi, "useGetUser");
 const useGetItemSpy = vi.spyOn(rootApi, "useGetItem");
+const itemExistsSpy = vi.spyOn(rootApi, "itemExists");
 
 const makeMockUserResult = () => {
   const response = mockUseGetUser();
@@ -33,6 +34,7 @@ describe("package details", () => {
       isLoading: false,
       error: null,
     } as any);
+    itemExistsSpy.mockResolvedValue(false);
   });
 
   it("renders package detail sections when the record is loaded", async () => {
@@ -56,6 +58,47 @@ describe("package details", () => {
     expect(
       screen.getByText("No actions are currently available for this submission."),
     ).toBeInTheDocument();
+    expect(itemExistsSpy).not.toHaveBeenCalled();
+  });
+
+  it("shows a non-blocking conflict warning for draft package details", async () => {
+    vi.spyOn(api, "useGetUser").mockImplementation(() => makeMockUserResult());
+    itemExistsSpy.mockResolvedValue(true);
+    useGetItemSpy.mockReturnValue({
+      data: {
+        ...ADMIN_CHANGE_ITEM,
+        _source: {
+          ...ADMIN_CHANGE_ITEM._source,
+          id: "MD-25-2000-JJJJ",
+          authority: "Medicaid SPA",
+          event: "new-medicaid-submission",
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-04-17T00:00:00.000Z",
+            data: { id: "MD-25-2000-JJJJ" },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+
+    renderWithQueryClient(<DetailsContent id="MD-25-2000-JJJJ" preferDraft />);
+
+    expect(
+      await screen.findByRole("heading", { name: "This package ID is already in use" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "This package ID is already in use. Update the ID before saving or submitting.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Continue Package" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Delete Package" })).toBeInTheDocument();
+    expect(itemExistsSpy).toHaveBeenCalledWith("MD-25-2000-JJJJ", {
+      includeDrafts: true,
+      allowDraftId: "MD-25-2000-JJJJ",
+    });
   });
 
   it("requests draft-first package details when preferDraft is enabled", async () => {
