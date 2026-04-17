@@ -929,6 +929,97 @@ describe("ActionForm", () => {
     saveDraftSpy.mockRestore();
   });
 
+  test("does not remove the old draft query before navigating after a draft ID change", async () => {
+    const user = userEvent.setup();
+    const oldDraftId = "NY-25-2342";
+    const newDraftId = "MD-26-0108-P";
+    const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
+    const setQueryDataSpy = vi.spyOn(queryClient, "setQueryData");
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: oldDraftId,
+        _seq_no: 5,
+        _primary_term: 1,
+        found: true,
+        _source: {
+          id: oldDraftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: oldDraftId },
+          },
+        },
+      },
+      isLoading: false,
+      isFetched: true,
+      error: null,
+    } as any);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: newDraftId,
+      seqNo: 6,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: oldDraftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${oldDraftId}`,
+    );
+
+    const packageIdField = screen.getByLabelText("Package ID");
+    await user.clear(packageIdField);
+    await user.type(packageIdField, newDraftId);
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(saveDraftSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: newDraftId,
+        originalDraftId: oldDraftId,
+        event: "new-medicaid-submission",
+      }),
+    );
+    expect(setQueryDataSpy).toHaveBeenCalledWith(
+      ["record", newDraftId, "preferDraft"],
+      expect.objectContaining({
+        _id: newDraftId,
+        found: true,
+        _source: expect.objectContaining({
+          id: newDraftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+        }),
+      }),
+    );
+    expect(removeQueriesSpy).not.toHaveBeenCalledWith({
+      queryKey: ["record", oldDraftId, "preferDraft"],
+      exact: true,
+    });
+    expect(mockNavigate).toHaveBeenCalledWith(expect.stringContaining(`draftId=${newDraftId}`), {
+      replace: true,
+    });
+
+    removeQueriesSpy.mockRestore();
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
   test("ignores duplicate save clicks while a draft save is already in flight", async () => {
     let resolveSaveDraft: ((value: api.SaveDraftResponse) => void) | undefined;
     const saveDraftSpy = vi.spyOn(api, "saveDraft").mockImplementation(

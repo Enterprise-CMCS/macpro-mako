@@ -196,6 +196,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const pendingNonOwnerDraftActionRef = useRef<(() => void) | null>(null);
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
+  const pendingDraftIdRemovalRef = useRef<string | null>(null);
   const [draftIdConflict, setDraftIdConflict] = useState<string | null>(null);
   const [currentSessionDraftActor, setCurrentSessionDraftActor] = useState<{
     email?: string | null;
@@ -340,6 +341,20 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       hasPromptedNonOwnerDraftActionRef.current = false;
     }
   }, [draftId, isNonOwnerDraftUser, userObj?.email]);
+
+  useEffect(() => {
+    const pendingDraftIdRemoval = pendingDraftIdRemovalRef.current;
+
+    if (!pendingDraftIdRemoval || pendingDraftIdRemoval === draftId) {
+      return;
+    }
+
+    queryClient.removeQueries({
+      queryKey: ["record", pendingDraftIdRemoval, "preferDraft"],
+      exact: true,
+    });
+    pendingDraftIdRemovalRef.current = null;
+  }, [draftId]);
 
   useEffect(() => {
     if (!isDraftMode || !draftRecord) {
@@ -715,7 +730,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       });
 
       if (draftId && draftId !== normalizedId) {
-        queryClient.removeQueries({ queryKey: ["record", draftId] });
+        pendingDraftIdRemovalRef.current = draftId;
       }
 
       banner({
