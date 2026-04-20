@@ -181,12 +181,84 @@ describe("notifyAttachmentArchiveIntegrity", () => {
     );
     expect(rawData).toContain('filename="discrepancies.csv"');
     expect(rawData).toContain("[main] OneMAC Archive Integrity Discrepancies (2)");
+    expect(rawData).not.toContain("Approved terminal exceptions:");
 
     const updatedSummary = JSON.parse(
       putStore.get(toStoreKey("archive-write-bucket", summaryKey)) || "{}",
     );
     expect(updatedSummary.notificationStatus).toBe("SENT");
     expect(updatedSummary.notificationSentAt).toEqual(expect.any(String));
+  });
+
+  it("includes exception counts in val discrepancy emails when exception outputs are present", async () => {
+    process.env.STAGE_NAME = "val";
+    getSecretMock.mockResolvedValue(
+      JSON.stringify({
+        sourceEmail: ['"OneMAC Alerts" <source@example.com>'],
+        archiveAlerts: ['"IT Support" <it@example.com>'],
+      }),
+    );
+
+    const summaryKey = "archive-integrity/val/runs/2026/04/20/run-1/summary.json";
+    const csvKey = "archive-integrity/val/runs/2026/04/20/run-1/discrepancies.csv";
+    const objectStore: S3ObjectStore = new Map([
+      [
+        toStoreKey("archive-write-bucket", summaryKey),
+        JSON.stringify({
+          runId: "run-1",
+          stage: "val",
+          runTimestamp: "2026-04-20T08:00:00.000Z",
+          status: "SUCCESS",
+          packagesScanned: 10,
+          packagesTotal: 10,
+          sectionsScanned: 20,
+          discrepancyCount: 2,
+          discrepancyTypeCounts: {
+            SECTION_CROSS_SECTION_BLEED: 1,
+            PACKAGE_FILE_MISSING: 1,
+          },
+          exceptionCount: 3,
+          exceptionTypeCounts: {
+            ALL_ATTACHMENTS_UNAVAILABLE: 3,
+          },
+          topDiscrepancyTypes: [
+            { type: "SECTION_CROSS_SECTION_BLEED", count: 1 },
+            { type: "PACKAGE_FILE_MISSING", count: 1 },
+          ],
+          reportBucketName: "archive-write-bucket",
+          reportPrefix: "archive-integrity/val/runs/2026/04/20/run-1",
+          checkpointKey: "archive-integrity/val/runs/2026/04/20/run-1/checkpoint.json",
+          discrepancyJsonKey: "archive-integrity/val/runs/2026/04/20/run-1/discrepancies.json",
+          discrepancyCsvKey: csvKey,
+          exceptionJsonKey: "archive-integrity/val/runs/2026/04/20/run-1/exceptions.json",
+          exceptionCsvKey: "archive-integrity/val/runs/2026/04/20/run-1/exceptions.csv",
+          discrepancyCsvFilename: "discrepancies.csv",
+          discrepancyCsvTruncated: false,
+          discrepancyCsvRowsIncluded: 2,
+          discrepancyCsvRowsTotal: 2,
+          notificationStatus: "PENDING",
+        }),
+      ],
+      [
+        toStoreKey("archive-write-bucket", csvKey),
+        "authority,packageId,sectionId,cmsStatus,submissionDate,issueScope,discrepancyType,expectedValue,actualValue\nA,MD-1,s1,Submitted,2026-04-20,Section,SECTION_FILE_EXTRA,none,extra",
+      ],
+    ]);
+    const putStore: S3ObjectStore = new Map();
+    mockS3(objectStore, putStore);
+
+    await handler({
+      mode: "discrepancy",
+      runResult: {
+        reportBucketName: "archive-write-bucket",
+        summaryKey,
+      },
+    });
+
+    const command = sesSendSpy.mock.calls[0][0];
+    const rawData = Buffer.from((command.input as any).RawMessage.Data).toString("utf8");
+    expect(rawData).toContain("[val] OneMAC Archive Integrity Discrepancies (2)");
+    expect(rawData).toContain("Approved terminal exceptions: 3");
   });
 
   it("skips email delivery when discrepancy count is zero", async () => {

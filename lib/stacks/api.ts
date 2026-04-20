@@ -883,6 +883,12 @@ export class Api extends cdk.NestedStack {
           ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
           ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
           ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX: "archive-integrity",
+          ...(stage === "val"
+            ? {
+                ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY:
+                  "archive-integrity/val/exception-registry.json",
+              }
+            : {}),
         },
         role: attachmentArchiveIntegrityRole,
         timeoutSeconds: 900,
@@ -956,8 +962,18 @@ export class Api extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:ListBucket"],
+              resources: [attachmentsBucket.bucketArn],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["s3:GetObject", "s3:GetObjectTagging"],
               resources: [`${sharedAttachmentReadBucket.arn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:ListBucket"],
+              resources: [sharedAttachmentReadBucket.arn],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,

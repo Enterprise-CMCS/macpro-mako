@@ -1,5 +1,5 @@
 import * as cdk from "aws-cdk-lib";
-import { Template } from "aws-cdk-lib/assertions";
+import { Match, Template } from "aws-cdk-lib/assertions";
 import { describe, expect, it } from "vitest";
 
 import { Api } from "./api";
@@ -113,5 +113,68 @@ describe("Api attachment archive integrity scheduling", () => {
     });
 
     template.resourceCountIs("AWS::Scheduler::Schedule", 0);
+  }, 30000);
+
+  it("only enables the exception registry for the val integrity lambda", () => {
+    const valTemplate = buildApiTemplate({
+      stage: "val",
+      isDev: false,
+    });
+    valTemplate.hasResourceProperties("AWS::Lambda::Function", {
+      FunctionName: "mako-val-api-runAttachmentArchiveIntegrityCheck",
+      Environment: {
+        Variables: Match.objectLike({
+          ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY:
+            "archive-integrity/val/exception-registry.json",
+        }),
+      },
+    });
+
+    for (const stage of ["main", "production"] as const) {
+      const template = buildApiTemplate({
+        stage,
+        isDev: false,
+      });
+      const lambdaResources = template.findResources("AWS::Lambda::Function", {
+        Properties: {
+          FunctionName: `mako-${stage}-api-runAttachmentArchiveIntegrityCheck`,
+        },
+      });
+      const lambda = Object.values(lambdaResources)[0] as {
+        Properties?: {
+          Environment?: {
+            Variables?: Record<string, string>;
+          };
+        };
+      };
+      expect(lambda.Properties?.Environment?.Variables).not.toHaveProperty(
+        "ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY",
+      );
+    }
+  }, 30000);
+
+  it("grants the archive worker list access to the stage attachment bucket", () => {
+    const template = buildApiTemplate({
+      stage: "val",
+      isDev: false,
+    });
+
+    template.hasResourceProperties("AWS::IAM::Role", {
+      Policies: Match.arrayWith([
+        Match.objectLike({
+          PolicyName: "AttachmentArchiveWorkerPolicy",
+          PolicyDocument: {
+            Statement: Match.arrayWith([
+              Match.objectLike({
+                Action: "s3:ListBucket",
+                Resource: {
+                  Ref: Match.stringLikeRegexp("AttachmentsBucketval"),
+                },
+              }),
+            ]),
+          },
+        }),
+      ]),
+    });
   }, 30000);
 });
