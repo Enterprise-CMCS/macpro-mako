@@ -49,10 +49,8 @@ function buildCurrent() {
     scope: "section" as const,
     hash: "test-hash",
     status: "PENDING" as const,
-    artifactKey:
-      "package/CO-25-0002-1960/section/CO-25-0002-1960-52418/test-hash.zip",
-    manifestKey:
-      "package/CO-25-0002-1960/section/CO-25-0002-1960-52418/test-hash.manifest.json",
+    artifactKey: "package/CO-25-0002-1960/section/CO-25-0002-1960-52418/test-hash.zip",
+    manifestKey: "package/CO-25-0002-1960/section/CO-25-0002-1960-52418/test-hash.manifest.json",
     attachmentCount: 1,
     executionArn: "arn:aws:states:us-east-1:123456789012:execution:test:run-1",
     sectionId: "CO-25-0002-1960-52418",

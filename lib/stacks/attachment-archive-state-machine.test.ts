@@ -92,6 +92,5 @@ describe("Attachment archive state machine", () => {
     expect(definitionString).toContain('"TimeoutSeconds":900');
     expect(definitionString).toContain('"Next":"MarkAttachmentArchiveFailedTask"');
     expect(definitionString).toContain('"ErrorEquals":["States.ALL"]');
-
   });
 });

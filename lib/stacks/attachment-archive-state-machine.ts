@@ -41,10 +41,14 @@ export function createAttachmentArchiveStateMachine(
     vpc: cdk.aws_ec2.IVpc;
   },
 ): cdk.aws_stepfunctions.StateMachine {
-  const archiveWorkerLogGroup = new cdk.aws_logs.LogGroup(scope, "AttachmentArchiveWorkerLogGroup", {
-    logGroupName: `/aws/ecs/${project}-${stage}-${stack}-attachment-archive-worker`,
-    removalPolicy: cdk.RemovalPolicy.DESTROY,
-  });
+  const archiveWorkerLogGroup = new cdk.aws_logs.LogGroup(
+    scope,
+    "AttachmentArchiveWorkerLogGroup",
+    {
+      logGroupName: `/aws/ecs/${project}-${stage}-${stack}-attachment-archive-worker`,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    },
+  );
 
   const archiveWorkerCluster = new cdk.aws_ecs.Cluster(scope, "AttachmentArchiveCluster", {
     vpc,
@@ -110,10 +114,14 @@ export function createAttachmentArchiveStateMachine(
     },
   );
 
-  const attachmentArchiveFailed = new cdk.aws_stepfunctions.Fail(scope, "AttachmentArchiveFailure", {
-    cause: "Attachment archive execution did not produce a valid ready artifact.",
-    error: "AttachmentArchiveValidationFailed",
-  });
+  const attachmentArchiveFailed = new cdk.aws_stepfunctions.Fail(
+    scope,
+    "AttachmentArchiveFailure",
+    {
+      cause: "Attachment archive execution did not produce a valid ready artifact.",
+      error: "AttachmentArchiveValidationFailed",
+    },
+  );
 
   markAttachmentArchiveFailedTask.next(attachmentArchiveFailed);
 
@@ -127,9 +135,7 @@ export function createAttachmentArchiveStateMachine(
       launchTarget: new cdk.aws_stepfunctions_tasks.EcsFargateLaunchTarget(),
       assignPublicIp: false,
       resultPath: cdk.aws_stepfunctions.JsonPath.DISCARD,
-      taskTimeout: cdk.aws_stepfunctions.Timeout.duration(
-        ATTACHMENT_ARCHIVE_WORKER_TASK_TIMEOUT,
-      ),
+      taskTimeout: cdk.aws_stepfunctions.Timeout.duration(ATTACHMENT_ARCHIVE_WORKER_TASK_TIMEOUT),
       containerOverrides: [
         {
           containerDefinition: archiveWorkerContainer,

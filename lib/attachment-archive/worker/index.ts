@@ -1,3 +1,5 @@
+import type { ReadableStream as NodeReadableStream } from "node:stream/web";
+
 import {
   GetObjectCommand,
   GetObjectCommandOutput,
@@ -11,7 +13,6 @@ import { createReadStream, createWriteStream, promises as fs } from "fs";
 import { join } from "path";
 import { Readable } from "stream";
 import { finished } from "stream/promises";
-import type { ReadableStream as NodeReadableStream } from "node:stream/web";
 
 import { buildAttachmentArchiveCurrent } from "../archive-manifest";
 import { createAttachmentBucketClientFactory, getAttachmentBucketMap } from "../bucket-routing";
@@ -375,9 +376,7 @@ function hasTransformToWebStream(body: AttachmentBody): body is AttachmentBody &
   return typeof (body as { transformToWebStream?: unknown }).transformToWebStream === "function";
 }
 
-function toNodeWebReadableStream(
-  stream: ReadableStream<Uint8Array>,
-): NodeReadableStream<any> {
+function toNodeWebReadableStream(stream: ReadableStream<Uint8Array>): NodeReadableStream<any> {
   return stream as unknown as NodeReadableStream<any>;
 }
 
