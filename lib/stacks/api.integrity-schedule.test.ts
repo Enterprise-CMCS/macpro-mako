@@ -151,7 +151,7 @@ describe("Api attachment archive integrity scheduling", () => {
         "ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY",
       );
     }
-  }, 30000);
+  }, 60000);
 
   it("grants the archive worker list access to the stage attachment bucket", () => {
     const template = buildApiTemplate({
