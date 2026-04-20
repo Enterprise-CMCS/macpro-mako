@@ -160,6 +160,28 @@ function buildValidPackageFixture(packageId: string): PackageFixture {
   };
 }
 
+function buildFailedTerminalFixture(packageId: string): PackageFixture {
+  const fixture = buildValidPackageFixture(packageId);
+  fixture.objectEntries = fixture.objectEntries.map(([key, value]) => {
+    if (!key.endsWith("/current.json")) {
+      return [key, value];
+    }
+
+    const current = JSON.parse(value);
+    return [
+      key,
+      JSON.stringify({
+        ...current,
+        status: "FAILED",
+        failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+        failureMessage: "Attachments are no longer available.",
+      }),
+    ];
+  });
+  fixture.existingObjects = [];
+  return fixture;
+}
+
 function createPackageMocks(fixtures: PackageFixture[]) {
   const fixtureMap = new Map(fixtures.map((fixture) => [fixture.packageId, fixture]));
   vi.mocked(getPackageChangelog).mockImplementation(async (packageId: string) => {
@@ -210,12 +232,14 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
   const s3SendSpy = vi.spyOn(S3Client.prototype, "send");
   const originalBucketName = process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME;
   const originalBaseBucketName = process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME;
+  const originalExceptionRegistryKey = process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY;
   const originalReportPrefix = process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX;
   const originalStageName = process.env.STAGE_NAME;
 
   beforeEach(() => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = "archive-write-bucket";
     process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME = "archive-write-bucket";
+    delete process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY;
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = "archive-integrity";
     process.env.STAGE_NAME = "main";
     listAllAttachmentArchivePackageIdsMock.mockReset();
@@ -227,6 +251,7 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
   afterEach(() => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = originalBucketName;
     process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME = originalBaseBucketName;
+    process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY = originalExceptionRegistryKey;
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = originalReportPrefix;
     process.env.STAGE_NAME = originalStageName;
   });
@@ -441,6 +466,118 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     const csvEntry = Array.from(objectStore.entries()).find(([key]) => key.endsWith(".csv"));
     expect(csvEntry?.[1]).toContain(
       "authority,packageId,sectionId,cmsStatus,submissionDate,issueScope,discrepancyType,expectedValue,actualValue",
+    );
+  });
+
+  it("moves matching terminal failures into exception artifacts", async () => {
+    process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY =
+      "archive-integrity/val/exception-registry.json";
+    const fixture = buildFailedTerminalFixture("MD-6");
+    const sectionId = buildAttachmentArchiveSections({
+      packageId: fixture.packageId,
+      changelog: fixture.changelog,
+    })[0].sectionId;
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([fixture.packageId]);
+    createPackageMocks([fixture]);
+
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores([fixture]);
+    objectStore.set(
+      toStoreKey("archive-write-bucket", "archive-integrity/val/exception-registry.json"),
+      JSON.stringify([
+        {
+          packageId: fixture.packageId,
+          scope: "all",
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          reason: "Known terminal package failure",
+          addedAt: "2026-04-20T00:00:00.000Z",
+        },
+        {
+          packageId: fixture.packageId,
+          scope: "section",
+          sectionId,
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          reason: "Known terminal section failure",
+          addedAt: "2026-04-20T00:00:00.000Z",
+        },
+      ]),
+    );
+    const putStore: S3ObjectStore = new Map();
+    mockS3({
+      objectStore,
+      listedKeys,
+      existingObjects,
+      putStore,
+    });
+
+    const result = await handler();
+
+    expect(result.status).toBe("COMPLETE");
+    expect(result.discrepancyCount).toBe(0);
+    expect(result.exceptionCount).toBe(2);
+    const summary = findStoredJson(objectStore, "/summary.json");
+    expect(summary.exceptionCount).toBe(2);
+    expect(summary.discrepancyCount).toBe(0);
+    expect(summary.exceptionJsonKey).toContain("/exceptions.json");
+    const exceptions = findStoredJson(objectStore, "/exceptions.json");
+    expect(exceptions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          packageId: "MD-6",
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          issueScope: "Download All",
+        }),
+        expect.objectContaining({
+          packageId: "MD-6",
+          sectionId,
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          issueScope: "Section",
+        }),
+      ]),
+    );
+  });
+
+  it("keeps missing current discrepancies actionable even when an exception registry is configured", async () => {
+    process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY =
+      "archive-integrity/val/exception-registry.json";
+    const fixture = buildValidPackageFixture("MD-7");
+    fixture.objectEntries = fixture.objectEntries.filter(
+      ([key]) => key !== getArchiveCurrentKey({ packageId: fixture.packageId, scope: "all" }),
+    );
+    fixture.listedKeys = fixture.listedKeys.filter((key) => !key.endsWith("/all/current.json"));
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([fixture.packageId]);
+    createPackageMocks([fixture]);
+
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores([fixture]);
+    objectStore.set(
+      toStoreKey("archive-write-bucket", "archive-integrity/val/exception-registry.json"),
+      JSON.stringify([
+        {
+          packageId: fixture.packageId,
+          scope: "all",
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          reason: "Would match if current existed",
+          addedAt: "2026-04-20T00:00:00.000Z",
+        },
+      ]),
+    );
+    const putStore: S3ObjectStore = new Map();
+    mockS3({
+      objectStore,
+      listedKeys,
+      existingObjects,
+      putStore,
+    });
+
+    const result = await handler();
+
+    expect(result.status).toBe("COMPLETE");
+    expect(result.discrepancyCount).toBeGreaterThan(0);
+    expect(result.exceptionCount).toBe(0);
+    const discrepancies = findStoredJson(objectStore, "/discrepancies.json");
+    expect(discrepancies).toContainEqual(
+      expect.objectContaining({
+        discrepancyType: "PACKAGE_CURRENT_MISSING",
+      }),
     );
   });
 

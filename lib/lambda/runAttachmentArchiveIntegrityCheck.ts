@@ -17,8 +17,14 @@ import {
 } from "../attachment-archive/archive-manifest";
 import { listAllAttachmentArchivePackageIds } from "../attachment-archive/backfill";
 import {
+  getAttachmentArchiveFailureMessage,
+  isTerminalAttachmentArchiveFailure,
+} from "../attachment-archive/failure-state";
+import {
   AttachmentArchiveIntegrityCheckpoint,
   AttachmentArchiveIntegrityDiscrepancy,
+  AttachmentArchiveIntegrityException,
+  AttachmentArchiveIntegrityExceptionRegistryEntry,
   AttachmentArchiveIntegrityRunResult,
   AttachmentArchiveIntegrityRunSummary,
 } from "../attachment-archive/integrity-types";
@@ -31,7 +37,9 @@ import {
 } from "../attachment-archive/storage";
 import {
   AttachmentArchiveCurrent,
+  AttachmentArchiveFailureCode,
   AttachmentArchivePackageManifest,
+  AttachmentArchiveScope,
   AttachmentArchiveSectionManifest,
 } from "../attachment-archive/types";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
@@ -51,6 +59,7 @@ type ArchiveStorageConfig = {
   keyPrefix: string;
   reportPrefix: string;
   stage: string;
+  exceptionRegistryKey?: string;
 };
 
 type PackageMetadata = {
@@ -94,7 +103,9 @@ type IntegrityRunKeys = {
   checkpointKey: string;
   summaryKey: string;
   discrepancyJsonKey: string;
-  chunkPrefix: string;
+  discrepancyChunkPrefix: string;
+  exceptionJsonKey: string;
+  exceptionChunkPrefix: string;
 };
 
 type IntegrityRunState = {
@@ -103,6 +114,14 @@ type IntegrityRunState = {
   keys: IntegrityRunKeys;
   checkpoint: AttachmentArchiveIntegrityCheckpoint;
   packageIds: string[];
+};
+
+type IntegrityExceptionRegistry = Map<string, AttachmentArchiveIntegrityExceptionRegistryEntry>;
+
+type PackageDiscrepancyEvaluationResult = {
+  discrepancies: AttachmentArchiveIntegrityDiscrepancy[];
+  exceptions: AttachmentArchiveIntegrityException[];
+  sectionsScanned: number;
 };
 
 const DISCREPANCY_CSV_COLUMNS: Array<keyof AttachmentArchiveIntegrityDiscrepancy> = [
@@ -116,6 +135,24 @@ const DISCREPANCY_CSV_COLUMNS: Array<keyof AttachmentArchiveIntegrityDiscrepancy
   "expectedValue",
   "actualValue",
 ];
+
+const EXCEPTION_CSV_COLUMNS: Array<keyof AttachmentArchiveIntegrityException> = [
+  "authority",
+  "packageId",
+  "sectionId",
+  "cmsStatus",
+  "submissionDate",
+  "issueScope",
+  "failureCode",
+  "failureMessage",
+  "reason",
+  "addedAt",
+];
+
+const ELIGIBLE_EXCEPTION_FAILURE_CODES = new Set<AttachmentArchiveFailureCode>([
+  "ALL_ATTACHMENTS_UNAVAILABLE",
+  "ATTACHMENT_NOT_CLEAN",
+]);
 
 function getIntegrityStageName() {
   const stage = process.env.STAGE_NAME?.trim();
@@ -137,6 +174,8 @@ function getStorageConfig(): ArchiveStorageConfig {
   const reportPrefix = (
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX || "archive-integrity"
   ).replace(/^\/+|\/+$/g, "");
+  const exceptionRegistryKey =
+    process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY?.trim() || undefined;
   const stage = getIntegrityStageName();
 
   return {
@@ -145,6 +184,7 @@ function getStorageConfig(): ArchiveStorageConfig {
     keyPrefix,
     reportPrefix,
     stage,
+    exceptionRegistryKey,
   };
 }
 
@@ -260,6 +300,123 @@ function buildDiscrepancy({
     discrepancyType,
     expectedValue,
     actualValue,
+  };
+}
+
+function buildIntegrityExceptionRegistryLookupKey({
+  packageId,
+  scope,
+  sectionId,
+  failureCode,
+}: {
+  packageId: string;
+  scope: AttachmentArchiveScope;
+  sectionId?: string;
+  failureCode: AttachmentArchiveFailureCode;
+}) {
+  return `${packageId}::${scope}::${sectionId || ""}::${failureCode}`;
+}
+
+async function loadIntegrityExceptionRegistry(
+  storage: ArchiveStorageConfig,
+): Promise<IntegrityExceptionRegistry> {
+  if (!storage.exceptionRegistryKey) {
+    return new Map();
+  }
+
+  const entries = await getJsonObject<AttachmentArchiveIntegrityExceptionRegistryEntry[]>({
+    client: archiveBucketClient,
+    bucket: storage.writeBucketName,
+    key: storage.exceptionRegistryKey,
+  });
+  if (!Array.isArray(entries)) {
+    return new Map();
+  }
+
+  const registry: IntegrityExceptionRegistry = new Map();
+  for (const entry of entries) {
+    if (
+      !entry ||
+      typeof entry.packageId !== "string" ||
+      typeof entry.scope !== "string" ||
+      typeof entry.failureCode !== "string" ||
+      !ELIGIBLE_EXCEPTION_FAILURE_CODES.has(entry.failureCode as AttachmentArchiveFailureCode)
+    ) {
+      continue;
+    }
+
+    registry.set(
+      buildIntegrityExceptionRegistryLookupKey({
+        packageId: entry.packageId,
+        scope: entry.scope as AttachmentArchiveScope,
+        sectionId: entry.sectionId,
+        failureCode: entry.failureCode as AttachmentArchiveFailureCode,
+      }),
+      {
+        packageId: entry.packageId,
+        scope: entry.scope as AttachmentArchiveScope,
+        sectionId: entry.sectionId,
+        failureCode: entry.failureCode as AttachmentArchiveFailureCode,
+        reason: String(entry.reason || ""),
+        addedAt: String(entry.addedAt || ""),
+      },
+    );
+  }
+
+  return registry;
+}
+
+function getMatchedIntegrityException({
+  registry,
+  packageId,
+  current,
+  scope,
+  sectionId,
+}: {
+  registry: IntegrityExceptionRegistry;
+  packageId: string;
+  current?: AttachmentArchiveCurrent;
+  scope: AttachmentArchiveScope;
+  sectionId?: string;
+}) {
+  if (!current || !isTerminalAttachmentArchiveFailure(current)) {
+    return undefined;
+  }
+
+  return registry.get(
+    buildIntegrityExceptionRegistryLookupKey({
+      packageId,
+      scope,
+      sectionId,
+      failureCode: current.failureCode,
+    }),
+  );
+}
+
+function buildIntegrityException({
+  packageContext,
+  current,
+  issueScope,
+  registryEntry,
+  sectionId,
+}: {
+  packageContext: PackageEvaluationContext;
+  current: AttachmentArchiveCurrent;
+  issueScope: "Download All" | "Section";
+  registryEntry: AttachmentArchiveIntegrityExceptionRegistryEntry;
+  sectionId?: string;
+}): AttachmentArchiveIntegrityException {
+  return {
+    authority: packageContext.metadata.authority,
+    packageId: packageContext.packageId,
+    sectionId: sectionId || "",
+    cmsStatus: packageContext.metadata.cmsStatus,
+    submissionDate: packageContext.metadata.submissionDate,
+    issueScope,
+    failureCode: current.failureCode as AttachmentArchiveFailureCode,
+    failureMessage: getAttachmentArchiveFailureMessage(current),
+    reason: registryEntry.reason,
+    addedAt: registryEntry.addedAt,
   };
 }
 
@@ -474,41 +631,59 @@ async function objectExistsWithFallback({
   return false;
 }
 
-function buildCsvRow(row: AttachmentArchiveIntegrityDiscrepancy) {
-  return DISCREPANCY_CSV_COLUMNS.map((column) => {
-    const value = `${row[column] || ""}`;
-    if (value.includes('"') || value.includes(",") || value.includes("\n")) {
-      return `"${value.replace(/"/g, '""')}"`;
-    }
-    return value;
-  }).join(",");
+function buildCsvRow<TRecord>(row: TRecord, columns: Array<keyof TRecord>) {
+  return columns
+    .map((column) => {
+      const rawValue = row[column];
+      const value = rawValue === undefined || rawValue === null ? "" : `${rawValue}`;
+      if (value.includes('"') || value.includes(",") || value.includes("\n")) {
+        return `"${value.replace(/"/g, '""')}"`;
+      }
+      return value;
+    })
+    .join(",");
 }
 
-function buildDiscrepancyCsvContent(discrepancies: AttachmentArchiveIntegrityDiscrepancy[]) {
-  const header = DISCREPANCY_CSV_COLUMNS.join(",");
-  const rows = discrepancies.map(buildCsvRow);
-  return [header, ...rows].join("\n");
+function buildCsvContent<TRecord>({
+  rows,
+  columns,
+}: {
+  rows: TRecord[];
+  columns: Array<keyof TRecord>;
+}) {
+  const header = columns.join(",");
+  const csvRows = rows.map((row) => buildCsvRow(row, columns));
+  return [header, ...csvRows].join("\n");
 }
 
-export function buildCsvAttachment(
-  discrepancies: AttachmentArchiveIntegrityDiscrepancy[],
-): CsvAttachmentBuildResult {
-  const fullCsv = buildDiscrepancyCsvContent(discrepancies);
+function buildCsvAttachmentForRows<TRecord>({
+  rows,
+  columns,
+  baseFilename,
+}: {
+  rows: TRecord[];
+  columns: Array<keyof TRecord>;
+  baseFilename: string;
+}): CsvAttachmentBuildResult {
+  const fullCsv = buildCsvContent({
+    rows,
+    columns,
+  });
   if (Buffer.byteLength(fullCsv, "utf8") <= REPORT_FULL_CSV_MAX_BYTES) {
     return {
       csv: fullCsv,
       truncated: false,
-      rowCountIncluded: discrepancies.length,
-      rowCountTotal: discrepancies.length,
-      filename: "discrepancies.csv",
+      rowCountIncluded: rows.length,
+      rowCountTotal: rows.length,
+      filename: `${baseFilename}.csv`,
     };
   }
 
-  const header = DISCREPANCY_CSV_COLUMNS.join(",");
+  const header = columns.join(",");
   let csv = header;
   let includedCount = 0;
-  for (const row of discrepancies) {
-    const nextLine = `\n${buildCsvRow(row)}`;
+  for (const row of rows) {
+    const nextLine = `\n${buildCsvRow(row, columns)}`;
     if (Buffer.byteLength(`${csv}${nextLine}`, "utf8") > REPORT_TRUNCATED_CSV_MAX_BYTES) {
       break;
     }
@@ -520,9 +695,29 @@ export function buildCsvAttachment(
     csv,
     truncated: true,
     rowCountIncluded: includedCount,
-    rowCountTotal: discrepancies.length,
-    filename: "discrepancies-truncated.csv",
+    rowCountTotal: rows.length,
+    filename: `${baseFilename}-truncated.csv`,
   };
+}
+
+export function buildCsvAttachment(
+  discrepancies: AttachmentArchiveIntegrityDiscrepancy[],
+): CsvAttachmentBuildResult {
+  return buildCsvAttachmentForRows({
+    rows: discrepancies,
+    columns: DISCREPANCY_CSV_COLUMNS,
+    baseFilename: "discrepancies",
+  });
+}
+
+function buildExceptionCsvAttachment(
+  exceptions: AttachmentArchiveIntegrityException[],
+): CsvAttachmentBuildResult {
+  return buildCsvAttachmentForRows({
+    rows: exceptions,
+    columns: EXCEPTION_CSV_COLUMNS,
+    baseFilename: "exceptions",
+  });
 }
 
 function buildReportPrefix({
@@ -568,7 +763,9 @@ function buildRunKeys({
     checkpointKey: `${runReportPrefix}/checkpoint.json`,
     summaryKey: `${runReportPrefix}/summary.json`,
     discrepancyJsonKey: `${runReportPrefix}/discrepancies.json`,
-    chunkPrefix: `${runReportPrefix}/chunks/`,
+    discrepancyChunkPrefix: `${runReportPrefix}/chunks/`,
+    exceptionJsonKey: `${runReportPrefix}/exceptions.json`,
+    exceptionChunkPrefix: `${runReportPrefix}/exception-chunks/`,
   };
 }
 
@@ -579,7 +776,14 @@ function buildDiscrepancyTypeCounts(discrepancies: AttachmentArchiveIntegrityDis
   }, {});
 }
 
-function mergeDiscrepancyTypeCounts(
+function buildExceptionTypeCounts(exceptions: AttachmentArchiveIntegrityException[]) {
+  return exceptions.reduce<Record<string, number>>((acc, exception) => {
+    acc[exception.failureCode] = (acc[exception.failureCode] || 0) + 1;
+    return acc;
+  }, {});
+}
+
+function mergeTypeCounts(
   left: Record<string, number>,
   right: Record<string, number>,
 ): Record<string, number> {
@@ -622,6 +826,8 @@ function buildSummaryFromCheckpoint({
   errorMessage,
   discrepancyJsonKey = "",
   discrepancyCsvKey = "",
+  exceptionJsonKey = "",
+  exceptionCsvKey = "",
   discrepancyCsvFilename = "discrepancies.csv",
   discrepancyCsvTruncated = false,
   discrepancyCsvRowsIncluded = 0,
@@ -635,6 +841,8 @@ function buildSummaryFromCheckpoint({
   errorMessage?: string;
   discrepancyJsonKey?: string;
   discrepancyCsvKey?: string;
+  exceptionJsonKey?: string;
+  exceptionCsvKey?: string;
   discrepancyCsvFilename?: string;
   discrepancyCsvTruncated?: boolean;
   discrepancyCsvRowsIncluded?: number;
@@ -650,6 +858,8 @@ function buildSummaryFromCheckpoint({
     sectionsScanned: checkpoint.sectionsScanned,
     discrepancyCount: checkpoint.discrepancyCount,
     discrepancyTypeCounts: checkpoint.discrepancyTypeCounts,
+    exceptionCount: checkpoint.exceptionCount,
+    exceptionTypeCounts: checkpoint.exceptionTypeCounts,
     topDiscrepancyTypes: buildTopDiscrepancyTypes(checkpoint.discrepancyTypeCounts),
     reportBucketName: storage.writeBucketName,
     reportPrefix: keys.runReportPrefix,
@@ -657,6 +867,8 @@ function buildSummaryFromCheckpoint({
     lastProcessedPackageId: checkpoint.lastProcessedPackageId,
     discrepancyJsonKey,
     discrepancyCsvKey,
+    exceptionJsonKey,
+    exceptionCsvKey,
     discrepancyCsvFilename,
     discrepancyCsvTruncated,
     discrepancyCsvRowsIncluded,
@@ -711,11 +923,14 @@ function parseSectionIdFromCurrentKey(key: string) {
 async function evaluatePackageDiscrepancies({
   storage,
   packageContext,
+  exceptionRegistry,
 }: {
   storage: ArchiveStorageConfig;
   packageContext: PackageEvaluationContext;
-}) {
+  exceptionRegistry: IntegrityExceptionRegistry;
+}): Promise<PackageDiscrepancyEvaluationResult> {
   const discrepancies: AttachmentArchiveIntegrityDiscrepancy[] = [];
+  const exceptions: AttachmentArchiveIntegrityException[] = [];
 
   const expectedSections = buildAttachmentArchiveSections({
     packageId: packageContext.packageId,
@@ -808,7 +1023,26 @@ async function evaluatePackageDiscrepancies({
       continue;
     }
 
-    if (currentState.current.status !== "READY") {
+    const matchedSectionException = getMatchedIntegrityException({
+      registry: exceptionRegistry,
+      packageId: packageContext.packageId,
+      current: currentState.current,
+      scope: "section",
+      sectionId,
+    });
+    if (matchedSectionException) {
+      exceptions.push(
+        buildIntegrityException({
+          packageContext,
+          current: currentState.current,
+          issueScope: "Section",
+          registryEntry: matchedSectionException,
+          sectionId,
+        }),
+      );
+    }
+
+    if (!matchedSectionException && currentState.current.status !== "READY") {
       discrepancies.push(
         buildDiscrepancy({
           packageContext,
@@ -835,6 +1069,7 @@ async function evaluatePackageDiscrepancies({
     }
 
     if (
+      !matchedSectionException &&
       !(await objectExistsWithFallback({
         storage,
         bucketName: currentState.bucketName,
@@ -993,11 +1228,29 @@ async function evaluatePackageDiscrepancies({
     );
     return {
       discrepancies,
+      exceptions,
       sectionsScanned: expectedSectionIds.size,
     };
   }
 
-  if (packageCurrent.current.status !== "READY") {
+  const matchedPackageException = getMatchedIntegrityException({
+    registry: exceptionRegistry,
+    packageId: packageContext.packageId,
+    current: packageCurrent.current,
+    scope: "all",
+  });
+  if (matchedPackageException) {
+    exceptions.push(
+      buildIntegrityException({
+        packageContext,
+        current: packageCurrent.current,
+        issueScope: "Download All",
+        registryEntry: matchedPackageException,
+      }),
+    );
+  }
+
+  if (!matchedPackageException && packageCurrent.current.status !== "READY") {
     discrepancies.push(
       buildDiscrepancy({
         packageContext,
@@ -1022,6 +1275,7 @@ async function evaluatePackageDiscrepancies({
   }
 
   if (
+    !matchedPackageException &&
     !(await objectExistsWithFallback({
       storage,
       bucketName: packageCurrent.bucketName,
@@ -1056,6 +1310,7 @@ async function evaluatePackageDiscrepancies({
     );
     return {
       discrepancies,
+      exceptions,
       sectionsScanned: expectedSectionIds.size,
     };
   }
@@ -1214,6 +1469,7 @@ async function evaluatePackageDiscrepancies({
 
   return {
     discrepancies,
+    exceptions,
     sectionsScanned: expectedSectionIds.size,
   };
 }
@@ -1260,6 +1516,8 @@ async function createInitialRunState(storage: ArchiveStorageConfig): Promise<Int
     sectionsScanned: 0,
     discrepancyCount: 0,
     discrepancyTypeCounts: {},
+    exceptionCount: 0,
+    exceptionTypeCounts: {},
     chunkCount: 0,
   };
 
@@ -1309,14 +1567,19 @@ async function loadRunState({
     return await createInitialRunState(storage);
   }
 
-  const checkpoint = await getJsonObject<AttachmentArchiveIntegrityCheckpoint>({
+  const rawCheckpoint = await getJsonObject<AttachmentArchiveIntegrityCheckpoint>({
     client: archiveBucketClient,
     bucket: storage.writeBucketName,
     key: normalizedEvent.checkpointKey,
   });
-  if (!checkpoint) {
+  if (!rawCheckpoint) {
     throw new Error(`Integrity checkpoint not found at ${normalizedEvent.checkpointKey}`);
   }
+  const checkpoint: AttachmentArchiveIntegrityCheckpoint = {
+    ...rawCheckpoint,
+    exceptionCount: rawCheckpoint.exceptionCount || 0,
+    exceptionTypeCounts: rawCheckpoint.exceptionTypeCounts || {},
+  };
 
   const packageIds = await getJsonObject<string[]>({
     client: archiveBucketClient,
@@ -1381,15 +1644,15 @@ async function finalizeRun({
   keys: IntegrityRunKeys;
   checkpoint: AttachmentArchiveIntegrityCheckpoint;
 }): Promise<AttachmentArchiveIntegrityRunResult> {
-  const chunkKeys = (
+  const discrepancyChunkKeys = (
     await listKeys({
       bucket: storage.writeBucketName,
-      prefix: keys.chunkPrefix,
+      prefix: keys.discrepancyChunkPrefix,
     })
   ).sort();
   const discrepancies: AttachmentArchiveIntegrityDiscrepancy[] = [];
 
-  for (const chunkKey of chunkKeys) {
+  for (const chunkKey of discrepancyChunkKeys) {
     const chunkDiscrepancies = await getJsonObject<AttachmentArchiveIntegrityDiscrepancy[]>({
       client: archiveBucketClient,
       bucket: storage.writeBucketName,
@@ -1400,8 +1663,8 @@ async function finalizeRun({
     }
   }
 
-  const csvResult = buildCsvAttachment(discrepancies);
-  const discrepancyCsvKey = `${keys.runReportPrefix}/${csvResult.filename}`;
+  const discrepancyCsv = buildCsvAttachment(discrepancies);
+  const discrepancyCsvKey = `${keys.runReportPrefix}/${discrepancyCsv.filename}`;
   await putJsonObject({
     client: archiveBucketClient,
     bucket: storage.writeBucketName,
@@ -1411,9 +1674,48 @@ async function finalizeRun({
   await writeStringObject({
     bucket: storage.writeBucketName,
     key: discrepancyCsvKey,
-    body: csvResult.csv,
+    body: discrepancyCsv.csv,
     contentType: "text/csv",
   });
+
+  let exceptionJsonKey = "";
+  let exceptionCsvKey = "";
+  if (storage.exceptionRegistryKey) {
+    const exceptionChunkKeys = (
+      await listKeys({
+        bucket: storage.writeBucketName,
+        prefix: keys.exceptionChunkPrefix,
+      })
+    ).sort();
+    const exceptions: AttachmentArchiveIntegrityException[] = [];
+
+    for (const chunkKey of exceptionChunkKeys) {
+      const chunkExceptions = await getJsonObject<AttachmentArchiveIntegrityException[]>({
+        client: archiveBucketClient,
+        bucket: storage.writeBucketName,
+        key: chunkKey,
+      });
+      if (Array.isArray(chunkExceptions)) {
+        exceptions.push(...chunkExceptions);
+      }
+    }
+
+    const exceptionCsv = buildExceptionCsvAttachment(exceptions);
+    exceptionJsonKey = keys.exceptionJsonKey;
+    exceptionCsvKey = `${keys.runReportPrefix}/${exceptionCsv.filename}`;
+    await putJsonObject({
+      client: archiveBucketClient,
+      bucket: storage.writeBucketName,
+      key: exceptionJsonKey,
+      body: exceptions,
+    });
+    await writeStringObject({
+      bucket: storage.writeBucketName,
+      key: exceptionCsvKey,
+      body: exceptionCsv.csv,
+      contentType: "text/csv",
+    });
+  }
 
   const summary = buildSummaryFromCheckpoint({
     storage,
@@ -1423,10 +1725,12 @@ async function finalizeRun({
     notificationStatus: checkpoint.discrepancyCount > 0 ? "PENDING" : "SKIPPED",
     discrepancyJsonKey: keys.discrepancyJsonKey,
     discrepancyCsvKey,
-    discrepancyCsvFilename: csvResult.filename,
-    discrepancyCsvTruncated: csvResult.truncated,
-    discrepancyCsvRowsIncluded: csvResult.rowCountIncluded,
-    discrepancyCsvRowsTotal: csvResult.rowCountTotal,
+    exceptionJsonKey,
+    exceptionCsvKey,
+    discrepancyCsvFilename: discrepancyCsv.filename,
+    discrepancyCsvTruncated: discrepancyCsv.truncated,
+    discrepancyCsvRowsIncluded: discrepancyCsv.rowCountIncluded,
+    discrepancyCsvRowsTotal: discrepancyCsv.rowCountTotal,
   });
   await putJsonObject({
     client: archiveBucketClient,
@@ -1450,6 +1754,8 @@ async function finalizeRun({
     discrepancyCsvRowsTotal: summary.discrepancyCsvRowsTotal,
     discrepancyCount: summary.discrepancyCount,
     discrepancyTypeCounts: summary.discrepancyTypeCounts,
+    exceptionCount: summary.exceptionCount,
+    exceptionTypeCounts: summary.exceptionTypeCounts,
     packagesScanned: summary.packagesScanned,
     packagesTotal: summary.packagesTotal,
     sectionsScanned: summary.sectionsScanned,
@@ -1491,8 +1797,10 @@ export const handler = async (
       storage,
       event,
     });
+    const exceptionRegistry = await loadIntegrityExceptionRegistry(storage);
     const startIndex = runState.checkpoint.nextPackageIndex;
     const chunkDiscrepancies: AttachmentArchiveIntegrityDiscrepancy[] = [];
+    const chunkExceptions: AttachmentArchiveIntegrityException[] = [];
     const processedPackageIds: string[] = [];
     let sectionsScanned = 0;
 
@@ -1510,34 +1818,54 @@ export const handler = async (
       const packageResult = await evaluatePackageDiscrepancies({
         storage,
         packageContext,
+        exceptionRegistry,
       });
       processedPackageIds.push(packageId);
       sectionsScanned += packageResult.sectionsScanned;
       chunkDiscrepancies.push(...packageResult.discrepancies);
+      chunkExceptions.push(...packageResult.exceptions);
     }
 
     if (processedPackageIds.length > 0) {
       const endIndex = startIndex + processedPackageIds.length - 1;
-      const chunkKey = buildChunkKey({
-        chunkPrefix: runState.keys.chunkPrefix,
+      const discrepancyChunkKey = buildChunkKey({
+        chunkPrefix: runState.keys.discrepancyChunkPrefix,
         startIndex,
         endIndex,
       });
       await putJsonObject({
         client: archiveBucketClient,
         bucket: storage.writeBucketName,
-        key: chunkKey,
+        key: discrepancyChunkKey,
         body: chunkDiscrepancies,
       });
+      if (storage.exceptionRegistryKey) {
+        const exceptionChunkKey = buildChunkKey({
+          chunkPrefix: runState.keys.exceptionChunkPrefix,
+          startIndex,
+          endIndex,
+        });
+        await putJsonObject({
+          client: archiveBucketClient,
+          bucket: storage.writeBucketName,
+          key: exceptionChunkKey,
+          body: chunkExceptions,
+        });
+      }
       runState.checkpoint = {
         ...runState.checkpoint,
         nextPackageIndex: endIndex + 1,
         packagesScanned: runState.checkpoint.packagesScanned + processedPackageIds.length,
         sectionsScanned: runState.checkpoint.sectionsScanned + sectionsScanned,
         discrepancyCount: runState.checkpoint.discrepancyCount + chunkDiscrepancies.length,
-        discrepancyTypeCounts: mergeDiscrepancyTypeCounts(
+        discrepancyTypeCounts: mergeTypeCounts(
           runState.checkpoint.discrepancyTypeCounts,
           buildDiscrepancyTypeCounts(chunkDiscrepancies),
+        ),
+        exceptionCount: runState.checkpoint.exceptionCount + chunkExceptions.length,
+        exceptionTypeCounts: mergeTypeCounts(
+          runState.checkpoint.exceptionTypeCounts,
+          buildExceptionTypeCounts(chunkExceptions),
         ),
         lastProcessedPackageId: processedPackageIds[processedPackageIds.length - 1],
         chunkCount: runState.checkpoint.chunkCount + 1,
@@ -1560,6 +1888,8 @@ export const handler = async (
         checkpointKey: runState.keys.checkpointKey,
         discrepancyCount: runState.checkpoint.discrepancyCount,
         discrepancyTypeCounts: runState.checkpoint.discrepancyTypeCounts,
+        exceptionCount: runState.checkpoint.exceptionCount,
+        exceptionTypeCounts: runState.checkpoint.exceptionTypeCounts,
         packagesScanned: runState.checkpoint.packagesScanned,
         packagesTotal: runState.checkpoint.packagesTotal,
         sectionsScanned: runState.checkpoint.sectionsScanned,

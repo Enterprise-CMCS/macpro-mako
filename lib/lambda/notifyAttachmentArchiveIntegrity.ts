@@ -393,12 +393,16 @@ function createFailureSummary({
     sectionsScanned: 0,
     discrepancyCount: 0,
     discrepancyTypeCounts: {},
+    exceptionCount: 0,
+    exceptionTypeCounts: {},
     topDiscrepancyTypes: [],
     reportBucketName,
     reportPrefix: runReportPrefix,
     checkpointKey: "",
     discrepancyJsonKey: "",
     discrepancyCsvKey: "",
+    exceptionJsonKey: "",
+    exceptionCsvKey: "",
     discrepancyCsvFilename: "discrepancies.csv",
     discrepancyCsvTruncated: false,
     discrepancyCsvRowsIncluded: 0,
@@ -419,9 +423,13 @@ function buildDiscrepancyEmailBody(summary: AttachmentArchiveIntegrityRunSummary
     `Packages scanned: ${summary.packagesScanned}`,
     `Sections scanned: ${summary.sectionsScanned}`,
     `Total discrepancies: ${summary.discrepancyCount}`,
-    "",
-    "Top discrepancy types:",
   ];
+
+  if (summary.exceptionJsonKey || summary.exceptionCount > 0) {
+    lines.push(`Approved terminal exceptions: ${summary.exceptionCount}`);
+  }
+
+  lines.push("", "Top discrepancy types:");
 
   if (summary.topDiscrepancyTypes.length === 0) {
     lines.push("- none");
