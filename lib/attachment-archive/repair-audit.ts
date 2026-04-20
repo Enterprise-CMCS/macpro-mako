@@ -146,7 +146,5 @@ export function resolveQueuedPackageIds({
   packageIdsToRebuild: string[];
   rebuildInputPackages: boolean;
 }) {
-  return Array.from(
-    new Set(rebuildInputPackages ? inputPackageIds : packageIdsToRebuild),
-  ).sort();
+  return Array.from(new Set(rebuildInputPackages ? inputPackageIds : packageIdsToRebuild)).sort();
 }

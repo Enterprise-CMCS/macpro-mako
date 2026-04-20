@@ -19,6 +19,7 @@ import fs from "fs/promises";
 import path from "path";
 
 import { parseAttachmentArchiveCurrent } from "../lib/attachment-archive/archive-manifest";
+import { buildAttachmentArchiveMessageGroupId } from "../lib/attachment-archive/rebuild-queue";
 import {
   AttachmentArchiveRepairClassification,
   classifyPackageRepairCandidate,
@@ -26,7 +27,6 @@ import {
   parseIntegrityReportCsv,
   resolveQueuedPackageIds,
 } from "../lib/attachment-archive/repair-audit";
-import { buildAttachmentArchiveMessageGroupId } from "../lib/attachment-archive/rebuild-queue";
 import {
   buildSyntheticScannerInvokePayload,
   isManualCleanRetagEligible,
@@ -422,12 +422,12 @@ async function loadCurrentEntries({
       continue;
     }
 
-    const manifest = await getJsonObject<AttachmentArchivePackageManifest | AttachmentArchiveSectionManifest>(
-      {
-        bucket: archiveBucketName,
-        key: current.manifestKey,
-      },
-    ).catch(() => undefined);
+    const manifest = await getJsonObject<
+      AttachmentArchivePackageManifest | AttachmentArchiveSectionManifest
+    >({
+      bucket: archiveBucketName,
+      key: current.manifestKey,
+    }).catch(() => undefined);
 
     entries.push({ current, currentKey, manifest });
   }
@@ -797,7 +797,8 @@ async function main() {
   );
   const rebuildQueueUrl = await getRebuildQueueUrl(options.project, options.stage);
 
-  const requestedPackageIds = inputSelection?.packageIds || (options.packageId ? [options.packageId] : undefined);
+  const requestedPackageIds =
+    inputSelection?.packageIds || (options.packageId ? [options.packageId] : undefined);
   const currentEntries = await loadCurrentEntries({
     archiveBucketName: archiveStorage.writeBucketName,
     keyPrefix: archiveStorage.keyPrefix,
@@ -809,7 +810,9 @@ async function main() {
     Array.from(
       new Set(
         failedEntries
-          .map((entry) => entry.manifest?.packageId || parsePackageIdFromCurrentKey(entry.currentKey))
+          .map(
+            (entry) => entry.manifest?.packageId || parsePackageIdFromCurrentKey(entry.currentKey),
+          )
           .filter((packageId): packageId is string => Boolean(packageId)),
       ),
     ).sort();

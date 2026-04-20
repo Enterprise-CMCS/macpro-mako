@@ -631,18 +631,17 @@ async function objectExistsWithFallback({
   return false;
 }
 
-function buildCsvRow<TRecord>(
-  row: TRecord,
-  columns: Array<keyof TRecord>,
-) {
-  return columns.map((column) => {
-    const rawValue = row[column];
-    const value = rawValue === undefined || rawValue === null ? "" : `${rawValue}`;
-    if (value.includes('"') || value.includes(",") || value.includes("\n")) {
-      return `"${value.replace(/"/g, '""')}"`;
-    }
-    return value;
-  }).join(",");
+function buildCsvRow<TRecord>(row: TRecord, columns: Array<keyof TRecord>) {
+  return columns
+    .map((column) => {
+      const rawValue = row[column];
+      const value = rawValue === undefined || rawValue === null ? "" : `${rawValue}`;
+      if (value.includes('"') || value.includes(",") || value.includes("\n")) {
+        return `"${value.replace(/"/g, '""')}"`;
+      }
+      return value;
+    })
+    .join(",");
 }
 
 function buildCsvContent<TRecord>({
