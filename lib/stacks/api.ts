@@ -18,10 +18,10 @@ import {
 import {
   buildAttachmentArchiveIntegrityNotificationEnvironment,
   buildAttachmentArchiveIntegrityRunEnvironment,
-  buildAttachmentArchiveWorkerPolicyStatements,
   createAttachmentArchiveIntegrityDailySchedule,
   createAttachmentArchiveIntegrityStateMachine,
 } from "./attachment-archive-integrity";
+import { createAttachmentArchiveStateMachine } from "./attachment-archive-state-machine";
 import {
   getLegacyAttachmentBucketMapParameterName,
   getLegacyAttachmentMirrorBuckets,
@@ -926,15 +926,6 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
-    const archiveWorkerLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "AttachmentArchiveWorkerLogGroup",
-      {
-        logGroupName: `/aws/ecs/${project}-${stage}-${stack}-attachment-archive-worker`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
-
     const archiveWorkerImage = new cdk.aws_ecr_assets.DockerImageAsset(
       this,
       "AttachmentArchiveWorkerImage",
@@ -944,170 +935,23 @@ export class Api extends cdk.NestedStack {
       },
     );
 
-    const archiveWorkerCluster = new cdk.aws_ecs.Cluster(this, "AttachmentArchiveCluster", {
+    const archiveStateMachine = createAttachmentArchiveStateMachine(this, {
+      project,
+      stage,
+      stack,
       vpc,
-      clusterName: `${project}-${stage}-${stack}-attachment-archive`,
+      privateSubnets,
+      lambdaSecurityGroup,
+      attachmentsBucketArn: attachmentsBucket.bucketArn,
+      sharedAttachmentReadBucketArn: sharedAttachmentReadBucket.arn,
+      legacyMirrorBucketArns,
+      archiveWriteBucketArn,
+      legacyS3AccessRoleArn,
+      legacyAttachmentBucketMap,
+      archiveWorkerImage: cdk.aws_ecs.ContainerImage.fromDockerImageAsset(archiveWorkerImage),
+      markAttachmentArchiveFailedLambda: lambdas.markAttachmentArchiveFailed,
+      validateAttachmentArchiveLambda: lambdas.validateAttachmentArchive,
     });
-
-    const archiveWorkerTaskRole = new cdk.aws_iam.Role(this, "AttachmentArchiveWorkerTaskRole", {
-      assumedBy: new cdk.aws_iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
-      inlinePolicies: {
-        AttachmentArchiveWorkerPolicy: new cdk.aws_iam.PolicyDocument({
-          statements: buildAttachmentArchiveWorkerPolicyStatements({
-            attachmentsBucketArn: attachmentsBucket.bucketArn,
-            sharedAttachmentReadBucketArn: sharedAttachmentReadBucket.arn,
-            legacyMirrorBucketArns,
-            archiveWriteBucketArn,
-            legacyS3AccessRoleArn,
-          }),
-        }),
-      },
-    });
-
-    const archiveWorkerTaskDefinition = new cdk.aws_ecs.FargateTaskDefinition(
-      this,
-      "AttachmentArchiveTaskDefinition",
-      {
-        cpu: 1024,
-        memoryLimitMiB: 4096,
-        taskRole: archiveWorkerTaskRole,
-      },
-    );
-
-    const archiveWorkerContainer = archiveWorkerTaskDefinition.addContainer(
-      "AttachmentArchiveWorkerContainer",
-      {
-        image: cdk.aws_ecs.ContainerImage.fromDockerImageAsset(archiveWorkerImage),
-        logging: new cdk.aws_ecs.AwsLogDriver({
-          streamPrefix: "attachment-archive",
-          logGroup: archiveWorkerLogGroup,
-        }),
-        environment: {
-          LEGACY_ATTACHMENT_BUCKET_MAP: legacyAttachmentBucketMap,
-          LEGACY_S3_ACCESS_ROLE_ARN: legacyS3AccessRoleArn,
-          TZ: "America/New_York",
-        },
-      },
-    );
-
-    const markAttachmentArchiveFailedTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-      this,
-      "MarkAttachmentArchiveFailedTask",
-      {
-        lambdaFunction: lambdas.markAttachmentArchiveFailed,
-        outputPath: "$.Payload",
-        payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-          "archiveBucketName.$": "$.archiveBucketName",
-          "artifactKey.$": "$.artifactKey",
-          "attachmentCount.$": "$.attachmentCount",
-          "currentKey.$": "$.currentKey",
-          "error.$": "$.error",
-          "hash.$": "$.hash",
-          "manifestKey.$": "$.manifestKey",
-        }),
-      },
-    );
-
-    const attachmentArchiveFailed = new cdk.aws_stepfunctions.Fail(
-      this,
-      "AttachmentArchiveFailure",
-      {
-        cause: "Attachment archive execution did not produce a valid ready artifact.",
-        error: "AttachmentArchiveValidationFailed",
-      },
-    );
-
-    markAttachmentArchiveFailedTask.next(attachmentArchiveFailed);
-
-    const runArchiveWorkerTask = new cdk.aws_stepfunctions_tasks.EcsRunTask(
-      this,
-      "RunAttachmentArchiveWorkerTask",
-      {
-        cluster: archiveWorkerCluster,
-        taskDefinition: archiveWorkerTaskDefinition,
-        integrationPattern: cdk.aws_stepfunctions.IntegrationPattern.RUN_JOB,
-        launchTarget: new cdk.aws_stepfunctions_tasks.EcsFargateLaunchTarget(),
-        assignPublicIp: false,
-        resultPath: cdk.aws_stepfunctions.JsonPath.DISCARD,
-        containerOverrides: [
-          {
-            containerDefinition: archiveWorkerContainer,
-            environment: [
-              {
-                name: "ARCHIVE_BUCKET_NAME",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.archiveBucketName"),
-              },
-              {
-                name: "ARCHIVE_CURRENT_KEY",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.currentKey"),
-              },
-              {
-                name: "ARCHIVE_MANIFEST_KEY",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.manifestKey"),
-              },
-              {
-                name: "ARCHIVE_ARTIFACT_KEY",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.artifactKey"),
-              },
-              {
-                name: "ATTACHMENT_ARCHIVE_HASH",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.hash"),
-              },
-            ],
-          },
-        ],
-        securityGroups: [lambdaSecurityGroup],
-        subnets: { subnets: privateSubnets },
-      },
-    ).addCatch(markAttachmentArchiveFailedTask, {
-      errors: ["States.ALL"],
-      resultPath: "$.error",
-    });
-
-    const validateAttachmentArchiveTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-      this,
-      "ValidateAttachmentArchiveTask",
-      {
-        lambdaFunction: lambdas.validateAttachmentArchive,
-        outputPath: "$.Payload",
-        payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-          "archiveBucketName.$": "$.archiveBucketName",
-          "artifactKey.$": "$.artifactKey",
-          "currentKey.$": "$.currentKey",
-          "hash.$": "$.hash",
-        }),
-      },
-    ).addCatch(markAttachmentArchiveFailedTask, {
-      errors: ["States.ALL"],
-      resultPath: "$.error",
-    });
-
-    const archiveStateMachineLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "AttachmentArchiveStateMachineLogGroup",
-      {
-        logGroupName: `/aws/vendedlogs/states/${project}-${stage}-${stack}-attachment-archive`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
-
-    const archiveStateMachine = new cdk.aws_stepfunctions.StateMachine(
-      this,
-      "AttachmentArchiveStateMachine",
-      {
-        definitionBody: cdk.aws_stepfunctions.DefinitionBody.fromChainable(
-          runArchiveWorkerTask
-            .next(validateAttachmentArchiveTask)
-            .next(new cdk.aws_stepfunctions.Succeed(this, "AttachmentArchiveSuccess")),
-        ),
-        stateMachineName: `${project}-${stage}-${stack}-attachment-archive`,
-        logs: {
-          destination: archiveStateMachineLogGroup,
-          includeExecutionData: true,
-          level: cdk.aws_stepfunctions.LogLevel.ALL,
-        },
-      },
-    );
 
     archiveStateMachine.grantStartExecution(attachmentArchiveRequestRole);
     lambdas.getAttachmentArchive.addEnvironment(
