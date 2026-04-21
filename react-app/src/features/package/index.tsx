@@ -117,7 +117,7 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
       {isDraft && hasDraftIdConflict && (
-        <Alert variant="infoBlock">
+        <Alert variant="warning" className="my-2 sm:my-3">
           <AlertTitle>This package ID is already in use</AlertTitle>
           <AlertDescription>{DRAFT_ID_CONFLICT_MESSAGE}</AlertDescription>
         </Alert>
