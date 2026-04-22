@@ -5,7 +5,7 @@ Symptoms:
 > It looks like the Splunk search failed. Let me try a different approach - perhaps there's an authentication issue or the search syntax needs to be adjusted.
 
 Fix: 
- Make sure you are connected to VPN (via ZScaler)
+ Make sure you are connected to VPN (via Zscaler)
 
 
 ## Missing CSRF token
