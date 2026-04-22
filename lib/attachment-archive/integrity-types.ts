@@ -1,3 +1,5 @@
+import { AttachmentArchiveFailureCode, AttachmentArchiveScope } from "./types";
+
 export interface AttachmentArchiveIntegrityDiscrepancy {
   authority: string;
   packageId: string;
@@ -8,6 +10,28 @@ export interface AttachmentArchiveIntegrityDiscrepancy {
   discrepancyType: string;
   expectedValue: string;
   actualValue: string;
+}
+
+export interface AttachmentArchiveIntegrityExceptionRegistryEntry {
+  packageId: string;
+  scope: AttachmentArchiveScope;
+  sectionId?: string;
+  failureCode: AttachmentArchiveFailureCode;
+  reason: string;
+  addedAt: string;
+}
+
+export interface AttachmentArchiveIntegrityException {
+  authority: string;
+  packageId: string;
+  sectionId: string;
+  cmsStatus: string;
+  submissionDate: string;
+  issueScope: "Download All" | "Section";
+  failureCode: AttachmentArchiveFailureCode;
+  failureMessage: string;
+  reason: string;
+  addedAt: string;
 }
 
 export type AttachmentArchiveIntegrityNotificationStatus =
@@ -28,6 +52,8 @@ export interface AttachmentArchiveIntegrityRunSummary {
   sectionsScanned: number;
   discrepancyCount: number;
   discrepancyTypeCounts: Record<string, number>;
+  exceptionCount: number;
+  exceptionTypeCounts: Record<string, number>;
   topDiscrepancyTypes: Array<{
     type: string;
     count: number;
@@ -38,6 +64,8 @@ export interface AttachmentArchiveIntegrityRunSummary {
   lastProcessedPackageId?: string;
   discrepancyJsonKey: string;
   discrepancyCsvKey: string;
+  exceptionJsonKey: string;
+  exceptionCsvKey: string;
   discrepancyCsvFilename: string;
   discrepancyCsvTruncated: boolean;
   discrepancyCsvRowsIncluded: number;
@@ -59,6 +87,8 @@ export interface AttachmentArchiveIntegrityCheckpoint {
   sectionsScanned: number;
   discrepancyCount: number;
   discrepancyTypeCounts: Record<string, number>;
+  exceptionCount: number;
+  exceptionTypeCounts: Record<string, number>;
   lastProcessedPackageId?: string;
   chunkCount: number;
 }
@@ -74,6 +104,8 @@ interface AttachmentArchiveIntegrityRunBaseResult {
   lastProcessedPackageId?: string;
   discrepancyCount: number;
   discrepancyTypeCounts: Record<string, number>;
+  exceptionCount: number;
+  exceptionTypeCounts: Record<string, number>;
   packagesScanned: number;
   sectionsScanned: number;
 }

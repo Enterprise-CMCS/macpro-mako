@@ -21,6 +21,13 @@ import path from "path";
 import { parseAttachmentArchiveCurrent } from "../lib/attachment-archive/archive-manifest";
 import { buildAttachmentArchiveMessageGroupId } from "../lib/attachment-archive/rebuild-queue";
 import {
+  AttachmentArchiveRepairClassification,
+  classifyPackageRepairCandidate,
+  getIntegrityReportPackageIds,
+  parseIntegrityReportCsv,
+  resolveQueuedPackageIds,
+} from "../lib/attachment-archive/repair-audit";
+import {
   buildSyntheticScannerInvokePayload,
   isManualCleanRetagEligible,
   upsertScanTags,
@@ -41,8 +48,11 @@ import { resolveAttachmentReadStage } from "../lib/stacks/legacy-attachment-buck
 type ScriptOptions = {
   allFailed: boolean;
   applyRetag: boolean;
+  dryRun: boolean;
+  inputCsvPath?: string;
   packageId?: string;
   project: string;
+  rebuildInputPackages: boolean;
   stage: string;
   waitForRebuild: boolean;
   writeAuditPath?: string;
@@ -58,7 +68,7 @@ type ArchiveStorageConfig = {
 type CurrentEntry = {
   current: AttachmentArchiveCurrent;
   currentKey: string;
-  manifest: AttachmentArchivePackageManifest | AttachmentArchiveSectionManifest;
+  manifest?: AttachmentArchivePackageManifest | AttachmentArchiveSectionManifest;
 };
 
 type SourceObjectInspection = {
@@ -75,6 +85,7 @@ type SourceObjectInspection = {
 
 type RepairAuditEntry = {
   action:
+    | "classified"
     | "inspected"
     | "redrive"
     | "retagged"
@@ -93,6 +104,19 @@ type RepairAuditEntry = {
   virusScanStatus?: string;
 };
 
+type PackageRepairAudit = {
+  packageId: string;
+  classification: AttachmentArchiveRepairClassification;
+  discrepancyTypes: string[];
+  failedCurrentCount: number;
+  sourceInspectionCount: number;
+  statuses: Array<{
+    currentKey: string;
+    failureCode?: AttachmentArchiveCurrent["failureCode"];
+    status: AttachmentArchiveCurrent["status"];
+  }>;
+};
+
 const CLEAN_STATUS = "CLEAN";
 const DEFAULT_PROJECT = "mako";
 const POLL_INTERVAL_MS = 10_000;
@@ -108,9 +132,12 @@ function parseArgs(argv: string[]): ScriptOptions {
   let stage = "migrate";
   let project = DEFAULT_PROJECT;
   let packageId: string | undefined;
+  let inputCsvPath: string | undefined;
   let writeAuditPath: string | undefined;
   let allFailed = false;
   let applyRetag = false;
+  let dryRun = false;
+  let rebuildInputPackages = false;
   let waitForRebuild = false;
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -129,6 +156,10 @@ function parseArgs(argv: string[]): ScriptOptions {
         packageId = argv[index + 1];
         index += 1;
         break;
+      case "--input-csv":
+        inputCsvPath = argv[index + 1];
+        index += 1;
+        break;
       case "--write-audit":
         writeAuditPath = argv[index + 1];
         index += 1;
@@ -139,6 +170,12 @@ function parseArgs(argv: string[]): ScriptOptions {
       case "--apply-retag":
         applyRetag = true;
         break;
+      case "--dry-run":
+        dryRun = true;
+        break;
+      case "--rebuild-input-packages":
+        rebuildInputPackages = true;
+        break;
       case "--wait":
         waitForRebuild = true;
         break;
@@ -147,12 +184,15 @@ function parseArgs(argv: string[]): ScriptOptions {
     }
   }
 
-  if (!packageId && !allFailed) {
-    throw new Error("Pass --package-id <id> or --all-failed");
+  if (!packageId && !allFailed && !inputCsvPath) {
+    throw new Error("Pass --package-id <id>, --input-csv <path>, or --all-failed");
   }
 
-  if (packageId && allFailed) {
-    throw new Error("Use either --package-id or --all-failed, not both");
+  const selectionModeCount = [Boolean(packageId), allFailed, Boolean(inputCsvPath)].filter(
+    Boolean,
+  ).length;
+  if (selectionModeCount > 1) {
+    throw new Error("Use only one of --package-id, --input-csv, or --all-failed");
   }
 
   if (waitForRebuild && !packageId) {
@@ -162,8 +202,11 @@ function parseArgs(argv: string[]): ScriptOptions {
   return {
     allFailed,
     applyRetag,
+    dryRun,
+    inputCsvPath,
     packageId,
     project,
+    rebuildInputPackages,
     stage,
     waitForRebuild,
     writeAuditPath,
@@ -342,16 +385,28 @@ async function getJsonObject<T>({ bucket, key }: { bucket: string; key: string }
   return JSON.parse(body) as T;
 }
 
-async function loadFailedCurrentEntries({
+async function loadCurrentEntries({
   archiveBucketName,
   keyPrefix,
-  packageId,
+  packageIds,
 }: {
   archiveBucketName: string;
   keyPrefix?: string;
-  packageId?: string;
+  packageIds?: string[];
 }) {
-  const currentKeys = await listArchiveCurrentKeys({ archiveBucketName, keyPrefix, packageId });
+  const currentKeys = packageIds
+    ? Array.from(
+        new Set(
+          (
+            await Promise.all(
+              packageIds.map((packageId) =>
+                listArchiveCurrentKeys({ archiveBucketName, keyPrefix, packageId }),
+              ),
+            )
+          ).flat(),
+        ),
+      ).sort()
+    : await listArchiveCurrentKeys({ archiveBucketName, keyPrefix });
   const entries: CurrentEntry[] = [];
 
   for (const currentKey of currentKeys) {
@@ -363,8 +418,7 @@ async function loadFailedCurrentEntries({
     );
     const text = await body.Body?.transformToString();
     const current = parseAttachmentArchiveCurrent(text);
-
-    if (!current || current.status !== "FAILED") {
+    if (!current) {
       continue;
     }
 
@@ -373,12 +427,21 @@ async function loadFailedCurrentEntries({
     >({
       bucket: archiveBucketName,
       key: current.manifestKey,
-    });
+    }).catch(() => undefined);
 
     entries.push({ current, currentKey, manifest });
   }
 
   return entries;
+}
+
+async function loadInputCsvPackageSelection(inputCsvPath: string) {
+  const csv = await fs.readFile(inputCsvPath, "utf8");
+  const reportRows = parseIntegrityReportCsv(csv);
+  return {
+    reportRows,
+    packageIds: getIntegrityReportPackageIds(reportRows),
+  };
 }
 
 async function inspectSourceObject({
@@ -431,7 +494,7 @@ function getSectionInspections(entries: CurrentEntry[]) {
   const inspections = new Map<string, SourceObjectInspection>();
 
   for (const entry of entries) {
-    if (entry.manifest.type !== "section") {
+    if (entry.manifest?.type !== "section") {
       continue;
     }
 
@@ -598,18 +661,114 @@ async function waitForPackageReady({
   };
 }
 
-async function writeAuditLog(pathToWrite: string | undefined, entries: RepairAuditEntry[]) {
+function parsePackageIdFromCurrentKey(currentKey: string) {
+  const match = currentKey.match(/^package\/([^/]+)\//);
+  if (!match) {
+    return undefined;
+  }
+
+  try {
+    return decodeURIComponent(match[1]);
+  } catch {
+    return match[1];
+  }
+}
+
+function buildPackageRepairAudits({
+  packageIds,
+  currentEntries,
+  reportRowsByPackageId,
+  sourceInspectionsByPackageId,
+}: {
+  packageIds: string[];
+  currentEntries: CurrentEntry[];
+  reportRowsByPackageId: Map<string, Set<string>>;
+  sourceInspectionsByPackageId: Map<string, SourceObjectInspection[]>;
+}) {
+  const currentEntriesByPackageId = currentEntries.reduce<Map<string, CurrentEntry[]>>(
+    (packages, entry) => {
+      const packageId = entry.manifest?.packageId || parsePackageIdFromCurrentKey(entry.currentKey);
+      if (!packageId) {
+        return packages;
+      }
+
+      const existing = packages.get(packageId) || [];
+      existing.push(entry);
+      packages.set(packageId, existing);
+      return packages;
+    },
+    new Map(),
+  );
+
+  return packageIds.map<PackageRepairAudit>((packageId) => {
+    const packageCurrentEntries = currentEntriesByPackageId.get(packageId) || [];
+    const packageInspections = sourceInspectionsByPackageId.get(packageId) || [];
+    return {
+      packageId,
+      classification: classifyPackageRepairCandidate({
+        currentEntries: packageCurrentEntries.map((entry) => ({
+          status: entry.current.status,
+          failureCode: entry.current.failureCode,
+        })),
+        sourceInspections: packageInspections.map((inspection) => ({
+          exists: inspection.exists,
+          virusScanStatus: inspection.virusScanStatus,
+        })),
+      }),
+      discrepancyTypes: Array.from(reportRowsByPackageId.get(packageId) || []).sort(),
+      failedCurrentCount: packageCurrentEntries.filter((entry) => entry.current.status === "FAILED")
+        .length,
+      sourceInspectionCount: packageInspections.length,
+      statuses: packageCurrentEntries
+        .map((entry) => ({
+          currentKey: entry.currentKey,
+          failureCode: entry.current.failureCode,
+          status: entry.current.status,
+        }))
+        .sort((left, right) => left.currentKey.localeCompare(right.currentKey)),
+    };
+  });
+}
+
+function buildClassificationCounts(packageAudits: PackageRepairAudit[]) {
+  return packageAudits.reduce<Record<AttachmentArchiveRepairClassification, number>>(
+    (counts, audit) => {
+      counts[audit.classification] += 1;
+      return counts;
+    },
+    {
+      repairable_scan_failure: 0,
+      terminal_exception_candidate: 0,
+      rebuild_only: 0,
+      residual_worker_failure: 0,
+    },
+  );
+}
+
+async function writeAuditLog(pathToWrite: string | undefined, body: unknown) {
   if (!pathToWrite) {
     return;
   }
 
   await fs.mkdir(path.dirname(pathToWrite), { recursive: true });
-  await fs.writeFile(pathToWrite, JSON.stringify(entries, null, 2));
+  await fs.writeFile(pathToWrite, JSON.stringify(body, null, 2));
 }
 
 async function main() {
   const options = parseArgs(process.argv.slice(2));
   const auditEntries: RepairAuditEntry[] = [];
+  const inputSelection = options.inputCsvPath
+    ? await loadInputCsvPackageSelection(options.inputCsvPath)
+    : undefined;
+  const reportRowsByPackageId = (inputSelection?.reportRows || []).reduce<Map<string, Set<string>>>(
+    (packages, row) => {
+      const existing = packages.get(row.packageId) || new Set<string>();
+      existing.add(row.discrepancyType);
+      packages.set(row.packageId, existing);
+      return packages;
+    },
+    new Map(),
+  );
 
   const accountId = await getAccountId();
   const readStage = resolveAttachmentReadStage(options.stage);
@@ -638,11 +797,25 @@ async function main() {
   );
   const rebuildQueueUrl = await getRebuildQueueUrl(options.project, options.stage);
 
-  const failedEntries = await loadFailedCurrentEntries({
+  const requestedPackageIds =
+    inputSelection?.packageIds || (options.packageId ? [options.packageId] : undefined);
+  const currentEntries = await loadCurrentEntries({
     archiveBucketName: archiveStorage.writeBucketName,
     keyPrefix: archiveStorage.keyPrefix,
-    packageId: options.packageId,
+    packageIds: requestedPackageIds,
   });
+  const failedEntries = currentEntries.filter((entry) => entry.current.status === "FAILED");
+  const targetPackageIds =
+    requestedPackageIds ||
+    Array.from(
+      new Set(
+        failedEntries
+          .map(
+            (entry) => entry.manifest?.packageId || parsePackageIdFromCurrentKey(entry.currentKey),
+          )
+          .filter((packageId): packageId is string => Boolean(packageId)),
+      ),
+    ).sort();
 
   const inspections = getSectionInspections(failedEntries).filter(
     (inspection) => inspection.bucket === sourceBucketName,
@@ -678,68 +851,92 @@ async function main() {
     ]),
   );
 
-  for (const inspection of blocked) {
-    const redriveResult = await redriveScanner({
-      bucket: inspection.bucket,
-      key: inspection.key,
-      scannerFunctionName,
-    });
-    auditEntries.push({
-      action: "redrive",
-      bucket: inspection.bucket,
-      filename: inspection.filename,
-      key: inspection.key,
-      packageId: inspection.packageId,
-      result: JSON.stringify(redriveResult),
-      sectionId: inspection.sectionId,
-    });
+  if (!options.dryRun) {
+    for (const inspection of blocked) {
+      const redriveResult = await redriveScanner({
+        bucket: inspection.bucket,
+        key: inspection.key,
+        scannerFunctionName,
+      });
+      auditEntries.push({
+        action: "redrive",
+        bucket: inspection.bucket,
+        filename: inspection.filename,
+        key: inspection.key,
+        packageId: inspection.packageId,
+        result: JSON.stringify(redriveResult),
+        sectionId: inspection.sectionId,
+      });
 
-    const afterRedrive = await inspectSourceObject({
-      attachment: inspection,
-      packageId: inspection.packageId,
-      sectionId: inspection.sectionId,
-    });
-    finalInspections.set(
-      `${afterRedrive.packageId}::${afterRedrive.sectionId || ""}::${afterRedrive.bucket}::${afterRedrive.key}`,
-      afterRedrive,
-    );
-
-    if (
-      options.applyRetag &&
-      isManualCleanRetagEligible({
-        attemptedRedrive: true,
-        bucket: afterRedrive.bucket,
-        exists: afterRedrive.exists,
-        filename: afterRedrive.filename,
-        virusScanStatus: afterRedrive.virusScanStatus,
-      })
-    ) {
-      await retagObjectClean(afterRedrive);
-      const afterRetag = await inspectSourceObject({
-        attachment: afterRedrive,
-        packageId: afterRedrive.packageId,
-        sectionId: afterRedrive.sectionId,
+      const afterRedrive = await inspectSourceObject({
+        attachment: inspection,
+        packageId: inspection.packageId,
+        sectionId: inspection.sectionId,
       });
       finalInspections.set(
-        `${afterRetag.packageId}::${afterRetag.sectionId || ""}::${afterRetag.bucket}::${afterRetag.key}`,
-        afterRetag,
+        `${afterRedrive.packageId}::${afterRedrive.sectionId || ""}::${afterRedrive.bucket}::${afterRedrive.key}`,
+        afterRedrive,
       );
-      const headSucceeded = await tryHeadObject(afterRetag.bucket, afterRetag.key);
 
-      auditEntries.push({
-        action: "retagged",
-        bucket: afterRetag.bucket,
-        filename: afterRetag.filename,
-        key: afterRetag.key,
-        packageId: afterRetag.packageId,
-        reason: headSucceeded
-          ? "tag_repaired_and_head_succeeds"
-          : "tag_repaired_head_still_blocked",
-        sectionId: afterRetag.sectionId,
-        versionId: afterRetag.versionId,
-        virusScanStatus: afterRetag.virusScanStatus,
-      });
+      if (
+        options.applyRetag &&
+        isManualCleanRetagEligible({
+          attemptedRedrive: true,
+          bucket: afterRedrive.bucket,
+          exists: afterRedrive.exists,
+          filename: afterRedrive.filename,
+          virusScanStatus: afterRedrive.virusScanStatus,
+        })
+      ) {
+        await retagObjectClean(afterRedrive);
+        const afterRetag = await inspectSourceObject({
+          attachment: afterRedrive,
+          packageId: afterRedrive.packageId,
+          sectionId: afterRedrive.sectionId,
+        });
+        finalInspections.set(
+          `${afterRetag.packageId}::${afterRetag.sectionId || ""}::${afterRetag.bucket}::${afterRetag.key}`,
+          afterRetag,
+        );
+        const headSucceeded = await tryHeadObject(afterRetag.bucket, afterRetag.key);
+
+        auditEntries.push({
+          action: "retagged",
+          bucket: afterRetag.bucket,
+          filename: afterRetag.filename,
+          key: afterRetag.key,
+          packageId: afterRetag.packageId,
+          reason: headSucceeded
+            ? "tag_repaired_and_head_succeeds"
+            : "tag_repaired_head_still_blocked",
+          sectionId: afterRetag.sectionId,
+          versionId: afterRetag.versionId,
+          virusScanStatus: afterRetag.virusScanStatus,
+        });
+      }
     }
+  }
+
+  const sourceInspectionsByPackageId = Array.from(finalInspections.values()).reduce<
+    Map<string, SourceObjectInspection[]>
+  >((packages, inspection) => {
+    const existing = packages.get(inspection.packageId) || [];
+    existing.push(inspection);
+    packages.set(inspection.packageId, existing);
+    return packages;
+  }, new Map());
+  const packageAudits = buildPackageRepairAudits({
+    packageIds: targetPackageIds,
+    currentEntries,
+    reportRowsByPackageId,
+    sourceInspectionsByPackageId,
+  });
+  for (const packageAudit of packageAudits) {
+    auditEntries.push({
+      action: "classified",
+      packageId: packageAudit.packageId,
+      result: JSON.stringify(packageAudit),
+    });
   }
 
   const packageInspectionMap = Array.from(finalInspections.values()).reduce<
@@ -761,16 +958,24 @@ async function main() {
       .map(([packageId]) => packageId),
   );
 
-  for (const packageId of packageIdsToRebuild) {
-    await queuePackageRebuild({
-      latestTimestamp: Date.now(),
-      packageId,
-      queueUrl: rebuildQueueUrl,
-    });
-    auditEntries.push({
-      action: "rebuild_queued",
-      packageId,
-    });
+  const queuedPackageIds = resolveQueuedPackageIds({
+    inputPackageIds: targetPackageIds,
+    packageIdsToRebuild: Array.from(packageIdsToRebuild),
+    rebuildInputPackages: options.rebuildInputPackages,
+  });
+
+  if (!options.dryRun) {
+    for (const packageId of queuedPackageIds) {
+      await queuePackageRebuild({
+        latestTimestamp: Date.now(),
+        packageId,
+        queueUrl: rebuildQueueUrl,
+      });
+      auditEntries.push({
+        action: "rebuild_queued",
+        packageId,
+      });
+    }
   }
 
   if (options.waitForRebuild && options.packageId) {
@@ -787,7 +992,10 @@ async function main() {
     });
   }
 
-  await writeAuditLog(options.writeAuditPath, auditEntries);
+  await writeAuditLog(options.writeAuditPath, {
+    actions: auditEntries,
+    packageAudits,
+  });
 
   const summary = {
     applyRetag: options.applyRetag,
@@ -796,13 +1004,18 @@ async function main() {
     archiveKeyPrefix: archiveStorage.keyPrefix,
     archiveUsesOverlay: archiveStorage.usesOverlay,
     blockedObjectCount: blocked.length,
+    dryRun: options.dryRun,
     effectiveAttachmentReadStage: readStage,
     failedCurrentCount: failedEntries.length,
-    packageIdsQueued: Array.from(packageIdsToRebuild).sort(),
+    inputCsvPath: options.inputCsvPath,
+    inputPackageCount: inputSelection?.packageIds.length || 0,
+    packageClassificationCounts: buildClassificationCounts(packageAudits),
+    packageIdsQueued: options.dryRun ? [] : queuedPackageIds,
     scannerFunctionName,
     scannerStage: readStage,
     stage: options.stage,
     sourceBucketName,
+    targetPackageCount: targetPackageIds.length,
     writeAuditPath: options.writeAuditPath,
   };
 

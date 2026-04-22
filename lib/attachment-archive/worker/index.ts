@@ -1,3 +1,5 @@
+import type { ReadableStream as NodeReadableStream } from "node:stream/web";
+
 import {
   GetObjectCommand,
   GetObjectCommandOutput,
@@ -374,17 +376,21 @@ function hasTransformToWebStream(body: AttachmentBody): body is AttachmentBody &
   return typeof (body as { transformToWebStream?: unknown }).transformToWebStream === "function";
 }
 
+function toNodeWebReadableStream(stream: ReadableStream<Uint8Array>): NodeReadableStream<any> {
+  return stream as unknown as NodeReadableStream<any>;
+}
+
 function toArchiverInput(body: AttachmentBody): ArchiverInput {
   if (isNodeReadableStream(body)) {
     return body as Readable;
   }
 
   if (hasTransformToWebStream(body)) {
-    return Readable.fromWeb(body.transformToWebStream());
+    return Readable.fromWeb(toNodeWebReadableStream(body.transformToWebStream()));
   }
 
   if (isWebReadableStream(body)) {
-    return Readable.fromWeb(body);
+    return Readable.fromWeb(toNodeWebReadableStream(body));
   }
 
   if (isAsyncIterableStream(body)) {
@@ -473,8 +479,32 @@ async function run(): Promise<void> {
     }
 
     if (!allAttachmentsUnavailable) {
+      console.info(
+        JSON.stringify({
+          event: "attachment_archive_finalize_starting",
+          artifactKey,
+          hash,
+          tempArchivePath,
+        }),
+      );
       await archive.finalize();
+      console.info(
+        JSON.stringify({
+          event: "attachment_archive_finalize_completed",
+          artifactKey,
+          hash,
+          tempArchivePath,
+        }),
+      );
       await finished(archiveFileStream);
+      console.info(
+        JSON.stringify({
+          event: "attachment_archive_file_stream_completed",
+          artifactKey,
+          hash,
+          tempArchivePath,
+        }),
+      );
       console.info(
         JSON.stringify({
           event: "attachment_archive_upload_starting",
@@ -522,6 +552,14 @@ async function run(): Promise<void> {
     return;
   }
 
+  console.info(
+    JSON.stringify({
+      event: "attachment_archive_current_status_write_starting",
+      artifactKey,
+      hash,
+      nextStatus: allAttachmentsUnavailable ? "FAILED" : "READY",
+    }),
+  );
   await putCurrentArchiveStatus(
     allAttachmentsUnavailable
       ? buildCurrentFromManifest(builtArchive.manifest, "FAILED", {
@@ -535,6 +573,14 @@ async function run(): Promise<void> {
           executionArn: latestCurrent.executionArn,
           skippedAttachmentCount: builtArchive.skippedAttachmentCount,
         }),
+  );
+  console.info(
+    JSON.stringify({
+      event: "attachment_archive_current_status_write_completed",
+      artifactKey,
+      hash,
+      nextStatus: allAttachmentsUnavailable ? "FAILED" : "READY",
+    }),
   );
 
   console.info(
