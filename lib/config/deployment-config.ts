@@ -1,5 +1,8 @@
 import { getExport, getSecret } from "shared-utils";
 
+const SHARED_STAGES = new Set(["main", "val", "production"]);
+const PROTECTED_STAGES = new Set([...SHARED_STAGES, "datasink"]);
+
 export interface InjectedConfigOptions {
   project: string;
   stage: string;
@@ -56,8 +59,8 @@ export class DeploymentConfig {
       ...injectedConfig,
       project: options.project,
       stage: options.stage,
-      isDev: !["main", "val", "production"].includes(options.stage),
-      terminationProtection: ["main", "val", "production"].includes(options.stage),
+      isDev: !SHARED_STAGES.has(options.stage),
+      terminationProtection: PROTECTED_STAGES.has(options.stage),
       sharedOpenSearchDomainArn: "",
       sharedOpenSearchDomainEndpoint: "",
     };

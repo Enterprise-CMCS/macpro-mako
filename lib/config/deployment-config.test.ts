@@ -63,6 +63,9 @@ describe("DeploymentConfig", () => {
       if (secretName === `${project}-production`) {
         return Promise.resolve("{}"); // Empty secret for production stage
       }
+      if (secretName === `${project}-datasink`) {
+        return Promise.resolve("{}"); // Empty secret for protected datasink stage
+      }
       return Promise.reject(new Error(`Secret not found: ${secretName}`));
     });
     vi.spyOn(sharedUtils, "getExport").mockImplementation((exportName) => {
@@ -195,5 +198,12 @@ describe("DeploymentConfig", () => {
       expect(deploymentConfig.config.isDev).toBe(false);
       expect(deploymentConfig.config.terminationProtection).toBe(true);
     }
+  });
+
+  it("should keep datasink dev-like while enabling termination protection", async () => {
+    const deploymentConfig = await DeploymentConfig.fetch({ project, stage: "datasink" });
+
+    expect(deploymentConfig.config.isDev).toBe(true);
+    expect(deploymentConfig.config.terminationProtection).toBe(true);
   });
 });
