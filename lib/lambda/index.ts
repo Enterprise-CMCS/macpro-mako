@@ -3,9 +3,12 @@ export * as attachmentArchiveBackfillStatus from "./attachmentArchiveBackfillSta
 export * as auditAttachmentArchives from "./auditAttachmentArchives";
 export * as backfillAttachmentArchives from "./backfillAttachmentArchives";
 export * as deleteIndex from "./deleteIndex";
+export * as externalAttachmentAuthorizer from "./externalAttachmentAuthorizer";
+export * as externalToken from "./externalToken";
 export * as getAttachmentUrl from "./getAttachmentUrl";
 export * as getAttachmentArchive from "./getAttachmentArchive";
 export * as getCpocs from "./getCpocs";
+export * as getExternalAttachmentUrl from "./getExternalAttachmentUrl";
 export * as getPackageActions from "./getPackageActions";
 export * as getSubTypes from "./getSubTypes";
 export * as getTypes from "./getTypes";
@@ -27,3 +30,4 @@ export * as deleteTriggers from "./deleteTriggers";
 export * as sinkChangelog from "./sinkChangelog";
 export * as item from "./item";
 export * as postAuth from "./postAuth";
+export * as checkIdentifierUsage from "./checkIdentifierUsage";

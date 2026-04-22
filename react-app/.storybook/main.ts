@@ -4,6 +4,7 @@ import { createRequire } from "node:module";
 import { dirname, join } from "node:path";
 
 import type { StorybookConfig } from "@storybook/react-vite";
+
 import {
   API_ENDPOINT,
   IDENTITY_POOL_ID,
@@ -13,7 +14,7 @@ import {
   USER_POOL_CLIENT_DOMAIN,
   USER_POOL_CLIENT_ID,
   USER_POOL_ID,
-} from "mocks";
+} from "./mockEnv";
 
 // @ts-ignore module is esnext
 const require = createRequire(import.meta.url);
