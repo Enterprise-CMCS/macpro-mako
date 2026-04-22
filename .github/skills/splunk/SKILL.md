@@ -1,6 +1,6 @@
 ---
 name: splunk
-description: Search CMS Splunk Cloud logs using a local bash helper script. Use this skill when the user wants to authenticate to Splunk, inspect indexes, run ad hoc searches, troubleshoot application errors, or investigate applicaiton logs.
+description: Search CMS Splunk Cloud logs using a local bash helper script. Use this skill when the user wants to authenticate to Splunk, inspect indexes, run ad hoc searches, troubleshoot application errors, or investigate application logs.
 ---
 
 # Splunk CLI Skill
@@ -10,7 +10,7 @@ Use this skill when the user wants to work with CMS Splunk Cloud.
 ## Resources
 
 - Script: `.github/skills/splunk/scripts/splunk-cli.sh`
-- Human documentation: `.github/skills/splunk/README.md`
+- Human documentation: `.github/skills/splunk/scripts/README.md`
 - Command reference: `.github/skills/splunk/references/commands.md`
 - Examples: `.github/skills/splunk/references/examples.md`
 - Troubleshooting: `.github/skills/splunk/references/troubleshooting.md`
