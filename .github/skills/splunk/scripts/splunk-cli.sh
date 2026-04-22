@@ -236,7 +236,12 @@ splunk_oneshot() {
         return 1
     fi
     
-    curl -k -b "$SPLUNK_COOKIES" \
+    local curl_tls_args=()
+    if [ "${SPLUNK_INSECURE_TLS:-0}" = "1" ]; then
+        curl_tls_args+=("-k")
+    fi
+    
+    curl "${curl_tls_args[@]}" -b "$SPLUNK_COOKIES" \
         -H "X-Splunk-Form-Key: $csrf_token" \
         -H "X-Requested-With: XMLHttpRequest" \
         -X POST "${SPLUNK_HOST}/en-US/splunkd/__raw/services/search/jobs/export?output_mode=json" \
