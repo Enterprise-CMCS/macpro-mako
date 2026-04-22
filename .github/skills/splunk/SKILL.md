@@ -14,7 +14,7 @@ Use this skill when the user wants to work with CMS Splunk Cloud.
 - Command reference: `.github/skills/splunk/references/commands.md`
 - Examples: `.github/skills/splunk/references/examples.md`
 - Troubleshooting: `.github/skills/splunk/references/troubleshooting.md`
-- ECS source mappings: `.github/skills/splunk/references/source-mapping.md`
+- Source mappings: `.github/skills/splunk/references/source-mapping.md`
 
 ## Workflow
 

@@ -1,5 +1,30 @@
 # Troubleshooting
 
+## Network Connectivity
+Symptoms:
+> It looks like the Splunk search failed. Let me try a different approach - perhaps there's an authentication issue or the search syntax needs to be adjusted.
+
+Fix: 
+ Make sure you are connected to VPN (via ZScaler)
+
+
+## Missing CSRF token
+
+If login fails because the script cannot obtain a CSRF token:
+
+- Verify the Splunk host is correct
+- Verify the login page is reachable
+- Retry authentication
+- Check whether the deployment changed its login behavior
+
+## Missing Dependencies
+###  `curl` or `python3` not found
+
+Install the missing dependency, then retry:
+
+- `curl` is required for API calls
+- `python3` is used for pretty-printing some JSON responses
+
 ## Session expired or invalid
 
 Symptoms:
@@ -63,19 +88,3 @@ Check accessible indexes:
 ```bash
 splunk_list_indexes
 ```
-
-## Missing CSRF token
-
-If login fails because the script cannot obtain a CSRF token:
-
-- Verify the Splunk host is correct
-- Verify the login page is reachable
-- Retry authentication
-- Check whether the deployment changed its login behavior
-
-## `curl` or `python3` not found
-
-Install the missing dependency, then retry:
-
-- `curl` is required for API calls
-- `python3` is used for pretty-printing some JSON responses
