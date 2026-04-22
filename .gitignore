@@ -29,5 +29,6 @@ coverage
 .vscode
 .history
 
+# local test and docs files
 test/local/*
 docs/local/*

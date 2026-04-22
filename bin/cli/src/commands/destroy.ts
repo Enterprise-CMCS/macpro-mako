@@ -18,7 +18,7 @@ const waitForStackDeleteComplete = async (client: CloudFormationClient, stackNam
 };
 
 const STAGE_NAME_PATTERN = /^[a-z][a-z0-9-]*$/;
-const PROTECTED_STAGES = new Set(["main", "val", "production"]);
+const PROTECTED_STAGES = new Set(["main", "val", "production", "datasink"]);
 
 const isStackDoesNotExistError = (error: unknown): boolean => {
   if (!error || typeof error !== "object") return false;

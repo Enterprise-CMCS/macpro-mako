@@ -2,32 +2,36 @@
 import react from "@vitejs/plugin-react-swc";
 import { fileURLToPath } from "url";
 import { defineConfig, loadEnv } from "vite";
-import checker from "vite-plugin-checker";
 import { VitePluginRadar } from "vite-plugin-radar";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
+export default defineConfig(async ({ mode }) => {
   // Load environment variables based on the current mode
   const env = loadEnv(mode, process.cwd());
   console.log({ env });
+  const plugins = [
+    react(),
+    VitePluginRadar({
+      enableDev: true,
+      analytics: [
+        {
+          id: env.VITE_GOOGLE_ANALYTICS_GTAG,
+          disable: env.VITE_GOOGLE_ANALYTICS_DISABLE === "true",
+        },
+      ],
+    }),
+  ];
+
+  if (mode !== "test") {
+    const { checker } = await import("vite-plugin-checker");
+    plugins.splice(1, 0, checker({ typescript: true }));
+  }
 
   return {
     optimizeDeps: {
       exclude: ["@aws-sdk/client-sts", "@smithy/shared-ini-file-loader"],
     },
-    plugins: [
-      react(),
-      checker({ typescript: true }),
-      VitePluginRadar({
-        enableDev: true,
-        analytics: [
-          {
-            id: env.VITE_GOOGLE_ANALYTICS_GTAG,
-            disable: env.VITE_GOOGLE_ANALYTICS_DISABLE === "true",
-          },
-        ],
-      }),
-    ],
+    plugins,
     server: {
       port: 5000,
     },

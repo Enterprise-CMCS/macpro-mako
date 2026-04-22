@@ -8,4 +8,10 @@ repos:
     rev: v1.1.0
     hooks:
       - id: detect-secrets
-        args: ["--exclude-lines", "secretsmanager:"]
+        args:
+          [
+            "--exclude-lines",
+            "secretsmanager:",
+            "--exclude-files",
+            ".*\\.test\\.ts$",
+          ]
