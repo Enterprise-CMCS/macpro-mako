@@ -1,12 +1,12 @@
 
 ## Environments
 
-- `prod`, `val`, `dev` are the `cloudenv` values 
+- `prod`, `impl`, `dev` are the `cloudenv` values
 - Use the `source` value exactly as shown in Splunk queries for corresponding cloud environments.
 - Naming conventions
   - The cloudenv `prod` uses the word "production" in source `/aws/lambda/mako-production-api-createUserProfile`
   - The cloudenv `impl` uses the word "val" in source `/aws/lambda/mako-val-api-createUserProfile`
-  - The cloudenv `dev` uses the git branch name, so it is not derivable like prod or impl
+  - The cloudenv `dev` uses the git branch name, so it is not derivable like `prod` or `impl`
 
 # Lambda Source Mapping
 
