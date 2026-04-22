@@ -4,7 +4,7 @@ A bash-based CLI wrapper for interacting with Splunk Cloud via the REST API. Thi
 
 ## Why This Tool?
 
-The standard Splunk CLI tools (`scloud`, `acs`) are designed for Splunk Cloud Platform (Victoria Experience) and don't work with all Splunk deployments. The CMS OIT Splunk cloud do not allow users to have personal access tokens (PAT). This CLI uses the web-based REST API authentication flow, which works with Splunk instances that expose a web interface. After login, the signed access cookies are persisted in `/tmp/splunk_cookies.txt`
+The standard Splunk CLI tools (`scloud`, `acs`) are designed for Splunk Cloud Platform (Victoria Experience) and don't work with all Splunk deployments. The CMS OIT Splunk cloud does not allow users to have personal access tokens (PATs). This CLI uses the web-based REST API authentication flow, which works with Splunk instances that expose a web interface. After login, the signed access cookies are persisted in `/tmp/splunk_cookies.txt`.
 
 ## Repository Location
 
