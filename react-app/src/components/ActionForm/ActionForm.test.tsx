@@ -1339,7 +1339,16 @@ describe("ActionForm", () => {
         schema={z.object({
           id: z.string().min(1),
         })}
-        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        fields={(form) => (
+          <>
+            <input aria-label="Package ID" {...form.register("id")} />
+            {form.formState.errors.id?.message && (
+              <p role="alert" data-testid="draft-id-error">
+                {String(form.formState.errors.id.message)}
+              </p>
+            )}
+          </>
+        )}
         defaultValues={{ id: draftId }}
         documentPollerArgs={{
           property: () => "id",
@@ -1366,14 +1375,95 @@ describe("ActionForm", () => {
     );
     expect(saveDraftSpy).not.toHaveBeenCalled();
     expect(screen.getByLabelText("Package ID")).not.toBeDisabled();
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("draft-save-status")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
 
     await user.type(screen.getByLabelText("Package ID"), "-NEW");
 
+    await waitFor(() => expect(screen.queryByTestId("draft-id-error")).not.toBeInTheDocument());
     await waitFor(() => expect(screen.getByTestId("save-draft-form")).not.toBeDisabled());
 
     useGetItemSpy.mockRestore();
+  });
+
+  test("sets inline ID error when backend detects duplicate draft ID during save", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-26-7685-P";
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-12T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const conflictError = Object.assign(new Error(DRAFT_ID_CONFLICT_MESSAGE), {
+      response: { status: 409 },
+    });
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockRejectedValue(conflictError);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft conflict test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => (
+          <>
+            <input aria-label="Package ID" {...form.register("id")} />
+            {form.formState.errors.id?.message && (
+              <p role="alert" data-testid="draft-id-error">
+                {String(form.formState.errors.id.message)}
+              </p>
+            )}
+          </>
+        )}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(bannerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        header: "Unable to save package",
+        body: DRAFT_ID_CONFLICT_MESSAGE,
+        variant: "destructive",
+      }),
+    );
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+    expect(screen.getByTestId("save-draft-form")).toBeDisabled();
+    expect(screen.getByTestId("draft-save-status")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+
+    await user.type(screen.getByLabelText("Package ID"), "-NEW");
+
+    await waitFor(() => expect(screen.queryByTestId("draft-id-error")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId("save-draft-form")).not.toBeDisabled());
+
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
   });
 
   test("redirects away when non-owner cancels the draft warning modal", async () => {

@@ -300,7 +300,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (!draftIdConflict) return;
     if (!watchedDraftId || watchedDraftId === draftIdConflict) return;
     setDraftIdConflict(null);
-  }, [draftIdConflict, watchedDraftId]);
+    form.clearErrors(idPath as FieldPath<z.TypeOf<Schema>>);
+  }, [draftIdConflict, form, idPath, watchedDraftId]);
 
   useEffect(() => {
     const previousDraftId = previousDraftIdRef.current;
@@ -456,22 +457,32 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     mutationFn: (payload: Parameters<typeof saveDraft>[0]) => saveDraft(payload),
   });
 
-  const showDraftIdConflict = useCallback((conflictingId: string) => {
-    setDraftIdConflict(conflictingId);
-    banner({
-      header: "Unable to save package",
-      body: DRAFT_ID_CONFLICT_MESSAGE,
-      variant: "destructive",
-      pathnameToDisplayOn: window.location.pathname,
-    });
-    setDraftSaveStatus({
-      variant: "error",
-      message: DRAFT_ID_CONFLICT_MESSAGE,
-    });
-    if (typeof window.scrollTo === "function") {
-      window.scrollTo(0, 0);
-    }
-  }, []);
+  const showDraftIdConflict = useCallback(
+    (conflictingId: string) => {
+      const normalizedConflictId = conflictingId.trim().toUpperCase();
+      const draftIdFieldPath = idPath as FieldPath<z.TypeOf<Schema>>;
+
+      setDraftIdConflict(normalizedConflictId);
+      form.setError(draftIdFieldPath, {
+        type: "manual",
+        message: DRAFT_ID_CONFLICT_MESSAGE,
+      });
+      banner({
+        header: "Unable to save package",
+        body: DRAFT_ID_CONFLICT_MESSAGE,
+        variant: "destructive",
+        pathnameToDisplayOn: window.location.pathname,
+      });
+      setDraftSaveStatus({
+        variant: "error",
+        message: DRAFT_ID_CONFLICT_MESSAGE,
+      });
+      if (typeof window.scrollTo === "function") {
+        window.scrollTo(0, 0);
+      }
+    },
+    [form, idPath],
+  );
 
   const validateDraftIdAvailability = useCallback(
     async (rawId: string) => {
