@@ -15,6 +15,7 @@ import {
   banner,
   BreadCrumbs,
   Button,
+  dismissBanner,
   FAQFooter,
   Form,
   FormField,
@@ -202,6 +203,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     email?: string | null;
     name?: string | null;
   } | null>(null);
+  const draftConflictRevalidationInFlightRef = useRef(false);
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
   const draftEnabled = draftOptions?.enabled === true;
@@ -295,6 +297,29 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const isDraftIdConflictActive = Boolean(
     draftIdConflict && watchedDraftId && draftIdConflict === watchedDraftId,
   );
+
+  const hasActiveDraftConflictBanner = useCallback(() => {
+    if (typeof window === "undefined") return false;
+
+    try {
+      const storedBanner = localStorage.getItem("banner");
+      if (!storedBanner || storedBanner === "null") return false;
+
+      const parsedBanner = JSON.parse(storedBanner) as {
+        header?: string;
+        body?: string;
+        pathnameToDisplayOn?: string;
+      };
+
+      return (
+        parsedBanner.header === "Unable to save package" &&
+        parsedBanner.body === DRAFT_ID_CONFLICT_MESSAGE &&
+        parsedBanner.pathnameToDisplayOn === window.location.pathname
+      );
+    } catch {
+      return false;
+    }
+  }, []);
 
   useEffect(() => {
     if (!draftIdConflict) return;
@@ -421,6 +446,92 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       draftSaveStatusRef.current?.focus();
     }
   }, [draftEnabled, draftSaveStatus]);
+
+  const clearDraftIdConflictUI = useCallback(() => {
+    setDraftIdConflict(null);
+
+    const draftIdFieldPath = idPath as FieldPath<z.TypeOf<Schema>>;
+    if (form.getFieldState(draftIdFieldPath).error?.message === DRAFT_ID_CONFLICT_MESSAGE) {
+      form.clearErrors(draftIdFieldPath);
+    }
+
+    setDraftSaveStatus((currentStatus) => {
+      if (currentStatus?.message !== DRAFT_ID_CONFLICT_MESSAGE) {
+        return currentStatus;
+      }
+
+      return hasRealChanges
+        ? {
+            variant: "dirty",
+            message: "Unsaved changes",
+          }
+        : null;
+    });
+
+    if (hasActiveDraftConflictBanner()) {
+      dismissBanner();
+    }
+  }, [form, hasActiveDraftConflictBanner, hasRealChanges, idPath]);
+
+  const revalidateActiveDraftIdConflict = useCallback(async () => {
+    if (!isDraftMode) return;
+    if (draftConflictRevalidationInFlightRef.current) return;
+
+    const normalizedId = watchedDraftId || draftId || "";
+    if (!normalizedId) return;
+
+    const shouldCheckForResolvedConflict = Boolean(
+      isDraftIdConflictActive || hasActiveDraftConflictBanner(),
+    );
+
+    if (!shouldCheckForResolvedConflict) return;
+
+    draftConflictRevalidationInFlightRef.current = true;
+    try {
+      const conflictStillExists = await itemExists(normalizedId, {
+        includeDrafts: true,
+        allowDraftId: draftId ?? undefined,
+      });
+
+      if (!conflictStillExists) {
+        clearDraftIdConflictUI();
+      }
+    } finally {
+      draftConflictRevalidationInFlightRef.current = false;
+    }
+  }, [
+    clearDraftIdConflictUI,
+    draftId,
+    hasActiveDraftConflictBanner,
+    isDraftIdConflictActive,
+    isDraftMode,
+    watchedDraftId,
+  ]);
+
+  useEffect(() => {
+    void revalidateActiveDraftIdConflict();
+  }, [revalidateActiveDraftIdConflict]);
+
+  useEffect(() => {
+    if (!isDraftMode) return;
+
+    const handleFocus = () => {
+      void revalidateActiveDraftIdConflict();
+    };
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        void revalidateActiveDraftIdConflict();
+      }
+    };
+
+    window.addEventListener("focus", handleFocus);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      window.removeEventListener("focus", handleFocus);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isDraftMode, revalidateActiveDraftIdConflict]);
 
   useNavigationPrompt({
     shouldBlock: hasRealChanges && !form.formState.isSubmitting,

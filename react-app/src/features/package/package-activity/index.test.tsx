@@ -293,6 +293,7 @@ describe("Package Activity", () => {
   });
 
   it("shows created and latest updated draft activity when another user saved the draft", async () => {
+    const user = userEvent.setup();
     const draftSubmission = {
       id: "MD-26-0005-P",
       seatoolStatus: "Draft",
@@ -325,6 +326,14 @@ describe("Package Activity", () => {
     expect(activityButtons[0]).toHaveTextContent("Updated By Ringo Starr");
     expect(activityButtons[1]).toHaveTextContent("Created By George Harrison");
     expect(screen.getByText("Latest saved draft notes")).toBeInTheDocument();
+
+    await user.click(activityButtons[1]);
+
+    expect(
+      screen.getByText(
+        "This draft creation record remains static. The latest saved documents and additional information are shown in the Updated By activity.",
+      ),
+    ).toBeInTheDocument();
   });
 
   it("shows draft attachments and saved additional information together", async () => {

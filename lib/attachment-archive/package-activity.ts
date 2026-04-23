@@ -34,6 +34,18 @@ function getSectionAttachments(
   }));
 }
 
+function getArchiveSectionLabel(entry: opensearch.changelog.Document): string {
+  if (entry.id.endsWith("-draft-updated-activity")) {
+    return "draft-updated";
+  }
+
+  if (entry.id.endsWith("-draft-activity")) {
+    return "draft-created";
+  }
+
+  return getPackageActivityLabelSlug(entry.event);
+}
+
 export function buildAttachmentArchiveSections({
   packageId,
   changelog,
@@ -62,7 +74,7 @@ export function buildAttachmentArchiveSections({
     })
     .map(({ attachments, entry }, index) => {
       const sectionNumber = index + 1;
-      const sectionLabel = getPackageActivityLabelSlug(entry.event);
+      const sectionLabel = getArchiveSectionLabel(entry);
       const sectionFolderName = buildSectionArchiveFolderName({ sectionNumber, sectionLabel });
 
       return {

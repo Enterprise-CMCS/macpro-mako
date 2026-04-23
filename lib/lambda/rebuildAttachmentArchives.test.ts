@@ -86,6 +86,7 @@ describe("rebuildAttachmentArchives handler", () => {
     });
     expect(getPackageChangelogSpy).not.toHaveBeenCalled();
     expect(rebuildPackageAttachmentArchives).toHaveBeenCalledWith({
+      archiveNamespace: "draft",
       packageId: "MD-26-9999-P",
       changelog: draftChangelog,
     });
@@ -137,6 +138,7 @@ describe("rebuildAttachmentArchives handler", () => {
     expect(getDraftPackageSpy).not.toHaveBeenCalled();
     expect(buildDraftAttachmentChangelog).not.toHaveBeenCalled();
     expect(rebuildPackageAttachmentArchives).toHaveBeenCalledWith({
+      archiveNamespace: "main",
       packageId: "MD-26-9999-P",
       changelog: persistedChangelog,
     });

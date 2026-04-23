@@ -47,6 +47,7 @@ export const handler: SQSHandler = async (event) => {
     const result = await rebuildPackageAttachmentArchives({
       packageId: message.packageId,
       changelog,
+      archiveNamespace: message.preferDraft ? "draft" : "main",
     });
 
     console.info(

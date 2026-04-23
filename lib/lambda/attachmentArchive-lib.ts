@@ -32,6 +32,7 @@ import {
 } from "../attachment-archive/storage";
 import {
   AttachmentArchiveCurrent,
+  AttachmentArchiveNamespace,
   AttachmentArchivePackageManifest,
   AttachmentArchiveScope,
   AttachmentArchiveSectionManifest,
@@ -307,9 +308,11 @@ async function startArchiveExecution({
 function buildPackageArchivePlan({
   packageId,
   changelog,
+  archiveNamespace = "main",
 }: {
   packageId: string;
   changelog: opensearch.changelog.ItemResult[];
+  archiveNamespace?: AttachmentArchiveNamespace;
 }): PackageArchivePlan | undefined {
   const { keyPrefix } = getArchiveStorageConfig();
   const sectionDescriptors = buildAttachmentArchiveSections({ packageId, changelog });
@@ -332,12 +335,14 @@ function buildPackageArchivePlan({
       packageId,
       scope: "section",
       sectionId: section.sectionId,
+      archiveNamespace,
     });
     const baseManifestKey = getArchiveManifestKey(
       {
         packageId,
         scope: "section",
         sectionId: section.sectionId,
+        archiveNamespace,
       },
       manifest.hash,
     );
@@ -346,6 +351,7 @@ function buildPackageArchivePlan({
         packageId,
         scope: "section",
         sectionId: section.sectionId,
+        archiveNamespace,
       },
       manifest.hash,
     );
@@ -390,12 +396,16 @@ function buildPackageArchivePlan({
   });
 
   const basePackageArtifactKey = getArchiveArtifactKey(
-    { packageId, scope: "all" },
+    { packageId, scope: "all", archiveNamespace },
     packageManifest.hash,
   );
-  const basePackageCurrentKey = getArchiveCurrentKey({ packageId, scope: "all" });
+  const basePackageCurrentKey = getArchiveCurrentKey({
+    packageId,
+    scope: "all",
+    archiveNamespace,
+  });
   const basePackageManifestKey = getArchiveManifestKey(
-    { packageId, scope: "all" },
+    { packageId, scope: "all", archiveNamespace },
     packageManifest.hash,
   );
   const packageArtifact: ArchiveArtifactPlan = {
@@ -426,13 +436,15 @@ function getRequestedArtifact({
   scope,
   sectionId,
   changelog,
+  archiveNamespace = "main",
 }: {
   packageId: string;
   scope: AttachmentArchiveScope;
   sectionId?: string;
   changelog: opensearch.changelog.ItemResult[];
+  archiveNamespace?: AttachmentArchiveNamespace;
 }): ArchiveArtifactPlan {
-  const plan = buildPackageArchivePlan({ packageId, changelog });
+  const plan = buildPackageArchivePlan({ packageId, changelog, archiveNamespace });
   if (!plan) {
     throw createError(
       404,
@@ -763,13 +775,21 @@ export async function getRequestedAttachmentArchiveStatus({
   scope,
   sectionId,
   changelog,
+  archiveNamespace = "main",
 }: {
   packageId: string;
   scope: AttachmentArchiveScope;
   sectionId?: string;
   changelog: opensearch.changelog.ItemResult[];
+  archiveNamespace?: AttachmentArchiveNamespace;
 }) {
-  const artifact = getRequestedArtifact({ packageId, scope, sectionId, changelog });
+  const artifact = getRequestedArtifact({
+    packageId,
+    scope,
+    sectionId,
+    changelog,
+    archiveNamespace,
+  });
   const resolution = await resolveArchiveArtifactForRead({ artifact });
 
   if (resolution.action === "ready") {
@@ -868,11 +888,13 @@ export async function validateAttachmentArchiveCompletion({
 export async function rebuildPackageAttachmentArchives({
   packageId,
   changelog,
+  archiveNamespace = "main",
 }: {
   packageId: string;
   changelog: opensearch.changelog.ItemResult[];
+  archiveNamespace?: AttachmentArchiveNamespace;
 }) {
-  const plan = buildPackageArchivePlan({ packageId, changelog });
+  const plan = buildPackageArchivePlan({ packageId, changelog, archiveNamespace });
   if (!plan) {
     return {
       packageId,

@@ -126,6 +126,7 @@ export const handler = authenticatedMiddy({
     scope: body.scope,
     sectionId: body.sectionId,
     changelog,
+    archiveNamespace: isDraftPackage ? "draft" : "main",
   });
 
   if (result.needsRebuild) {

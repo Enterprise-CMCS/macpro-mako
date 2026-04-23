@@ -2,6 +2,7 @@ import { opensearch } from "shared-types";
 import { getDraftAttachmentDefaultLabel, getDraftAttachmentKeyOrder } from "shared-utils";
 
 const DRAFT_ACTIVITY_ID_SUFFIX = "draft-activity";
+const DRAFT_UPDATED_ACTIVITY_ID_SUFFIX = "draft-updated-activity";
 
 const DRAFT_EVENT_FALLBACK: opensearch.changelog.Document["event"] = "new-medicaid-submission";
 
@@ -44,6 +45,40 @@ const getDraftSavedTimestamp = (submission: opensearch.main.Document) => {
   }
 
   return Date.now();
+};
+
+const getTimestamp = (value: string | number | undefined, fallback: number) => {
+  if (typeof value === "number") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    const timestamp = Date.parse(value);
+    if (!Number.isNaN(timestamp)) {
+      return timestamp;
+    }
+  }
+
+  return fallback;
+};
+
+const isUpdatedByDifferentUser = (submission: opensearch.main.Document) => {
+  const draft = submission.draft;
+  const createdByName = draft?.createdByName ?? draft?.draftOwnerName ?? submission.submitterName;
+  const createdByEmail =
+    draft?.createdByEmail ?? draft?.draftOwnerEmail ?? submission.submitterEmail;
+  const updatedByName = draft?.updatedByName ?? submission.submitterName;
+  const updatedByEmail = draft?.updatedByEmail ?? submission.submitterEmail;
+
+  if (!updatedByName) {
+    return false;
+  }
+
+  if (updatedByEmail && createdByEmail) {
+    return updatedByEmail.toLowerCase() !== createdByEmail.toLowerCase();
+  }
+
+  return updatedByName !== createdByName;
 };
 
 export const getDraftAttachments = (
@@ -139,19 +174,32 @@ export const buildDraftAttachmentChangelog = ({
     return [];
   }
 
+  const savedTimestamp = getDraftSavedTimestamp(submission);
+  const updatedByDifferentUser = isUpdatedByDifferentUser(submission);
+  const draft = submission.draft;
+  const activityIdSuffix = updatedByDifferentUser
+    ? DRAFT_UPDATED_ACTIVITY_ID_SUFFIX
+    : DRAFT_ACTIVITY_ID_SUFFIX;
+  const submitterName = updatedByDifferentUser
+    ? (draft?.updatedByName ?? submission.submitterName)
+    : (draft?.createdByName ?? draft?.draftOwnerName ?? submission.submitterName);
+  const timestamp = updatedByDifferentUser
+    ? getTimestamp(draft?.updatedAt ?? draft?.savedAt, savedTimestamp)
+    : getTimestamp(draft?.createdAt ?? draft?.savedAt, savedTimestamp);
+
   return [
     {
-      _id: `${packageId}-${DRAFT_ACTIVITY_ID_SUFFIX}`,
+      _id: `${packageId}-${activityIdSuffix}`,
       _index: "draft-changelog",
       _score: 1,
       sort: [],
       found: true,
       _source: {
-        id: `${packageId}-${DRAFT_ACTIVITY_ID_SUFFIX}`,
+        id: `${packageId}-${activityIdSuffix}`,
         packageId,
         event: isDraftEvent(submission.event) ? submission.event : DRAFT_EVENT_FALLBACK,
-        timestamp: getDraftSavedTimestamp(submission),
-        submitterName: submission.submitterName,
+        timestamp,
+        submitterName,
         attachments,
       } as opensearch.changelog.Document,
     },

@@ -35,6 +35,7 @@ type PackageActivityRecord = {
   timestamp?: string | number;
   attachments: opensearch.changelog.Document["attachments"];
   additionalInformation?: string | null;
+  detailMessage?: string;
   isAdminChange?: boolean;
   isSyntheticDraft?: boolean;
 };
@@ -171,6 +172,9 @@ const getDraftPackageActivities = (
     timestamp: createdAt,
     attachments: updatedByDifferentUser ? [] : attachments,
     additionalInformation: updatedByDifferentUser ? undefined : additionalInformation,
+    detailMessage: updatedByDifferentUser
+      ? "This draft creation record remains static. The latest saved documents and additional information are shown in the Updated By activity."
+      : undefined,
     isSyntheticDraft: true,
   };
 
@@ -238,7 +242,7 @@ type SubmissionProps = {
 };
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
-  const { attachments = [], id, packageId, additionalInformation } = packageActivity;
+  const { attachments = [], id, packageId, additionalInformation, detailMessage } = packageActivity;
   const {
     archiveErrorMessage,
     archiveWarningMessage,
@@ -251,6 +255,11 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     preferDraft: packageActivity.isSyntheticDraft,
   });
   const archiveMessage = archiveErrorMessage || archiveWarningMessage;
+  const hasAdditionalInformation = Boolean(additionalInformation?.trim());
+
+  if (detailMessage && attachments.length === 0 && !hasAdditionalInformation) {
+    return <p className="text-gray-700">{detailMessage}</p>;
+  }
 
   return (
     <div className="flex flex-col gap-6">
