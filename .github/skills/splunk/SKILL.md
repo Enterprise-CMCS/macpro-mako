@@ -9,7 +9,9 @@ Use this skill when the user wants to work with CMS Splunk Cloud.
 
 ## Resources
 
-- Script: `.github/skills/splunk/scripts/splunk-cli.sh`
+- Python CLI: `.github/skills/splunk/scripts/splunk_cli.py`
+- Bash wrapper: `.github/skills/splunk/scripts/splunk-cli.sh`
+- PowerShell wrapper: `.github/skills/splunk/scripts/splunk-cli.ps1`
 - Human documentation: `.github/skills/splunk/scripts/README.md`
 - Command reference: `.github/skills/splunk/references/commands.md`
 - Examples: `.github/skills/splunk/references/examples.md`

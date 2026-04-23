@@ -1,12 +1,14 @@
 # Troubleshooting
 
 ## Network Connectivity
+
 Symptoms:
+
 > It looks like the Splunk search failed. Let me try a different approach - perhaps there's an authentication issue or the search syntax needs to be adjusted.
 
 Fix.
-- Make sure you are connected to VPN (via Zscaler)
 
+- Make sure you are connected to VPN (via Zscaler)
 
 ## Missing CSRF token
 
@@ -18,12 +20,15 @@ If login fails because the script cannot obtain a CSRF token:
 - Check whether the deployment changed its login behavior
 
 ## Missing Dependencies
-###  `curl` or `python3` not found
 
-Install the missing dependency, then retry:
+### Python not found
 
-- `curl` is required for API calls
-- `python3` is used for pretty-printing some JSON responses
+Install Python 3.7+ and ensure it is on your PATH:
+
+- **macOS**: `brew install python3` or use the system Python
+- **Windows**: Install from https://python.org (check "Add to PATH" during install)
+
+The `requests` library is installed automatically by the wrapper scripts.
 
 ## Session expired or invalid
 
