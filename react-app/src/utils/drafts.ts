@@ -10,9 +10,9 @@ export const DRAFT_DELETE_MODAL_BODY =
 export const DRAFT_ID_CONFLICT_MESSAGE =
   "This package ID is already in use. Update the ID before saving or submitting.";
 export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
-  `Since you are not the creator or latest updater, are you sure you want to take this action on ${packageId}?`;
+  `Since you are not the creator or most recent editor, are you sure you want to take this action on ${packageId}?`;
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
-  `Since you are not the creator or latest updater, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
+  `Since you are not the creator or most recent editor, are you sure you want to delete draft package ${packageId}? This action cannot be undone.`;
 const DRAFT_CONTINUE_CONFIRMATION_STORAGE_KEY_PREFIX = "onemac:draft-continue-confirmed";
 
 type DraftActorIdentity = {
