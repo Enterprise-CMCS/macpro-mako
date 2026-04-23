@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-        "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+        "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
       },
       "gitCommit": {
-        "shortHash": "743a7e1",
-        "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-        "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-        "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+        "shortHash": "79091fb",
+        "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+        "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+        "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
         "author": {
-          "name": "Benjamin Paige",
-          "email": "benjamin.paige@gmail.com",
-          "time": 1776888058000
+          "name": "Biju Joseph",
+          "email": "biju.joseph@semanticbits.com",
+          "time": 1776955263000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1776888058000
+          "time": 1776955263000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "commitHash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24799748841"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
+            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
           },
           "gitCommit": {
-            "shortHash": "743a7e1",
-            "hash": "743a7e13d4e73b2fa8eb1957752efce1ac29e482",
-            "subject": "feat(api): add external archive downloads and retire datasink ingress (#1818)",
-            "body": "feat(api): add external archive downloads and retire datasink ingress (#1818)\n\n* feat(dataSink): Implement dataSink Lambda for processing SMART events\n\n- Add dataSink Lambda function to handle incoming events from SMART.\n- Implement idempotency checks using DynamoDB to prevent duplicate processing.\n- Publish validated events to Kafka for further processing.\n- Introduce environment variables for configuration, including idempotency table name and Kafka topic.\n- Create associated tests for dataSink functionality.\n- Update package dependencies to include AWS SDK for DynamoDB operations.\n- Add necessary infrastructure in CDK for DynamoDB table and Lambda permissions.\n\n* refactor(dataSink): Migrate from DynamoDB to OpenSearch for idempotency and event storage\n\n- Replace DynamoDB idempotency checks with OpenSearch document management.\n- Update dataSink Lambda to handle event storage and status updates in OpenSearch.\n- Remove Kafka publishing logic and related dependencies.\n- Introduce new OpenSearch document schema and update associated tests.\n- Adjust infrastructure to support OpenSearch integration, including IAM permissions and index setup.\n- Delete obsolete files related to previous DynamoDB implementation.\n\n* feat(dataExchange): Implement outbound event processing and OpenSearch integration\n\n- Add support for processing outbound events from OneMac to MuleSoft.\n- Introduce new data structures and functions for creating and storing outbound envelopes.\n- Update OpenSearch document schema to include outbound event fields.\n- Implement error handling and logging for outbound event processing.\n- Create unit tests for new data exchange functionality.\n- Adjust infrastructure to support outbound event configuration via environment variables.\n\n* fix: update index tests for datasink index\n\nUpdate setupIndex and deleteIndex tests to include the datasink index\nin expected indices arrays. The datasink index was added as part of the\noutbound DataExchange integration feature.\n\n* feat(checkIdentifierUsage): Implement identifier usage check API\n\n- Add Lambda function to check if an identifier is in use, returning its status and origin.\n- Create associated tests for the new functionality.\n- Update package.json to reflect changes in dependencies.\n- Introduce new API endpoint for public access without authentication.\n- Ensure CORS headers are included in responses for cross-origin requests.\n\n* chore: Update dependencies and improve data exchange functionality\n\n- Update bun.lockb to reflect changes in package dependencies.\n- Modify deploy command description to clarify AWS credentials requirements.\n- Refactor dataSink and checkIdentifierUsage modules for improved structure and readability.\n- Enhance data exchange functionality with better error handling and configuration management.\n- Add tests for new data exchange features and ensure existing tests are updated accordingly.\n\n* chore: Update pre-commit configuration and clean up test imports\n\n- Modify pre-commit configuration to exclude test files from secrets detection.\n- Remove unused imports in checkIdentifierUsage and related test files.\n- Update error handling in dataSink to simplify JSON parsing.\n- Add allowlist comments for sensitive environment variables in dataExchange tests.\n\n* feat(MACPro link): add MACPro link to onemac header (#1819)\n\n* add macpro link url\n\n* Update write-ui-env-file.ts\n\n* cleanup names\n\n* Update deployment-config.test.ts\n\n* Update index.tsx\n\n* fix(macpro sso): add additional macpro sso link logic (#1821)\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* feat(auth): Implement IDM JWT authorizer for dataSink API\n\n- Add a new Lambda authorizer to validate IDM-issued JWTs for the dataSink API.\n- Update API stack to include IDM configuration properties and integrate the new authorizer.\n- Modify package.json to include the 'jose' library for JWT handling.\n- Remove unused API key secret management for dataSink, transitioning to token-based authorization.\n- Enhance API method responses to handle authorization errors (401, 403).\n\n* docs: Add testing guide for checkIdentifierUsage endpoint in datasink\n\n- Create a comprehensive testing guide for the public `GET /checkIdentifierUsage` endpoint.\n- Outline the endpoint's purpose, expected responses, and usage scenarios.\n- Include examples for browser testing and curl commands.\n- Document response contracts and known in-use IDs for clarity in testing.\n\n* feat: add external oauth attachment access flow\n\n* feat(api): add external archive downloads and retire datasink ingress\n\n- extend external/getAttachmentUrl with package and section archive downloads\n- share archive resolution and content-disposition handling across download paths\n- protect checkIdentifierUsage with IAM and remove datasink/data-exchange resources\n\nRefs: OY2-37464\n\n* chore(repo): allowlist false-positive secret scans\n\n- mark literal field-name strings that trip detect-secrets during push\n- keep the allowlists scoped to the exact reported lines\n\n* chore(repo): scope secret-scan allowlist to token parsing\n\n- move the allowlist pragma to the exact clientSecret guard the hook reports\n- leave the token error message unchanged\n\n* refactor(auth): avoid secret-scan false positives in token parsing\n\n- rename the local token request secret field to clientCredential\n- keep the contract-facing client_secret message allowlisted on the exact literal\n\n* ci(test): stabilize vitest config after lock refresh\n\n* chore(test): format storybook mock env\n\n* ci(storybook): await merged vitest config\n\n* chore(deploy): remove datasink index references\n\n- stop setup/delete index flows from managing a datasink OpenSearch index\\n- remove the datasink base index type and restore the deploy CLI credential description\n\n* fix(api): use undefined values in esbuild bundling args\n\n* infra(aws): protect datasink from destroy after merge\n\n- block local and workflow destroy paths for the protected datasink stage\n- keep datasink dev-like while enabling termination protection in deployment config\n\n---------\n\nCo-authored-by: James Dinh <jdinh8124@gmail.com>\nCo-authored-by: root <root@f70600a2695d>",
+            "shortHash": "79091fb",
+            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
+            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
+            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
             "author": {
-              "name": "Benjamin Paige",
-              "email": "benjamin.paige@gmail.com",
-              "time": 1776888058000
+              "name": "Biju Joseph",
+              "email": "biju.joseph@semanticbits.com",
+              "time": 1776955263000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776888058000
+              "time": 1776955263000
             },
             "branch": "main"
           },
@@ -649,12 +649,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4265,
+                              "duration": 4283,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:15:57.577Z",
+                              "startTime": "2026-04-23T14:49:12.082Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -685,12 +685,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3008,
+                              "duration": 4079,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:01.937Z",
+                              "startTime": "2026-04-23T14:49:16.459Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -721,12 +721,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4096,
+                              "duration": 4035,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:04.961Z",
+                              "startTime": "2026-04-23T14:49:20.555Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -757,12 +757,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4668,
+                              "duration": 3989,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:09.073Z",
+                              "startTime": "2026-04-23T14:49:24.604Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -793,12 +793,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4099,
+                              "duration": 4089,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:13.754Z",
+                              "startTime": "2026-04-23T14:49:28.608Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -834,7 +834,7 @@
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:17.867Z",
+                              "startTime": "2026-04-23T14:49:32.713Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -865,12 +865,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2952,
+                              "duration": 4024,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:21.952Z",
+                              "startTime": "2026-04-23T14:49:36.795Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -916,12 +916,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3219,
+                                      "duration": 4591,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:16:24.918Z",
+                                      "startTime": "2026-04-23T14:49:40.834Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -952,12 +952,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4119,
+                                      "duration": 3976,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:16:28.151Z",
+                                      "startTime": "2026-04-23T14:49:45.440Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -988,12 +988,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2957,
+                                      "duration": 4059,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:16:32.285Z",
+                                      "startTime": "2026-04-23T14:49:49.429Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1032,12 +1032,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3586,
+                                      "duration": 4401,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:16:35.254Z",
+                                      "startTime": "2026-04-23T14:49:53.502Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1068,12 +1068,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3326,
+                                      "duration": 4161,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:16:38.856Z",
+                                      "startTime": "2026-04-23T14:49:57.920Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1104,12 +1104,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3392,
+                                      "duration": 4166,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:16:42.197Z",
+                                      "startTime": "2026-04-23T14:50:02.097Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1152,16 +1152,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 7399,
+                              "duration": 8739,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-04_22_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-04_23_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:45.604Z",
+                              "startTime": "2026-04-23T14:50:06.281Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1215,12 +1215,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3703,
+                              "duration": 4232,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:53.015Z",
+                              "startTime": "2026-04-23T14:50:15.035Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1251,12 +1251,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2985,
+                              "duration": 4102,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:56.731Z",
+                              "startTime": "2026-04-23T14:50:19.282Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1287,12 +1287,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3001,
+                              "duration": 3063,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:16:59.731Z",
+                              "startTime": "2026-04-23T14:50:23.401Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1323,12 +1323,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3119,
+                              "duration": 4105,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:17:02.748Z",
+                              "startTime": "2026-04-23T14:50:26.480Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1359,12 +1359,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2994,
+                              "duration": 4019,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:17:05.881Z",
+                              "startTime": "2026-04-23T14:50:30.601Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1395,12 +1395,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3198,
+                              "duration": 4042,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:17:08.887Z",
+                              "startTime": "2026-04-23T14:50:34.636Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1431,12 +1431,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2984,
+                              "duration": 3990,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:17:12.096Z",
+                              "startTime": "2026-04-23T14:50:38.692Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1482,12 +1482,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4887,
+                                      "duration": 4435,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:17:15.092Z",
+                                      "startTime": "2026-04-23T14:50:42.695Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1518,12 +1518,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3009,
+                                      "duration": 2902,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:17:19.991Z",
+                                      "startTime": "2026-04-23T14:50:47.144Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1554,12 +1554,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3062,
+                                      "duration": 4128,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:17:23.014Z",
+                                      "startTime": "2026-04-23T14:50:50.061Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1598,12 +1598,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3678,
+                                      "duration": 4504,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:17:26.089Z",
+                                      "startTime": "2026-04-23T14:50:54.202Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1634,12 +1634,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4384,
+                                      "duration": 3698,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:17:29.782Z",
+                                      "startTime": "2026-04-23T14:50:58.722Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1670,12 +1670,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3297,
+                                      "duration": 3592,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-22T20:17:34.182Z",
+                                      "startTime": "2026-04-23T14:51:02.437Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1718,16 +1718,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 7123,
+                              "duration": 9862,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_22_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_23_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-22T20:17:37.491Z",
+                              "startTime": "2026-04-23T14:51:06.046Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1757,8 +1757,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-22T20:15:32.047Z",
-    "duration": 132666.15399999998,
+    "startTime": "2026-04-23T14:48:43.777Z",
+    "duration": 152221.43899999998,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
