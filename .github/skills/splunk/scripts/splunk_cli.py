@@ -33,7 +33,7 @@ def _load_cookies(session):
 
 def _session():
     s = requests.Session()
-    s.verify = False
+    s.verify = True
     _load_cookies(s)
     return s
 
@@ -49,7 +49,7 @@ def login(args):
 
     print("Authenticating with Splunk...")
     session = requests.Session()
-    session.verify = False
+    session.verify = True
 
     # Get CSRF token from login page
     session.get(f"{SPLUNK_HOST}/en-US/account/login")
