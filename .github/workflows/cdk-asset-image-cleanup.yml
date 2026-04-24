@@ -5,6 +5,16 @@ on:
     - cron: "30 8 * * *"
   workflow_dispatch:
     inputs:
+      target_environment:
+        description: "GitHub environment/account to clean up. 'all' runs every configured environment."
+        required: true
+        default: "all"
+        type: choice
+        options:
+          - all
+          - main
+          - val
+          - production
       delete_images:
         description: "Set to true to delete candidate ECR image digests from the shared CDK bootstrap repo. false runs a dry run."
         required: true
@@ -20,10 +30,24 @@ on:
 
 jobs:
   cdk-asset-image-cleanup:
+    name: CDK asset image cleanup (${{ matrix.environment }})
+    if: ${{ github.event_name != 'workflow_dispatch' || github.event.inputs.target_environment == 'all' || github.event.inputs.target_environment == matrix.environment }}
     runs-on: ubuntu-22.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - environment: main
+            delete_on_schedule: "true"
+          - environment: val
+            delete_on_schedule: "true"
+          - environment: production
+            delete_on_schedule: "false"
     permissions:
       id-token: write
       contents: read
+    environment:
+      name: ${{ matrix.environment }}
     env:
       AWS_REGION: us-east-1
     steps:
@@ -44,15 +68,19 @@ jobs:
             echo "CRITICAL_ONLY=${{ inputs.critical_only }}" >> "$GITHUB_ENV"
             echo "MIN_IMAGE_AGE_DAYS=${{ inputs.min_image_age_days }}" >> "$GITHUB_ENV"
           else
-            echo "DELETE_IMAGES=true" >> "$GITHUB_ENV"
+            echo "DELETE_IMAGES=${{ matrix.delete_on_schedule }}" >> "$GITHUB_ENV"
             echo "CRITICAL_ONLY=false" >> "$GITHUB_ENV"
             echo "MIN_IMAGE_AGE_DAYS=30" >> "$GITHUB_ENV"
           fi
 
       - name: Describe cleanup scope
         run: |
+          echo "GitHub environment: ${{ matrix.environment }}"
           echo "This workflow only operates on ECR image digests in the shared CDK bootstrap repository."
           echo "It does not delete IAM roles, S3 buckets, stacks, or other AWS resources."
+          if [[ "${{ github.event_name }}" != "workflow_dispatch" && "${{ matrix.delete_on_schedule }}" != "true" ]]; then
+            echo "Scheduled runs for this environment are report-only by design."
+          fi
 
       - name: Report and optionally delete unreferenced CDK asset images
         run: ./scripts/cleanup-cdk-asset-images.sh

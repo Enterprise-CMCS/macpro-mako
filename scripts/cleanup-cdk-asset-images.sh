@@ -26,16 +26,80 @@ fi
 
 ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
 EXPECTED_REPOSITORY_NAME="cdk-hnb659fds-container-assets-${ACCOUNT_ID}-${AWS_REGION}"
+ALLOWED_CDK_ASSET_REPOSITORY_REGEX="^cdk-[a-z0-9]+-container-assets-${ACCOUNT_ID}-${AWS_REGION}$"
+
+repository_exists() {
+  local repository_name=$1
+  aws ecr describe-repositories \
+    --region "$AWS_REGION" \
+    --repository-names "$repository_name" \
+    --query 'length(repositories)' \
+    --output text >/dev/null 2>&1
+}
+
+is_allowed_cdk_asset_repository() {
+  local repository_name=$1
+  [[ "$repository_name" =~ ${ALLOWED_CDK_ASSET_REPOSITORY_REGEX} ]]
+}
+
+discover_cdk_asset_repository() {
+  local matches=()
+
+  while IFS= read -r repository_name; do
+    [[ -n "$repository_name" ]] || continue
+    matches+=("$repository_name")
+  done < <(
+    aws ecr describe-repositories \
+      --region "$AWS_REGION" \
+      --query 'repositories[].repositoryName' \
+      --output text |
+      tr '\t' '\n' |
+      sed '/^$/d' |
+      grep -E "^cdk-[a-z0-9]+-container-assets-${ACCOUNT_ID}-${AWS_REGION}$" || true
+  )
+
+  if (( ${#matches[@]} == 1 )); then
+    printf '%s\n' "${matches[0]}"
+    return 0
+  fi
+
+  if (( ${#matches[@]} > 1 )); then
+    {
+      echo "Multiple CDK asset repositories matched the allowed pattern in account ${ACCOUNT_ID}, region ${AWS_REGION}:"
+      printf '  %s\n' "${matches[@]}"
+      echo
+      echo "Set REPOSITORY_NAME explicitly to the intended repository."
+    } >&2
+  fi
+
+  return 1
+}
 
 if [[ -z "$REPOSITORY_NAME" ]]; then
-  REPOSITORY_NAME="${EXPECTED_REPOSITORY_NAME}"
+  if repository_exists "$EXPECTED_REPOSITORY_NAME"; then
+    REPOSITORY_NAME="${EXPECTED_REPOSITORY_NAME}"
+  else
+    REPOSITORY_NAME=$(discover_cdk_asset_repository) || {
+      cat >&2 <<EOF
+Unable to resolve a CDK asset repository automatically.
+Expected default repository:
+  ${EXPECTED_REPOSITORY_NAME}
+
+Either bootstrap uses a different CDK qualifier in this account, or no allowed CDK asset repository exists.
+Re-run with REPOSITORY_NAME set explicitly if needed.
+EOF
+      exit 1
+    }
+    echo "Auto-discovered CDK asset repository: ${REPOSITORY_NAME}"
+  fi
 fi
 
-if [[ "$REPOSITORY_NAME" != "$EXPECTED_REPOSITORY_NAME" && "$ALLOW_NON_CDK_ASSET_REPOSITORY" != "true" ]]; then
+if ! is_allowed_cdk_asset_repository "$REPOSITORY_NAME" && [[ "$ALLOW_NON_CDK_ASSET_REPOSITORY" != "true" ]]; then
   cat >&2 <<EOF
 Refusing to operate on repository '${REPOSITORY_NAME}'.
-This script only deletes ECR image digests from the shared CDK bootstrap asset repository by default:
-  ${EXPECTED_REPOSITORY_NAME}
+This script only deletes ECR image digests from CDK bootstrap asset repositories by default.
+Allowed repository names must match:
+  cdk-<qualifier>-container-assets-${ACCOUNT_ID}-${AWS_REGION}
 
 If you intentionally want to target a different ECR repository, re-run with:
   ALLOW_NON_CDK_ASSET_REPOSITORY=true
