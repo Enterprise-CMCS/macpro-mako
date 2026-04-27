@@ -6,6 +6,10 @@ import { z } from "zod";
 import { buildDraftAttachmentChangelog } from "../attachment-archive/draft-package";
 import { sendAttachmentArchiveRebuildRequest } from "../attachment-archive/rebuild-queue";
 import { getDraftPackage, getPackage, getPackageChangelog } from "../libs/api/package";
+import {
+  isActiveDraftPackage,
+  isActiveMainNonDraftPackage,
+} from "../libs/api/package/packageStatus";
 import { getRequestedAttachmentArchiveStatus } from "./attachmentArchive-lib";
 import { authenticatedMiddy, ContextWithAuthenticatedUser } from "./middleware";
 
@@ -63,15 +67,9 @@ export const handler = authenticatedMiddy({
   const authenticatedUser = context.authenticatedUser;
 
   const mainResult = await getPackage(packageId);
-  const hasActiveMainNonDraft =
-    mainResult?.found === true &&
-    mainResult._source?.deleted !== true &&
-    mainResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+  const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
   const draftResult = await getDraftPackage(packageId);
-  const hasActiveDraft =
-    draftResult?.found === true &&
-    draftResult._source?.deleted !== true &&
-    draftResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+  const hasActiveDraft = isActiveDraftPackage(draftResult);
 
   const resolvedPackage =
     body.preferDraft === true && hasActiveDraft

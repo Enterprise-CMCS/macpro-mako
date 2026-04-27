@@ -24,6 +24,10 @@ import {
 } from "../attachment-archive/file-scan-status";
 import { getSearchUserScope as getAttachmentSearchUserScope } from "../libs/api/auth/user";
 import { getDraftPackage, getPackage, getPackageChangelog } from "../libs/api/package";
+import {
+  isActiveDraftPackage,
+  isActiveMainNonDraftPackage,
+} from "../libs/api/package/packageStatus";
 import { handleOpensearchError } from "./utils";
 
 function getClient(bucket: string) {
@@ -331,15 +335,9 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     const mainResult = await getPackage(normalizedId);
-    const hasActiveMainNonDraft =
-      mainResult?.found === true &&
-      mainResult._source?.deleted !== true &&
-      mainResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+    const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
     const draftResult = await getDraftPackage(normalizedId);
-    const hasActiveDraft =
-      draftResult?.found === true &&
-      draftResult._source?.deleted !== true &&
-      draftResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const hasActiveDraft = isActiveDraftPackage(draftResult);
 
     const canAccessDraft = hasActiveDraft && (stateFilter !== null || canViewDrafts);
     const resolvedResult =

@@ -35,6 +35,7 @@ import { getFormOrigin, queryClient } from "@/utils";
 import {
   consumeDraftContinueConfirmed,
   DRAFT_ID_CONFLICT_MESSAGE,
+  getDraftIdConflictFieldMessage,
   getNonOwnerDraftWarningModalBody,
   isCurrentUserDraftActor,
 } from "@/utils/drafts";
@@ -289,6 +290,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     },
   });
   const idPath = draftOptions?.idPath ?? "id";
+  const draftIdConflictFieldMessage = useMemo(
+    () => getDraftIdConflictFieldMessage(draftOptions?.event),
+    [draftOptions?.event],
+  );
   const watchedDraftIdValue = draftEnabled
     ? form.watch(idPath as FieldPath<z.TypeOf<Schema>>)
     : undefined;
@@ -451,7 +456,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     setDraftIdConflict(null);
 
     const draftIdFieldPath = idPath as FieldPath<z.TypeOf<Schema>>;
-    if (form.getFieldState(draftIdFieldPath).error?.message === DRAFT_ID_CONFLICT_MESSAGE) {
+    const currentDraftIdError = form.getFieldState(draftIdFieldPath).error?.message;
+    if (
+      currentDraftIdError === DRAFT_ID_CONFLICT_MESSAGE ||
+      currentDraftIdError === draftIdConflictFieldMessage
+    ) {
       form.clearErrors(draftIdFieldPath);
     }
 
@@ -471,7 +480,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     if (hasActiveDraftConflictBanner()) {
       dismissBanner();
     }
-  }, [form, hasActiveDraftConflictBanner, hasRealChanges, idPath]);
+  }, [draftIdConflictFieldMessage, form, hasActiveDraftConflictBanner, hasRealChanges, idPath]);
 
   const revalidateActiveDraftIdConflict = useCallback(async () => {
     if (!isDraftMode) return;
@@ -576,7 +585,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       setDraftIdConflict(normalizedConflictId);
       form.setError(draftIdFieldPath, {
         type: "manual",
-        message: DRAFT_ID_CONFLICT_MESSAGE,
+        message: draftIdConflictFieldMessage,
       });
       banner({
         header: "Unable to save package",
@@ -592,7 +601,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         window.scrollTo(0, 0);
       }
     },
-    [form, idPath],
+    [draftIdConflictFieldMessage, form, idPath],
   );
 
   const validateDraftIdAvailability = useCallback(

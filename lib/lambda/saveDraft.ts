@@ -1,11 +1,16 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { getAuthDetails, lookupUserAttributes } from "libs/api/auth/user";
-import { getDraftPackage, getPackage } from "libs/api/package";
+import {
+  getDraftPackage,
+  getPackage,
+  isActiveDraftPackage,
+  isActiveMainNonDraftPackage,
+  isDeletedDraftPackage,
+} from "libs/api/package";
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
 import { getStatus, SEATOOL_STATUS } from "shared-types";
-import { main } from "shared-types/opensearch";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
@@ -96,16 +101,6 @@ const resolveAuthority = (
   return eventToAuthority[eventName];
 };
 
-const isActiveDraft = (packageResult?: main.ItemResult) =>
-  packageResult?.found === true &&
-  packageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT &&
-  packageResult._source?.deleted !== true;
-
-const isDeletedDraft = (packageResult?: main.ItemResult) =>
-  packageResult?.found === true &&
-  packageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT &&
-  packageResult._source?.deleted === true;
-
 const isVersionConflictError = (error: unknown) => {
   if (error && typeof error === "object") {
     const osType = (error as { meta?: { body?: { error?: { type?: string } } } }).meta?.body?.error
@@ -176,19 +171,14 @@ export const handler = authenticatedMiddy({
       ? await getDraftPackage(normalizedOriginalDraftId)
       : existingDraftPackage;
 
-  if (
-    existingMainPackage &&
-    existingMainPackage.found &&
-    existingMainPackage._source?.deleted !== true &&
-    existingMainPackage._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT
-  ) {
+  if (isActiveMainNonDraftPackage(existingMainPackage)) {
     return response({
       statusCode: 409,
       body: { message: DRAFT_ID_CONFLICT_MESSAGE },
     });
   }
 
-  if (normalizedOriginalDraftId && !isActiveDraft(sourceDraftPackage)) {
+  if (normalizedOriginalDraftId && !isActiveDraftPackage(sourceDraftPackage)) {
     return response({
       statusCode: 404,
       body: { message: "No record found for the given id" },
@@ -197,7 +187,7 @@ export const handler = authenticatedMiddy({
 
   const isSavingExistingDraftAtSameId =
     normalizedOriginalDraftId !== undefined && normalizedOriginalDraftId === normalizedId;
-  const hasActiveDraftAtTarget = isActiveDraft(existingDraftPackage);
+  const hasActiveDraftAtTarget = isActiveDraftPackage(existingDraftPackage);
 
   if (hasActiveDraftAtTarget && !isSavingExistingDraftAtSameId) {
     return response({
@@ -234,9 +224,9 @@ export const handler = authenticatedMiddy({
     });
   }
 
-  const hasActiveSourceDraft = isActiveDraft(sourceDraftPackage);
+  const hasActiveSourceDraft = isActiveDraftPackage(sourceDraftPackage);
   const activeSourceDraft = hasActiveSourceDraft ? sourceDraftPackage : undefined;
-  const hasDeletedDraftInDraftIndex = isDeletedDraft(existingDraftPackage);
+  const hasDeletedDraftInDraftIndex = isDeletedDraftPackage(existingDraftPackage);
 
   const hasVersionFromRequest =
     typeof ifSeqNo === "number" &&

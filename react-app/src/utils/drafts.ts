@@ -9,6 +9,30 @@ export const DRAFT_DELETE_MODAL_BODY =
   "This action cannot be undone. Are you sure you want to delete this draft package?";
 export const DRAFT_ID_CONFLICT_MESSAGE =
   "This package ID is already in use. Update the ID before saving or submitting.";
+const DRAFT_ID_CONFLICT_FIELD_MESSAGES: Record<string, string> = {
+  "new-medicaid-submission":
+    "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
+  "new-chip-submission":
+    "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
+  "new-chip-details-submission":
+    "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
+  "capitated-initial":
+    "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
+  "contracting-initial":
+    "According to our records, this 1915(b) Waiver Number already exists. Please check the 1915(b) Waiver Number and try entering it again.",
+  "capitated-renewal":
+    "According to our records, this 1915(b) Waiver Renewal Number already exists. Please check the 1915(b) Waiver Renewal Number and try entering it again.",
+  "contracting-renewal":
+    "According to our records, this 1915(b) Waiver Renewal Number already exists. Please check the 1915(b) Waiver Renewal Number and try entering it again.",
+  "capitated-amendment":
+    "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
+  "contracting-amendment":
+    "According to our records, this 1915(b) Waiver Amendment Number already exists. Please check the 1915(b) Waiver Amendment Number and try entering it again.",
+  "temporary-extension":
+    "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
+  "app-k":
+    "According to our records, this Waiver Amendment Number already exists. Please check the Waiver Amendment Number and try entering it again.",
+};
 export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
   `Since you are not the creator or most recent editor, are you sure you want to take this action on ${packageId}?`;
 export const getNonOwnerDraftDeleteModalBody = (packageId: string) =>
@@ -34,6 +58,10 @@ const normalizePackageId = (packageId?: string | null) => packageId?.trim().toUp
 
 const getDraftContinueConfirmationKey = (packageId: string, email?: string | null) =>
   `${DRAFT_CONTINUE_CONFIRMATION_STORAGE_KEY_PREFIX}:${normalizePackageId(packageId)}:${normalizeEmail(email)}`;
+
+export const getDraftIdConflictFieldMessage = (event?: string | null) =>
+  (event && DRAFT_ID_CONFLICT_FIELD_MESSAGES[event]) ||
+  "According to our records, this ID already exists. Please check the ID and try entering it again.";
 
 export const markDraftContinueConfirmed = (packageId: string, email?: string | null) => {
   try {

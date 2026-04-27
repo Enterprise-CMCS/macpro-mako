@@ -1,5 +1,9 @@
-import { getDraftPackage } from "libs/api/package";
-import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
+import {
+  getDraftPackage,
+  isActiveDraftPackage,
+  isActiveMainNonDraftPackage,
+} from "libs/api/package";
+import { APIGatewayEvent } from "shared-types";
 import { isCmsUser } from "shared-utils";
 import { z } from "zod";
 
@@ -37,19 +41,13 @@ export const handler = authenticatedMiddy({
 
       const includeDrafts = Boolean(event.body?.includeDrafts);
       const isCms = Boolean(authenticatedUser && isCmsUser(authenticatedUser));
-      const hasActiveMainNonDraft =
-        packageResult?.found === true &&
-        packageResult._source?.deleted !== true &&
-        packageResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+      const hasActiveMainNonDraft = isActiveMainNonDraftPackage(packageResult);
 
       const shouldFetchDraftIndex = includeDrafts && !isCms;
       const draftPackage = shouldFetchDraftIndex
         ? await getDraftPackage(event.body?.id?.toUpperCase())
         : undefined;
-      const hasActiveDraftPackage =
-        draftPackage?.found === true &&
-        draftPackage._source?.deleted !== true &&
-        draftPackage._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+      const hasActiveDraftPackage = isActiveDraftPackage(draftPackage);
 
       const exists = includeDrafts
         ? hasActiveMainNonDraft || hasActiveDraftPackage

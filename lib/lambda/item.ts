@@ -1,6 +1,9 @@
-import { getDraftPackage } from "libs/api/package";
+import {
+  getDraftPackage,
+  isActiveDraftPackage,
+  isActiveMainNonDraftPackage,
+} from "libs/api/package";
 import { APIGatewayEvent } from "shared-types";
-import { SEATOOL_STATUS } from "shared-types";
 import { isCmsUser, isHelpDeskUser } from "shared-utils";
 import { z } from "zod";
 
@@ -42,12 +45,10 @@ export const handler = authenticatedMiddy({
 
     if (event.body?.includeDraft === true && event.body?.preferDraft === true) {
       const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
-      const isActiveDraft =
-        draftPackageResult?.found === true &&
-        draftPackageResult._source?.deleted !== true &&
-        draftPackageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+      const isActiveDraft = isActiveDraftPackage(draftPackageResult);
 
       if (
+        draftPackageResult &&
         isActiveDraft &&
         (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
       ) {
@@ -64,10 +65,7 @@ export const handler = authenticatedMiddy({
       }
     }
 
-    const isActiveMainNonDraft =
-      packageResult?.found === true &&
-      packageResult._source?.deleted !== true &&
-      packageResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+    const isActiveMainNonDraft = isActiveMainNonDraftPackage(packageResult);
 
     if (isActiveMainNonDraft) {
       return {
@@ -78,12 +76,10 @@ export const handler = authenticatedMiddy({
 
     if (event.body?.includeDraft === true) {
       const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
-      const isActiveDraft =
-        draftPackageResult?.found === true &&
-        draftPackageResult._source?.deleted !== true &&
-        draftPackageResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+      const isActiveDraft = isActiveDraftPackage(draftPackageResult);
 
       if (
+        draftPackageResult &&
         isActiveDraft &&
         (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
       ) {

@@ -141,6 +141,30 @@ describe("Handler for checking if record exists", () => {
     );
   });
 
+  it("should return 200 and exists: false for malformed main shell docs without a seatoolStatus", async () => {
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+      found: true,
+      _id: NOT_FOUND_ITEM_ID,
+      _source: {
+        id: NOT_FOUND_ITEM_ID,
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "No record found for the given id", exists: false }),
+    );
+    getPackageSpy.mockRestore();
+  });
+
   it("should return 200 and exists: false if an error occurs during processing", async () => {
     const event = {
       body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),

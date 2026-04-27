@@ -258,6 +258,48 @@ describe("saveDraft handler", () => {
     );
   });
 
+  it("does not treat malformed main shell docs as active packages when reusing a deleted draft id", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: DRAFT_ID,
+      _source: {
+        id: DRAFT_ID,
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as any);
+
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: DRAFT_ID,
+      _seq_no: 7,
+      _primary_term: 3,
+      _source: {
+        id: DRAFT_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: true,
+        draft: {
+          savedAt: "2026-01-01T00:00:00.000Z",
+          data: {
+            id: DRAFT_ID,
+          },
+        },
+      },
+    } as any);
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: DRAFT_ID,
+        refresh: true,
+        if_seq_no: 7,
+        if_primary_term: 3,
+      }),
+    );
+  });
+
   it("returns 409 when a new draft save targets an active draft id", async () => {
     vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
       found: true,

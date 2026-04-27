@@ -1,4 +1,5 @@
 import { APIGatewayEvent } from "aws-lambda";
+import { isActiveDraftPackage, isActiveMainNonDraftPackage } from "libs/api/package/packageStatus";
 import { response } from "libs/handler-lib";
 import { SEATOOL_STATUS } from "shared-types";
 import { getAvailableActions, isCmsUser } from "shared-utils";
@@ -40,16 +41,10 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     }
 
     const mainResult = await getPackage(normalizedId);
-    const hasActiveMainNonDraft =
-      mainResult?.found === true &&
-      mainResult._source?.deleted !== true &&
-      mainResult._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT;
+    const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
 
     const draftResult = hasActiveMainNonDraft ? undefined : await getDraftPackage(normalizedId);
-    const hasActiveDraft =
-      draftResult?.found === true &&
-      draftResult._source?.deleted !== true &&
-      draftResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const hasActiveDraft = isActiveDraftPackage(draftResult);
     const result = hasActiveMainNonDraft ? mainResult : hasActiveDraft ? draftResult : undefined;
 
     if (result === undefined || !result.found) {

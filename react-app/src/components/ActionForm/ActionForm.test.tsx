@@ -18,6 +18,7 @@ import * as components from "@/components";
 import { queryClient } from "@/utils";
 import {
   DRAFT_ID_CONFLICT_MESSAGE,
+  getDraftIdConflictFieldMessage,
   getNonOwnerDraftWarningModalBody,
   markDraftContinueConfirmed,
 } from "@/utils/drafts";
@@ -37,6 +38,8 @@ vi.mock("react-router", async () => {
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
+const MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE =
+  getDraftIdConflictFieldMessage("new-medicaid-submission");
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
 describe("ActionForm", () => {
   beforeEach(() => {
@@ -1375,7 +1378,9 @@ describe("ActionForm", () => {
     );
     expect(saveDraftSpy).not.toHaveBeenCalled();
     expect(screen.getByLabelText("Package ID")).not.toBeDisabled();
-    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("draft-save-status")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
 
@@ -1454,7 +1459,9 @@ describe("ActionForm", () => {
         variant: "destructive",
       }),
     );
-    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
     expect(screen.getByTestId("save-draft-form")).toBeDisabled();
     expect(screen.getByTestId("draft-save-status")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
 
@@ -1527,7 +1534,9 @@ describe("ActionForm", () => {
     await user.click(screen.getByTestId("save-draft-form"));
 
     await waitFor(() => expect(screen.getByTestId("save-draft-form")).toBeDisabled());
-    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
     expect(bannerSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         header: "Unable to save package",
