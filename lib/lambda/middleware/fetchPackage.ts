@@ -1,6 +1,6 @@
 import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
-import { getPackage } from "libs/api/package";
+import { getPackage, isActiveMainNonDraftPackage } from "libs/api/package";
 
 import { storePackageInRequest } from "./utils";
 
@@ -34,6 +34,9 @@ export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
       let packageResult;
       try {
         packageResult = await getPackage(id);
+        if (!isActiveMainNonDraftPackage(packageResult)) {
+          packageResult = undefined;
+        }
       } catch (err) {
         const statusCode = (err as { statusCode?: number; meta?: { statusCode?: number } })
           ?.statusCode;

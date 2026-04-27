@@ -216,6 +216,59 @@ describe("getItemData Handler", () => {
     getDraftPackageSpy.mockRestore();
   });
 
+  it("should ignore a malformed main shell doc and still resolve to an active draft", async () => {
+    const draftPackage = {
+      found: true,
+      _id: "MD-26-9100-P",
+      _source: {
+        id: "MD-26-9100-P",
+        state: "MD",
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+        draft: {
+          savedAt: "2026-01-01T00:00:00.000Z",
+          data: { id: "MD-26-9100-P" },
+        },
+      },
+    } as any;
+
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+      found: true,
+      _id: "MD-26-9100-P",
+      _source: {
+        id: "MD-26-9100-P",
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as any);
+    const getDraftPackageSpy = vi
+      .spyOn(packageApi, "getDraftPackage")
+      .mockResolvedValueOnce(draftPackage);
+
+    const event = {
+      body: JSON.stringify({
+        id: "MD-26-9100-P",
+        includeDraft: true,
+        preferDraft: true,
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        ...draftPackage,
+        _source: {
+          ...draftPackage._source,
+          changelog: [],
+        },
+      }),
+    );
+    getPackageSpy.mockRestore();
+    getDraftPackageSpy.mockRestore();
+  });
+
   it("should return 500 if an error occurs during processing", async () => {
     const event = {
       body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
