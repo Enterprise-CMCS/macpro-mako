@@ -30,7 +30,7 @@ export default tseslint.config(
       prettier,
     },
     languageOptions: {
-      ecmaVersion: "latest",
+      ecmaVersion: 2020,
       sourceType: "module",
 
       parserOptions: {
@@ -53,7 +53,7 @@ export default tseslint.config(
       "react/jsx-no-useless-fragment": ["error", { allowExpressions: true }],
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
-
+      "@typescript-eslint/no-empty-interface": "off",
       "@typescript-eslint/no-unused-vars": [
         "error",
         {
@@ -63,7 +63,15 @@ export default tseslint.config(
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-non-null-assertion": "off",
       "no-else-return": ["error", { allowElseIf: false }],
-      "@typescript-eslint/ts-comment": "off",
+      "@typescript-eslint/ban-ts-comment": [
+        "off",
+        {
+          "ts-ignore": false,
+          "ts-nocheck": false,
+          "ts-check": true,
+          "ts-expect-error": true,
+        },
+      ],
     },
   },
 );
