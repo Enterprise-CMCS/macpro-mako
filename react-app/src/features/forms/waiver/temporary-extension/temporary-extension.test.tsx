@@ -75,7 +75,7 @@ describe("Temporary Extension", () => {
     await waitFor(() =>
       expect(bannerSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          header: "Unable to save Draft",
+          header: "Unable to save package",
           body: "Please select a Temporary Extension Type before saving.",
           variant: "destructive",
         }),

@@ -731,7 +731,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     try {
       const failDraftSave = (message: string) => {
         banner({
-          header: "Unable to save Draft",
+          header: "Unable to save package",
           body: message,
           variant: "destructive",
           pathnameToDisplayOn: window.location.pathname,
@@ -914,7 +914,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         showDraftIdConflict(resolvedId.toUpperCase());
       } else {
         banner({
-          header: "Unable to save Draft",
+          header: "Unable to save package",
           body: errorMessage,
           variant: "destructive",
           pathnameToDisplayOn: window.location.pathname,
