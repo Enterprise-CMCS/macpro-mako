@@ -17,8 +17,29 @@ type CompositeAggregationResult = {
 function getAttachmentArchiveEligibilityQuery() {
   return {
     bool: {
-      filter: [{ exists: { field: "attachments.key" } }],
-      must_not: [{ term: { isAdminChange: true } }],
+      filter: [
+        { exists: { field: "attachments.key" } },
+        {
+          bool: {
+            minimum_should_match: 1,
+            should: [
+              {
+                bool: {
+                  must_not: [{ term: { isAdminChange: true } }],
+                },
+              },
+              {
+                bool: {
+                  filter: [
+                    { term: { isAdminChange: true } },
+                    { term: { "event.keyword": "NOSO" } },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+      ],
     },
   };
 }

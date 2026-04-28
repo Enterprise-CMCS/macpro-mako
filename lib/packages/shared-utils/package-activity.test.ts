@@ -9,6 +9,7 @@ import {
 describe("package activity helpers", () => {
   it("maps package activity events to user-visible labels", () => {
     expect(getPackageActivityLabel("respond-to-rai")).toBe("RAI Response Submitted");
+    expect(getPackageActivityLabel("NOSO")).toBe("Initial Package Submitted");
     expect(getPackageActivityLabel("upload-subsequent-documents")).toBe(
       "Subsequent Document(s) Uploaded",
     );

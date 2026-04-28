@@ -9,13 +9,17 @@ export interface AttachmentArchiveSectionDescriptor extends AttachmentArchiveSec
   attachments: AttachmentArchiveSourceAttachment[];
 }
 
+function isArchiveEligibleChangelogEntry(document: opensearch.changelog.Document) {
+  return !document.isAdminChange || document.event === "NOSO";
+}
+
 export function getArchiveEligibleChangelogEntries(
   changelog: opensearch.changelog.ItemResult[],
 ): opensearch.changelog.Document[] {
   return changelog
     .map((item) => item._source)
     .filter((document): document is opensearch.changelog.Document => Boolean(document))
-    .filter((document) => !document.isAdminChange);
+    .filter(isArchiveEligibleChangelogEntry);
 }
 
 function getArchiveEntryTimestamp(entry: opensearch.changelog.Document) {

@@ -1,3 +1,4 @@
+import { attachmentArraySchemaOptional } from "shared-types";
 import { z } from "zod";
 
 export const deleteAdminChangeSchema = z
@@ -96,6 +97,36 @@ export const transformedSplitSPASchema = splitSPAAdminChangeSchema.transform((da
   id: `${data.id}`,
 }));
 
+export const adminChangeAttachmentsSchema = z.record(
+  z.string(),
+  z.object({
+    files: attachmentArraySchemaOptional(),
+    label: z.string(),
+  }),
+);
+
+const flattenAdminChangeAttachments = (
+  attachments?: z.infer<typeof adminChangeAttachmentsSchema>,
+) => {
+  if (!attachments) {
+    return [];
+  }
+
+  return Object.values(attachments).flatMap((attachment) => {
+    if (!attachment?.files || !Array.isArray(attachment.files) || attachment.files.length === 0) {
+      return [];
+    }
+
+    return attachment.files.map((file) => ({
+      filename: file.filename,
+      title: attachment.label === "CMS Form 179" ? "CMS-179 Form" : attachment.label,
+      bucket: file.bucket,
+      key: file.key,
+      uploadDate: file.uploadDate,
+    }));
+  });
+};
+
 export const submitNOSOAdminSchema = z.object({
   id: z.string(),
   authority: z.string(),
@@ -108,6 +139,7 @@ export const submitNOSOAdminSchema = z.object({
   changeReason: z.string().trim().min(1),
   submissionDate: z.string(),
   proposedDate: z.string(),
+  attachments: adminChangeAttachmentsSchema.optional(),
 });
 
 export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
@@ -128,6 +160,7 @@ export const extendSubmitNOSOAdminSchema = submitNOSOAdminSchema.extend({
 
 export const transformSubmitValuesSchema = extendSubmitNOSOAdminSchema.transform((data) => ({
   ...data,
+  attachments: flattenAdminChangeAttachments(data.attachments),
   adminChangeType: "NOSO",
   event: "NOSO",
   id: data.id,

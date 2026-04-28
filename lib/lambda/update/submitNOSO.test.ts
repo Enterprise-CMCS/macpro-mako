@@ -1,4 +1,5 @@
 import { NOT_EXISTING_ITEM_ID, TEST_ITEM_ID } from "mocks";
+import { produceMessage } from "libs/api/kafka";
 import { APIGatewayEvent } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -54,7 +55,7 @@ describe("handler", () => {
         submitterName: "Name",
         status: "submitted",
         changeMade: "change",
-        mockEvent: "mock-event",
+        mockEvent: "new-medicaid-submission",
         changeReason: "reason",
         submissionDate: "1/1/2025",
         proposedDate: "12/1/2025",
@@ -80,7 +81,7 @@ describe("handler", () => {
         submitterName: "Name",
         adminChangeType: "NOSO",
         changeMade: "change",
-        mockEvent: "mock-event",
+        mockEvent: "new-medicaid-submission",
         changeReason: "reason",
         submissionDate: "1/1/2025",
         proposedDate: "12/1/2025",
@@ -106,7 +107,7 @@ describe("handler", () => {
         submitterEmail: "",
         submitterName: null,
         changeMade: "change",
-        mockEvent: "mock-event",
+        mockEvent: "new-medicaid-submission",
         changeReason: "reason",
         submissionDate: "1/1/2025",
         proposedDate: "12/1/2025",
@@ -132,7 +133,7 @@ describe("handler", () => {
         submitterEmail: "test@email.com",
         submitterName: "Name",
         adminChangeType: "NOSO",
-        mockEvent: "mock-event",
+        mockEvent: "new-medicaid-submission",
         changeMade: "change",
         changeReason: "reason",
         submissionDate: "1/1/2025",
@@ -146,5 +147,86 @@ describe("handler", () => {
       body: { message: "Topic name is not defined" },
     };
     expect(result).toStrictEqual(expectedResult);
+  });
+
+  it("should submit a new item with validated attachments", async () => {
+    const validItem = {
+      body: JSON.stringify({
+        id: NOT_EXISTING_ITEM_ID,
+        authority: "Medicaid SPA",
+        status: "submitted",
+        submitterEmail: "test@email.com",
+        submitterName: "Name",
+        adminChangeType: "NOSO",
+        changeMade: "change",
+        mockEvent: "new-medicaid-submission",
+        changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
+        attachments: {
+          cmsForm179: {
+            label: "CMS-179 Form",
+            files: [
+              {
+                filename: "cms-179.pdf",
+                title: "cms-179",
+                bucket: "test-bucket",
+                key: "cms-179.pdf",
+                uploadDate: 1735689600000,
+              },
+            ],
+          },
+          spaPages: {
+            label: "SPA Pages",
+            files: [
+              {
+                filename: "spa-pages.pdf",
+                title: "spa-pages",
+                bucket: "test-bucket",
+                key: "spa-pages.pdf",
+                uploadDate: 1735689600001,
+              },
+            ],
+          },
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const result = await handler(validItem);
+
+    expect(result).toStrictEqual({
+      statusCode: 200,
+      body: { message: `${NOT_EXISTING_ITEM_ID} has been submitted.` },
+    });
+    expect(produceMessage).toHaveBeenCalledWith(
+      "test-topic",
+      NOT_EXISTING_ITEM_ID.toUpperCase(),
+      expect.stringContaining('"attachments"'),
+    );
+  });
+
+  it("should return 400 for unsupported NOSO mock events", async () => {
+    const invalidItem = {
+      body: JSON.stringify({
+        id: NOT_EXISTING_ITEM_ID,
+        authority: "Medicaid SPA",
+        status: "submitted",
+        submitterEmail: "test@email.com",
+        submitterName: "Name",
+        adminChangeType: "NOSO",
+        changeMade: "change",
+        mockEvent: "mock-event",
+        changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
+      }),
+    } as APIGatewayEvent;
+
+    const result = await handler(invalidItem);
+
+    expect(result).toStrictEqual({
+      statusCode: 400,
+      body: { message: "Unsupported NOSO mockEvent: mock-event" },
+    });
   });
 });

@@ -2,7 +2,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
 import { getPackage } from "libs/api/package";
 import { response } from "libs/handler-lib";
-import { getStatus } from "shared-types";
+import { events, getStatus } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
@@ -33,6 +33,89 @@ interface submitMessageType {
   cmsStatus: string;
   changeMade: string;
   changeReason: string;
+  mockEvent: string;
+  attachments?: Record<string, { label: string; files?: unknown[] }>;
+}
+
+class InvalidNOSORequestError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "InvalidNOSORequestError";
+  }
+}
+
+const nosoMockEvents = [
+  "app-k",
+  "capitated-amendment",
+  "capitated-initial",
+  "capitated-renewal",
+  "contracting-amendment",
+  "contracting-initial",
+  "contracting-renewal",
+  "new-chip-details-submission",
+  "new-chip-submission",
+  "new-medicaid-submission",
+  "temporary-extension",
+] as const;
+
+type NosoMockEvent = (typeof nosoMockEvents)[number];
+
+const isNosoMockEvent = (mockEvent: string): mockEvent is NosoMockEvent =>
+  nosoMockEvents.includes(mockEvent as NosoMockEvent);
+
+const isZodObjectSchema = (schema: z.ZodTypeAny): schema is z.AnyZodObject =>
+  schema._def.typeName === z.ZodFirstPartyTypeKind.ZodObject;
+
+const isZodOptionalSchema = (schema: z.ZodTypeAny) =>
+  schema._def.typeName === z.ZodFirstPartyTypeKind.ZodOptional;
+
+function getEventBaseSchema(eventName: NosoMockEvent): z.AnyZodObject {
+  const eventModule = events[eventName];
+
+  if (!("baseSchema" in eventModule) || !eventModule.baseSchema) {
+    throw new InvalidNOSORequestError(`Package event ${eventName} does not support attachments.`);
+  }
+
+  return eventModule.baseSchema as z.AnyZodObject;
+}
+
+function getMockEventAttachmentsSchema(eventName: NosoMockEvent) {
+  const baseSchema = getEventBaseSchema(eventName);
+  const attachmentsSchema = (baseSchema.shape as Record<string, z.ZodTypeAny>).attachments;
+
+  if (!isZodObjectSchema(attachmentsSchema)) {
+    throw new InvalidNOSORequestError(`Package event ${eventName} does not support attachments.`);
+  }
+
+  const normalizedShape = Object.fromEntries(
+    Object.entries(attachmentsSchema.shape).map(([key, value]) => {
+      if (!isZodObjectSchema(value)) {
+        return [key, value];
+      }
+
+      const filesSchema = (value.shape as Record<string, z.ZodTypeAny>).files;
+      return [key, isZodOptionalSchema(filesSchema) ? value.optional() : value];
+    }),
+  );
+
+  return z.object(normalizedShape);
+}
+
+function validateAttachmentsForMockEvent(item: z.infer<typeof submitNOSOAdminSchema>) {
+  if (!isNosoMockEvent(item.mockEvent)) {
+    throw new InvalidNOSORequestError(`Unsupported NOSO mockEvent: ${item.mockEvent}`);
+  }
+
+  if (!item.attachments) {
+    return item;
+  }
+
+  const attachmentsSchema = getMockEventAttachmentsSchema(item.mockEvent);
+  const attachments = attachmentsSchema.parse(item.attachments);
+  return {
+    ...item,
+    attachments,
+  };
 }
 
 const convertStringToTimestamp = (date: string) => {
@@ -89,9 +172,10 @@ export const handler = async (event: APIGatewayEvent) => {
   }
 
   try {
-    const item = submitNOSOAdminSchema.parse(
+    const parsedItem = submitNOSOAdminSchema.parse(
       typeof event.body === "string" ? JSON.parse(event.body) : event.body,
     );
+    const item = validateAttachmentsForMockEvent(parsedItem);
 
     let status: string = item.status;
     // check if it already exists in onemac - should exist in SEATool
@@ -113,10 +197,10 @@ export const handler = async (event: APIGatewayEvent) => {
     return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
-    if (err instanceof z.ZodError) {
+    if (err instanceof z.ZodError || err instanceof InvalidNOSORequestError) {
       return response({
         statusCode: 400,
-        body: { message: err.errors },
+        body: { message: err instanceof z.ZodError ? err.errors : err.message },
       });
     }
 
