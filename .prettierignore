@@ -10,3 +10,12 @@ build_run
 **/*.test.{ts,tsx}
 docs/
 code.json
+.graphifyignore
+graphify-out/
+AGENTS.md
+.github/
+.agents/
+.vscode/
+.nvmrc
+.nvmignore
+.envrc
