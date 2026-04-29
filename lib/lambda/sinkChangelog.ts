@@ -5,6 +5,10 @@ import { KafkaEvent, KafkaRecord, LegacyAdminChange, opensearch } from "shared-t
 import { decodeBase64WithUtf8 } from "shared-utils";
 
 import {
+  hasAttachmentArchiveRebuildQueueConfigured,
+  sendAttachmentArchiveRebuildRequest,
+} from "../attachment-archive/rebuild-queue";
+import {
   legacyEventIdUpdateSchema,
   transformDeleteSchema,
   transformedSplitSPASchema,
@@ -44,6 +48,20 @@ export const handler: Handler<KafkaEvent> = async (event) => {
     throw error;
   }
 };
+
+function getTopicNameFromPartition(topicPartition: string): string {
+  return topicPartition.replace(/-\d+$/, "");
+}
+
+function shouldQueueArchiveRebuildForTopic(topicPartition: string): boolean {
+  const configuredTopicName = process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME;
+  if (!configuredTopicName) {
+    return true;
+  }
+
+  return getTopicNameFromPartition(topicPartition) === configuredTopicName;
+}
+
 function extractIds(input: string): { beforeId: string; afterId: string } | null {
   const regex = /from\s+([^\s]+)\s+to\s+([^\s]+)/;
   const match = input.match(regex);
@@ -267,4 +285,39 @@ const processAndIndex = async ({
     }
   }
   await bulkUpdateDataWrapper(docs, "changelog");
+
+  if (
+    !hasAttachmentArchiveRebuildQueueConfigured() ||
+    !shouldQueueArchiveRebuildForTopic(topicPartition)
+  ) {
+    return;
+  }
+
+  const packagesToRebuild = docs.reduce<Map<string, number | undefined>>((acc, document) => {
+    if (!document.packageId || document.packageId.endsWith("-del") || document.isAdminChange) {
+      return acc;
+    }
+
+    const currentTimestamp =
+      typeof document.timestamp === "number" ? document.timestamp : undefined;
+    const previousTimestamp = acc.get(document.packageId);
+
+    acc.set(
+      document.packageId,
+      previousTimestamp === undefined || currentTimestamp === undefined
+        ? (previousTimestamp ?? currentTimestamp)
+        : Math.max(previousTimestamp, currentTimestamp),
+    );
+    return acc;
+  }, new Map<string, number | undefined>());
+
+  await Promise.all(
+    Array.from(packagesToRebuild.entries()).map(([packageId, latestTimestamp]) =>
+      sendAttachmentArchiveRebuildRequest({
+        packageId,
+        latestTimestamp,
+        source: "sink-changelog",
+      }),
+    ),
+  );
 };

@@ -1,12 +1,41 @@
-import { fileTypeFromFile, MimeType } from "file-type";
+import { fileTypeFromBuffer } from "file-type";
 import fs from "fs";
 import { lookup } from "mime-types";
 import path from "path";
 import pino from "pino";
 import readline from "readline";
+import { inflateRawSync } from "zlib";
 
 import * as constants from "./constants";
 const logger = pino();
+
+const OOXML_ZIP_FILE_TYPES = {
+  ".docx": {
+    requiredPrefix: "word/",
+    mime: "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+  },
+  ".pptx": {
+    requiredPrefix: "ppt/",
+    mime: "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+  },
+  ".xlsx": {
+    requiredPrefix: "xl/",
+    mime: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  },
+} as const;
+
+const ODF_ZIP_FILE_TYPES = {
+  ".odp": "application/vnd.oasis.opendocument.presentation",
+  ".ods": "application/vnd.oasis.opendocument.spreadsheet",
+  ".odt": "application/vnd.oasis.opendocument.text",
+} as const;
+
+type ZipEntry = {
+  compressedSize: number;
+  compressionMethod: number;
+  filename: string;
+  localHeaderOffset: number;
+};
 
 export async function checkFileExt(pathToFile: string): Promise<string> {
   try {
@@ -59,25 +88,33 @@ function isAllowedMime(mime: string): boolean {
   return FILE_TYPES.some((fileType) => fileType.mime === mime);
 }
 
-async function getFileTypeFromContents(filePath: string): Promise<MimeType | false> {
+async function getFileTypeFromContents(filePath: string): Promise<string | false> {
   try {
     const fileBuffer = await fs.promises.readFile(filePath);
 
     // Get the file type from its contents
-    const type = await fileTypeFromFile(filePath);
+    const type = await fileTypeFromBuffer(fileBuffer);
+    const extension = path.extname(filePath).toLowerCase();
+
+    if (!type || type.mime === "application/zip") {
+      const zipContainerMime = getZipContainerMimeFromContents(fileBuffer, extension);
+      if (zipContainerMime) {
+        return zipContainerMime;
+      }
+    }
 
     if (!type) {
-      switch (path.extname(filePath)) {
+      switch (extension) {
         case ".csv":
           logger.info("Checking csv another way...");
           if (await looksLikeCsv(filePath, ",", 100)) {
-            return lookup(".csv") as MimeType;
+            return lookup(".csv") as string;
           }
           break;
         case ".txt":
           logger.info("Checking txt another way...");
           if (await looksLikeTxt(fileBuffer)) {
-            return lookup(".txt") as MimeType;
+            return lookup(".txt") as string;
           }
           break;
         default:
@@ -85,6 +122,7 @@ async function getFileTypeFromContents(filePath: string): Promise<MimeType | fal
           return false;
       }
     }
+
     if (!type?.mime) {
       logger.info(`getFileTypeFromContents: File determined to be mime:${type?.mime}`);
       return false;
@@ -97,6 +135,135 @@ async function getFileTypeFromContents(filePath: string): Promise<MimeType | fal
     console.error("Error reading file:", error);
     return false;
   }
+}
+
+function getZipContainerMimeFromContents(fileBuffer: Buffer, extension: string): string | false {
+  const zipEntries = readZipEntries(fileBuffer);
+  if (!zipEntries) {
+    return false;
+  }
+
+  const ooxmlType = OOXML_ZIP_FILE_TYPES[extension as keyof typeof OOXML_ZIP_FILE_TYPES];
+  if (ooxmlType) {
+    const filenames = new Set(zipEntries.map((entry) => entry.filename));
+    if (
+      filenames.has("[Content_Types].xml") &&
+      zipEntries.some((entry) => entry.filename.startsWith(ooxmlType.requiredPrefix))
+    ) {
+      logger.info(`Detected OOXML container for ${extension}`);
+      return ooxmlType.mime;
+    }
+
+    return false;
+  }
+
+  const odfMime = ODF_ZIP_FILE_TYPES[extension as keyof typeof ODF_ZIP_FILE_TYPES];
+  if (!odfMime) {
+    return false;
+  }
+
+  const mimetypeEntry = zipEntries.find((entry) => entry.filename === "mimetype");
+  if (!mimetypeEntry) {
+    return false;
+  }
+
+  const mimetypeBuffer = readZipEntryContents(fileBuffer, mimetypeEntry);
+  if (!mimetypeBuffer) {
+    return false;
+  }
+
+  const mimetype = mimetypeBuffer.toString("utf8");
+  if (mimetype === odfMime) {
+    logger.info(`Detected ODF container for ${extension}`);
+    return odfMime;
+  }
+
+  return false;
+}
+
+function findEndOfCentralDirectory(buffer: Buffer): number {
+  const minOffset = Math.max(0, buffer.length - 0xffff - 22);
+
+  for (let offset = buffer.length - 22; offset >= minOffset; offset -= 1) {
+    if (buffer.readUInt32LE(offset) === 0x06054b50) {
+      return offset;
+    }
+  }
+
+  return -1;
+}
+
+function readZipEntries(buffer: Buffer): ZipEntry[] | undefined {
+  const endOfCentralDirectoryOffset = findEndOfCentralDirectory(buffer);
+  if (endOfCentralDirectoryOffset < 0) {
+    return undefined;
+  }
+
+  const centralDirectoryOffset = buffer.readUInt32LE(endOfCentralDirectoryOffset + 16);
+  const totalEntries = buffer.readUInt16LE(endOfCentralDirectoryOffset + 10);
+  const entries: ZipEntry[] = [];
+  let offset = centralDirectoryOffset;
+
+  for (let index = 0; index < totalEntries; index += 1) {
+    if (offset + 46 > buffer.length || buffer.readUInt32LE(offset) !== 0x02014b50) {
+      return undefined;
+    }
+
+    const compressionMethod = buffer.readUInt16LE(offset + 10);
+    const compressedSize = buffer.readUInt32LE(offset + 20);
+    const filenameLength = buffer.readUInt16LE(offset + 28);
+    const extraFieldLength = buffer.readUInt16LE(offset + 30);
+    const fileCommentLength = buffer.readUInt16LE(offset + 32);
+    const localHeaderOffset = buffer.readUInt32LE(offset + 42);
+    const filenameOffset = offset + 46;
+    const filenameEndOffset = filenameOffset + filenameLength;
+
+    if (filenameEndOffset > buffer.length) {
+      return undefined;
+    }
+
+    entries.push({
+      compressedSize,
+      compressionMethod,
+      filename: buffer.toString("utf8", filenameOffset, filenameEndOffset),
+      localHeaderOffset,
+    });
+
+    offset = filenameEndOffset + extraFieldLength + fileCommentLength;
+  }
+
+  return entries;
+}
+
+function readZipEntryContents(buffer: Buffer, entry: ZipEntry): Buffer | undefined {
+  if (entry.localHeaderOffset + 30 > buffer.length) {
+    return undefined;
+  }
+
+  if (buffer.readUInt32LE(entry.localHeaderOffset) !== 0x04034b50) {
+    return undefined;
+  }
+
+  const filenameLength = buffer.readUInt16LE(entry.localHeaderOffset + 26);
+  const extraFieldLength = buffer.readUInt16LE(entry.localHeaderOffset + 28);
+  const dataOffset = entry.localHeaderOffset + 30 + filenameLength + extraFieldLength;
+  const dataEndOffset = dataOffset + entry.compressedSize;
+
+  if (dataEndOffset > buffer.length) {
+    return undefined;
+  }
+
+  const contents = buffer.subarray(dataOffset, dataEndOffset);
+
+  if (entry.compressionMethod === 0) {
+    return contents;
+  }
+
+  if (entry.compressionMethod === 8) {
+    return inflateRawSync(contents);
+  }
+
+  return undefined;
 }
 
 function areMimeTypesEquivalent(mime1: string, mime2: string): boolean {

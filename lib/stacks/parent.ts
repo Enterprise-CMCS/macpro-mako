@@ -21,6 +21,31 @@ export class ParentStack extends cdk.Stack {
       vpcName: props.vpcName,
     });
     const privateSubnets = sortSubnets(vpc.privateSubnets).slice(0, 3);
+    const attachmentArchiveRebuildDeadLetterQueue = new cdk.aws_sqs.Queue(
+      this,
+      "AttachmentArchiveRebuildDeadLetterQueue",
+      {
+        queueName: `${props.project}-${props.stage}-attachment-archive-rebuild-dlq.fifo`,
+        encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
+        fifo: true,
+        contentBasedDeduplication: true,
+      },
+    );
+    const attachmentArchiveRebuildQueue = new cdk.aws_sqs.Queue(
+      this,
+      "AttachmentArchiveRebuildQueue",
+      {
+        queueName: `${props.project}-${props.stage}-attachment-archive-rebuild.fifo`,
+        encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
+        fifo: true,
+        contentBasedDeduplication: true,
+        visibilityTimeout: cdk.Duration.minutes(5),
+        deadLetterQueue: {
+          maxReceiveCount: 3,
+          queue: attachmentArchiveRebuildDeadLetterQueue,
+        },
+      },
+    );
 
     if (!props.isDev) {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", {
@@ -55,6 +80,7 @@ export class ParentStack extends cdk.Stack {
     const dataStack = new Stacks.Data(this, "data", {
       ...commonProps,
       stack: "data",
+      attachmentArchiveRebuildQueue,
       vpc,
       privateSubnets,
       brokerString: props.brokerString,
@@ -69,11 +95,13 @@ export class ParentStack extends cdk.Stack {
     const apiStack = new Stacks.Api(this, "api", {
       ...commonProps,
       stack: "api",
+      attachmentArchiveRebuildQueue,
       vpc,
       privateSubnets,
       brokerString: props.brokerString,
       dbInfoSecretName: props.dbInfoSecretName,
       legacyS3AccessRoleArn: props.legacyS3AccessRoleArn,
+      emailAddressLookupSecretName: props.emailAddressLookupSecretName,
       lambdaSecurityGroup: networkingStack.lambdaSecurityGroup,
       topicNamespace,
       indexNamespace,

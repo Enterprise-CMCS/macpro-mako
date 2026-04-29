@@ -44,6 +44,8 @@ export type EmailTemplates = {
   "upload-subsequent-documents": AuthoritiesWithUserTypesTemplate;
 };
 
+type EmailEvent = keyof EmailTemplates;
+
 // Create a type-safe mapping of email templates
 const emailTemplates: EmailTemplates = {
   "new-medicaid-submission": EmailContent.newSubmission,
@@ -91,6 +93,16 @@ function hasAuthority(
   return "authority" in obj;
 }
 
+function hasEvent(
+  obj: Events[keyof Events],
+): obj is Extract<Events[keyof Events], { event: string }> {
+  return "event" in obj;
+}
+
+function isEmailEvent(event: unknown): event is EmailEvent {
+  return typeof event === "string" && event in emailTemplates;
+}
+
 // Update the getEmailTemplates function to use the new lookup
 export async function getEmailTemplates(
   record: Events[keyof Events],
@@ -98,11 +110,14 @@ export async function getEmailTemplates(
   if (!record) {
     throw new Error("Invalid record");
   }
-  const { event } = record;
-  const emailTemplate = emailTemplates[event as keyof EmailTemplates];
 
-  if (event in emailTemplates && hasAuthority(record)) {
-    const authorityTemplates = emailTemplate[record.authority.toLowerCase() as Authority];
+  if (!hasEvent(record) || !isEmailEvent(record.event)) {
+    throw new Error("Missing event or email template for event");
+  }
+
+  if (hasAuthority(record)) {
+    const authorityTemplates =
+      emailTemplates[record.event][record.authority.toLowerCase() as Authority];
 
     if (authorityTemplates) {
       return Object.values(authorityTemplates);

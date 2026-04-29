@@ -263,34 +263,25 @@ export async function processAndSendEmails(
   config: ProcessEmailConfig,
 ) {
   const templates = await getEmailTemplates(record);
-  console.log("Got email templates for ", id);
+  const eventName = "event" in record ? record.event : "unknown";
 
   if (!templates) {
     console.log(
-      `The kafka record has an event type that does not have email support. event: ${record.event}. Doing nothing.`,
+      `The kafka record has an event type that does not have email support. event: ${eventName}. Doing nothing.`,
     );
     return;
   }
 
   const territory = id.slice(0, 2);
-  console.log("the territory is ", territory);
   const allStateUsers = await getAllStateUsersFromOpenSearch(territory);
-  console.log(
-    "got all state users for the territory of ",
-    territory,
-    " and they are ",
-    allStateUsers,
-  );
 
   const sec = await getSecret(config.emailAddressLookupSecretName);
-  console.log("got secret where emails are stored and they are ", sec);
 
   const item = await retry(
     () => os.getItemAndThrowAllErrors(config.osDomain, getOsNamespace("main"), id),
     10,
     10 * 1000,
   );
-  console.log("tried to get item and got it: ", item);
 
   if (!item?.found || !item?._source) {
     console.log(`The package was not found for id: ${id}. Doing nothing.`);
@@ -298,15 +289,13 @@ export async function processAndSendEmails(
   }
 
   const cpocEmail = [...getCpocEmail(item)];
-  console.log("got cpoc email ", cpocEmail);
   const srtEmails = [...getSrtEmails(item)];
-  console.log("got srt emails ", srtEmails);
 
   const emails: EmailAddresses = JSON.parse(sec);
-  console.log("successfully parsed emails: ", emails);
 
   const allStateUsersEmails = allStateUsers.map((user) => user.formattedEmailAddress);
-  const isChipEligibility = record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
+  const isChipEligibility =
+    "authority" in record && record.authority === "CHIP SPA" && !!item._source?.chipSubmissionType;
   console.log("mapped to formatted email address for all state users: ", allStateUsers);
 
   // Adjust timestamp if needed before sending it to the email template
