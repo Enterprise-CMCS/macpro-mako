@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-        "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+        "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
       },
       "gitCommit": {
-        "shortHash": "79091fb",
-        "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-        "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-        "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+        "shortHash": "9711137",
+        "hash": "971113763f083666fbac6f1055511988851c90c8",
+        "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+        "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
         "author": {
-          "name": "Biju Joseph",
-          "email": "biju.joseph@semanticbits.com",
-          "time": 1776955263000
+          "name": "Benjamin Paige",
+          "email": "benjamin.paige@gmail.com",
+          "time": 1777473072000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1776955263000
+          "time": 1777473072000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/79091fbde40f689b6a8010650a52250c138c1777",
-            "commitHash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/24841494318"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/971113763f083666fbac6f1055511988851c90c8",
+            "commitHash": "971113763f083666fbac6f1055511988851c90c8",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25115011327"
           },
           "gitCommit": {
-            "shortHash": "79091fb",
-            "hash": "79091fbde40f689b6a8010650a52250c138c1777",
-            "subject": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)",
-            "body": "A Splunk skill tailored for working with https://splunk.cloud.cms.gov/ (#1870)\n\n* A Splunk skill tailored for working with https://splunk.cloud.cms.gov/\n* Updating documentation and troubleshooting guide\n* moving to python to reduce code complexity\n* addressing some of the suggestions\n\n---------\n\nCo-authored-by: Copilot <175728472+Copilot@users.noreply.github.com>\nCo-authored-by: copilot-swe-agent[bot] <198982749+Copilot@users.noreply.github.com>\nCo-authored-by: bijujoseph <3535395+bijujoseph@users.noreply.github.com>",
+            "shortHash": "9711137",
+            "hash": "971113763f083666fbac6f1055511988851c90c8",
+            "subject": "feat(archive): enable integrity exception registry for production (#1876)",
+            "body": "feat(archive): enable integrity exception registry for production (#1876)\n\nMirrors the val integrity exception registry pattern to the production\nstage so the daily integrity check can suppress known-terminal scope\nfailures (ATTACHMENT_NOT_CLEAN / ALL_ATTACHMENTS_UNAVAILABLE) and keep\nthe alert email actionable.\n\nThe companion production registry seeded from the 2026-04-29 integrity\nremediation run (170 entries: 106 section + 64 package, all\nATTACHMENT_NOT_CLEAN) lives at\ns3://mako-production-attachment-archives-591572556330/archive-integrity/production/exception-registry.json.\n\nOnce this PR deploys to production the next scheduled integrity run\nshould drop from ~667 discrepancies / 0 exceptions to ~135 discrepancies\n(the residual hash-mismatch noise from withdrawn -del / ZZ-* test\npackages, which the existing registry mechanism does not cover) /\n~170 exceptions.\n\nMade-with: Cursor",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1776955263000
+              "name": "Benjamin Paige",
+              "email": "benjamin.paige@gmail.com",
+              "time": 1777473072000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1776955263000
+              "time": 1777473072000
             },
             "branch": "main"
           },
@@ -649,12 +649,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4283,
+                              "duration": 4861,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:49:12.082Z",
+                              "startTime": "2026-04-29T14:35:19.733Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -685,12 +685,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4079,
+                              "duration": 3928,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:49:16.459Z",
+                              "startTime": "2026-04-29T14:35:24.669Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -721,12 +721,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4035,
+                              "duration": 4019,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:49:20.555Z",
+                              "startTime": "2026-04-29T14:35:28.609Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -757,12 +757,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3989,
+                              "duration": 2888,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:49:24.604Z",
+                              "startTime": "2026-04-29T14:35:32.640Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -793,12 +793,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4089,
+                              "duration": 3913,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:49:28.608Z",
+                              "startTime": "2026-04-29T14:35:35.539Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -829,12 +829,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4068,
+                              "duration": 2818,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:49:32.713Z",
+                              "startTime": "2026-04-29T14:35:39.462Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -865,12 +865,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4024,
+                              "duration": 2839,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:49:36.795Z",
+                              "startTime": "2026-04-29T14:35:42.291Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -916,12 +916,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4591,
+                                      "duration": 2854,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:49:40.834Z",
+                                      "startTime": "2026-04-29T14:35:45.140Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -952,12 +952,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3976,
+                                      "duration": 3791,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:49:45.440Z",
+                                      "startTime": "2026-04-29T14:35:48.007Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -988,12 +988,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4059,
+                                      "duration": 2787,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:49:49.429Z",
+                                      "startTime": "2026-04-29T14:35:51.810Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1032,12 +1032,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4401,
+                                      "duration": 3319,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:49:53.502Z",
+                                      "startTime": "2026-04-29T14:35:54.608Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1068,12 +1068,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4161,
+                                      "duration": 4116,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:49:57.920Z",
+                                      "startTime": "2026-04-29T14:35:57.942Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1104,12 +1104,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4166,
+                                      "duration": 3989,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:50:02.097Z",
+                                      "startTime": "2026-04-29T14:36:02.071Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1152,16 +1152,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 8739,
+                              "duration": 6734,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-04_23_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-04_29_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:06.281Z",
+                              "startTime": "2026-04-29T14:36:06.072Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1215,12 +1215,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4232,
+                              "duration": 3008,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:15.035Z",
+                              "startTime": "2026-04-29T14:36:12.817Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1251,12 +1251,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4102,
+                              "duration": 2899,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:19.282Z",
+                              "startTime": "2026-04-29T14:36:15.835Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1287,12 +1287,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3063,
+                              "duration": 2893,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:23.401Z",
+                              "startTime": "2026-04-29T14:36:18.746Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1323,12 +1323,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4105,
+                              "duration": 2815,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:26.480Z",
+                              "startTime": "2026-04-29T14:36:21.649Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1359,12 +1359,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4019,
+                              "duration": 2793,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:30.601Z",
+                              "startTime": "2026-04-29T14:36:24.474Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1395,12 +1395,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4042,
+                              "duration": 2875,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:34.636Z",
+                              "startTime": "2026-04-29T14:36:27.276Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1431,12 +1431,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3990,
+                              "duration": 2742,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:50:38.692Z",
+                              "startTime": "2026-04-29T14:36:30.159Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1482,12 +1482,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4435,
+                                      "duration": 2859,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:50:42.695Z",
+                                      "startTime": "2026-04-29T14:36:32.914Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1518,12 +1518,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2902,
+                                      "duration": 2889,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:50:47.144Z",
+                                      "startTime": "2026-04-29T14:36:35.785Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1554,12 +1554,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4128,
+                                      "duration": 3833,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:50:50.061Z",
+                                      "startTime": "2026-04-29T14:36:38.684Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1598,12 +1598,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 4504,
+                                      "duration": 3212,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:50:54.202Z",
+                                      "startTime": "2026-04-29T14:36:42.526Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1634,12 +1634,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3698,
+                                      "duration": 3974,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:50:58.722Z",
+                                      "startTime": "2026-04-29T14:36:45.749Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1670,12 +1670,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3592,
+                                      "duration": 3082,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-04-23T14:51:02.437Z",
+                                      "startTime": "2026-04-29T14:36:49.735Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1718,16 +1718,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 9862,
+                              "duration": 7005,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_23_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_29_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-04-23T14:51:06.046Z",
+                              "startTime": "2026-04-29T14:36:52.826Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1757,8 +1757,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-04-23T14:48:43.777Z",
-    "duration": 152221.43899999998,
+    "startTime": "2026-04-29T14:34:52.534Z",
+    "duration": 127468.398,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
