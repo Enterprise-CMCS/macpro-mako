@@ -130,7 +130,7 @@ describe("Api attachment archive integrity scheduling", () => {
     template.resourceCountIs("AWS::Scheduler::Schedule", 0);
   });
 
-  it("only enables the exception registry for the val integrity lambda", () => {
+  it("enables the integrity exception registry for val and production lambdas", () => {
     const valEnvironment = buildAttachmentArchiveIntegrityRunEnvironment({
       stage: "val",
       openSearchDomainEndpoint: "search-test-domain.us-east-1.es.amazonaws.com",
@@ -143,17 +143,27 @@ describe("Api attachment archive integrity scheduling", () => {
       "archive-integrity/val/exception-registry.json",
     );
 
-    for (const stage of ["main", "production"] as const) {
-      const environment = buildAttachmentArchiveIntegrityRunEnvironment({
-        stage,
-        openSearchDomainEndpoint: "search-test-domain.us-east-1.es.amazonaws.com",
-        indexNamespace: stage,
-        archiveWriteBucketName: `mako-${stage}-attachment-archives-123456789012`,
-        archiveBaseReadBucketName: `mako-${stage}-attachment-archives-123456789012`,
-        archiveOverlayPrefix: "",
-      });
-      expect(environment).not.toHaveProperty("ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY");
-    }
+    const productionEnvironment = buildAttachmentArchiveIntegrityRunEnvironment({
+      stage: "production",
+      openSearchDomainEndpoint: "search-test-domain.us-east-1.es.amazonaws.com",
+      indexNamespace: "production",
+      archiveWriteBucketName: "mako-production-attachment-archives-123456789012", // pragma: allowlist secret
+      archiveBaseReadBucketName: "mako-production-attachment-archives-123456789012", // pragma: allowlist secret
+      archiveOverlayPrefix: "",
+    });
+    expect(productionEnvironment.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY).toBe(
+      "archive-integrity/production/exception-registry.json",
+    );
+
+    const mainEnvironment = buildAttachmentArchiveIntegrityRunEnvironment({
+      stage: "main",
+      openSearchDomainEndpoint: "search-test-domain.us-east-1.es.amazonaws.com",
+      indexNamespace: "main",
+      archiveWriteBucketName: "mako-main-attachment-archives-123456789012",
+      archiveBaseReadBucketName: "mako-main-attachment-archives-123456789012",
+      archiveOverlayPrefix: "",
+    });
+    expect(mainEnvironment).not.toHaveProperty("ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY");
   });
 
   it("grants the archive worker list access to the stage attachment bucket", () => {
