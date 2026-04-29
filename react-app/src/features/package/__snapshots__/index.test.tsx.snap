@@ -282,7 +282,16 @@ exports[`package details > makes a package 1`] = `
           class="text-3xl font-semibold mb-2"
           data-testid="undefined-title"
         >
-          Administrative Package Changes (9)
+          <div
+            class="flex justify-between"
+          >
+            Administrative Package Changes (9)
+            <button
+              class="inline-flex items-center justify-center rounded-md text-[16px] ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none border-2 border-primary text-primary font-bold hover:bg-primary/10 disabled:opacity-50 h-10 px-4 py-2 max-w-fit min-h-fit justify-self-end"
+            >
+              Download all attachments
+            </button>
+          </div>
         </h1>
         <hr
           class="my-6 bg-slate-200"
@@ -400,6 +409,117 @@ exports[`package details > makes a package 1`] = `
                         <p>
                           missing file
                         </p>
+                      </div>
+                      <div
+                        class="flex flex-col gap-4"
+                      >
+                        <div>
+                          <h2
+                            class="font-bold text-lg mb-2"
+                          >
+                            Attachments
+                          </h2>
+                          <div
+                            class="w-full border-[1px] overflow-auto p-0.5"
+                          >
+                            <table
+                              class="w-full caption-bottom text-sm"
+                            >
+                              <thead
+                                class="[&_tr]:border-b"
+                              >
+                                <tr
+                                  class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+                                >
+                                  <th
+                                    aria-sort="none"
+                                    class="px-4 pl-2 text-left font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5 w-[300px]"
+                                    scope="col"
+                                  >
+                                    <div
+                                      class="flex items-center gap-1"
+                                    >
+                                      Document Type
+                                      <svg
+                                        aria-hidden="true"
+                                        class="lucide lucide-arrow-up .1em w-5 h-5 opacity-0"
+                                        fill="none"
+                                        height="24"
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        viewBox="0 0 24 24"
+                                        width="24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="m5 12 7-7 7 7"
+                                        />
+                                        <path
+                                          d="M12 19V5"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </th>
+                                  <th
+                                    aria-sort="none"
+                                    class="px-4 pl-2 text-left font-semibold text-muted-foreground [&:has([role=checkbox])]:pr-0 leading-5"
+                                    scope="col"
+                                  >
+                                    <div
+                                      class="flex items-center gap-1"
+                                    >
+                                      Attached File
+                                      <svg
+                                        aria-hidden="true"
+                                        class="lucide lucide-arrow-up .1em w-5 h-5 opacity-0"
+                                        fill="none"
+                                        height="24"
+                                        stroke="currentColor"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        viewBox="0 0 24 24"
+                                        width="24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                      >
+                                        <path
+                                          d="m5 12 7-7 7 7"
+                                        />
+                                        <path
+                                          d="M12 19V5"
+                                        />
+                                      </svg>
+                                    </div>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody
+                                class="[&_tr:last-child]:border-0"
+                              >
+                                <tr
+                                  class="border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted text-sm"
+                                >
+                                  <td
+                                    class="px-2 py-3 text-left align-middle text-sm"
+                                  >
+                                    Miscellaneous File
+                                  </td>
+                                  <td
+                                    class="px-2 py-3 text-left align-middle text-sm"
+                                  >
+                                    <button
+                                      class="inline-flex items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none text-primary underline-offset-4 hover:underline disabled:opacity-50 h-10 px-4 py-2 ml-[-15px] align-left text-left min-h-fit"
+                                    >
+                                      miscellaneous_info.txt
+                                    </button>
+                                  </td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
                       </div>
                     </div>
                   </div>
