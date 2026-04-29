@@ -27,7 +27,7 @@ LICENSE
 .agents/
 .webpack
 tsconfig.tsbuildinfo
-build*run/
+build_run/
 mocks/
 *.mjs
 AGENTS.md
