@@ -63,56 +63,90 @@ class OpenSearchExporter {
 
     console.log(`Starting scroll search for index: ${indexName}`);
 
-    // Initial search with scroll
-    const initialResponse = (await client.search({
-      index: indexName,
-      scroll: "2m", // Keep scroll context for 2 minutes
-      size: batchSize,
-      body: {
-        query: { match_all: {} },
-      },
-    })) as unknown as ScrollResponse;
+    try {
+      // Initial search with scroll
+      const initialResponse = await client.search({
+        index: indexName,
+        scroll: "2m", // Keep scroll context for 2 minutes
+        size: batchSize,
+        body: {
+          query: { match_all: {} },
+        },
+      });
 
-    let hits = initialResponse.hits.hits;
-    let scrollId = initialResponse._scroll_id;
-    let totalRetrieved = hits.length;
+      console.log(`OpenSearch response status: ${JSON.stringify(initialResponse.meta)}`);
 
-    console.log(`Total documents in ${indexName}: ${initialResponse.hits.total.value}`);
-    console.log(`Retrieved batch 1: ${hits.length} documents`);
+      // Check if response has expected structure
+      if (!initialResponse.body || !initialResponse.body.hits) {
+        console.error(
+          `Unexpected response structure for ${indexName}:`,
+          JSON.stringify(initialResponse, null, 2),
+        );
+        throw new Error(
+          `Invalid response structure - missing hits property for index ${indexName}`,
+        );
+      }
 
-    if (hits.length > 0) {
-      yield hits.map((hit) => hit._source);
-    }
+      const responseBody = initialResponse.body as ScrollResponse;
+      let hits = responseBody.hits.hits;
+      let scrollId = responseBody._scroll_id;
+      let totalRetrieved = hits.length;
 
-    // Continue scrolling while there are more results
-    while (hits.length > 0 && scrollId) {
-      const scrollResponse = (await client.scroll({
-        scroll_id: scrollId,
-        scroll: "2m",
-      })) as unknown as ScrollResponse;
-
-      hits = scrollResponse.hits.hits;
-      scrollId = scrollResponse._scroll_id;
-      totalRetrieved += hits.length;
+      console.log(`Total documents in ${indexName}: ${responseBody.hits.total.value}`);
+      console.log(`Retrieved batch 1: ${hits.length} documents`);
 
       if (hits.length > 0) {
-        console.log(`Retrieved batch: ${hits.length} documents (total: ${totalRetrieved})`);
         yield hits.map((hit) => hit._source);
       }
-    }
 
-    // Clear scroll context
-    if (scrollId) {
-      try {
-        await client.clearScroll({
+      // Continue scrolling while there are more results
+      while (hits.length > 0 && scrollId) {
+        const scrollResponse = await client.scroll({
           scroll_id: scrollId,
+          scroll: "2m",
         });
-      } catch (error) {
-        console.warn(`Warning: Failed to clear scroll context: ${error}`);
-      }
-    }
 
-    console.log(`Completed scrolling ${indexName}. Total documents retrieved: ${totalRetrieved}`);
+        if (!scrollResponse.body || !scrollResponse.body.hits) {
+          console.error(
+            `Unexpected scroll response structure for ${indexName}:`,
+            JSON.stringify(scrollResponse, null, 2),
+          );
+          break;
+        }
+
+        const scrollBody = scrollResponse.body as ScrollResponse;
+        hits = scrollBody.hits.hits;
+        scrollId = scrollBody._scroll_id;
+        totalRetrieved += hits.length;
+
+        if (hits.length > 0) {
+          console.log(`Retrieved batch: ${hits.length} documents (total: ${totalRetrieved})`);
+          yield hits.map((hit) => hit._source);
+        }
+      }
+
+      // Clear scroll context
+      if (scrollId) {
+        try {
+          await client.clearScroll({
+            scroll_id: scrollId,
+          });
+        } catch (error) {
+          console.warn(`Warning: Failed to clear scroll context: ${error}`);
+        }
+      }
+
+      console.log(`Completed scrolling ${indexName}. Total documents retrieved: ${totalRetrieved}`);
+    } catch (error) {
+      console.error(`Error in scroll search for ${indexName}:`, error);
+      if (error instanceof Error && "response" in error) {
+        console.error(
+          `OpenSearch error response:`,
+          JSON.stringify((error as any).response, null, 2),
+        );
+      }
+      throw error;
+    }
   }
 
   private async exportIndexToS3(indexName: string): Promise<void> {
@@ -277,6 +311,22 @@ EXAMPLES:
 
 async function main(): Promise<void> {
   try {
+    // Check if running in AWS CloudShell environment
+    if (
+      !process.env.AWS_EXECUTION_ENV &&
+      !process.env.AWS_REGION &&
+      !process.env.AWS_DEFAULT_REGION
+    ) {
+      console.warn(
+        "⚠️  Warning: This script is designed to run in AWS CloudShell with VPC connectivity to OpenSearch.",
+      );
+      console.warn("   If you're not in CloudShell, make sure you have:");
+      console.warn("   - Proper AWS credentials configured");
+      console.warn("   - Network access to the OpenSearch domain");
+      console.warn("   - Required IAM permissions");
+      console.warn("");
+    }
+
     const options = parseArgs(process.argv.slice(2));
 
     const exporter = new OpenSearchExporter(options);
