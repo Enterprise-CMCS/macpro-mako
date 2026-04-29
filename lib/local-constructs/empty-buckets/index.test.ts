@@ -74,4 +74,19 @@ describe("EmptyBuckets", () => {
     ) as logs.LogGroup;
     expect(customResourceLogGroup).toBeInstanceOf(logs.LogGroup);
   });
+
+  it("supports prefix cleanup targets", () => {
+    const prefixed = new EmptyBuckets(stack, "PrefixedEmptyBuckets", {
+      buckets: [],
+      bucketPrefixes: [
+        {
+          bucket: bucket1,
+          prefix: "stage/feature-x",
+        },
+      ],
+    });
+
+    const customResource = prefixed.node.findChild("CustomResource") as cr.AwsCustomResource;
+    expect(customResource).toBeInstanceOf(cr.AwsCustomResource);
+  });
 });

@@ -4,6 +4,7 @@ import { Client, Connection, errors as OpensearchErrors } from "@opensearch-proj
 import * as aws4 from "aws4";
 import { aws4Interceptor } from "aws4-axios";
 import axios from "axios";
+import type { OutgoingHttpHeaders } from "http";
 import { opensearch } from "shared-types";
 import { Document as OSDocument, ItemResult } from "shared-types/opensearch/main";
 
@@ -22,8 +23,14 @@ function createAwsConnector(credentials: any) {
   class AmazonConnection extends Connection {
     buildRequestObject(params: any) {
       const request = super.buildRequestObject(params);
-      request.headers = request.headers || {};
-      request.headers["host"] = request.hostname ?? undefined;
+      const headers: Record<string, string | string[] | undefined> =
+        request.headers && !Array.isArray(request.headers)
+          ? { ...(request.headers as Record<string, string | string[] | undefined>) }
+          : {};
+      if (typeof request.hostname === "string") {
+        headers.host = request.hostname;
+      }
+      request.headers = headers as OutgoingHttpHeaders;
       // request.headers["Content-Type"] = "application/json; charset=UTF-8"; // Ensure Content-Type header is set
 
       return aws4.sign(<any>request, credentials);
@@ -174,7 +181,7 @@ export async function search(host: string, index: opensearch.Index, query: any) 
     index: index,
     body: query,
   });
-  return decodeUtf8(response).body;
+  return decodeUtf8(response.body);
 }
 
 export async function getItem(
@@ -185,15 +192,27 @@ export async function getItem(
   try {
     client = client || (await getClient(host));
     const response = await client.get({ id, index });
-    const item = decodeUtf8(response).body;
+    const item = decodeUtf8(response.body);
     if (item.found === false || !item._source) {
       return undefined;
     }
     return item;
   } catch (error) {
+    const statusCode =
+      error instanceof OpensearchErrors.ResponseError
+        ? error.statusCode
+        : typeof error === "object" &&
+            error !== null &&
+            "meta" in error &&
+            typeof error.meta === "object" &&
+            error.meta !== null &&
+            "statusCode" in error.meta
+          ? (error.meta.statusCode as number | undefined)
+          : undefined;
+
     if (
       (error instanceof OpensearchErrors.ResponseError && error.statusCode === 404) ||
-      error.meta?.statusCode === 404
+      statusCode === 404
     ) {
       console.log("Error (404) retrieving in OpenSearch:", error);
       return undefined;
@@ -208,7 +227,7 @@ export async function getItemAndThrowAllErrors(
 ): Promise<ItemResult | undefined> {
   client = client || (await getClient(host));
   const response = await client.get({ id, index });
-  const item = decodeUtf8(response).body;
+  const item = decodeUtf8(response.body);
   if (item.found === false || !item._source) {
     return undefined;
   }
@@ -276,7 +295,7 @@ export async function updateFieldMapping(
   }
 }
 
-export function decodeUtf8(data: any): any {
+export function decodeUtf8(data: any, seen = new WeakMap<object, unknown>()): any {
   if (typeof data === "string") {
     try {
       return decodeURIComponent(escape(data));
@@ -284,14 +303,25 @@ export function decodeUtf8(data: any): any {
       return data;
     }
   }
+  if (data === null || typeof data !== "object") {
+    return data;
+  }
+  const cached = seen.get(data);
+  if (cached) {
+    return cached;
+  }
   if (Array.isArray(data)) {
-    return data.map((item) => decodeUtf8(item));
+    const decodedItems: unknown[] = [];
+    seen.set(data, decodedItems);
+    data.forEach((item) => {
+      decodedItems.push(decodeUtf8(item, seen));
+    });
+    return decodedItems;
   }
-  if (typeof data === "object" && data !== null) {
-    return Object.keys(data).reduce((acc, key) => {
-      acc[key] = decodeUtf8(data[key]);
-      return acc;
-    }, {} as any);
-  }
-  return data;
+  const decodedObject: Record<string, unknown> = {};
+  seen.set(data, decodedObject);
+  return Object.keys(data).reduce((acc, key) => {
+    acc[key] = decodeUtf8(data[key], seen);
+    return acc;
+  }, decodedObject);
 }

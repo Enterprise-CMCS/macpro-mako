@@ -61,7 +61,7 @@ describe("Email utils", () => {
         getEmailTemplates({
           authority: "Medicaid SPA",
         }),
-      ).rejects.toThrowError("Missing event authority or email template for event");
+      ).rejects.toThrowError("Missing event or email template for event");
     });
 
     it("should handle a record if there is no email template for the authority", async () => {

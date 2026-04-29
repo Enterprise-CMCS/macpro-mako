@@ -1,0 +1,25 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "skipLibCheck": true
+  },
+  "include": ["lib/**/*"],
+  "exclude": [
+    "node_modules",
+    "**/node_modules/**",
+    "cdk.out",
+    ".cdk",
+    "**/dist/**",
+    "test/**",
+    "react-app/**",
+    "mocks/**",
+    "lib/attachment-archive/**",
+    "lib/libs/email/mock-data/**",
+    "lib/libs/email/preview/**",
+    "lib/packages/shared-utils/testData.ts",
+    "**/vitest.setup.ts",
+    "**/*.test.*",
+    "**/*.spec.*",
+    "**/*.stories.*"
+  ]
+}

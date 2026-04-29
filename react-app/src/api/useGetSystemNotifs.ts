@@ -38,6 +38,22 @@ const isActiveNotification = (notification: ValidBannerNotification, now: number
   return pubDate !== null && expDate !== null && pubDate <= now && expDate > now;
 };
 
+const getNotificationStorageKey = (username?: string) =>
+  username ? `notifs.${username}` : undefined;
+
+const parseDismissedNotifications = (value: string | null): string[] => {
+  if (!value) return [];
+
+  try {
+    const parsed = JSON.parse(value);
+    return Array.isArray(parsed)
+      ? parsed.filter((item): item is string => typeof item === "string")
+      : [];
+  } catch {
+    return [];
+  }
+};
+
 export const getSystemNotifs = async (): Promise<ValidBannerNotification[]> => {
   try {
     const notifications = await API.get("os", "/systemNotifs", {});
@@ -51,12 +67,17 @@ export const getSystemNotifs = async (): Promise<ValidBannerNotification[]> => {
 export const useGetSystemNotifs = () => {
   const userQuery = useGetUser();
   const [dismissed, setDismissed] = useState<string[]>([]);
+  const username = userQuery?.data?.user?.username;
 
   useEffect(() => {
-    const dismissedNotifs = localStorage.getItem(`notifs.${userQuery?.data?.user?.username}`);
-    const parsed: string[] = JSON.parse(dismissedNotifs) ?? [];
-    setDismissed(parsed);
-  }, [userQuery?.data?.user?.username]);
+    const storageKey = getNotificationStorageKey(username);
+    if (!storageKey) {
+      setDismissed([]);
+      return;
+    }
+
+    setDismissed(parseDismissedNotifications(localStorage.getItem(storageKey)));
+  }, [username]);
 
   const result = useQuery<ValidBannerNotification[], ReactQueryApiError>(
     ["systemBannerNotifs"],
@@ -73,12 +94,18 @@ export const useGetSystemNotifs = () => {
     const cleared = [...dismissed, toBeRemoved].filter((v, i, a) => a.indexOf(v) === i);
 
     setDismissed(cleared);
-    localStorage.setItem(`notifs.${userQuery?.data?.user?.username}`, JSON.stringify(cleared));
+    const storageKey = getNotificationStorageKey(username);
+    if (storageKey) {
+      localStorage.setItem(storageKey, JSON.stringify(cleared));
+    }
   };
 
   const resetNotifs = () => {
     setDismissed([]);
-    localStorage.setItem(`notifs.${userQuery?.data?.user?.username}`, JSON.stringify([]));
+    const storageKey = getNotificationStorageKey(username);
+    if (storageKey) {
+      localStorage.setItem(storageKey, JSON.stringify([]));
+    }
   };
   return {
     notifications: currentNotifs,

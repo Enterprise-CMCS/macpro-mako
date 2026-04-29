@@ -6,10 +6,16 @@
     "mako": "bin/app.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "bun run build:lib && bun run build:archive && bun run build:mocks && bun run build:ui && bun run build:cli",
+    "build:lib": "tsc -p tsconfig.build.json",
+    "build:archive": "test -d lib/attachment-archive/node_modules || (echo 'Missing lib/attachment-archive dependencies. Run ./run install.' >&2; exit 1); (cd lib/attachment-archive && bun run typecheck)",
+    "build:mocks": "(cd mocks && bun run build)",
+    "build:ui": "(cd react-app && bun run build)",
+    "repair:attachment-scan-status": "tsx scripts/repair-attachment-scan-status.ts",
     "watch": "tsc -w",
     "cdk": "cdk",
     "build:cli": "turbo build:cli",
+    "deploy": "./run deploy",
     "lint": "eslint",
     "format:check": "prettier --check .",
     "format:write": "prettier --write .",
@@ -61,6 +67,7 @@
     "@semantic-release/changelog": "^6.0.3",
     "@semantic-release/git": "^10.0.1",
     "@storybook/addon-vitest": "^9.1.6",
+    "@types/archiver": "^7.0.0",
     "@types/html-to-text": "^9.0.4",
     "@types/jest": "^29.5.12",
     "@types/node": "^22.7.4",
@@ -98,15 +105,7 @@
     "plugins": [
       "@semantic-release/commit-analyzer",
       "@semantic-release/release-notes-generator",
-      [
-        "@semantic-release/github",
-        {
-          "options": {
-            "successComment": false,
-            "failComment": false
-          }
-        }
-      ]
+      "@semantic-release/github"
     ]
   },
   "packageManager": "bun@1.1.20"
