@@ -1,4 +1,5 @@
 import {
+  ADMIN_ITEM_ID,
   CAPITATED_INITIAL_ITEM_ID,
   CAPITATED_INITIAL_NEW_ITEM_ID,
   DELETED_ITEM_ID,
@@ -10,6 +11,23 @@ import {
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { APIGatewayEvent } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
+
+vi.mock("libs/api/kafka", () => ({
+  produceMessage: vi.fn(async (topic: string, key: string, value: string) => {
+    await mockedProducer.connect();
+    return mockedProducer.send({
+      topic,
+      messages: [
+        {
+          key,
+          value,
+          partition: 0,
+          headers: { source: "mako" },
+        },
+      ],
+    });
+  }),
+}));
 
 import { handler } from "./updatePackage";
 
@@ -216,12 +234,7 @@ describe("handler", () => {
 
       const result = await handler(noActionevent);
 
-      expect(result?.statusCode).toBe(500);
-      expect(result?.body).toEqual(
-        JSON.stringify({
-          message: "The type of package could not be determined.",
-        }),
-      );
+      expect(result?.statusCode).toBe(400);
     });
 
     it("should fail to update a package ID with bad new id format", async () => {
@@ -320,6 +333,55 @@ describe("handler", () => {
         }),
       );
 
+      expect(mockedProducer.send).toHaveBeenCalledTimes(3);
+    });
+
+    it("should recompute state from the new ID when updating a package", async () => {
+      const updatedId = "CA-12-2024";
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: NEW_CHIP_ITEM_ID,
+          action: "update-id",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedId,
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(200);
+
+      const firstSendCall = mockedProducer.send.mock.calls[0]?.[0] as {
+        messages: Array<{ value: string }>;
+      };
+      const updatedPackagePayload = JSON.parse(firstSendCall.messages[0].value);
+
+      expect(updatedPackagePayload.id).toBe(updatedId);
+      expect(updatedPackagePayload.state).toBe("CA");
+      expect(updatedPackagePayload.idToBeUpdated).toBe(NEW_CHIP_ITEM_ID);
+    });
+
+    it("should use a submission-style package type when admin changelog events are present", async () => {
+      const updatedId = "SS-2235.R00.01";
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: ADMIN_ITEM_ID,
+          action: "update-id",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedId,
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(200);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: `The ID of package ${ADMIN_ITEM_ID} has been updated to ${updatedId}.`,
+        }),
+      );
       expect(mockedProducer.send).toHaveBeenCalledTimes(3);
     });
   });

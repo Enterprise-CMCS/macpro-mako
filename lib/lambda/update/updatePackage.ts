@@ -267,6 +267,7 @@ const sendUpdateIdMessage = async ({
     origin: _origin,
     ...remainingFields
   } = currentPackage._source;
+  const updatedState = updatedId.split("-")[0]?.toUpperCase();
   if (updatedId === currentPackage._id) {
     return response({
       statusCode: 400,
@@ -282,7 +283,11 @@ const sendUpdateIdMessage = async ({
     });
   }
   // use event of current package to determine how ID should be formatted
-  const packageEvent = await getPackageType(currentPackage._id);
+  const packageEvent = await getPackageType({
+    packageId: currentPackage._id,
+    authority: currentPackage._source.authority,
+    actionType: currentPackage._source.actionType,
+  });
   const eventModule = events[packageEvent];
   const packageSubmissionTypeSchema = getBaseSchema(eventModule);
   if (!packageSubmissionTypeSchema) {
@@ -317,6 +322,7 @@ const sendUpdateIdMessage = async ({
     JSON.stringify({
       id: updatedId,
       ...remainingFields,
+      state: updatedState,
       idToBeUpdated: currentPackage._id,
       origin: "OneMAC",
       changeMade,
