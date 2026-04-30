@@ -32,3 +32,8 @@ coverage
 # local test and docs files
 test/local/*
 docs/local/*
+
+#graphify
+graphify-out/cache/
+graphify-out/manifest.json
+graphify-out/cost.json
