@@ -6,9 +6,17 @@ import { isSharedArchiveStage } from "./archive-bucket-routing";
 export const ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = "archive-integrity";
 export const ATTACHMENT_ARCHIVE_INTEGRITY_VAL_EXCEPTION_KEY =
   "archive-integrity/val/exception-registry.json";
+export const ATTACHMENT_ARCHIVE_INTEGRITY_PRODUCTION_EXCEPTION_KEY =
+  "archive-integrity/production/exception-registry.json";
 
 export function getAttachmentArchiveIntegrityExceptionKey(stage: string): string | undefined {
-  return stage === "val" ? ATTACHMENT_ARCHIVE_INTEGRITY_VAL_EXCEPTION_KEY : undefined;
+  if (stage === "val") {
+    return ATTACHMENT_ARCHIVE_INTEGRITY_VAL_EXCEPTION_KEY;
+  }
+  if (stage === "production") {
+    return ATTACHMENT_ARCHIVE_INTEGRITY_PRODUCTION_EXCEPTION_KEY;
+  }
+  return undefined;
 }
 
 export function shouldCreateAttachmentArchiveIntegritySchedule(

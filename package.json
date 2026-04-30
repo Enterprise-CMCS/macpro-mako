@@ -12,6 +12,7 @@
     "build:mocks": "(cd mocks && bun run build)",
     "build:ui": "(cd react-app && bun run build)",
     "repair:attachment-scan-status": "tsx scripts/repair-attachment-scan-status.ts",
+    "export:opensearch": "tsx scripts/export-opensearch-to-s3.ts",
     "watch": "tsc -w",
     "cdk": "cdk",
     "build:cli": "turbo build:cli",

@@ -8,7 +8,7 @@
 .cdk.staging
 cdk.out
 docs/
-node*modules/
+node_modules/
 *.png
 *.mp4
 *.doc
@@ -27,7 +27,7 @@ LICENSE
 .agents/
 .webpack
 tsconfig.tsbuildinfo
-build*run/
+build_run/
 mocks/
 *.mjs
 AGENTS.md
