@@ -38,6 +38,7 @@ import {
   AttachmentArchiveSectionManifest,
   AttachmentArchiveStateMachineInput,
 } from "../attachment-archive/types";
+import { buildResponseContentDisposition } from "./presignedAttachmentUrl";
 
 const DEFAULT_POLL_AFTER_SECONDS = 3;
 const DEFAULT_REBUILD_START_DELAY_MS = 1000;
@@ -83,6 +84,23 @@ type PackageArchivePlan = {
   packageArtifact: ArchiveArtifactPlan;
   sectionArtifacts: ArchiveArtifactPlan[];
 };
+
+export type AttachmentArchiveDownloadResponse =
+  | {
+      status: "READY";
+      artifactKey: string;
+      bucketName: string;
+      filename: string;
+      warningMessage?: string;
+    }
+  | {
+      status: "PENDING";
+      pollAfterSeconds?: number;
+    }
+  | {
+      status: "FAILED";
+      message?: string;
+    };
 
 function getArchiveBucketName(): string {
   const bucketName = process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME;
@@ -167,7 +185,7 @@ async function buildReadyResponse({
     new GetObjectCommand({
       Bucket: archiveBucketName,
       Key: artifactKey,
-      ResponseContentDisposition: `attachment; filename="${fileName}"`,
+      ResponseContentDisposition: buildResponseContentDisposition(fileName),
     }),
     { expiresIn: 60 },
   );
@@ -770,6 +788,75 @@ async function ensureArchiveArtifact({
   };
 }
 
+export async function getRequestedAttachmentArchiveDownload({
+  packageId,
+  scope,
+  sectionId,
+  changelog,
+  archiveNamespace = "main",
+}: {
+  packageId: string;
+  scope: AttachmentArchiveScope;
+  sectionId?: string;
+  changelog: opensearch.changelog.ItemResult[];
+  archiveNamespace?: AttachmentArchiveNamespace;
+}): Promise<{
+  response: AttachmentArchiveDownloadResponse;
+  needsRebuild: boolean;
+}> {
+  const artifact = getRequestedArtifact({
+    packageId,
+    scope,
+    sectionId,
+    changelog,
+    archiveNamespace,
+  });
+  const resolution = await resolveArchiveArtifactForRead({ artifact });
+
+  if (resolution.action === "ready") {
+    const warningMessage = getAttachmentArchiveWarningMessage(resolution.current);
+
+    return {
+      response: {
+        status: "READY",
+        artifactKey: resolution.artifactKey,
+        bucketName: resolution.bucketName,
+        filename: artifact.downloadFilename,
+        ...(warningMessage ? { warningMessage } : {}),
+      },
+      needsRebuild: false,
+    };
+  }
+
+  if (resolution.action === "in_progress") {
+    return {
+      response: {
+        status: "PENDING",
+        pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
+      },
+      needsRebuild: false,
+    };
+  }
+
+  if (resolution.action === "failed") {
+    return {
+      response: {
+        status: "FAILED",
+        message: resolution.message,
+      },
+      needsRebuild: false,
+    };
+  }
+
+  return {
+    response: {
+      status: "PENDING",
+      pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
+    },
+    needsRebuild: true,
+  };
+}
+
 export async function getRequestedAttachmentArchiveStatus({
   packageId,
   scope,
@@ -783,54 +870,27 @@ export async function getRequestedAttachmentArchiveStatus({
   changelog: opensearch.changelog.ItemResult[];
   archiveNamespace?: AttachmentArchiveNamespace;
 }) {
-  const artifact = getRequestedArtifact({
+  const result = await getRequestedAttachmentArchiveDownload({
     packageId,
     scope,
     sectionId,
     changelog,
     archiveNamespace,
   });
-  const resolution = await resolveArchiveArtifactForRead({ artifact });
 
-  if (resolution.action === "ready") {
+  if (result.response.status === "READY") {
     return {
       response: await buildReadyResponse({
-        archiveBucketName: resolution.bucketName,
-        artifactKey: resolution.artifactKey,
-        fileName: artifact.downloadFilename,
-        warningMessage: getAttachmentArchiveWarningMessage(resolution.current),
+        archiveBucketName: result.response.bucketName,
+        artifactKey: result.response.artifactKey,
+        fileName: result.response.filename,
+        warningMessage: result.response.warningMessage,
       }),
       needsRebuild: false,
     };
   }
 
-  if (resolution.action === "in_progress") {
-    return {
-      response: {
-        status: "PENDING" as const,
-        pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
-      },
-      needsRebuild: false,
-    };
-  }
-
-  if (resolution.action === "failed") {
-    return {
-      response: {
-        status: "FAILED" as const,
-        message: resolution.message,
-      },
-      needsRebuild: false,
-    };
-  }
-
-  return {
-    response: {
-      status: "PENDING" as const,
-      pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
-    },
-    needsRebuild: true,
-  };
+  return result;
 }
 
 export async function validateAttachmentArchiveCompletion({

@@ -25,6 +25,15 @@ vi.mock("../libs/api/package", () => ({
 
 type S3ObjectStore = Map<string, string>;
 
+type PackageFixture = {
+  packageId: string;
+  changelog: any[];
+  packageItem: any;
+  objectEntries: Array<[string, string]>;
+  listedKeys: string[];
+  existingObjects: string[];
+};
+
 function toStoreKey(bucket: string, key: string) {
   return `${bucket}/${key}`;
 }
@@ -35,48 +44,216 @@ function buildS3GetBody(value: string) {
   };
 }
 
+function buildValidPackageFixture(packageId: string): PackageFixture {
+  const changelog = [
+    {
+      _source: {
+        id: `${packageId}-s1`,
+        event: "app-k",
+        isAdminChange: false,
+        timestamp: 1,
+        attachments: [
+          {
+            bucket: "attachment-bucket",
+            key: `${packageId}-a-key`,
+            filename: `${packageId}.pdf`,
+            title: "A",
+          },
+        ],
+      },
+    },
+  ] as any[];
+  const packageItem = {
+    _source: {
+      authority: "Medicaid SPA",
+      cmsStatus: "Submitted",
+      submissionDate: "2026-04-06T00:00:00.000Z",
+    },
+  };
+
+  const section = buildAttachmentArchiveSections({ packageId, changelog })[0];
+  const sectionManifest = buildSectionAttachmentArchiveManifest({
+    packageId,
+    scope: "section",
+    sectionId: section.sectionId,
+    sectionNumber: section.sectionNumber,
+    sectionLabel: section.sectionLabel,
+    sectionFolderName: section.sectionFolderName,
+    rootFolderName: section.rootFolderName,
+    attachments: section.attachments,
+  });
+  const packageManifest = buildPackageAttachmentArchiveManifest({
+    packageId,
+    sections: [
+      {
+        sectionId: section.sectionId,
+        sectionNumber: section.sectionNumber,
+        sectionLabel: section.sectionLabel,
+        sectionFolderName: section.sectionFolderName,
+        rootFolderName: section.rootFolderName,
+        artifactKey: getArchiveArtifactKey(
+          {
+            packageId,
+            scope: "section",
+            sectionId: section.sectionId,
+          },
+          sectionManifest.hash,
+        ),
+        attachmentCount: sectionManifest.attachments.length,
+        hash: sectionManifest.hash,
+        manifestKey: getArchiveManifestKey(
+          {
+            packageId,
+            scope: "section",
+            sectionId: section.sectionId,
+          },
+          sectionManifest.hash,
+        ),
+      },
+    ],
+  });
+
+  const sectionArtifactKey = `package/${packageId}/section/${section.sectionId}/${sectionManifest.hash}.zip`;
+  const sectionManifestKey = `package/${packageId}/section/${section.sectionId}/${sectionManifest.hash}.manifest.json`;
+  const packageArtifactKey = `package/${packageId}/all/${packageManifest.hash}.zip`;
+  const packageManifestKey = `package/${packageId}/all/${packageManifest.hash}.manifest.json`;
+  const sectionCurrent = buildAttachmentArchiveCurrent({
+    scope: "section",
+    hash: sectionManifest.hash,
+    status: "READY",
+    artifactKey: sectionArtifactKey,
+    manifestKey: sectionManifestKey,
+    attachmentCount: sectionManifest.attachments.length,
+    sectionId: section.sectionId,
+    sectionNumber: section.sectionNumber,
+    sectionLabel: section.sectionLabel,
+    sectionFolderName: section.sectionFolderName,
+  });
+  const packageCurrent = buildAttachmentArchiveCurrent({
+    scope: "all",
+    hash: packageManifest.hash,
+    status: "READY",
+    artifactKey: packageArtifactKey,
+    manifestKey: packageManifestKey,
+    attachmentCount: sectionManifest.attachments.length,
+  });
+
+  return {
+    packageId,
+    changelog,
+    packageItem,
+    objectEntries: [
+      [
+        getArchiveCurrentKey({ packageId, scope: "section", sectionId: section.sectionId }),
+        JSON.stringify(sectionCurrent),
+      ],
+      [getArchiveCurrentKey({ packageId, scope: "all" }), JSON.stringify(packageCurrent)],
+      [sectionManifestKey, JSON.stringify(sectionManifest)],
+      [packageManifestKey, JSON.stringify(packageManifest)],
+    ],
+    listedKeys: [
+      `package/${packageId}/section/${section.sectionId}/current.json`,
+      `package/${packageId}/all/current.json`,
+      sectionArtifactKey,
+    ],
+    existingObjects: [sectionArtifactKey, packageArtifactKey],
+  };
+}
+
+function buildFailedTerminalFixture(packageId: string): PackageFixture {
+  const fixture = buildValidPackageFixture(packageId);
+  fixture.objectEntries = fixture.objectEntries.map(([key, value]) => {
+    if (!key.endsWith("/current.json")) {
+      return [key, value];
+    }
+
+    const current = JSON.parse(value);
+    return [
+      key,
+      JSON.stringify({
+        ...current,
+        status: "FAILED",
+        failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+        failureMessage: "Attachments are no longer available.",
+      }),
+    ];
+  });
+  fixture.existingObjects = [];
+  return fixture;
+}
+
+function createPackageMocks(fixtures: PackageFixture[]) {
+  const fixtureMap = new Map(fixtures.map((fixture) => [fixture.packageId, fixture]));
+  vi.mocked(getPackageChangelog).mockImplementation(async (packageId: string) => {
+    const fixture = fixtureMap.get(packageId);
+    if (!fixture) {
+      throw new Error(`Unexpected package ${packageId}`);
+    }
+    return {
+      hits: {
+        hits: fixture.changelog,
+      },
+    } as any;
+  });
+  vi.mocked(getPackage).mockImplementation(async (packageId: string) => {
+    const fixture = fixtureMap.get(packageId);
+    if (!fixture) {
+      throw new Error(`Unexpected package ${packageId}`);
+    }
+    return fixture.packageItem as any;
+  });
+}
+
+function buildArchiveStores(fixtures: PackageFixture[]) {
+  const objectStore: S3ObjectStore = new Map();
+  const listedKeys: string[] = [];
+  const existingObjects = new Set<string>();
+
+  for (const fixture of fixtures) {
+    for (const [key, value] of fixture.objectEntries) {
+      objectStore.set(toStoreKey("archive-write-bucket", key), value);
+    }
+    listedKeys.push(...fixture.listedKeys);
+    for (const key of fixture.existingObjects) {
+      existingObjects.add(toStoreKey("archive-write-bucket", key));
+    }
+  }
+
+  return {
+    objectStore,
+    listedKeys,
+    existingObjects,
+  };
+}
+
 describe("runAttachmentArchiveIntegrityCheck", () => {
   const listAllAttachmentArchivePackageIdsMock = vi.mocked(listAllAttachmentArchivePackageIds);
   const getPackageChangelogMock = vi.mocked(getPackageChangelog);
-  const getPackageMock = vi.mocked(getPackage);
   const s3SendSpy = vi.spyOn(S3Client.prototype, "send");
   const originalBucketName = process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME;
   const originalBaseBucketName = process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME;
+  const originalExceptionRegistryKey = process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY;
   const originalReportPrefix = process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX;
   const originalStageName = process.env.STAGE_NAME;
 
   beforeEach(() => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = "archive-write-bucket";
     process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME = "archive-write-bucket";
+    delete process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY;
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = "archive-integrity";
     process.env.STAGE_NAME = "main";
     listAllAttachmentArchivePackageIdsMock.mockReset();
+    vi.mocked(getPackage).mockReset();
     getPackageChangelogMock.mockReset();
-    getPackageMock.mockReset();
     s3SendSpy.mockReset();
   });
 
   afterEach(() => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = originalBucketName;
     process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME = originalBaseBucketName;
+    process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY = originalExceptionRegistryKey;
     process.env.ATTACHMENT_ARCHIVE_INTEGRITY_REPORT_PREFIX = originalReportPrefix;
     process.env.STAGE_NAME = originalStageName;
-  });
-
-  it("throws when STAGE_NAME is missing", async () => {
-    delete process.env.STAGE_NAME;
-
-    await expect(handler()).rejects.toThrow(
-      "ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME",
-    );
-  });
-
-  it("throws when STAGE_NAME is blank", async () => {
-    process.env.STAGE_NAME = "   ";
-
-    await expect(handler()).rejects.toThrow(
-      "ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME",
-    );
   });
 
   function mockS3({
@@ -95,11 +272,14 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
       const input = command.input;
 
       if (commandName === "ListObjectsV2Command") {
-        const contents = listedKeys
-          .filter((key) => key.startsWith(input.Prefix))
-          .map((key) => ({ Key: key }));
+        const dynamicKeys = Array.from(objectStore.keys())
+          .filter((key) => key.startsWith(`${input.Bucket}/`))
+          .map((key) => key.slice(input.Bucket.length + 1));
+        const keys = Array.from(new Set([...listedKeys, ...dynamicKeys]))
+          .filter((key) => key.startsWith(input.Prefix || ""))
+          .sort();
         return {
-          Contents: contents,
+          Contents: keys.map((key) => ({ Key: key })),
           IsTruncated: false,
         } as never;
       }
@@ -134,13 +314,37 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
           typeof input.Body === "string"
             ? input.Body
             : Buffer.from(input.Body || "").toString("utf8");
-        putStore.set(toStoreKey(input.Bucket, input.Key), body);
+        const storeKey = toStoreKey(input.Bucket, input.Key);
+        putStore.set(storeKey, body);
+        objectStore.set(storeKey, body);
         return {} as never;
       }
 
       return {} as never;
     });
   }
+
+  function findStoredJson(store: S3ObjectStore, suffix: string) {
+    const entry = Array.from(store.entries()).find(([key]) => key.endsWith(suffix));
+    expect(entry).toBeDefined();
+    return JSON.parse(entry?.[1] || "{}");
+  }
+
+  it("throws when STAGE_NAME is missing", async () => {
+    delete process.env.STAGE_NAME;
+
+    await expect(handler()).rejects.toThrow(
+      "ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME",
+    );
+  });
+
+  it("throws when STAGE_NAME is blank", async () => {
+    process.env.STAGE_NAME = "   ";
+
+    await expect(handler()).rejects.toThrow(
+      "ATTACHMENT_ARCHIVE_INTEGRITY_STAGE_NAME must be defined via STAGE_NAME",
+    );
+  });
 
   it("builds and truncates csv attachments safely when oversized", () => {
     const discrepancies = Array.from({ length: 50000 }).map((_, index) => ({
@@ -164,202 +368,77 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     );
   }, 120000);
 
-  it("detects package and section discrepancies and writes required report fields", async () => {
-    const packageId = "MD-1";
-    const changelog = [
+  it("creates checkpoint files on the first invocation and resumes to completion", async () => {
+    const fixtures = [buildValidPackageFixture("MD-1"), buildValidPackageFixture("MD-2")];
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(
+      fixtures.map((fixture) => fixture.packageId),
+    );
+    createPackageMocks(fixtures);
+
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores(fixtures);
+    const putStore: S3ObjectStore = new Map();
+    mockS3({
+      objectStore,
+      listedKeys,
+      existingObjects,
+      putStore,
+    });
+
+    const remainingTimes = [60000];
+    const firstResult = await handler(
+      {},
       {
-        _source: {
-          id: "s1",
-          event: "app-k",
-          isAdminChange: false,
-          timestamp: 1,
-          attachments: [
-            {
-              bucket: "attachment-bucket",
-              key: "a-key",
-              filename: "a.pdf",
-              title: "A",
-            },
-          ],
-        },
+        getRemainingTimeInMillis: () => remainingTimes.shift() ?? 60000,
       },
-      {
-        _source: {
-          id: "s2",
-          event: "respond-to-rai",
-          isAdminChange: false,
-          timestamp: 2,
-          attachments: [
-            {
-              bucket: "attachment-bucket",
-              key: "b-key",
-              filename: "b.pdf",
-              title: "B",
-            },
-          ],
-        },
-      },
-    ] as any;
-    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([packageId]);
-    getPackageChangelogMock.mockResolvedValue({
-      hits: {
-        hits: changelog,
-      },
-    } as any);
-    getPackageMock.mockResolvedValue({
-      _source: {
-        authority: "Medicaid SPA",
-        cmsStatus: "Submitted",
-        submissionDate: "2026-04-06T00:00:00.000Z",
-      },
-    } as any);
+    );
 
-    const sections = buildAttachmentArchiveSections({ packageId, changelog });
-    const section1 = sections[0];
-    const section2 = sections[1];
-    const expectedSection2Manifest = buildSectionAttachmentArchiveManifest({
-      packageId,
-      scope: "section",
-      sectionId: section2.sectionId,
-      sectionNumber: section2.sectionNumber,
-      sectionLabel: section2.sectionLabel,
-      sectionFolderName: section2.sectionFolderName,
-      rootFolderName: section2.rootFolderName,
-      attachments: section2.attachments,
-    });
+    expect(firstResult.status).toBe("IN_PROGRESS");
+    expect(firstResult.packagesScanned).toBe(1);
+    expect(firstResult.packagesTotal).toBe(2);
+    expect(firstResult.summaryKey).toContain("/summary.json");
+    expect(firstResult.checkpointKey).toContain("/checkpoint.json");
 
-    const crossBleedSectionManifest = buildSectionAttachmentArchiveManifest({
-      packageId,
-      scope: "section",
-      sectionId: section1.sectionId,
-      sectionNumber: section1.sectionNumber,
-      sectionLabel: section1.sectionLabel,
-      sectionFolderName: section1.sectionFolderName,
-      rootFolderName: section1.rootFolderName,
-      attachments: section2.attachments,
-    });
-    const packageManifest = buildPackageAttachmentArchiveManifest({
-      packageId,
-      sections: [
-        {
-          sectionId: section1.sectionId,
-          sectionNumber: section1.sectionNumber,
-          sectionLabel: section1.sectionLabel,
-          sectionFolderName: section1.sectionFolderName,
-          rootFolderName: section1.rootFolderName,
-          artifactKey: getArchiveArtifactKey(
-            {
-              packageId,
-              scope: "section",
-              sectionId: section1.sectionId,
-            },
-            crossBleedSectionManifest.hash,
-          ),
-          attachmentCount: crossBleedSectionManifest.attachments.length,
-          hash: "section-hash-mismatch",
-          manifestKey: getArchiveManifestKey(
-            {
-              packageId,
-              scope: "section",
-              sectionId: section1.sectionId,
-            },
-            crossBleedSectionManifest.hash,
-          ),
-        },
-        {
-          sectionId: "s3",
-          sectionNumber: 3,
-          sectionLabel: "orphan",
-          sectionFolderName: "section-3-orphan",
-          rootFolderName: "MD-1-section-3-orphan",
-          artifactKey: "package/MD-1/section/s3/orphan.zip",
-          attachmentCount: 1,
-          hash: "orphan-hash",
-          manifestKey: "package/MD-1/section/s3/orphan.manifest.json",
-        },
-      ],
-    });
+    const initialSummary = findStoredJson(putStore, "/summary.json");
+    expect(initialSummary.status).toBe("RUNNING");
+    expect(initialSummary.packagesScanned).toBe(1);
+    expect(initialSummary.packagesTotal).toBe(2);
+    expect(initialSummary.lastProcessedPackageId).toBe("MD-1");
+    expect(initialSummary.checkpointKey).toBe(firstResult.checkpointKey);
+    expect(findStoredJson(putStore, "/checkpoint.json")).toEqual(
+      expect.objectContaining({
+        nextPackageIndex: 1,
+        packagesScanned: 1,
+        packagesTotal: 2,
+        lastProcessedPackageId: "MD-1",
+      }),
+    );
+    expect(findStoredJson(putStore, "/package-ids.json")).toEqual(["MD-1", "MD-2"]);
 
-    const section1Current = buildAttachmentArchiveCurrent({
-      scope: "section",
-      hash: "unexpected-section-hash",
-      status: "READY",
-      artifactKey: "package/MD-1/section/s1/a.zip",
-      manifestKey: "package/MD-1/section/s1/cross-bleed.manifest.json",
-      attachmentCount: crossBleedSectionManifest.attachments.length,
-      sectionId: section1.sectionId,
-      sectionNumber: section1.sectionNumber,
-      sectionLabel: section1.sectionLabel,
-      sectionFolderName: section1.sectionFolderName,
-    });
-    const section2Current = buildAttachmentArchiveCurrent({
-      scope: "section",
-      hash: expectedSection2Manifest.hash,
-      status: "READY",
-      artifactKey: "package/MD-1/section/s2/a.zip",
-      manifestKey: `package/MD-1/section/s2/${expectedSection2Manifest.hash}.manifest.json`,
-      attachmentCount: expectedSection2Manifest.attachments.length,
-      sectionId: section2.sectionId,
-      sectionNumber: section2.sectionNumber,
-      sectionLabel: section2.sectionLabel,
-      sectionFolderName: section2.sectionFolderName,
-    });
-    const packageCurrent = buildAttachmentArchiveCurrent({
-      scope: "all",
-      hash: "unexpected-package-hash",
-      status: "READY",
-      artifactKey: "package/MD-1/all/package.zip",
-      manifestKey: "package/MD-1/all/cross-package.manifest.json",
-      attachmentCount: 2,
-    });
+    const resumedResult = await handler(firstResult);
+    expect(resumedResult.status).toBe("COMPLETE");
+    expect(resumedResult.packagesScanned).toBe(2);
+    expect(resumedResult.packagesTotal).toBe(2);
+    expect(listAllAttachmentArchivePackageIdsMock).toHaveBeenCalledTimes(1);
 
-    const objectStore: S3ObjectStore = new Map([
-      [
-        toStoreKey(
-          "archive-write-bucket",
-          getArchiveCurrentKey({ packageId, scope: "section", sectionId: "s1" }),
-        ),
-        JSON.stringify(section1Current),
-      ],
-      [
-        toStoreKey(
-          "archive-write-bucket",
-          getArchiveCurrentKey({ packageId, scope: "section", sectionId: "s2" }),
-        ),
-        JSON.stringify(section2Current),
-      ],
-      [
-        toStoreKey("archive-write-bucket", getArchiveCurrentKey({ packageId, scope: "all" })),
-        JSON.stringify(packageCurrent),
-      ],
-      [
-        toStoreKey("archive-write-bucket", "package/MD-1/section/s1/cross-bleed.manifest.json"),
-        JSON.stringify(crossBleedSectionManifest),
-      ],
-      [
-        toStoreKey(
-          "archive-write-bucket",
-          `package/MD-1/section/s2/${expectedSection2Manifest.hash}.manifest.json`,
-        ),
-        JSON.stringify(expectedSection2Manifest),
-      ],
-      [
-        toStoreKey("archive-write-bucket", "package/MD-1/all/cross-package.manifest.json"),
-        JSON.stringify(packageManifest),
-      ],
-    ]);
-    const listedKeys = [
-      "package/MD-1/section/s1/current.json",
-      "package/MD-1/section/s2/current.json",
-      "package/MD-1/all/current.json",
-      "package/MD-1/section/s1/a.zip",
-      "package/MD-1/section/s1/b.zip",
-      "package/MD-1/section/s2/a.zip",
-    ];
-    const existingObjects = new Set([
-      toStoreKey("archive-write-bucket", "package/MD-1/section/s1/a.zip"),
-      toStoreKey("archive-write-bucket", "package/MD-1/section/s2/a.zip"),
-    ]);
+    const finalSummary = findStoredJson(objectStore, "/summary.json");
+    expect(finalSummary.status).toBe("SUCCESS");
+    expect(finalSummary.notificationStatus).toBe("SKIPPED");
+    expect(finalSummary.packagesScanned).toBe(2);
+    expect(finalSummary.discrepancyCount).toBe(0);
+    expect(finalSummary.discrepancyJsonKey).toContain("/discrepancies.json");
+  });
+
+  it("writes final discrepancy artifacts when the run completes with mismatches", async () => {
+    const fixture = buildValidPackageFixture("MD-3");
+    fixture.objectEntries = fixture.objectEntries.filter(
+      ([key]) => key !== getArchiveCurrentKey({ packageId: fixture.packageId, scope: "all" }),
+    );
+    fixture.listedKeys = fixture.listedKeys.filter((key) => !key.endsWith("/all/current.json"));
+
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([fixture.packageId]);
+    createPackageMocks([fixture]);
+
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores([fixture]);
     const putStore: S3ObjectStore = new Map();
     mockS3({
       objectStore,
@@ -369,200 +448,59 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     });
 
     const result = await handler();
+    expect(result.status).toBe("COMPLETE");
     expect(result.discrepancyCount).toBeGreaterThan(0);
-    expect(result.packagesScanned).toBe(1);
-    expect(result.sectionsScanned).toBe(2);
 
-    const summaryEntry = Array.from(putStore.entries()).find(([key]) =>
-      key.endsWith("/summary.json"),
-    );
-    expect(summaryEntry).toBeDefined();
-    const summary = JSON.parse(summaryEntry?.[1] || "{}");
+    const summary = findStoredJson(objectStore, "/summary.json");
+    expect(summary.status).toBe("SUCCESS");
     expect(summary.notificationStatus).toBe("PENDING");
-    expect(summary.discrepancyCount).toBeGreaterThan(0);
-    expect(summary.discrepancyTypeCounts).toEqual(expect.any(Object));
+    expect(summary.packagesTotal).toBe(1);
+    expect(summary.checkpointKey).toContain("/checkpoint.json");
 
-    const discrepancyEntry = Array.from(putStore.entries()).find(([key]) =>
-      key.endsWith("/discrepancies.json"),
-    );
-    const discrepancies = JSON.parse(discrepancyEntry?.[1] || "[]");
+    const discrepancies = findStoredJson(objectStore, "/discrepancies.json");
     expect(discrepancies).toContainEqual(
       expect.objectContaining({
-        discrepancyType: "PACKAGE_FILE_MISSING",
+        discrepancyType: "PACKAGE_CURRENT_MISSING",
       }),
     );
-    expect(discrepancies).toContainEqual(
-      expect.objectContaining({
-        discrepancyType: "PACKAGE_SECTION_ORPHAN",
-      }),
-    );
-    expect(discrepancies).toContainEqual(
-      expect.objectContaining({
-        discrepancyType: "SECTION_CROSS_SECTION_BLEED",
-      }),
-    );
-    expect(discrepancies).not.toContainEqual(
-      expect.objectContaining({
-        discrepancyType: "SECTION_ZIP_COUNT_MISMATCH",
-      }),
-    );
-    const first = discrepancies[0];
-    expect(first).toEqual(
-      expect.objectContaining({
-        authority: expect.any(String),
-        packageId: expect.any(String),
-        sectionId: expect.any(String),
-        cmsStatus: expect.any(String),
-        submissionDate: expect.any(String),
-        issueScope: expect.any(String),
-        discrepancyType: expect.any(String),
-        expectedValue: expect.any(String),
-        actualValue: expect.any(String),
-      }),
-    );
-
-    const csvEntry = Array.from(putStore.entries()).find(([key]) => key.endsWith(".csv"));
+    const csvEntry = Array.from(objectStore.entries()).find(([key]) => key.endsWith(".csv"));
     expect(csvEntry?.[1]).toContain(
       "authority,packageId,sectionId,cmsStatus,submissionDate,issueScope,discrepancyType,expectedValue,actualValue",
     );
   });
 
-  it("writes a successful summary with skipped notification when no discrepancies are found", async () => {
-    const packageId = "MD-2";
-    const changelog = [
-      {
-        _source: {
-          id: "s1",
-          event: "app-k",
-          isAdminChange: false,
-          timestamp: 1,
-          attachments: [
-            {
-              bucket: "attachment-bucket",
-              key: "a-key",
-              filename: "a.pdf",
-              title: "A",
-            },
-          ],
-        },
-      },
-    ] as any;
-    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([packageId]);
-    getPackageChangelogMock.mockResolvedValue({
-      hits: {
-        hits: changelog,
-      },
-    } as any);
-    getPackageMock.mockResolvedValue({
-      _source: {
-        authority: "Medicaid SPA",
-        cmsStatus: "Submitted",
-        submissionDate: "2026-04-06T00:00:00.000Z",
-      },
-    } as any);
+  it("moves matching terminal failures into exception artifacts", async () => {
+    process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY =
+      "archive-integrity/val/exception-registry.json";
+    const fixture = buildFailedTerminalFixture("MD-6");
+    const sectionId = buildAttachmentArchiveSections({
+      packageId: fixture.packageId,
+      changelog: fixture.changelog,
+    })[0].sectionId;
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([fixture.packageId]);
+    createPackageMocks([fixture]);
 
-    const section = buildAttachmentArchiveSections({ packageId, changelog })[0];
-    const sectionManifest = buildSectionAttachmentArchiveManifest({
-      packageId,
-      scope: "section",
-      sectionId: section.sectionId,
-      sectionNumber: section.sectionNumber,
-      sectionLabel: section.sectionLabel,
-      sectionFolderName: section.sectionFolderName,
-      rootFolderName: section.rootFolderName,
-      attachments: section.attachments,
-    });
-    const packageManifest = buildPackageAttachmentArchiveManifest({
-      packageId,
-      sections: [
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores([fixture]);
+    objectStore.set(
+      toStoreKey("archive-write-bucket", "archive-integrity/val/exception-registry.json"),
+      JSON.stringify([
         {
-          sectionId: section.sectionId,
-          sectionNumber: section.sectionNumber,
-          sectionLabel: section.sectionLabel,
-          sectionFolderName: section.sectionFolderName,
-          rootFolderName: section.rootFolderName,
-          artifactKey: getArchiveArtifactKey(
-            {
-              packageId,
-              scope: "section",
-              sectionId: section.sectionId,
-            },
-            sectionManifest.hash,
-          ),
-          attachmentCount: sectionManifest.attachments.length,
-          hash: sectionManifest.hash,
-          manifestKey: getArchiveManifestKey(
-            {
-              packageId,
-              scope: "section",
-              sectionId: section.sectionId,
-            },
-            sectionManifest.hash,
-          ),
+          packageId: fixture.packageId,
+          scope: "all",
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          reason: "Known terminal package failure",
+          addedAt: "2026-04-20T00:00:00.000Z",
         },
-      ],
-    });
-
-    const sectionCurrent = buildAttachmentArchiveCurrent({
-      scope: "section",
-      hash: sectionManifest.hash,
-      status: "READY",
-      artifactKey: `package/${packageId}/section/${section.sectionId}/${sectionManifest.hash}.zip`,
-      manifestKey: `package/${packageId}/section/${section.sectionId}/${sectionManifest.hash}.manifest.json`,
-      attachmentCount: sectionManifest.attachments.length,
-      sectionId: section.sectionId,
-      sectionNumber: section.sectionNumber,
-      sectionLabel: section.sectionLabel,
-      sectionFolderName: section.sectionFolderName,
-    });
-    const packageCurrent = buildAttachmentArchiveCurrent({
-      scope: "all",
-      hash: packageManifest.hash,
-      status: "READY",
-      artifactKey: `package/${packageId}/all/${packageManifest.hash}.zip`,
-      manifestKey: `package/${packageId}/all/${packageManifest.hash}.manifest.json`,
-      attachmentCount: sectionManifest.attachments.length,
-    });
-
-    const objectStore: S3ObjectStore = new Map([
-      [
-        toStoreKey(
-          "archive-write-bucket",
-          getArchiveCurrentKey({ packageId, scope: "section", sectionId: section.sectionId }),
-        ),
-        JSON.stringify(sectionCurrent),
-      ],
-      [
-        toStoreKey("archive-write-bucket", getArchiveCurrentKey({ packageId, scope: "all" })),
-        JSON.stringify(packageCurrent),
-      ],
-      [
-        toStoreKey(
-          "archive-write-bucket",
-          `package/${packageId}/section/${section.sectionId}/${sectionManifest.hash}.manifest.json`,
-        ),
-        JSON.stringify(sectionManifest),
-      ],
-      [
-        toStoreKey(
-          "archive-write-bucket",
-          `package/${packageId}/all/${packageManifest.hash}.manifest.json`,
-        ),
-        JSON.stringify(packageManifest),
-      ],
-    ]);
-    const listedKeys = [
-      `package/${packageId}/section/${section.sectionId}/current.json`,
-      `package/${packageId}/all/current.json`,
-      `package/${packageId}/section/${section.sectionId}/${sectionManifest.hash}.zip`,
-    ];
-    const existingObjects = new Set([
-      toStoreKey(
-        "archive-write-bucket",
-        `package/${packageId}/section/${section.sectionId}/${sectionManifest.hash}.zip`,
-      ),
-      toStoreKey("archive-write-bucket", `package/${packageId}/all/${packageManifest.hash}.zip`),
-    ]);
+        {
+          packageId: fixture.packageId,
+          scope: "section",
+          sectionId,
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          reason: "Known terminal section failure",
+          addedAt: "2026-04-20T00:00:00.000Z",
+        },
+      ]),
+    );
     const putStore: S3ObjectStore = new Map();
     mockS3({
       objectStore,
@@ -572,24 +510,56 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     });
 
     const result = await handler();
-    expect(result.discrepancyCount).toBe(0);
 
-    const summaryEntry = Array.from(putStore.entries()).find(([key]) =>
-      key.endsWith("/summary.json"),
-    );
-    const summary = JSON.parse(summaryEntry?.[1] || "{}");
-    expect(summary.status).toBe("SUCCESS");
-    expect(summary.notificationStatus).toBe("SKIPPED");
+    expect(result.status).toBe("COMPLETE");
+    expect(result.discrepancyCount).toBe(0);
+    expect(result.exceptionCount).toBe(2);
+    const summary = findStoredJson(objectStore, "/summary.json");
+    expect(summary.exceptionCount).toBe(2);
     expect(summary.discrepancyCount).toBe(0);
+    expect(summary.exceptionJsonKey).toContain("/exceptions.json");
+    const exceptions = findStoredJson(objectStore, "/exceptions.json");
+    expect(exceptions).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          packageId: "MD-6",
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          issueScope: "Download All",
+        }),
+        expect.objectContaining({
+          packageId: "MD-6",
+          sectionId,
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          issueScope: "Section",
+        }),
+      ]),
+    );
   });
 
-  it("persists a failed summary and throws when processing fails", async () => {
-    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(["MD-3"]);
-    getPackageChangelogMock.mockRejectedValue(new Error("OpenSearch unavailable"));
+  it("keeps missing current discrepancies actionable even when an exception registry is configured", async () => {
+    process.env.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY =
+      "archive-integrity/val/exception-registry.json";
+    const fixture = buildValidPackageFixture("MD-7");
+    fixture.objectEntries = fixture.objectEntries.filter(
+      ([key]) => key !== getArchiveCurrentKey({ packageId: fixture.packageId, scope: "all" }),
+    );
+    fixture.listedKeys = fixture.listedKeys.filter((key) => !key.endsWith("/all/current.json"));
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([fixture.packageId]);
+    createPackageMocks([fixture]);
 
-    const objectStore: S3ObjectStore = new Map();
-    const listedKeys: string[] = [];
-    const existingObjects = new Set<string>();
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores([fixture]);
+    objectStore.set(
+      toStoreKey("archive-write-bucket", "archive-integrity/val/exception-registry.json"),
+      JSON.stringify([
+        {
+          packageId: fixture.packageId,
+          scope: "all",
+          failureCode: "ALL_ATTACHMENTS_UNAVAILABLE",
+          reason: "Would match if current existed",
+          addedAt: "2026-04-20T00:00:00.000Z",
+        },
+      ]),
+    );
     const putStore: S3ObjectStore = new Map();
     mockS3({
       objectStore,
@@ -598,15 +568,62 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
       putStore,
     });
 
-    await expect(handler()).rejects.toThrow("summaryKey");
+    const result = await handler();
 
-    const summaryEntry = Array.from(putStore.entries()).find(([key]) =>
-      key.endsWith("/summary.json"),
+    expect(result.status).toBe("COMPLETE");
+    expect(result.discrepancyCount).toBeGreaterThan(0);
+    expect(result.exceptionCount).toBe(0);
+    const discrepancies = findStoredJson(objectStore, "/discrepancies.json");
+    expect(discrepancies).toContainEqual(
+      expect.objectContaining({
+        discrepancyType: "PACKAGE_CURRENT_MISSING",
+      }),
     );
-    expect(summaryEntry).toBeDefined();
-    const summary = JSON.parse(summaryEntry?.[1] || "{}");
-    expect(summary.status).toBe("FAILED");
-    expect(summary.notificationStatus).toBe("PENDING");
-    expect(summary.errorMessage).toContain("OpenSearch unavailable");
+  });
+
+  it("preserves completed progress in the failed summary when a resumed run errors", async () => {
+    const fixtures = [buildValidPackageFixture("MD-4"), buildValidPackageFixture("MD-5")];
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(
+      fixtures.map((fixture) => fixture.packageId),
+    );
+    createPackageMocks(fixtures);
+    getPackageChangelogMock.mockImplementation(async (packageId: string) => {
+      if (packageId === "MD-5") {
+        throw new Error("OpenSearch unavailable");
+      }
+      const fixture = fixtures.find((entry) => entry.packageId === packageId);
+      return {
+        hits: {
+          hits: fixture?.changelog || [],
+        },
+      } as any;
+    });
+
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores(fixtures);
+    const putStore: S3ObjectStore = new Map();
+    mockS3({
+      objectStore,
+      listedKeys,
+      existingObjects,
+      putStore,
+    });
+
+    const remainingTimes = [60000];
+    const firstResult = await handler(
+      {},
+      {
+        getRemainingTimeInMillis: () => remainingTimes.shift() ?? 60000,
+      },
+    );
+    expect(firstResult.status).toBe("IN_PROGRESS");
+
+    await expect(handler(firstResult)).rejects.toThrow("summaryKey");
+
+    const failureSummary = findStoredJson(objectStore, "/summary.json");
+    expect(failureSummary.status).toBe("FAILED");
+    expect(failureSummary.packagesScanned).toBe(1);
+    expect(failureSummary.packagesTotal).toBe(2);
+    expect(failureSummary.lastProcessedPackageId).toBe("MD-4");
+    expect(failureSummary.errorMessage).toContain("OpenSearch unavailable");
   });
 });

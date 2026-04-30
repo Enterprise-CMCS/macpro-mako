@@ -40,6 +40,7 @@ describe("DeploymentConfig", () => {
     iamPermissionsBoundary: "arn:aws:iam::1234578910:policy/foo/bar-policy",
     smartLinkUrl: "https://smartlink.example.com",
     macproLinkUrl: "https://macprolink.example.com",
+    externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
   });
 
   const stageSecret = JSON.stringify({
@@ -61,6 +62,9 @@ describe("DeploymentConfig", () => {
       }
       if (secretName === `${project}-production`) {
         return Promise.resolve("{}"); // Empty secret for production stage
+      }
+      if (secretName === `${project}-datasink`) {
+        return Promise.resolve("{}"); // Empty secret for protected datasink stage
       }
       return Promise.reject(new Error(`Secret not found: ${secretName}`));
     });
@@ -98,6 +102,7 @@ describe("DeploymentConfig", () => {
       idmEnable: true, // Converted to boolean
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true, // Converted to boolean
       vpcName: "vpcName",
       isDev: true,
@@ -165,6 +170,7 @@ describe("DeploymentConfig", () => {
       idmEnable: true,
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true,
       vpcName: "vpcName",
       isDev: true,
@@ -192,5 +198,12 @@ describe("DeploymentConfig", () => {
       expect(deploymentConfig.config.isDev).toBe(false);
       expect(deploymentConfig.config.terminationProtection).toBe(true);
     }
+  });
+
+  it("should keep datasink dev-like while enabling termination protection", async () => {
+    const deploymentConfig = await DeploymentConfig.fetch({ project, stage: "datasink" });
+
+    expect(deploymentConfig.config.isDev).toBe(true);
+    expect(deploymentConfig.config.terminationProtection).toBe(true);
   });
 });

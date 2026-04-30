@@ -27,6 +27,11 @@ jobs:
         run: |
           set -euo pipefail
 
+          is_protected_stage() {
+            local stage="$1"
+            [[ "${stage}" == "main" || "${stage}" == "val" || "${stage}" == "production" || "${stage}" == "datasink" ]]
+          }
+
           stage=""
 
           if [[ -n "${INPUT_ENVIRONMENT}" ]]; then
@@ -49,9 +54,13 @@ jobs:
             exit 0
           fi
 
-          if [[ "${stage}" == "main" || "${stage}" == "val" || "${stage}" == "production" ]]; then
+          if is_protected_stage "${stage}"; then
             echo "classification=protected" >> "$GITHUB_OUTPUT"
             echo "should_destroy=false" >> "$GITHUB_OUTPUT"
+            if [[ "${EVENT_NAME}" == "delete" ]]; then
+              echo "Stage '${stage}' is protected. Skipping delete-event destroy."
+              exit 0
+            fi
             echo "::error::Stage '${stage}' is protected and cannot be destroyed."
             exit 1
           fi

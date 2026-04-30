@@ -28,6 +28,7 @@ import {
   isActiveDraftPackage,
   isActiveMainNonDraftPackage,
 } from "../libs/api/package/packageStatus";
+import { buildResponseContentDisposition } from "./presignedAttachmentUrl";
 import { handleOpensearchError } from "./utils";
 
 function getClient(bucket: string) {
@@ -520,30 +521,6 @@ async function assertObjectAccessible(bucket: string, key: string) {
       Key: key,
     }) as any,
   );
-}
-
-function getAsciiFilename(filename: string) {
-  const sanitized = filename
-    .normalize("NFKD")
-    .replace(/[^\x20-\x7E]+/g, "_")
-    .replace(/["\\]/g, "_")
-    .trim();
-
-  return sanitized || "download";
-}
-
-function encodeContentDispositionFilename(filename: string) {
-  return encodeURIComponent(filename).replace(
-    /['()*]/g,
-    (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
-  );
-}
-
-function buildResponseContentDisposition(filename: string) {
-  const asciiFilename = getAsciiFilename(filename);
-  const encodedFilename = encodeContentDispositionFilename(filename);
-
-  return `attachment; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`;
 }
 
 async function generatePresignedUrl(

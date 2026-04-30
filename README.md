@@ -31,6 +31,12 @@ The upgraded OneMAC system streamlines the submission process for state users, e
 
 All documentation can be found on the [GitHub Wiki pages](https://github.com/Enterprise-CMCS/macpro-mako/wiki).
 
+## Operational Scripts
+
+### OpenSearch Data Export
+
+For exporting production OpenSearch data to S3, see the [export script documentation](scripts/export-index.md). This script is designed to run in AWS CloudShell with VPC connectivity to your OpenSearch domain.
+
 ## Contributing
 
 Work items for this project are tracked in Jira. Check out the [project kanban board](https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/257) to view all work items affecting this repo.
