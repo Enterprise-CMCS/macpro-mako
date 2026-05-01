@@ -1,3 +1,4 @@
+import { screen, within } from "@testing-library/react";
 import { WITHDRAW_RAI_ITEM_B } from "mocks";
 import { describe, expect, it, vi } from "vitest";
 
@@ -19,15 +20,50 @@ vi.mock("shared-utils", async (importOriginal) => {
 });
 
 describe("Toggle Withdraw Rai components", () => {
-  it("renders enable withdraw rai correctly", async () => {
-    const { asFragment } = await renderFormWithPackageSectionAsync(<DisableWithdrawRaiForm />);
+  const expectCommonFormFields = () => {
+    const detailSection = screen.getByTestId("detail-section");
 
-    expect(asFragment()).toMatchSnapshot();
+    expect(within(detailSection).getByText("Waiver Number")).toBeInTheDocument();
+    expect(within(detailSection).getByText(WITHDRAW_RAI_ITEM_B, { selector: "p" })).toBeInTheDocument();
+    expect(within(detailSection).getByText("Authority")).toBeInTheDocument();
+    expect(within(detailSection).getByText("1915(b) Waiver", { selector: "p" })).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+    expect(screen.getByTestId("cancel-action-form")).toBeEnabled();
+  };
+
+  it("renders enable withdraw rai correctly", async () => {
+    await renderFormWithPackageSectionAsync(<DisableWithdrawRaiForm />);
+
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Disable Formal RAI Response Withdraw Details",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Disable Formal RAI Response Withdraw")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "The state will not be able to withdraw its RAI response. It may take up to a minute for this change to be applied.",
+      ),
+    ).toBeInTheDocument();
+    expectCommonFormFields();
   });
 
   it("renders disable withdraw rai correctly", async () => {
-    const { asFragment } = await renderFormWithPackageSectionAsync(<EnableWithdrawRaiForm />);
+    await renderFormWithPackageSectionAsync(<EnableWithdrawRaiForm />);
 
-    expect(asFragment()).toMatchSnapshot();
+    expect(
+      screen.getByRole("heading", {
+        level: 1,
+        name: "Enable Formal RAI Response Withdraw Details",
+      }),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Enable Formal RAI Response Withdraw")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /Once you submit this form, the most recent Formal RAI Response for this\s+package will be able to be withdrawn by the state/,
+      ),
+    ).toBeInTheDocument();
+    expectCommonFormFields();
   });
 });
