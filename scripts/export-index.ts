@@ -24,17 +24,7 @@ interface ScrollResponse {
   };
 }
 
-const INDEXES_TO_EXPORT = [
-  "productionmain",
-  "productionchangelog",
-  "productiontypes",
-  "productionsubtypes",
-  "productioncpocs",
-  "productioninsights",
-  "productionlegacyinsights",
-  "productionusers",
-  "productionroles",
-] as const;
+// Dynamic index discovery - no hardcoded list needed
 
 class OpenSearchExporter {
   private s3Client: S3Client;
@@ -53,6 +43,52 @@ class OpenSearchExporter {
       this.osClient = await getClient(this.domain);
     }
     return this.osClient;
+  }
+
+  private async discoverIndexes(): Promise<string[]> {
+    const client = await this.getOSClient();
+
+    console.log("Discovering indexes from OpenSearch...");
+
+    try {
+      // Use cat.indices API to get all indexes
+      const response = await client.cat.indices({
+        format: "json",
+        h: "index,status,health,docs.count",
+      });
+
+      if (!response.body || !Array.isArray(response.body)) {
+        throw new Error("Failed to retrieve index list from OpenSearch");
+      }
+
+      const allIndexes = response.body.map((indexInfo: any) => indexInfo.index as string);
+      console.log(`Found ${allIndexes.length} total indexes`);
+
+      // Filter out system indexes (starting with . or _)
+      const userIndexes = allIndexes.filter((indexName) => {
+        // Skip system indexes that start with . (like .kibana, .security, etc.)
+        if (indexName.startsWith(".")) return false;
+        // Skip system indexes that start with _ (like _monitoring, etc.)
+        if (indexName.startsWith("_")) return false;
+        return true;
+      });
+
+      console.log(`Filtered to ${userIndexes.length} user indexes:`);
+      userIndexes.forEach((indexName) => console.log(`  - ${indexName}`));
+
+      const skippedIndexes = allIndexes.filter(
+        (indexName) => indexName.startsWith(".") || indexName.startsWith("_"),
+      );
+      if (skippedIndexes.length > 0) {
+        console.log(`Skipping ${skippedIndexes.length} system indexes:`);
+        skippedIndexes.forEach((indexName) => console.log(`  - ${indexName} (system)`));
+      }
+
+      return userIndexes;
+    } catch (error) {
+      console.error("Error discovering indexes:", error);
+      throw error;
+    }
   }
 
   private async *scrollSearch(
@@ -201,11 +237,19 @@ class OpenSearchExporter {
     console.log(`Starting OpenSearch export to S3 bucket: ${this.options.bucket}`);
     console.log(`OpenSearch domain: ${this.domain}`);
 
+    // Discover indexes dynamically
+    const indexesToExport = await this.discoverIndexes();
+
+    if (indexesToExport.length === 0) {
+      console.log("⚠️  No user indexes found to export");
+      return;
+    }
+
     const startTime = Date.now();
     let successCount = 0;
     let errorCount = 0;
 
-    for (const indexName of INDEXES_TO_EXPORT) {
+    for (const indexName of indexesToExport) {
       try {
         await this.exportIndexToS3(indexName);
         successCount++;
@@ -218,6 +262,7 @@ class OpenSearchExporter {
     const duration = (Date.now() - startTime) / 1000;
     console.log(`\n=== Export Summary ===`);
     console.log(`Total time: ${duration.toFixed(2)} seconds`);
+    console.log(`Indexes discovered: ${indexesToExport.length}`);
     console.log(`Successful exports: ${successCount}`);
     console.log(`Failed exports: ${errorCount}`);
     console.log(`S3 bucket: ${this.options.bucket}`);
@@ -264,7 +309,6 @@ function parseArgs(argv: string[]): ExportOptions {
       case "-h":
         printUsage();
         process.exit(0);
-        break;
       default:
         break;
     }

@@ -1,12 +1,12 @@
-# Graph Report - macpro-mako  (2026-04-28)
+# Graph Report - macpro-mako  (2026-05-01)
 
 ## Corpus Check
-- 1296 files · ~377,503 words
+- 1297 files · ~379,195 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2593 nodes · 2458 edges · 94 communities detected
-- Extraction: 74% EXTRACTED · 26% INFERRED · 0% AMBIGUOUS · INFERRED: 643 edges (avg confidence: 0.8)
+- 2603 nodes · 2475 edges · 93 communities detected
+- Extraction: 74% EXTRACTED · 26% INFERRED · 0% AMBIGUOUS · INFERRED: 645 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -45,18 +45,18 @@
 - [[_COMMUNITY_Community 32|Community 32]]
 - [[_COMMUNITY_Community 33|Community 33]]
 - [[_COMMUNITY_Community 34|Community 34]]
-- [[_COMMUNITY_Community 35|Community 35]]
+- [[_COMMUNITY_Community 36|Community 36]]
 - [[_COMMUNITY_Community 37|Community 37]]
-- [[_COMMUNITY_Community 38|Community 38]]
-- [[_COMMUNITY_Community 41|Community 41]]
+- [[_COMMUNITY_Community 40|Community 40]]
+- [[_COMMUNITY_Community 42|Community 42]]
 - [[_COMMUNITY_Community 43|Community 43]]
 - [[_COMMUNITY_Community 44|Community 44]]
 - [[_COMMUNITY_Community 45|Community 45]]
 - [[_COMMUNITY_Community 46|Community 46]]
 - [[_COMMUNITY_Community 47|Community 47]]
 - [[_COMMUNITY_Community 48|Community 48]]
-- [[_COMMUNITY_Community 49|Community 49]]
-- [[_COMMUNITY_Community 54|Community 54]]
+- [[_COMMUNITY_Community 53|Community 53]]
+- [[_COMMUNITY_Community 55|Community 55]]
 - [[_COMMUNITY_Community 56|Community 56]]
 - [[_COMMUNITY_Community 57|Community 57]]
 - [[_COMMUNITY_Community 58|Community 58]]
@@ -68,16 +68,16 @@
 - [[_COMMUNITY_Community 64|Community 64]]
 - [[_COMMUNITY_Community 65|Community 65]]
 - [[_COMMUNITY_Community 66|Community 66]]
-- [[_COMMUNITY_Community 67|Community 67]]
+- [[_COMMUNITY_Community 68|Community 68]]
 - [[_COMMUNITY_Community 69|Community 69]]
-- [[_COMMUNITY_Community 70|Community 70]]
+- [[_COMMUNITY_Community 72|Community 72]]
 - [[_COMMUNITY_Community 73|Community 73]]
 - [[_COMMUNITY_Community 74|Community 74]]
-- [[_COMMUNITY_Community 75|Community 75]]
+- [[_COMMUNITY_Community 81|Community 81]]
 - [[_COMMUNITY_Community 82|Community 82]]
-- [[_COMMUNITY_Community 83|Community 83]]
-- [[_COMMUNITY_Community 91|Community 91]]
-- [[_COMMUNITY_Community 100|Community 100]]
+- [[_COMMUNITY_Community 90|Community 90]]
+- [[_COMMUNITY_Community 99|Community 99]]
+- [[_COMMUNITY_Community 101|Community 101]]
 - [[_COMMUNITY_Community 102|Community 102]]
 - [[_COMMUNITY_Community 103|Community 103]]
 - [[_COMMUNITY_Community 104|Community 104]]
@@ -88,7 +88,7 @@
 - [[_COMMUNITY_Community 109|Community 109]]
 - [[_COMMUNITY_Community 110|Community 110]]
 - [[_COMMUNITY_Community 111|Community 111]]
-- [[_COMMUNITY_Community 112|Community 112]]
+- [[_COMMUNITY_Community 113|Community 113]]
 - [[_COMMUNITY_Community 114|Community 114]]
 - [[_COMMUNITY_Community 115|Community 115]]
 - [[_COMMUNITY_Community 116|Community 116]]
@@ -102,13 +102,12 @@
 - [[_COMMUNITY_Community 124|Community 124]]
 - [[_COMMUNITY_Community 125|Community 125]]
 - [[_COMMUNITY_Community 126|Community 126]]
-- [[_COMMUNITY_Community 127|Community 127]]
-- [[_COMMUNITY_Community 130|Community 130]]
+- [[_COMMUNITY_Community 129|Community 129]]
 
 ## God Nodes (most connected - your core abstractions)
 1. `response()` - 29 edges
 2. `getDomainAndNamespace()` - 26 edges
-3. `search()` - 23 edges
+3. `search()` - 24 edges
 4. `lookupUserAttributes()` - 23 edges
 5. `itemExists()` - 22 edges
 6. `main()` - 21 edges
@@ -138,23 +137,23 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.05
-Nodes (59): AccessChangeNoticeEmail(), appK(), getAppkChildren(), ApproverInfo(), capitatedAmendment(), capitatedInitial(), capitatedRenewal(), getPackageChangelog() (+51 more)
+Nodes (60): AccessChangeNoticeEmail(), appK(), getAppkChildren(), ApproverInfo(), capitatedAmendment(), capitatedInitial(), capitatedRenewal(), getPackageChangelog() (+52 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.03
-Nodes (45): getAttachmentArchive(), getAttachmentUrl(), ErrorPage(), RoleStatusCard(), triggerGAEvent(), useGetLinks(), UserDropdownMenu(), userProfileLoader() (+37 more)
+Nodes (38): formatActionType(), formatActionTypeWithWaiver(), setup(), setup(), AppKCMSEmailPreview(), AppKStateEmailPreview(), setup(), setup() (+30 more)
 
 ### Community 2 - "Community 2"
 Cohesion: 0.03
-Nodes (38): formatActionType(), formatActionTypeWithWaiver(), setup(), setup(), AppKCMSEmailPreview(), AppKStateEmailPreview(), setup(), setup() (+30 more)
+Nodes (46): handleInputChange(), banner(), BannerObserver, autoSubmit(), onCancel(), onSubmit(), getAttachmentArchive(), getAttachmentUrl() (+38 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.04
-Nodes (44): main(), checkIdentifierUsageHandler(), fetchAppkChildren(), setupHandler(), fetchChangelog(), setupHandler(), fetchPackage(), setupHandler() (+36 more)
+Nodes (43): checkIdentifierUsageHandler(), fetchAppkChildren(), setupHandler(), fetchChangelog(), setupHandler(), fetchPackage(), setupHandler(), getAllForms() (+35 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.06
-Nodes (62): markAttachmentArchiveFailed(), getUpdatedAtMs(), resolveAttachmentArchiveCurrentState(), buildAllAttachmentsUnavailableArchiveFailure(), buildAttachmentArchiveBlockedAttachment(), buildAttachmentArchiveFailureMessage(), buildAttachmentNotCleanArchiveFailure(), getAttachmentArchiveFailureMessage() (+54 more)
+Cohesion: 0.04
+Nodes (38): ErrorPage(), RoleStatusCard(), triggerGAEvent(), useGetLinks(), UserDropdownMenu(), userProfileLoader(), FlagRouter(), useChipSpaOptions() (+30 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.06
@@ -165,32 +164,32 @@ Cohesion: 0.06
 Nodes (48): buildPackageAttachmentArchiveManifest(), buildSectionArchiveFolderName(), buildSectionAttachmentArchiveManifest(), formatEasternDownloadDate(), getArchiveArtifactKey(), getArchiveBasePrefix(), getArchiveCurrentKey(), getArchiveDownloadFilename() (+40 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.04
-Nodes (25): getFAQLinkForAttachments(), onAppend(), getForm(), getMaxVersion(), useDetailsSidebarLinks(), Amendment(), DetailsContent(), DetailsSidebar() (+17 more)
+Cohesion: 0.07
+Nodes (57): syncManifestToWriteBucket(), applyArchiveKeyPrefix(), buildChunkKey(), buildCsvAttachment(), buildCsvAttachmentForRows(), buildCsvContent(), buildCsvRow(), buildDiscrepancy() (+49 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.07
-Nodes (32): handler(), getAllStateUsersFromOpenSearch(), getEmailTemplates(), getLatestMatchingEvent(), getUserRoleTemplate(), hasAuthority(), hasEvent(), isEmailEvent() (+24 more)
+Cohesion: 0.04
+Nodes (28): getFAQLinkForAttachments(), onAppend(), getForm(), getMaxVersion(), useDetailsSidebarLinks(), Amendment(), DetailsContent(), DetailsSidebar() (+20 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.09
-Nodes (34): getAttachmentErrorInfo(), getAttachmentErrorMessage(), isAttachmentAccessDeniedError(), isAttachmentNotFoundError(), isLegacyAttachmentUnavailableError(), logAttachmentErrorClassification(), loadArchiveAttachment(), logSkippedAttachment() (+26 more)
+Cohesion: 0.07
+Nodes (38): getAttachmentErrorInfo(), getAttachmentErrorMessage(), isAttachmentAccessDeniedError(), isAttachmentNotFoundError(), isLegacyAttachmentUnavailableError(), logAttachmentErrorClassification(), loadArchiveAttachment(), logSkippedAttachment() (+30 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.06
-Nodes (19): AccessPendingNoticeEmail(), AppKStateEmail(), ChipSpaStateEmail(), formatDate(), formatDateToET(), formatNinetyDaysDate(), isWithinDays(), handleActionClick() (+11 more)
+Cohesion: 0.05
+Nodes (22): AccessPendingNoticeEmail(), AppKStateEmail(), ChipSpaStateEmail(), formatDate(), formatDateToET(), formatNinetyDaysDate(), isWithinDays(), handleActionClick() (+14 more)
 
 ### Community 11 - "Community 11"
-Cohesion: 0.08
-Nodes (24): triggerGAEvent(), useFilterDrawer(), useFilterState(), ChipTerms(), createLSColumns(), exportToCsv(), FilterChips(), handleExport() (+16 more)
+Cohesion: 0.07
+Nodes (32): handler(), getAllStateUsersFromOpenSearch(), getEmailTemplates(), getLatestMatchingEvent(), getUserRoleTemplate(), hasAuthority(), hasEvent(), isEmailEvent() (+24 more)
 
 ### Community 12 - "Community 12"
 Cohesion: 0.1
 Nodes (32): parseAttachmentArchiveCurrent(), applyArchiveKeyPrefix(), buildClassificationCounts(), buildPackageRepairAudits(), getAccountId(), getNestedStackName(), getRebuildQueueUrl(), getScannerFunctionName() (+24 more)
 
 ### Community 13 - "Community 13"
-Cohesion: 0.07
-Nodes (19): handleInputChange(), banner(), BannerObserver, autoSubmit(), onCancel(), onSubmit(), delay(), handleCancel() (+11 more)
+Cohesion: 0.1
+Nodes (28): buildAttachmentArchiveCurrent(), isAllAttachmentsUnavailableArchive(), markAttachmentArchiveFailed(), getUpdatedAtMs(), resolveAttachmentArchiveCurrentState(), buildAllAttachmentsUnavailableArchiveFailure(), buildAttachmentArchiveBlockedAttachment(), buildAttachmentArchiveFailureMessage() (+20 more)
 
 ### Community 14 - "Community 14"
 Cohesion: 0.12
@@ -201,260 +200,260 @@ Cohesion: 0.1
 Nodes (24): downloadAVDefinitions(), scanLocalFile(), updateAVDefinitonsWithFreshclam(), uploadAVDefinitions(), startClamd(), handler(), areMimeTypesEquivalent(), checkFileExt() (+16 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.09
-Nodes (10): generateAuthFile(), cognitoLogin(), createStorageState(), attachDashboardSetupDiagnostics(), catch(), globalSetup(), LoginPage, canBeRenewedOrAmended() (+2 more)
-
-### Community 17 - "Community 17"
 Cohesion: 0.12
 Nodes (22): Api, buildApiTemplate(), createInlineLambda(), getArchiveBaseReadBucket(), getArchiveOverlayPrefix(), getEphemeralArchiveOverlayBucket(), isSharedArchiveStage(), resolveArchiveBaseReadStage() (+14 more)
 
-### Community 18 - "Community 18"
-Cohesion: 0.15
-Nodes (25): syncManifestToWriteBucket(), buildDiscrepancyEmailBody(), buildFailureEmailBody(), buildRawEmail(), chunkBase64(), createFailureSummary(), getEmailAddressLookupSecretName(), getIntegrityStageName() (+17 more)
+### Community 17 - "Community 17"
+Cohesion: 0.1
+Nodes (7): generateAuthFile(), cognitoLogin(), createStorageState(), attachDashboardSetupDiagnostics(), catch(), globalSetup(), LoginPage
 
-### Community 19 - "Community 19"
+### Community 18 - "Community 18"
 Cohesion: 0.14
 Nodes (21): ensureNonEmptyString(), getActiveClient(), getExternalApiAuthConfig(), parseAllowedLocations(), parseBase64(), parseClient(), parseConfig(), parseHex() (+13 more)
 
+### Community 19 - "Community 19"
+Cohesion: 0.1
+Nodes (9): main(), getExport(), createUser(), setPassword(), DeploymentConfig, handler(), handler(), updateUserAttributes() (+1 more)
+
 ### Community 20 - "Community 20"
-Cohesion: 0.17
-Nodes (18): buildAttachmentArchiveCurrent(), isAllAttachmentsUnavailableArchive(), appendSectionManifest(), buildArchiveFromManifest(), buildCurrentFromManifest(), getCurrentArchiveStatus(), hasTransformToWebStream(), isAsyncIterableStream() (+10 more)
+Cohesion: 0.2
+Nodes (20): buildDiscrepancyEmailBody(), buildFailureEmailBody(), buildRawEmail(), chunkBase64(), createFailureSummary(), getEmailAddressLookupSecretName(), getIntegrityStageName(), getRecipientConfig() (+12 more)
 
 ### Community 21 - "Community 21"
 Cohesion: 0.11
-Nodes (8): getExport(), createUser(), setPassword(), DeploymentConfig, handler(), handler(), updateUserAttributes(), uploadToS3()
-
-### Community 22 - "Community 22"
-Cohesion: 0.11
 Nodes (20): OneMAC Storybook Docs Entry, 1915(b) Waiver Submissions, 1915(c) Appendix K Waiver Submissions, CC0 1.0 Universal License, CHIP Eligibility SPA Submissions, CMS Review Workflows, CodeClimate Quality Gate, GitHub Wiki Documentation (+12 more)
 
-### Community 23 - "Community 23"
+### Community 22 - "Community 22"
 Cohesion: 0.18
 Nodes (9): getValueAndMessage(), isDateObject(), isNullOrUndefined(), isObject(), isObjectType(), isRegex(), isString(), isUndefined() (+1 more)
 
-### Community 24 - "Community 24"
+### Community 23 - "Community 23"
 Cohesion: 0.19
 Nodes (13): getArchiveStorageConfig(), getCurrentStatus(), handler(), listArchiveCurrentKeys(), listNonReadyCurrentKeys(), removeArchiveKeyPrefix(), sampleItems(), getAttachmentArchiveBackfillPage() (+5 more)
 
-### Community 25 - "Community 25"
+### Community 24 - "Community 24"
 Cohesion: 0.21
 Nodes (11): countBy(), filterCurrentKeys(), getAccountId(), getArchiveBucketName(), inspectCurrentEntries(), listArchiveCurrentKeys(), main(), parseArgs() (+3 more)
 
-### Community 26 - "Community 26"
+### Community 25 - "Community 25"
 Cohesion: 0.17
 Nodes (5): handler(), mockMediaQuery(), ResizeObserverMock, setupLayoutTest(), deleteTopics()
 
-### Community 27 - "Community 27"
+### Community 26 - "Community 26"
 Cohesion: 0.23
 Nodes (8): optionCrumbsFromPath(), actionCrumb(), dashboardCrumb(), detailsAndActionsCrumbs(), detailsCrumb(), getDashboardTabForAuthority(), getFormOrigin(), mapActionLabel()
 
-### Community 28 - "Community 28"
+### Community 27 - "Community 27"
 Cohesion: 0.47
 Nodes (10): additionalInfo(), createSectionId(), deliverySystemCharactaristics(), disenrollment(), generateDependency(), managedCare(), participationExclusions(), participationRequirements() (+2 more)
 
-### Community 29 - "Community 29"
+### Community 28 - "Community 28"
 Cohesion: 0.2
 Nodes (5): MockAssumeRoleCommand, MockGetObjectCommand, MockHeadObjectCommand, MockS3Client, MockSTSClient
 
-### Community 30 - "Community 30"
+### Community 29 - "Community 29"
 Cohesion: 0.22
 Nodes (1): Storage
 
-### Community 31 - "Community 31"
+### Community 30 - "Community 30"
 Cohesion: 0.22
 Nodes (1): AddIssueFormSelectors
 
-### Community 32 - "Community 32"
+### Community 31 - "Community 31"
 Cohesion: 0.64
 Nodes (6): getResponse(), handleRequest(), resolveMainClient(), respondWithMock(), sendToClient(), serializeRequest()
 
-### Community 33 - "Community 33"
+### Community 32 - "Community 32"
 Cohesion: 0.25
 Nodes (3): handleSubmit(), useWebform(), WebformBody()
 
-### Community 34 - "Community 34"
+### Community 33 - "Community 33"
 Cohesion: 0.46
 Nodes (5): getDivisionDisplayValue(), getGroupDisplayValue(), parseNumericId(), resolveDivision(), resolveGroup()
 
-### Community 35 - "Community 35"
+### Community 34 - "Community 34"
 Cohesion: 0.29
 Nodes (3): CloudFrontWaf, RegionalWaf, WafConstruct
 
-### Community 37 - "Community 37"
+### Community 36 - "Community 36"
 Cohesion: 0.4
 Nodes (2): isStackDoesNotExistError(), stackExists()
 
-### Community 38 - "Community 38"
+### Community 37 - "Community 37"
 Cohesion: 0.33
 Nodes (2): handleLegacyAttachment(), s3ParseUrl()
 
-### Community 41 - "Community 41"
+### Community 40 - "Community 40"
 Cohesion: 0.5
 Nodes (2): checkTriggeringValue(), DependencyWrapperHandler()
 
-### Community 43 - "Community 43"
+### Community 42 - "Community 42"
 Cohesion: 0.5
 Nodes (2): AttachmentInstructions(), isZodArrayDef()
 
-### Community 44 - "Community 44"
+### Community 43 - "Community 43"
 Cohesion: 0.6
 Nodes (3): useGetData(), useGetSubTypes(), useGetTypes()
 
-### Community 45 - "Community 45"
+### Community 44 - "Community 44"
 Cohesion: 0.4
 Nodes (1): NavSelectors
 
-### Community 46 - "Community 46"
+### Community 45 - "Community 45"
 Cohesion: 0.5
 Nodes (2): ParentStack, sortSubnets()
 
-### Community 47 - "Community 47"
+### Community 46 - "Community 46"
 Cohesion: 0.4
 Nodes (1): MedSpaCMSEmail()
 
-### Community 48 - "Community 48"
+### Community 47 - "Community 47"
 Cohesion: 0.7
 Nodes (4): deleteCurrentObjects(), deleteVersionedObjects(), emptyBucket(), normalizePrefix()
 
-### Community 49 - "Community 49"
+### Community 48 - "Community 48"
 Cohesion: 0.7
 Nodes (4): countRunningExecutions(), getArchiveRebuildQueueUrl(), getArchiveStateMachineArn(), handler()
 
-### Community 54 - "Community 54"
+### Community 53 - "Community 53"
 Cohesion: 0.5
 Nodes (1): DataPoller
 
-### Community 56 - "Community 56"
+### Community 55 - "Community 55"
 Cohesion: 0.5
 Nodes (2): TestComponent(), useNavigationPrompt()
 
-### Community 57 - "Community 57"
+### Community 56 - "Community 56"
 Cohesion: 0.5
 Nodes (1): DashboardPage
 
-### Community 58 - "Community 58"
+### Community 57 - "Community 57"
 Cohesion: 0.83
 Nodes (3): writeEnvVarsToFile(), writeMockedUiEnvFile(), writeUiEnvFile()
 
-### Community 59 - "Community 59"
+### Community 58 - "Community 58"
 Cohesion: 0.67
 Nodes (1): Data
 
-### Community 60 - "Community 60"
+### Community 59 - "Community 59"
 Cohesion: 0.67
 Nodes (1): Uploads
 
-### Community 61 - "Community 61"
+### Community 60 - "Community 60"
 Cohesion: 0.67
 Nodes (1): UiInfra
 
-### Community 62 - "Community 62"
+### Community 61 - "Community 61"
 Cohesion: 0.67
 Nodes (1): Networking
 
-### Community 63 - "Community 63"
+### Community 62 - "Community 62"
 Cohesion: 0.67
 Nodes (1): Auth
 
-### Community 64 - "Community 64"
+### Community 63 - "Community 63"
 Cohesion: 0.67
 Nodes (1): Alerts
 
-### Community 65 - "Community 65"
+### Community 64 - "Community 64"
 Cohesion: 0.5
 Nodes (1): WaiverCMSEmail()
+
+### Community 65 - "Community 65"
+Cohesion: 0.5
+Nodes (1): transform()
 
 ### Community 66 - "Community 66"
 Cohesion: 0.5
 Nodes (1): transform()
 
-### Community 67 - "Community 67"
-Cohesion: 0.5
-Nodes (1): transform()
-
-### Community 69 - "Community 69"
+### Community 68 - "Community 68"
 Cohesion: 0.83
 Nodes (3): getPackageActivityLabel(), getPackageActivityLabelSlug(), slugifyPackageActivityLabel()
 
-### Community 70 - "Community 70"
+### Community 69 - "Community 69"
 Cohesion: 0.83
 Nodes (3): checkAuthority(), checkStatus(), PackageCheck()
 
-### Community 73 - "Community 73"
+### Community 72 - "Community 72"
 Cohesion: 0.5
 Nodes (1): IamPermissionsBoundaryAspect
 
-### Community 74 - "Community 74"
+### Community 73 - "Community 73"
 Cohesion: 0.5
 Nodes (1): IamPathAspect
 
-### Community 75 - "Community 75"
+### Community 74 - "Community 74"
 Cohesion: 0.67
 Nodes (1): MockPointerEvent
 
-### Community 82 - "Community 82"
+### Community 81 - "Community 81"
 Cohesion: 0.67
 Nodes (1): Observer
 
-### Community 83 - "Community 83"
+### Community 82 - "Community 82"
 Cohesion: 1.0
 Nodes (2): convertStateAbbrToFullName(), isStringAState()
 
-### Community 91 - "Community 91"
+### Community 90 - "Community 90"
 Cohesion: 1.0
 Nodes (2): generateBoldAnswerJSX(), JSXModifyText()
 
-### Community 100 - "Community 100"
+### Community 99 - "Community 99"
 Cohesion: 0.67
 Nodes (1): FAQPage
 
-### Community 102 - "Community 102"
+### Community 101 - "Community 101"
 Cohesion: 0.67
 Nodes (1): Email
 
-### Community 103 - "Community 103"
+### Community 102 - "Community 102"
 Cohesion: 1.0
 Nodes (2): subsection(), subsectionFormFields()
 
-### Community 104 - "Community 104"
+### Community 103 - "Community 103"
 Cohesion: 0.67
 Nodes (1): EmailProcessingError
 
-### Community 105 - "Community 105"
+### Community 104 - "Community 104"
 Cohesion: 0.67
 Nodes (1): ChipSpaStateEmailPreview()
 
-### Community 106 - "Community 106"
+### Community 105 - "Community 105"
 Cohesion: 0.67
 Nodes (1): ChipSpaCMSEmailPreview()
 
-### Community 107 - "Community 107"
+### Community 106 - "Community 106"
 Cohesion: 0.67
 Nodes (1): ManageUsers
 
-### Community 108 - "Community 108"
+### Community 107 - "Community 107"
 Cohesion: 0.67
 Nodes (1): CloudWatchLogsResourcePolicy
 
-### Community 109 - "Community 109"
+### Community 108 - "Community 108"
 Cohesion: 0.67
 Nodes (1): CleanupKafka
 
-### Community 110 - "Community 110"
+### Community 109 - "Community 109"
 Cohesion: 0.67
 Nodes (1): EmptyBuckets
 
-### Community 111 - "Community 111"
+### Community 110 - "Community 110"
 Cohesion: 0.67
 Nodes (1): CloudWatchToS3
 
-### Community 112 - "Community 112"
+### Community 111 - "Community 111"
 Cohesion: 0.67
 Nodes (1): ClamScanScanner
 
-### Community 114 - "Community 114"
+### Community 113 - "Community 113"
 Cohesion: 0.67
 Nodes (1): CreateTopics
+
+### Community 114 - "Community 114"
+Cohesion: 0.67
+Nodes (1): transform()
 
 ### Community 115 - "Community 115"
 Cohesion: 0.67
@@ -504,140 +503,136 @@ Nodes (1): transform()
 Cohesion: 0.67
 Nodes (1): transform()
 
-### Community 127 - "Community 127"
-Cohesion: 0.67
-Nodes (1): transform()
-
-### Community 130 - "Community 130"
+### Community 129 - "Community 129"
 Cohesion: 1.0
 Nodes (2): deleteAllTriggersForFunctions(), handler()
 
 ## Knowledge Gaps
 - **17 isolated node(s):** `UserPromptObserver`, `BannerObserver`, `MockSTSClient`, `Medicaid SPA Submissions`, `CHIP Eligibility SPA Submissions` (+12 more)
   These have ≤1 connection - possible missing edges or undocumented components.
-- **Thin community `Community 30`** (9 nodes): `Storage`, `.clear()`, `.constructor()`, `.getItem()`, `.key()`, `.length()`, `.removeItem()`, `.setItem()`, `mockStorage.ts`
+- **Thin community `Community 29`** (9 nodes): `Storage`, `.clear()`, `.constructor()`, `.getItem()`, `.key()`, `.length()`, `.removeItem()`, `.setItem()`, `mockStorage.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 31`** (9 nodes): `AddIssueFormSelectors`, `.addButton()`, `.constructor()`, `.descriptionInput()`, `.prioritySelect()`, `.submitButton()`, `.titleInput()`, `.typeSelect()`, `addIssueForm.ts`
+- **Thin community `Community 30`** (9 nodes): `AddIssueFormSelectors`, `.addButton()`, `.constructor()`, `.descriptionInput()`, `.prioritySelect()`, `.submitButton()`, `.titleInput()`, `.typeSelect()`, `addIssueForm.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 37`** (6 nodes): `destroy.ts`, `deleteSecurityGroup()`, `isStackDoesNotExistError()`, `resolveDestroyTarget()`, `stackExists()`, `waitForStackDeleteComplete()`
+- **Thin community `Community 36`** (6 nodes): `destroy.ts`, `deleteSecurityGroup()`, `isStackDoesNotExistError()`, `resolveDestroyTarget()`, `stackExists()`, `waitForStackDeleteComplete()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 38`** (6 nodes): `attachmentArraySchema()`, `attachmentArraySchemaOptional()`, `handleLegacyAttachment()`, `attachments.ts`, `s3-url-parser.ts`, `s3ParseUrl()`
+- **Thin community `Community 37`** (6 nodes): `attachmentArraySchema()`, `attachmentArraySchemaOptional()`, `handleLegacyAttachment()`, `attachments.ts`, `s3-url-parser.ts`, `s3ParseUrl()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 41`** (5 nodes): `checkTriggeringValue()`, `DependencyWrapper()`, `DependencyWrapperHandler()`, `triggerCheckSwitch()`, `dependencyWrapper.tsx`
+- **Thin community `Community 40`** (5 nodes): `checkTriggeringValue()`, `DependencyWrapper()`, `DependencyWrapperHandler()`, `triggerCheckSwitch()`, `dependencyWrapper.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 43`** (5 nodes): `AttachmentFAQInstructions()`, `AttachmentFileFormatInstructions()`, `AttachmentInstructions()`, `isZodArrayDef()`, `actionForm.components.tsx`
+- **Thin community `Community 42`** (5 nodes): `AttachmentFAQInstructions()`, `AttachmentFileFormatInstructions()`, `AttachmentInstructions()`, `isZodArrayDef()`, `actionForm.components.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 45`** (5 nodes): `NavSelectors`, `.allIssuesLink()`, `.constructor()`, `.issuesDropDown()`, `index.ts`
+- **Thin community `Community 44`** (5 nodes): `NavSelectors`, `.allIssuesLink()`, `.constructor()`, `.issuesDropDown()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 46`** (5 nodes): `parent.ts`, `getSubnetSize()`, `ParentStack`, `.constructor()`, `sortSubnets()`
+- **Thin community `Community 45`** (5 nodes): `parent.ts`, `getSubnetSize()`, `ParentStack`, `.constructor()`, `sortSubnets()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 47`** (5 nodes): `MedSpaCMS.tsx`, `MedSpaCMS.tsx`, `MedSpaCMS.tsx`, `MedSPACMS.tsx`, `MedSpaCMSEmail()`
+- **Thin community `Community 46`** (5 nodes): `MedSpaCMS.tsx`, `MedSpaCMS.tsx`, `MedSpaCMS.tsx`, `MedSPACMS.tsx`, `MedSpaCMSEmail()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 54`** (4 nodes): `DataPoller`, `.constructor()`, `.startPollingData()`, `DataPoller.ts`
+- **Thin community `Community 53`** (4 nodes): `DataPoller`, `.constructor()`, `.startPollingData()`, `DataPoller.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 56`** (4 nodes): `useNavigationPrompt.test.tsx`, `useNavigationPrompt.ts`, `TestComponent()`, `useNavigationPrompt()`
+- **Thin community `Community 55`** (4 nodes): `useNavigationPrompt.test.tsx`, `useNavigationPrompt.ts`, `TestComponent()`, `useNavigationPrompt()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 57`** (4 nodes): `DashboardPage`, `.constructor()`, `.validateDownload()`, `dashboard.page.ts`
+- **Thin community `Community 56`** (4 nodes): `DashboardPage`, `.constructor()`, `.validateDownload()`, `dashboard.page.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 59`** (4 nodes): `Data`, `.constructor()`, `.initializeResources()`, `data.ts`
+- **Thin community `Community 58`** (4 nodes): `Data`, `.constructor()`, `.initializeResources()`, `data.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 60`** (4 nodes): `uploads.ts`, `Uploads`, `.constructor()`, `.initializeResources()`
+- **Thin community `Community 59`** (4 nodes): `uploads.ts`, `Uploads`, `.constructor()`, `.initializeResources()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 61`** (4 nodes): `ui-infra.ts`, `UiInfra`, `.constructor()`, `.initializeResources()`
+- **Thin community `Community 60`** (4 nodes): `ui-infra.ts`, `UiInfra`, `.constructor()`, `.initializeResources()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 62`** (4 nodes): `networking.ts`, `Networking`, `.constructor()`, `.initializeResources()`
+- **Thin community `Community 61`** (4 nodes): `networking.ts`, `Networking`, `.constructor()`, `.initializeResources()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 63`** (4 nodes): `Auth`, `.constructor()`, `.initializeResources()`, `auth.ts`
+- **Thin community `Community 62`** (4 nodes): `Auth`, `.constructor()`, `.initializeResources()`, `auth.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 64`** (4 nodes): `Alerts`, `.constructor()`, `.initializeResources()`, `alerts.ts`
+- **Thin community `Community 63`** (4 nodes): `Alerts`, `.constructor()`, `.initializeResources()`, `alerts.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 65`** (4 nodes): `WaiverCMS.tsx`, `WaiverCMS.tsx`, `WaiverCMS.tsx`, `WaiverCMSEmail()`
+- **Thin community `Community 64`** (4 nodes): `WaiverCMS.tsx`, `WaiverCMS.tsx`, `WaiverCMS.tsx`, `WaiverCMSEmail()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 66`** (4 nodes): `temporary-extension.ts`, `temporary-extension.ts`, `temporary-extension.ts`, `transform()`
+- **Thin community `Community 65`** (4 nodes): `temporary-extension.ts`, `temporary-extension.ts`, `temporary-extension.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 67`** (4 nodes): `transform()`, `app-k.ts`, `app-k.ts`, `app-k.ts`
+- **Thin community `Community 66`** (4 nodes): `transform()`, `app-k.ts`, `app-k.ts`, `app-k.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 73`** (4 nodes): `IamPermissionsBoundaryAspect`, `.constructor()`, `.visit()`, `index.ts`
+- **Thin community `Community 72`** (4 nodes): `IamPermissionsBoundaryAspect`, `.constructor()`, `.visit()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 74`** (4 nodes): `IamPathAspect`, `.constructor()`, `.visit()`, `index.ts`
+- **Thin community `Community 73`** (4 nodes): `IamPathAspect`, `.constructor()`, `.visit()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 75`** (3 nodes): `vitest.setup.ts`, `MockPointerEvent`, `.constructor()`
+- **Thin community `Community 74`** (3 nodes): `vitest.setup.ts`, `MockPointerEvent`, `.constructor()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 82`** (3 nodes): `Observer`, `.constructor()`, `basic-observable.ts`
+- **Thin community `Community 81`** (3 nodes): `Observer`, `.constructor()`, `basic-observable.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 83`** (3 nodes): `stateNames.ts`, `convertStateAbbrToFullName()`, `isStringAState()`
+- **Thin community `Community 82`** (3 nodes): `stateNames.ts`, `convertStateAbbrToFullName()`, `isStringAState()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 91`** (3 nodes): `generateBoldAnswerJSX()`, `JSXModifyText()`, `boldSearchResults.tsx`
+- **Thin community `Community 90`** (3 nodes): `generateBoldAnswerJSX()`, `JSXModifyText()`, `boldSearchResults.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 100`** (3 nodes): `FAQPage`, `.constructor()`, `faq.page.ts`
+- **Thin community `Community 99`** (3 nodes): `FAQPage`, `.constructor()`, `faq.page.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 102`** (3 nodes): `Email`, `.constructor()`, `email.ts`
+- **Thin community `Community 101`** (3 nodes): `Email`, `.constructor()`, `email.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 103`** (3 nodes): `v202401.ts`, `subsection()`, `subsectionFormFields()`
+- **Thin community `Community 102`** (3 nodes): `v202401.ts`, `subsection()`, `subsectionFormFields()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 104`** (3 nodes): `EmailProcessingError`, `.constructor()`, `errors.ts`
+- **Thin community `Community 103`** (3 nodes): `EmailProcessingError`, `.constructor()`, `errors.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 105`** (3 nodes): `ChipSpaStateEmailPreview()`, `CHIP_SPA.tsx`, `CHIP_SPA.tsx`
+- **Thin community `Community 104`** (3 nodes): `ChipSpaStateEmailPreview()`, `CHIP_SPA.tsx`, `CHIP_SPA.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 106`** (3 nodes): `ChipSpaCMSEmailPreview()`, `CHIP_SPA.tsx`, `CHIP_SPA.tsx`
+- **Thin community `Community 105`** (3 nodes): `ChipSpaCMSEmailPreview()`, `CHIP_SPA.tsx`, `CHIP_SPA.tsx`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 107`** (3 nodes): `ManageUsers`, `.constructor()`, `index.ts`
+- **Thin community `Community 106`** (3 nodes): `ManageUsers`, `.constructor()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 108`** (3 nodes): `CloudWatchLogsResourcePolicy`, `.constructor()`, `index.ts`
+- **Thin community `Community 107`** (3 nodes): `CloudWatchLogsResourcePolicy`, `.constructor()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 109`** (3 nodes): `CleanupKafka`, `.constructor()`, `index.ts`
+- **Thin community `Community 108`** (3 nodes): `CleanupKafka`, `.constructor()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 110`** (3 nodes): `EmptyBuckets`, `.constructor()`, `index.ts`
+- **Thin community `Community 109`** (3 nodes): `EmptyBuckets`, `.constructor()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 111`** (3 nodes): `CloudWatchToS3`, `.constructor()`, `index.ts`
+- **Thin community `Community 110`** (3 nodes): `CloudWatchToS3`, `.constructor()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 112`** (3 nodes): `ClamScanScanner`, `.constructor()`, `index.ts`
+- **Thin community `Community 111`** (3 nodes): `ClamScanScanner`, `.constructor()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 114`** (3 nodes): `CreateTopics`, `.constructor()`, `index.ts`
+- **Thin community `Community 113`** (3 nodes): `CreateTopics`, `.constructor()`, `index.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 115`** (3 nodes): `transform()`, `capitated-initial.ts`, `capitated-initial.ts`
+- **Thin community `Community 114`** (3 nodes): `transform()`, `capitated-initial.ts`, `capitated-initial.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 116`** (3 nodes): `respond-to-rai.ts`, `respond-to-rai.ts`, `transform()`
+- **Thin community `Community 115`** (3 nodes): `respond-to-rai.ts`, `respond-to-rai.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 117`** (3 nodes): `transform()`, `capitated-amendment.ts`, `capitated-amendment.ts`
+- **Thin community `Community 116`** (3 nodes): `transform()`, `capitated-amendment.ts`, `capitated-amendment.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 118`** (3 nodes): `transform()`, `contracting-initial.ts`, `contracting-initial.ts`
+- **Thin community `Community 117`** (3 nodes): `transform()`, `contracting-initial.ts`, `contracting-initial.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 119`** (3 nodes): `new-chip-details-submission.ts`, `new-chip-details-submission.ts`, `transform()`
+- **Thin community `Community 118`** (3 nodes): `new-chip-details-submission.ts`, `new-chip-details-submission.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 120`** (3 nodes): `transform()`, `contracting-amendment.ts`, `contracting-amendment.ts`
+- **Thin community `Community 119`** (3 nodes): `transform()`, `contracting-amendment.ts`, `contracting-amendment.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 121`** (3 nodes): `transform()`, `contracting-renewal.ts`, `contracting-renewal.ts`
+- **Thin community `Community 120`** (3 nodes): `transform()`, `contracting-renewal.ts`, `contracting-renewal.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 122`** (3 nodes): `upload-subsequent-documents.ts`, `upload-subsequent-documents.ts`, `transform()`
+- **Thin community `Community 121`** (3 nodes): `upload-subsequent-documents.ts`, `upload-subsequent-documents.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 123`** (3 nodes): `new-chip-submission.ts`, `new-chip-submission.ts`, `transform()`
+- **Thin community `Community 122`** (3 nodes): `new-chip-submission.ts`, `new-chip-submission.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 124`** (3 nodes): `new-medicaid-submission.ts`, `new-medicaid-submission.ts`, `transform()`
+- **Thin community `Community 123`** (3 nodes): `new-medicaid-submission.ts`, `new-medicaid-submission.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 125`** (3 nodes): `toggle-withdraw-rai.ts`, `toggle-withdraw-rai.ts`, `transform()`
+- **Thin community `Community 124`** (3 nodes): `toggle-withdraw-rai.ts`, `toggle-withdraw-rai.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 126`** (3 nodes): `withdraw-package.ts`, `withdraw-package.ts`, `transform()`
+- **Thin community `Community 125`** (3 nodes): `withdraw-package.ts`, `withdraw-package.ts`, `transform()`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 127`** (3 nodes): `transform()`, `capitated-renewal.ts`, `capitated-renewal.ts`
+- **Thin community `Community 126`** (3 nodes): `transform()`, `capitated-renewal.ts`, `capitated-renewal.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 130`** (3 nodes): `deleteAllTriggersForFunctions()`, `handler()`, `deleteTriggers.ts`
+- **Thin community `Community 129`** (3 nodes): `deleteAllTriggersForFunctions()`, `handler()`, `deleteTriggers.ts`
   Too small to be a meaningful cluster - may be noise or needs more connections extracted.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `processRecord()` connect `Community 8` to `Community 0`, `Community 10`, `Community 5`?**
-  _High betweenness centrality (0.031) - this node is a cross-community bridge._
-- **Why does `getPackageChangelog()` connect `Community 0` to `Community 3`, `Community 4`, `Community 5`, `Community 6`, `Community 8`, `Community 9`, `Community 14`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
-- **Why does `getItem()` connect `Community 8` to `Community 0`, `Community 3`, `Community 7`?**
+- **Why does `processRecord()` connect `Community 11` to `Community 0`, `Community 10`, `Community 5`?**
+  _High betweenness centrality (0.032) - this node is a cross-community bridge._
+- **Why does `getItem()` connect `Community 11` to `Community 8`, `Community 0`, `Community 3`?**
+  _High betweenness centrality (0.028) - this node is a cross-community bridge._
+- **Why does `getPackageChangelog()` connect `Community 0` to `Community 3`, `Community 5`, `Community 6`, `Community 7`, `Community 9`, `Community 11`, `Community 14`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Are the 28 inferred relationships involving `response()` (e.g. with `WithdrawWaiverRaiResponse()` and `WithdrawSpaRaiResponse()`) actually correct?**
   _`response()` has 28 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 23 inferred relationships involving `getDomainAndNamespace()` (e.g. with `getItems()` and `bulkUpdateDataWrapper()`) actually correct?**
   _`getDomainAndNamespace()` has 23 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 20 inferred relationships involving `search()` (e.g. with `checkIdentifierUsage()` and `getPackageChangelog()`) actually correct?**
-  _`search()` has 20 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 21 inferred relationships involving `search()` (e.g. with `.scrollSearch()` and `checkIdentifierUsage()`) actually correct?**
+  _`search()` has 21 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 17 inferred relationships involving `lookupUserAttributes()` (e.g. with `getPackageActions()` and `capitatedInitial()`) actually correct?**
   _`lookupUserAttributes()` has 17 INFERRED edges - model-reasoned connections that need verification._
