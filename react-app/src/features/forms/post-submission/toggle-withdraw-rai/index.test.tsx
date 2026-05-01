@@ -24,9 +24,13 @@ describe("Toggle Withdraw Rai components", () => {
     const detailSection = screen.getByTestId("detail-section");
 
     expect(within(detailSection).getByText("Waiver Number")).toBeInTheDocument();
-    expect(within(detailSection).getByText(WITHDRAW_RAI_ITEM_B, { selector: "p" })).toBeInTheDocument();
+    expect(
+      within(detailSection).getByText(WITHDRAW_RAI_ITEM_B, { selector: "p" }),
+    ).toBeInTheDocument();
     expect(within(detailSection).getByText("Authority")).toBeInTheDocument();
-    expect(within(detailSection).getByText("1915(b) Waiver", { selector: "p" })).toBeInTheDocument();
+    expect(
+      within(detailSection).getByText("1915(b) Waiver", { selector: "p" }),
+    ).toBeInTheDocument();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
     expect(screen.getByTestId("cancel-action-form")).toBeEnabled();
   };
