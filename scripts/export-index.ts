@@ -309,6 +309,7 @@ function parseArgs(argv: string[]): ExportOptions {
       case "-h":
         printUsage();
         process.exit(0);
+        break;
       default:
         break;
     }
