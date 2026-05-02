@@ -7,6 +7,7 @@ import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
 import { deleteDraft } from "@/api/deleteDraft";
 import { banner, userPrompt } from "@/components";
+import { OS_DASHBOARD_REFRESH_EVENT } from "@/components/Opensearch/main/useOpensearch";
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN, queryClient } from "@/utils";
 import {
   DRAFT_CONTINUE_ACTION_LABEL,
@@ -131,7 +132,7 @@ const ActionMenuCell = ({
             queryClient.invalidateQueries({ queryKey: ["spas"] }),
             queryClient.invalidateQueries({ queryKey: ["waivers"] }),
           ]);
-          window.dispatchEvent(new Event("os-dashboard-refresh"));
+          window.dispatchEvent(new Event(OS_DASHBOARD_REFRESH_EVENT));
         } catch (error) {
           banner({
             header: "Unable to delete draft",

@@ -58,7 +58,10 @@ export const useOsData = () => {
   const [tabLoading, setTabLoading] = useState(false);
   const previousTab = useRef(params.state.tab);
 
-  const onRequest = async (query: opensearch.main.State, options?: any) => {
+  const onRequest = async (
+    query: opensearch.main.State,
+    options?: Parameters<typeof mutateAsync>[1],
+  ) => {
     try {
       if (params.state.tab !== previousTab.current) {
         setTabLoading(true);

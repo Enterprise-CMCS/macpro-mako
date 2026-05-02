@@ -86,7 +86,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
             header: "Draft deleted",
             body: `Draft for ${id} has been deleted.`,
             variant: "success",
-            pathnameToDisplayOn: "/dashboard",
+            pathnameToDisplayOn: draftDashboardLink.split("?")[0],
           });
           await Promise.all([
             queryClient.invalidateQueries({ queryKey: ["os-dashboard"] }),

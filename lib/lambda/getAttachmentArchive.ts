@@ -45,13 +45,16 @@ const getPackageChangelogFilter = (packageResult: opensearch.main.ItemResult) =>
   )?.legacySubmissionTimestamp;
 
   if (legacySubmissionTimestamp !== null && legacySubmissionTimestamp !== undefined) {
-    filter.push({
-      range: {
-        timestamp: {
-          gte: new Date(legacySubmissionTimestamp).getTime(),
+    const gte = new Date(legacySubmissionTimestamp).getTime();
+    if (Number.isFinite(gte)) {
+      filter.push({
+        range: {
+          timestamp: {
+            gte,
+          },
         },
-      },
-    });
+      });
+    }
   }
 
   return filter;

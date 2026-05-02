@@ -77,13 +77,7 @@ export const handler = authenticatedMiddy({
     });
   }
 
-  const id = event.body?.id?.toUpperCase();
-  if (!id) {
-    return response({
-      statusCode: 400,
-      body: { message: "Event body required" },
-    });
-  }
+  const id = event.body.id.toUpperCase();
 
   const stateCode = id.slice(0, 2);
   const userStates = authenticatedUser.states?.map((state) => state.toUpperCase()) || [];

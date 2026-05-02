@@ -53,10 +53,6 @@ const isDocumentMissingError = (error: unknown) => {
     }
   }
 
-  if (error instanceof Error) {
-    return error.message.includes("document_missing_exception");
-  }
-
   return false;
 };
 

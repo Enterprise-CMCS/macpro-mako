@@ -10,6 +10,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomain } from "libs/utils";
 import { SEATOOL_STATUS } from "shared-types";
+import { getDraftAttachments } from "shared-utils";
 
 import {
   getAttachmentErrorMessage,
@@ -21,7 +22,6 @@ import {
   getAttachmentBucketMap,
   resolveTargetBucket as resolveMappedBucket,
 } from "../attachment-archive/bucket-routing";
-import { getDraftAttachments } from "../attachment-archive/draft-package";
 import {
   isNonCleanVirusScanStatus,
   VIRUS_SCAN_STATUS_TAG_KEY,

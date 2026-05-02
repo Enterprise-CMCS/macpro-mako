@@ -16,7 +16,7 @@ type Props = Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "value" | "
 export const DATE_FORMAT = "MM/dd/yyyy";
 export const DATE_DISPLAY_FORMAT = "LLL dd, y";
 
-export function FilterableDateRange({ value, onChange, ...props }: Props) {
+export function FilterableDateRange({ value, onChange, className }: Props) {
   const [open, setOpen] = useState(false);
   const fromValue = useMemo(() => {
     return value?.gte ? format(new UTCDate(value?.gte), DATE_FORMAT) : "";
@@ -105,7 +105,7 @@ export function FilterableDateRange({ value, onChange, ...props }: Props) {
   }, [fromValue, toValue]);
 
   return (
-    <div {...props} className={cn("flex items-center", props.className)}>
+    <div className={cn("flex items-center", className)}>
       <Popover open={open} onOpenChange={handleClose}>
         <PopoverTrigger>
           <div

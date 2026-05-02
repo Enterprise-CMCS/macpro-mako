@@ -3,6 +3,7 @@ import {
   isActiveDraftPackage,
   isActiveMainNonDraftPackage,
 } from "libs/api/package";
+import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
 import { isCmsUser, isHelpDeskUser } from "shared-utils";
 import { z } from "zod";
@@ -52,7 +53,7 @@ export const handler = authenticatedMiddy({
         isActiveDraft &&
         (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
       ) {
-        return {
+        return response({
           statusCode: 200,
           body: {
             ...draftPackageResult,
@@ -61,17 +62,17 @@ export const handler = authenticatedMiddy({
               changelog: draftPackageResult._source?.changelog ?? [],
             },
           },
-        };
+        });
       }
     }
 
     const isActiveMainNonDraft = isActiveMainNonDraftPackage(packageResult);
 
     if (isActiveMainNonDraft) {
-      return {
+      return response({
         statusCode: 200,
         body: packageResult,
-      };
+      });
     }
 
     if (event.body?.includeDraft === true) {
@@ -83,7 +84,7 @@ export const handler = authenticatedMiddy({
         isActiveDraft &&
         (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
       ) {
-        return {
+        return response({
           statusCode: 200,
           body: {
             ...draftPackageResult,
@@ -92,12 +93,12 @@ export const handler = authenticatedMiddy({
               changelog: draftPackageResult._source?.changelog ?? [],
             },
           },
-        };
+        });
       }
     }
 
-    return {
+    return response({
       statusCode: 404,
-      body: JSON.stringify({ message: "No record found for the given id" }),
-    };
+      body: { message: "No record found for the given id" },
+    });
   });

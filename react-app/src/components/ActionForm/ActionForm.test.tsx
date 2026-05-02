@@ -81,7 +81,7 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(screen.queryByText("Action Form Title")).toBeInTheDocument();
+    expect(screen.getByTestId("detail-section-title")).toHaveTextContent("Action Form Title");
   });
 
   test("renders `attachments.faqLink`", async () => {
@@ -741,7 +741,7 @@ describe("ActionForm", () => {
     const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
     const bannerSpy = vi.spyOn(components, "banner");
     const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
-    const setQueryDataSpy = vi.spyOn(queryClient, "setQueryData");
+    const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
 
     await renderFormWithPackageSectionAsync(
       <ActionForm
@@ -775,20 +775,9 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(screen.getByTestId("draft-save-status")).toHaveTextContent(/^Progress saved at /),
     );
-    expect(setQueryDataSpy).toHaveBeenCalledWith(
-      ["record", "MD-00-0001", "preferDraft"],
-      expect.objectContaining({
-        _id: "MD-00-0001",
-        found: true,
-        _source: expect.objectContaining({
-          id: "MD-00-0001",
-          seatoolStatus: SEATOOL_STATUS.DRAFT,
-          draft: expect.objectContaining({
-            data: expect.objectContaining({ id: "MD-00-0001" }),
-          }),
-        }),
-      }),
-    );
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+      queryKey: ["record", "MD-00-0001"],
+    });
     expect(removeQueriesSpy).not.toHaveBeenCalledWith({
       queryKey: ["record", "MD-00-0001"],
     });
@@ -937,7 +926,7 @@ describe("ActionForm", () => {
     const oldDraftId = "NY-25-2342";
     const newDraftId = "MD-26-0108-P";
     const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
-    const setQueryDataSpy = vi.spyOn(queryClient, "setQueryData");
+    const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
     const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
       data: {
         _id: oldDraftId,
@@ -999,17 +988,12 @@ describe("ActionForm", () => {
         event: "new-medicaid-submission",
       }),
     );
-    expect(setQueryDataSpy).toHaveBeenCalledWith(
-      ["record", newDraftId, "preferDraft"],
-      expect.objectContaining({
-        _id: newDraftId,
-        found: true,
-        _source: expect.objectContaining({
-          id: newDraftId,
-          seatoolStatus: SEATOOL_STATUS.DRAFT,
-        }),
-      }),
-    );
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+      queryKey: ["record", newDraftId],
+    });
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+      queryKey: ["record", oldDraftId],
+    });
     expect(removeQueriesSpy).not.toHaveBeenCalledWith({
       queryKey: ["record", oldDraftId, "preferDraft"],
       exact: true,

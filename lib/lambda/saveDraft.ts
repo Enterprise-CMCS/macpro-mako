@@ -43,6 +43,8 @@ const eventToAuthority: Partial<Record<DraftableEvent, string>> = {
   "app-k": "1915(c)",
 };
 
+const knownDraftAuthorities = new Set(["Medicaid SPA", "CHIP SPA", "1915(b)", "1915(c)"]);
+
 const eventToActionType: Partial<Record<DraftableEvent, string>> = {
   "capitated-initial": "New",
   "capitated-renewal": "Renew",
@@ -117,19 +119,32 @@ const resolveAuthority = (
   authority: string | undefined,
   draftData: Record<string, unknown>,
 ) => {
-  const normalizedAuthority = authority?.trim();
-  if (normalizedAuthority) return normalizedAuthority;
+  const eventAuthority = eventToAuthority[eventName];
+  if (eventAuthority) return eventAuthority;
 
-  if (typeof draftData.authority === "string" && draftData.authority.trim()) {
+  const normalizedAuthority = authority?.trim();
+  if (normalizedAuthority && knownDraftAuthorities.has(normalizedAuthority)) {
+    return normalizedAuthority;
+  }
+
+  if (
+    typeof draftData.authority === "string" &&
+    draftData.authority.trim() &&
+    knownDraftAuthorities.has(draftData.authority.trim())
+  ) {
     return draftData.authority.trim();
   }
 
   const nestedAuthority = getTemporaryExtensionAuthority(draftData);
-  if (typeof nestedAuthority === "string" && nestedAuthority.trim()) {
+  if (
+    typeof nestedAuthority === "string" &&
+    nestedAuthority.trim() &&
+    knownDraftAuthorities.has(nestedAuthority.trim())
+  ) {
     return nestedAuthority.trim();
   }
 
-  return eventToAuthority[eventName];
+  return undefined;
 };
 
 const isVersionConflictError = (error: unknown) => {
@@ -413,6 +428,8 @@ export const handler = authenticatedMiddy({
           if_primary_term: existingDraftPackage?._primary_term,
         }
       : undefined;
+  const updateVersion =
+    shouldUseCompareAndWrite && requestVersion ? requestVersion : (deletedDraftVersion ?? {});
 
   let updateResponse;
   try {
@@ -420,7 +437,7 @@ export const handler = authenticatedMiddy({
       index,
       id: normalizedId,
       refresh: true,
-      ...((shouldUseCompareAndWrite && requestVersion) || deletedDraftVersion || {}),
+      ...updateVersion,
       body: {
         ...(shouldReplaceDeletedDraft
           ? {

@@ -12,15 +12,31 @@ import { getDomainAndNamespace } from "./utils";
 
 let client: Client;
 
-export const getAwsSdkLogger = () => {
-  const logger = (globalThis as any).logger;
+type AwsSdkLogger = {
+  debug: (...content: any[]) => void;
+  info: (...content: any[]) => void;
+  warn: (...content: any[]) => void;
+  error: (...content: any[]) => void;
+};
+
+const isAwsSdkLogger = (logger: unknown): logger is AwsSdkLogger => {
+  const candidate = logger as Partial<AwsSdkLogger> | undefined;
   if (
-    logger &&
-    typeof logger.debug === "function" &&
-    typeof logger.info === "function" &&
-    typeof logger.warn === "function" &&
-    typeof logger.error === "function"
+    candidate &&
+    typeof candidate.debug === "function" &&
+    typeof candidate.info === "function" &&
+    typeof candidate.warn === "function" &&
+    typeof candidate.error === "function"
   ) {
+    return true;
+  }
+
+  return false;
+};
+
+export const getAwsSdkLogger = (): AwsSdkLogger => {
+  const logger = (globalThis as { logger?: unknown }).logger;
+  if (isAwsSdkLogger(logger)) {
     return logger;
   }
 

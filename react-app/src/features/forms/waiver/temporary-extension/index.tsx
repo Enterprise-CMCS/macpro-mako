@@ -34,9 +34,14 @@ export const TemporaryExtensionForm = () => {
 
   const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("");
 
+  const actionType = submission?._source?.actionType;
+  const actionTypeLabel =
+    actionType && actionType in actionTypeMap
+      ? actionTypeMap[actionType as keyof typeof actionTypeMap]
+      : undefined;
   const type =
-    submission && submission._source
-      ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
+    submission?._source && actionTypeLabel
+      ? `${submission._source.authority} ${actionTypeLabel}`
       : null;
   const attachmentAuthority = submission?._source?.authority ?? temporaryExtensionType;
 
@@ -69,7 +74,7 @@ export const TemporaryExtensionForm = () => {
                       field.onChange(value);
                       setTemporaryExtensionType(value);
                     }}
-                    value={field.value || undefined}
+                    value={field.value ?? ""}
                   >
                     <FormControl>
                       <SelectTrigger>

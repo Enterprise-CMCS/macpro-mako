@@ -1,12 +1,7 @@
 import { useMemo } from "react";
 import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
-import {
-  formatDateToET,
-  getDraftAttachmentDefaultLabel,
-  getDraftAttachmentKeyOrder,
-  getPackageActivityLabel,
-} from "shared-utils";
+import { formatDateToET, getDraftAttachments, getPackageActivityLabel } from "shared-utils";
 
 import {
   Accordion,
@@ -38,106 +33,6 @@ type PackageActivityRecord = {
   detailMessage?: string;
   isAdminChange?: boolean;
   isSyntheticDraft?: boolean;
-};
-
-const DRAFT_ATTACHMENT_LABELS: Record<string, string> = {
-  amendedStatePlanLanguage: "Amended State Plan Language",
-  b4IndependentAssessment: "B4 Independent Assessment",
-  b4WaiverApplication: "B4 Waiver Application",
-  chipEligibility: "CHIP Eligibility Template",
-  cmsForm179: "CMS-179 Form",
-  coverLetter: "Cover Letter",
-  currentStatePlan: "Current State Plan",
-  existingStatePlanPages: "Existing State Plan Pages",
-  other: "Other",
-  publicNotice: "Public Notice",
-  revisedAmendedStatePlanLanguage: "Revised Amended State Plan Language",
-  sfq: "SFQ",
-  spaPages: "SPA Pages",
-  tribalConsultation: "Tribal Consultation",
-  tribalEngagement: "Tribal Engagement",
-  waiverExtensionRequest: "Waiver Extension Request",
-};
-
-const humanizeDraftAttachmentKey = (key: string) =>
-  DRAFT_ATTACHMENT_LABELS[key] ??
-  key.replace(/([a-z0-9])([A-Z])/g, "$1 $2").replace(/\b\w/g, (char) => char.toUpperCase());
-
-const getDraftAttachments = (
-  submission?: opensearch.main.Document,
-): NonNullable<opensearch.changelog.Document["attachments"]> => {
-  const attachmentSections = (submission?.draft?.data as Record<string, unknown> | undefined)
-    ?.attachments;
-
-  if (!attachmentSections || typeof attachmentSections !== "object") {
-    return [];
-  }
-
-  const attachmentKeyOrder = getDraftAttachmentKeyOrder(submission?.event);
-  const attachmentKeyOrderIndex = new Map(
-    attachmentKeyOrder.map((attachmentKey, index) => [attachmentKey, index]),
-  );
-  const orderedAttachmentEntries = Object.entries(attachmentSections)
-    .map(([attachmentKey, attachmentSection], originalIndex) => ({
-      attachmentKey,
-      attachmentSection,
-      originalIndex,
-      sortIndex: attachmentKeyOrderIndex.get(attachmentKey) ?? Number.MAX_SAFE_INTEGER,
-    }))
-    .sort((left, right) => {
-      if (left.sortIndex !== right.sortIndex) {
-        return left.sortIndex - right.sortIndex;
-      }
-
-      return left.originalIndex - right.originalIndex;
-    });
-
-  return orderedAttachmentEntries.flatMap(({ attachmentKey, attachmentSection }) => {
-    if (!attachmentSection || typeof attachmentSection !== "object") {
-      return [];
-    }
-
-    const sectionLabel =
-      typeof (attachmentSection as { label?: unknown }).label === "string" &&
-      (attachmentSection as { label?: string }).label?.trim()
-        ? (attachmentSection as { label: string }).label.trim()
-        : (getDraftAttachmentDefaultLabel(submission?.event, attachmentKey) ??
-          humanizeDraftAttachmentKey(attachmentKey));
-
-    const files = (attachmentSection as { files?: unknown }).files;
-    if (!Array.isArray(files) || files.length === 0) {
-      return [];
-    }
-
-    return files.flatMap((file) => {
-      if (!file || typeof file !== "object") {
-        return [];
-      }
-
-      const maybeAttachment = file as Record<string, unknown>;
-      const filename =
-        typeof maybeAttachment.filename === "string" ? maybeAttachment.filename : undefined;
-      const bucket =
-        typeof maybeAttachment.bucket === "string" ? maybeAttachment.bucket : undefined;
-      const key = typeof maybeAttachment.key === "string" ? maybeAttachment.key : undefined;
-      const uploadDate =
-        typeof maybeAttachment.uploadDate === "number" ? maybeAttachment.uploadDate : undefined;
-
-      if (!filename || !bucket || !key || typeof uploadDate !== "number") {
-        return [];
-      }
-
-      return [
-        {
-          filename,
-          bucket,
-          key,
-          uploadDate,
-          title: sectionLabel,
-        },
-      ];
-    });
-  });
 };
 
 const getDraftPackageActivities = (
