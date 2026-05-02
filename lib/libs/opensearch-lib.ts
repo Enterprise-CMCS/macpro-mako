@@ -12,7 +12,7 @@ import { getDomainAndNamespace } from "./utils";
 
 let client: Client;
 
-const getAwsSdkLogger = () => {
+export const getAwsSdkLogger = () => {
   const logger = (globalThis as any).logger;
   if (
     logger &&

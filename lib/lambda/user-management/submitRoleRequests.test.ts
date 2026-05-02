@@ -26,6 +26,7 @@ describe("submitRoleRequests handler", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     process.env.topicName = "request-role";
+    mockedProduceMessage.mockReset();
     mockedProduceMessage.mockResolvedValue([{ message: "sent" }]);
   });
 
@@ -68,6 +69,47 @@ describe("submitRoleRequests handler", () => {
 
     expect(res.statusCode).toEqual(401);
     expect(res.body).toEqual(JSON.stringify({ message: "User is not authenticated" }));
+  });
+
+  it("should return 400 if the event body has an invalid role", async () => {
+    const event = {
+      body: JSON.stringify({
+        email: "nostate@example.com",
+        state: "CO",
+        role: "not-a-real-role",
+        eventType: "user-role",
+        requestRoleChange: true,
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
+    );
+    expect(mockedProduceMessage).not.toHaveBeenCalled();
+  });
+
+  it("should return 400 if the event body is missing required fields", async () => {
+    const event = {
+      body: JSON.stringify({
+        email: "nostate@example.com",
+        role: "statesubmitter",
+        eventType: "user-role",
+        requestRoleChange: true,
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
+    );
+    expect(mockedProduceMessage).not.toHaveBeenCalled();
   });
 
   it("should return 401 if the user is not authenticated", async () => {

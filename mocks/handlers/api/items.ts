@@ -4,6 +4,12 @@ import { opensearch, SEATOOL_STATUS } from "shared-types";
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
 import type { DeleteDraftBody, GetItemBody, ItemExistsBody } from "../../index.d";
 
+const deletedDraftIds = new Set<string>();
+
+export const resetApiItemsState = () => {
+  deletedDraftIds.clear();
+};
+
 const defaultApiItemHandler = http.post<PathParams, GetItemBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item",
   async ({ request }) => {
@@ -15,7 +21,21 @@ const defaultApiItemHandler = http.post<PathParams, GetItemBody>(
 
     const item = items[id] || null;
 
-    return item ? HttpResponse.json(item) : new HttpResponse(null, { status: 404 });
+    if (!item) {
+      return new HttpResponse(null, { status: 404 });
+    }
+
+    if (deletedDraftIds.has(id)) {
+      return HttpResponse.json({
+        ...item,
+        _source: {
+          ...item._source,
+          deleted: true,
+        },
+      });
+    }
+
+    return HttpResponse.json(item);
   },
 );
 
@@ -39,7 +59,7 @@ const defaultApiItemExistsHandler = http.post<PathParams, ItemExistsBody>(
     if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
     }
-    const exists = !!items[id]?._source;
+    const exists = !!items[id]?._source && !deletedDraftIds.has(id);
     return HttpResponse.json({
       exists,
       ...(includeDrafts && exists ? { status: items[id]?._source?.seatoolStatus } : {}),
@@ -70,12 +90,13 @@ const defaultApiDeleteDraftHandler = http.post<PathParams, DeleteDraftBody>(
     if (
       !item?._source ||
       item._source.seatoolStatus !== SEATOOL_STATUS.DRAFT ||
-      item._source.deleted
+      item._source.deleted ||
+      deletedDraftIds.has(id)
     ) {
       return HttpResponse.json({ message: "Package is not an active draft." }, { status: 409 });
     }
 
-    item._source.deleted = true;
+    deletedDraftIds.add(id);
     return HttpResponse.json({ message: "Draft deleted", id });
   },
 );

@@ -15,6 +15,7 @@ describe("updateUserRoles handler", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     process.env.topicName = "create-user-profile";
+    mockedProduceMessage.mockReset();
     mockedProduceMessage.mockResolvedValue([{ message: "sent" }]);
   });
 
@@ -44,7 +45,6 @@ describe("updateUserRoles handler", () => {
   });
 
   it("should return 400, if the event body is invalid", async () => {
-    // @ts-ignore ignore invalid format for test
     const event = {
       body: JSON.stringify({
         updatedRoles: [
@@ -70,6 +70,35 @@ describe("updateUserRoles handler", () => {
     expect(JSON.parse(res.body)).toEqual(
       expect.objectContaining({ message: "Event failed validation" }),
     );
+    expect(mockedProduceMessage).not.toHaveBeenCalled();
+  });
+
+  it("should return 400 if an updated role is missing required fields", async () => {
+    const event = {
+      body: JSON.stringify({
+        updatedRoles: [
+          {
+            id: "multistate@example.com_MD_statesubmitter",
+            eventType: "user-role",
+            email: "multistate@example.com",
+            doneByEmail: "statesystemadmin@nightwatch.test",
+            doneByName: "Test Again",
+            status: "active",
+            territory: "MD",
+            lastModifiedDate: 1745234449866,
+          },
+        ],
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
+    );
+    expect(mockedProduceMessage).not.toHaveBeenCalled();
   });
 
   it("should return 200", async () => {

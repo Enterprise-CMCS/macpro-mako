@@ -1,11 +1,11 @@
 import * as os from "libs/opensearch-lib";
 import { BaseIndex } from "shared-types/opensearch";
-import { ItemResult } from "shared-types/opensearch/main";
+import type { ItemResult } from "shared-types/opensearch/main";
 
 import { getDomainAndNamespace } from "../../utils";
 
 export interface ExtendedItemResult extends ItemResult {
-  appkChildren?: any[];
+  appkChildren?: Omit<ItemResult, "found">[];
 }
 
 const getPackageByIndex = async (

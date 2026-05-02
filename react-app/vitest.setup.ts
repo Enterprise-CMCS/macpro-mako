@@ -6,6 +6,7 @@ import {
   AUTH_CONFIG,
   mockCurrentAuthenticatedUser,
   mockUserAttributes,
+  resetApiItemsState,
   setDefaultStateSubmitter,
   setMockUsername,
 } from "mocks";
@@ -234,6 +235,7 @@ afterEach(() => {
   vi.clearAllMocks();
 
   setDefaultStateSubmitter();
+  resetApiItemsState();
   // Reset any request handlers that we may add during the tests,
   // so they don't affect other tests.
   mockedServer.resetHandlers();
