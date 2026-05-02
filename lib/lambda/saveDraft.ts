@@ -117,6 +117,21 @@ const isVersionConflictError = (error: unknown) => {
   return false;
 };
 
+const isDraftIdConflictError = (error: unknown) => {
+  if (error && typeof error === "object") {
+    const osError = (error as { meta?: { body?: { error?: unknown } } }).meta?.body?.error;
+    if (JSON.stringify(osError).includes("draft_id_conflict")) {
+      return true;
+    }
+  }
+
+  if (error instanceof Error) {
+    return error.message.includes("draft_id_conflict");
+  }
+
+  return false;
+};
+
 export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
@@ -164,6 +179,13 @@ export const handler = authenticatedMiddy({
     });
   }
 
+  if (normalizedOriginalDraftId && !userStates.includes(normalizedOriginalDraftId.slice(0, 2))) {
+    return response({
+      statusCode: 403,
+      body: { message: "Not authorized to view this resource" },
+    });
+  }
+
   const existingMainPackage = await getPackage(normalizedId);
   const existingDraftPackage = await getDraftPackage(normalizedId);
   const sourceDraftPackage =
@@ -182,6 +204,19 @@ export const handler = authenticatedMiddy({
     return response({
       statusCode: 404,
       body: { message: "No record found for the given id" },
+    });
+  }
+
+  const sourceDraftState = sourceDraftPackage?._source?.state?.toUpperCase();
+  if (
+    normalizedOriginalDraftId &&
+    normalizedOriginalDraftId !== normalizedId &&
+    sourceDraftState &&
+    !userStates.includes(sourceDraftState)
+  ) {
+    return response({
+      statusCode: 403,
+      body: { message: "Not authorized to view this resource" },
     });
   }
 
@@ -311,7 +346,7 @@ export const handler = authenticatedMiddy({
   };
 
   const { domain, index } = getDomainAndNamespace("draftmain");
-  const shouldUpsert = existingDraftPackage?.found !== true;
+  const shouldCreateNewDraft = existingDraftPackage?.found !== true;
   const shouldUseCompareAndWrite = hasActiveDraftAtTarget && isSavingExistingDraftAtSameId;
   const shouldReplaceDeletedDraft = hasDeletedDraftInDraftIndex;
   const deletedDraftVersion =
@@ -330,27 +365,49 @@ export const handler = authenticatedMiddy({
       refresh: true,
       ...((shouldUseCompareAndWrite && requestVersion) || deletedDraftVersion || {}),
       body: {
-        ...(shouldReplaceDeletedDraft
+        ...(shouldCreateNewDraft
           ? {
               script: {
                 lang: "painless",
-                source: "ctx._source = params.record",
+                source:
+                  "if (ctx._source != null && !ctx._source.isEmpty()) { throw new IllegalStateException('draft_id_conflict'); } ctx._source = params.record;",
                 params: {
                   record,
                 },
               },
+              scripted_upsert: true,
+              upsert: {},
             }
-          : {
-              doc: record,
-              doc_as_upsert: shouldUpsert,
-            }),
+          : shouldReplaceDeletedDraft
+            ? {
+                script: {
+                  lang: "painless",
+                  source: "ctx._source = params.record",
+                  params: {
+                    record,
+                  },
+                },
+              }
+            : {
+                doc: record,
+                doc_as_upsert: false,
+              }),
       },
     });
   } catch (error) {
+    if (shouldCreateNewDraft && isDraftIdConflictError(error)) {
+      return response({
+        statusCode: 409,
+        body: { message: DRAFT_ID_CONFLICT_MESSAGE },
+      });
+    }
+
     if (isVersionConflictError(error)) {
       return response({
         statusCode: 409,
-        body: { message: DRAFT_CONCURRENCY_MESSAGE },
+        body: {
+          message: shouldCreateNewDraft ? DRAFT_ID_CONFLICT_MESSAGE : DRAFT_CONCURRENCY_MESSAGE,
+        },
       });
     }
 

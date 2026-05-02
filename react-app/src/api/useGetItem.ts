@@ -50,10 +50,10 @@ const isNotFoundItemPayload = (value: unknown): boolean => {
 export const getItem = async (
   id: string,
   options?: GetItemOptions,
-): Promise<opensearch.main.ItemResult> => {
+): Promise<opensearch.main.ItemResult | undefined> => {
   const normalizedId = id?.trim().toUpperCase();
   if (!normalizedId) {
-    return undefined as never;
+    return undefined;
   }
 
   try {
@@ -66,17 +66,17 @@ export const getItem = async (
     });
 
     if (isNotFoundItemPayload(response) || !(response as opensearch.main.ItemResult)?._source) {
-      return undefined as never;
+      return undefined;
     }
 
     return response;
   } catch (error) {
     if (isNotFoundItemPayload(error)) {
-      return undefined as never;
+      return undefined;
     }
 
     sendGAEvent("api_error", { message: `failure /item ${normalizedId}` });
-    return undefined as never;
+    return undefined;
   }
 };
 
@@ -110,10 +110,10 @@ export const canBeRenewedOrAmended = async (id: string) => {
 
 export const useGetItem = (
   id: string,
-  options?: UseQueryOptions<opensearch.main.ItemResult, ReactQueryApiError>,
+  options?: UseQueryOptions<opensearch.main.ItemResult | undefined, ReactQueryApiError>,
   requestOptions?: GetItemOptions,
 ) => {
-  return useQuery<opensearch.main.ItemResult, ReactQueryApiError>(
+  return useQuery<opensearch.main.ItemResult | undefined, ReactQueryApiError>(
     [
       "record",
       id,

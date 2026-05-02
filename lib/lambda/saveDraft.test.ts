@@ -64,18 +64,23 @@ describe("saveDraft handler", () => {
         id: DRAFT_ID,
         refresh: true,
         body: expect.objectContaining({
-          doc_as_upsert: true,
-          doc: expect.objectContaining({
-            deleted: false,
-            seatoolStatus: SEATOOL_STATUS.DRAFT,
-            draft: expect.objectContaining({
-              createdByEmail: "state.user@example.com",
-              createdByName: "State User",
-              updatedByEmail: "state.user@example.com",
-              updatedByName: "State User",
-              draftOwnerEmail: "state.user@example.com",
-              draftOwnerName: "State User",
-            }),
+          scripted_upsert: true,
+          upsert: {},
+          script: expect.objectContaining({
+            params: {
+              record: expect.objectContaining({
+                deleted: false,
+                seatoolStatus: SEATOOL_STATUS.DRAFT,
+                draft: expect.objectContaining({
+                  createdByEmail: "state.user@example.com",
+                  createdByName: "State User",
+                  updatedByEmail: "state.user@example.com",
+                  updatedByName: "State User",
+                  draftOwnerEmail: "state.user@example.com",
+                  draftOwnerName: "State User",
+                }),
+              }),
+            },
           }),
         }),
       }),
@@ -145,8 +150,12 @@ describe("saveDraft handler", () => {
       expect.objectContaining({
         id: tempExtensionId,
         body: expect.objectContaining({
-          doc: expect.objectContaining({
-            authority: "1915(c)",
+          script: expect.objectContaining({
+            params: {
+              record: expect.objectContaining({
+                authority: "1915(c)",
+              }),
+            },
           }),
         }),
       }),
@@ -322,6 +331,38 @@ describe("saveDraft handler", () => {
       }),
     );
     expect(os.updateData).not.toHaveBeenCalled();
+  });
+
+  it("returns 409 when a create-only draft save races with another create", async () => {
+    vi.spyOn(os, "updateData").mockRejectedValueOnce({
+      meta: {
+        body: {
+          error: {
+            type: "script_exception",
+            reason: "draft_id_conflict",
+          },
+        },
+      },
+    });
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(409);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "This package ID is already in use. Update the ID before saving or submitting.",
+      }),
+    );
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: DRAFT_ID,
+        body: expect.objectContaining({
+          scripted_upsert: true,
+          upsert: {},
+        }),
+      }),
+    );
   });
 
   it("returns 409 when active draft update misses optimistic concurrency values", async () => {
@@ -527,14 +568,19 @@ describe("saveDraft handler", () => {
       expect.objectContaining({
         id: nextDraftId,
         body: expect.objectContaining({
-          doc_as_upsert: true,
-          doc: expect.objectContaining({
-            id: nextDraftId,
-            draft: expect.objectContaining({
-              createdByEmail: "state.user@example.com",
-              updatedByEmail: "state.user@example.com",
-              data: expect.objectContaining({ id: nextDraftId }),
-            }),
+          scripted_upsert: true,
+          upsert: {},
+          script: expect.objectContaining({
+            params: {
+              record: expect.objectContaining({
+                id: nextDraftId,
+                draft: expect.objectContaining({
+                  createdByEmail: "state.user@example.com",
+                  updatedByEmail: "state.user@example.com",
+                  data: expect.objectContaining({ id: nextDraftId }),
+                }),
+              }),
+            },
           }),
         }),
       }),
@@ -552,6 +598,72 @@ describe("saveDraft handler", () => {
         }),
       }),
     );
+  });
+
+  it("returns 403 when moving from an original draft id outside the user's states", async () => {
+    const eventWithCrossStateOriginalDraft = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: DRAFT_ID,
+        originalDraftId: "CO-25-2525-SAVE",
+        event: "new-medicaid-submission",
+        draftData: {
+          id: DRAFT_ID,
+          proposedEffectiveDate: 1771480800000,
+        },
+        ifSeqNo: 10,
+        ifPrimaryTerm: 2,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(eventWithCrossStateOriginalDraft, {} as Context);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
+  it("returns 403 when the source draft record state is outside the user's states", async () => {
+    const originalDraftId = "MD-25-2524-SAVE";
+    vi.spyOn(packageApi, "getDraftPackage").mockImplementation(async (id) => {
+      if (id === DRAFT_ID) {
+        return undefined as any;
+      }
+
+      return {
+        found: true,
+        _id: originalDraftId,
+        _seq_no: 10,
+        _primary_term: 2,
+        _source: {
+          id: originalDraftId,
+          state: "CO",
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          deleted: false,
+        },
+      } as any;
+    });
+
+    const eventWithCrossStateSourceDraft = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: DRAFT_ID,
+        originalDraftId,
+        event: "new-medicaid-submission",
+        draftData: {
+          id: DRAFT_ID,
+          proposedEffectiveDate: 1771480800000,
+        },
+        ifSeqNo: 10,
+        ifPrimaryTerm: 2,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(eventWithCrossStateSourceDraft, {} as Context);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(os.updateData).not.toHaveBeenCalled();
   });
 
   it("returns 409 when OpenSearch reports a version conflict during compare-and-write", async () => {

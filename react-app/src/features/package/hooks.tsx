@@ -31,18 +31,25 @@ const getSidebarLinks = () => {
     : BASE_SIDEBAR_LINKS;
 };
 
+const areSidebarLinksEqual = (left: DetailsSidebarLink[], right: DetailsSidebarLink[]) =>
+  left.length === right.length && left.every((link, index) => link.id === right[index]?.id);
+
 export const useDetailsSidebarLinks = (): DetailsSidebarLink[] => {
   const [sideBarLinks, setSideBarLinks] = useState<DetailsSidebarLink[]>(BASE_SIDEBAR_LINKS);
 
   useLayoutEffect(() => {
     const updateLinks = () => {
-      setSideBarLinks(getSidebarLinks());
+      setSideBarLinks((currentLinks) => {
+        const nextLinks = getSidebarLinks();
+        return areSidebarLinksEqual(currentLinks, nextLinks) ? currentLinks : nextLinks;
+      });
     };
 
     updateLinks();
 
     const observer = new MutationObserver(updateLinks);
-    observer.observe(document.body, { childList: true, subtree: true });
+    const root = document.getElementById("package_details")?.parentElement ?? document.body;
+    observer.observe(root, { childList: true, subtree: true });
 
     return () => observer.disconnect();
   }, []);
