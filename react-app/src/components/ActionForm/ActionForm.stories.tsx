@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { defaultApiHandlers, http, HttpResponse, MOCK_API_URL } from "mocks";
+import { API_ENDPOINT, defaultApiHandlers, http, HttpResponse } from "mocks";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 import { z } from "zod";
@@ -134,7 +134,7 @@ export const DraftIdConflict: Story = {
     msw: {
       handlers: {
         api: [
-          http.post(`${MOCK_API_URL}/itemExists`, async () => HttpResponse.json({ exists: true })),
+          http.post(`${API_ENDPOINT}/itemExists`, async () => HttpResponse.json({ exists: true })),
           ...defaultApiHandlers,
         ],
       },

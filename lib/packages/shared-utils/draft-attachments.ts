@@ -135,11 +135,6 @@ export const getDraftAttachments = (
       const key = typeof maybeAttachment.key === "string" ? maybeAttachment.key : undefined;
       const uploadDate =
         typeof maybeAttachment.uploadDate === "number" ? maybeAttachment.uploadDate : undefined;
-      const title =
-        typeof maybeAttachment.title === "string" && maybeAttachment.title.trim()
-          ? maybeAttachment.title
-          : sectionLabel;
-
       if (!filename || !bucket || !key || typeof uploadDate !== "number") {
         return [];
       }
@@ -150,7 +145,7 @@ export const getDraftAttachments = (
           bucket,
           key,
           uploadDate,
-          title,
+          title: sectionLabel,
         },
       ];
     });
