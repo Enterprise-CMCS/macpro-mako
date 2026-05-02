@@ -3,6 +3,7 @@ import {
   convertUserAttributes,
   getRequestContext,
   helpDeskUser,
+  noRoleUser,
   nullStateSubmitter,
   setMockUsername,
   testReviewer,
@@ -160,6 +161,56 @@ describe("Auth functions", () => {
   });
 
   describe("getSearchUserScope", () => {
+    it("should deny draft visibility and search results when the user has no active role", async () => {
+      const result = await getSearchUserScope({
+        requestContext: getRequestContext(noRoleUser),
+      } as APIGatewayEvent);
+
+      expect(result).toEqual({
+        stateFilter: false,
+        canViewDrafts: false,
+      });
+    });
+
+    it("should return state filter and deny draft visibility for state users", async () => {
+      const stateString =
+        testStateSubmitter.UserAttributes?.find((attr) => attr?.Name == "custom:state")?.Value ||
+        "";
+      const states = stateString.split(",").map((state) => state.toLocaleLowerCase());
+
+      const result = await getSearchUserScope({
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent);
+
+      expect(result).toEqual({
+        stateFilter: {
+          terms: {
+            state: states,
+          },
+        },
+        canViewDrafts: false,
+      });
+    });
+
+    it("should throw an error if state user has no associated states", async () => {
+      await expect(
+        getSearchUserScope({
+          requestContext: getRequestContext(nullStateSubmitter),
+        } as APIGatewayEvent),
+      ).rejects.toThrow("State user detected, but no associated states.  Cannot continue");
+    });
+
+    it("should deny draft visibility for CMS users who are not Helpdesk", async () => {
+      const result = await getSearchUserScope({
+        requestContext: getRequestContext(testReviewer),
+      } as APIGatewayEvent);
+
+      expect(result).toEqual({
+        stateFilter: null,
+        canViewDrafts: false,
+      });
+    });
+
     it("should allow Helpdesk users to view drafts without a state filter", async () => {
       const result = await getSearchUserScope({
         requestContext: getRequestContext(helpDeskUser),

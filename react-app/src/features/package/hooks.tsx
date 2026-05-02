@@ -25,24 +25,51 @@ const ADMIN_CHANGES_LINK: DetailsSidebarLink = {
   displayName: "Administrative Package Changes",
 };
 
-const getSidebarLinks = () => {
-  return document.getElementById("administrative_package_changes")
+const getSidebarLinks = (root: ParentNode = document) => {
+  return root.querySelector(`#${ADMIN_CHANGES_LINK.id}`)
     ? [...BASE_SIDEBAR_LINKS, ADMIN_CHANGES_LINK]
     : BASE_SIDEBAR_LINKS;
+};
+
+const areSidebarLinksEqual = (
+  current: DetailsSidebarLink[],
+  next: DetailsSidebarLink[],
+): boolean => {
+  return (
+    current.length === next.length &&
+    current.every(
+      (link, index) =>
+        link.id === next[index]?.id &&
+        link.href === next[index]?.href &&
+        link.displayName === next[index]?.displayName,
+    )
+  );
+};
+
+const getSidebarObserverRoot = (): HTMLElement => {
+  return (
+    document.getElementById("package_details_page") ??
+    document.getElementById("package_details")?.parentElement ??
+    document.body
+  );
 };
 
 export const useDetailsSidebarLinks = (): DetailsSidebarLink[] => {
   const [sideBarLinks, setSideBarLinks] = useState<DetailsSidebarLink[]>(BASE_SIDEBAR_LINKS);
 
   useLayoutEffect(() => {
+    const observerRoot = getSidebarObserverRoot();
     const updateLinks = () => {
-      setSideBarLinks(getSidebarLinks());
+      setSideBarLinks((current) => {
+        const next = getSidebarLinks(observerRoot);
+        return areSidebarLinksEqual(current, next) ? current : next;
+      });
     };
 
     updateLinks();
 
     const observer = new MutationObserver(updateLinks);
-    observer.observe(document.body, { childList: true, subtree: true });
+    observer.observe(observerRoot, { childList: true, subtree: true });
 
     return () => observer.disconnect();
   }, []);

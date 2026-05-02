@@ -180,7 +180,7 @@ export const packageDetailsLoader = async ({
 export const Details = () => {
   const { id, authority, preferDraft } = useLoaderData<LoaderData>();
   return (
-    <div className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
+    <div id="package_details_page" className="max-w-screen-xl mx-auto flex flex-col lg:flex-row">
       <div className="px-4 lg:px-8">
         <BreadCrumbs options={detailsAndActionsCrumbs({ id, authority })} />
         <DetailsSidebar />

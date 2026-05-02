@@ -119,6 +119,31 @@ describe("saveDraft handler", () => {
     expect(os.updateData).not.toHaveBeenCalled();
   });
 
+  it("returns 403 when moving a draft from a source state the user cannot access", async () => {
+    const eventWithUnauthorizedSourceDraft = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: DRAFT_ID,
+        originalDraftId: "CO-25-2525-SAVE",
+        event: "new-medicaid-submission",
+        draftData: {
+          id: DRAFT_ID,
+          proposedEffectiveDate: 1771480800000,
+        },
+        ifSeqNo: 10,
+        ifPrimaryTerm: 2,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(eventWithUnauthorizedSourceDraft, {} as Context);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(packageApi.getPackage).not.toHaveBeenCalled();
+    expect(packageApi.getDraftPackage).not.toHaveBeenCalled();
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
   it("uses the selected temporary-extension draft authority when provided", async () => {
     const tempExtensionId = "MD-1198.R06.TE00";
     const temporaryExtensionEvent = {
@@ -552,6 +577,59 @@ describe("saveDraft handler", () => {
         }),
       }),
     );
+  });
+
+  it("returns 403 when moving a draft the user did not create or most recently update", async () => {
+    const nextDraftId = "MD-25-2526-SAVE";
+    vi.spyOn(packageApi, "getDraftPackage").mockImplementation(async (id) => {
+      if (id === nextDraftId) {
+        return undefined as any;
+      }
+
+      return {
+        found: true,
+        _id: DRAFT_ID,
+        _seq_no: 10,
+        _primary_term: 2,
+        _source: {
+          id: DRAFT_ID,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          deleted: false,
+          submitterEmail: "other.user@example.com",
+          submitterName: "Other User",
+          draft: {
+            savedAt: "2026-01-01T00:00:00.000Z",
+            createdAt: "2026-01-01T00:00:00.000Z",
+            createdByEmail: "other.user@example.com",
+            createdByName: "Other User",
+            updatedByEmail: "latest.editor@example.com",
+            updatedByName: "Latest Editor",
+            data: { id: DRAFT_ID },
+          },
+        },
+      } as any;
+    });
+
+    const eventWithChangedId = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: nextDraftId,
+        originalDraftId: DRAFT_ID,
+        event: "new-medicaid-submission",
+        draftData: {
+          id: nextDraftId,
+          proposedEffectiveDate: 1771480800000,
+        },
+        ifSeqNo: 10,
+        ifPrimaryTerm: 2,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(eventWithChangedId, {} as Context);
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(os.updateData).not.toHaveBeenCalled();
   });
 
   it("returns 409 when OpenSearch reports a version conflict during compare-and-write", async () => {

@@ -102,7 +102,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
     return sendSubmitSplitSPAMessage({ currentPackage, changeMade, changeReason });
   } catch (err) {
-    console.error("Error has occured modifying package:", err);
+    console.error("Error has occured modifying package:", err instanceof Error ? err.message : err);
     if (err instanceof z.ZodError) {
       return response({
         statusCode: 400,

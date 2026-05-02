@@ -117,6 +117,28 @@ const isVersionConflictError = (error: unknown) => {
   return false;
 };
 
+const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
+
+const canMoveSourceDraft = (
+  sourceDraftPackage: Awaited<ReturnType<typeof getDraftPackage>>,
+  email: string,
+) => {
+  const currentEmail = normalizeEmail(email);
+  if (!currentEmail || !isActiveDraftPackage(sourceDraftPackage)) {
+    return false;
+  }
+
+  const source = sourceDraftPackage?._source;
+  const actorEmails = [
+    source?.draft?.createdByEmail,
+    source?.draft?.draftOwnerEmail,
+    source?.draft?.updatedByEmail,
+    source?.submitterEmail,
+  ].map(normalizeEmail);
+
+  return actorEmails.some((actorEmail) => actorEmail && actorEmail === currentEmail);
+};
+
 export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
@@ -164,6 +186,13 @@ export const handler = authenticatedMiddy({
     });
   }
 
+  if (normalizedOriginalDraftId && !userStates.includes(normalizedOriginalDraftId.slice(0, 2))) {
+    return response({
+      statusCode: 403,
+      body: { message: "Not authorized to view this resource" },
+    });
+  }
+
   const existingMainPackage = await getPackage(normalizedId);
   const existingDraftPackage = await getDraftPackage(normalizedId);
   const sourceDraftPackage =
@@ -182,6 +211,18 @@ export const handler = authenticatedMiddy({
     return response({
       statusCode: 404,
       body: { message: "No record found for the given id" },
+    });
+  }
+
+  const isMovingDraftToNewId =
+    normalizedOriginalDraftId !== undefined && normalizedOriginalDraftId !== normalizedId;
+  if (
+    isMovingDraftToNewId &&
+    !canMoveSourceDraft(sourceDraftPackage, context.authenticatedUser.email)
+  ) {
+    return response({
+      statusCode: 403,
+      body: { message: "Not authorized to view this resource" },
     });
   }
 
@@ -358,6 +399,16 @@ export const handler = authenticatedMiddy({
   }
 
   if (normalizedOriginalDraftId && normalizedOriginalDraftId !== normalizedId) {
+    if (
+      !userStates.includes(normalizedOriginalDraftId.slice(0, 2)) ||
+      !canMoveSourceDraft(sourceDraftPackage, context.authenticatedUser.email)
+    ) {
+      return response({
+        statusCode: 403,
+        body: { message: "Not authorized to view this resource" },
+      });
+    }
+
     try {
       await os.updateData(domain, {
         index,
