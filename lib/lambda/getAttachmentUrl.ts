@@ -1,4 +1,3 @@
-import type { GetObjectTaggingCommandOutput } from "@aws-sdk/client-s3";
 import { GetObjectCommand, GetObjectTaggingCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
@@ -195,8 +194,8 @@ async function getAttachmentObjectTags(
   const command = new GetObjectTaggingCommand({
     Bucket: bucket,
     Key: key,
-  }) as unknown as Parameters<typeof client.send>[0];
-  const taggingResponse = (await client.send(command)) as GetObjectTaggingCommandOutput;
+  });
+  const taggingResponse = await client.send(command);
 
   return (taggingResponse.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
     if (tag.Key && tag.Value) {
@@ -519,7 +518,7 @@ async function assertObjectAccessible(bucket: string, key: string) {
     new HeadObjectCommand({
       Bucket: bucket,
       Key: key,
-    }) as any,
+    }),
   );
 }
 
@@ -540,7 +539,7 @@ async function generatePresignedUrl(
   });
 
   // Generate a presigned URL
-  const presignedUrl = await getSignedUrl(client as any, getObjectCommand as any, {
+  const presignedUrl = await getSignedUrl(client, getObjectCommand, {
     expiresIn: expirationInSeconds,
   });
 

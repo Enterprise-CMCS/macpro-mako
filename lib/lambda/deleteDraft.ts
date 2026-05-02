@@ -37,6 +37,32 @@ const isVersionConflictError = (error: unknown) => {
   return false;
 };
 
+const normalizeEmail = (email?: string) => email?.trim().toLowerCase();
+
+const canDeleteDraft = (
+  submission: {
+    draft?: { createdByEmail?: string; draftOwnerEmail?: string; updatedByEmail?: string };
+    submitterEmail?: string;
+  },
+  userEmail?: string,
+) => {
+  const actorEmail = normalizeEmail(userEmail);
+  if (!actorEmail) {
+    return false;
+  }
+
+  const authorizedEmails = [
+    submission.draft?.createdByEmail,
+    submission.draft?.draftOwnerEmail,
+    submission.draft?.updatedByEmail,
+    submission.submitterEmail,
+  ]
+    .map(normalizeEmail)
+    .filter((email): email is string => Boolean(email));
+
+  return authorizedEmails.includes(actorEmail);
+};
+
 export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
@@ -82,6 +108,13 @@ export const handler = authenticatedMiddy({
     return response({
       statusCode: 409,
       body: { message: `Package ${submission.id} is not an active draft.` },
+    });
+  }
+
+  if (!canDeleteDraft(submission, authenticatedUser.email)) {
+    return response({
+      statusCode: 403,
+      body: { message: "Not authorized to view this resource" },
     });
   }
 

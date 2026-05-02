@@ -3,6 +3,7 @@ import * as packageApi from "libs/api/package";
 import {
   GET_ERROR_ITEM_ID,
   getRequestContext,
+  helpDeskUser,
   HI_TEST_ITEM_ID,
   NOT_EXISTING_ITEM_ID,
   NOT_FOUND_ITEM_ID,
@@ -194,6 +195,35 @@ describe("Handler for checking if record exists", () => {
     const event = {
       body: JSON.stringify({ id: NOT_FOUND_ITEM_ID, includeDrafts: true }),
       requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Record found for the given id",
+        exists: true,
+        status: SEATOOL_STATUS.DRAFT,
+      }),
+    );
+    getDraftPackageSpy.mockRestore();
+  });
+
+  it("should return draft status from draftmain for HelpDesk users when includeDrafts is true", async () => {
+    const getDraftPackageSpy = vi.spyOn(packageApi, "getDraftPackage").mockResolvedValueOnce({
+      found: true,
+      _id: NOT_FOUND_ITEM_ID,
+      _source: {
+        id: NOT_FOUND_ITEM_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID, includeDrafts: true }),
+      requestContext: getRequestContext(helpDeskUser),
     } as APIGatewayEvent;
 
     const res = await handler(event, {} as Context);

@@ -2,6 +2,7 @@ import { SQSHandler } from "aws-lambda";
 import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import { buildDraftAttachmentChangelog } from "../attachment-archive/draft-package";
+import type { AttachmentArchiveChangelogItem } from "../attachment-archive/package-activity";
 import { AttachmentArchiveRebuildMessage } from "../attachment-archive/types";
 import { getDraftPackage, getPackageChangelog } from "../libs/api/package";
 import { rebuildPackageAttachmentArchives } from "./attachmentArchive-lib";
@@ -17,7 +18,7 @@ function parseRecordBody(body: string): AttachmentArchiveRebuildMessage {
 
 async function getRebuildChangelog(
   message: AttachmentArchiveRebuildMessage,
-): Promise<opensearch.changelog.ItemResult[]> {
+): Promise<AttachmentArchiveChangelogItem[]> {
   if (!message.preferDraft) {
     return (await getPackageChangelog(message.packageId)).hits
       .hits as opensearch.changelog.ItemResult[];

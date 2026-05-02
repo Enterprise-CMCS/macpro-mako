@@ -1,6 +1,8 @@
 import { opensearch } from "shared-types";
 import { getDraftAttachmentDefaultLabel, getDraftAttachmentKeyOrder } from "shared-utils";
 
+import type { AttachmentArchiveChangelogItem } from "./package-activity";
+
 const DRAFT_ACTIVITY_ID_SUFFIX = "draft-activity";
 const DRAFT_UPDATED_ACTIVITY_ID_SUFFIX = "draft-updated-activity";
 
@@ -167,7 +169,7 @@ export const buildDraftAttachmentChangelog = ({
 }: {
   packageId: string;
   submission: opensearch.main.Document;
-}): opensearch.changelog.ItemResult[] => {
+}): AttachmentArchiveChangelogItem[] => {
   const attachments = getDraftAttachments(submission);
 
   if (attachments.length === 0) {
@@ -201,7 +203,7 @@ export const buildDraftAttachmentChangelog = ({
         timestamp,
         submitterName,
         attachments,
-      } as opensearch.changelog.Document,
+      },
     },
   ];
 };

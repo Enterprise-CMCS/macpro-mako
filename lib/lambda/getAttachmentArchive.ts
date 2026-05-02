@@ -57,6 +57,21 @@ const getPackageChangelogFilter = (packageResult: opensearch.main.ItemResult) =>
   return filter;
 };
 
+async function resolvePackageForArchive(packageId: string, preferDraft?: boolean) {
+  const mainResult = await getPackage(packageId);
+  const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
+  const draftResult = await getDraftPackage(packageId);
+  const hasActiveDraft = isActiveDraftPackage(draftResult);
+
+  return preferDraft === true && hasActiveDraft
+    ? draftResult
+    : hasActiveMainNonDraft
+      ? mainResult
+      : hasActiveDraft
+        ? draftResult
+        : undefined;
+}
+
 export const handler = authenticatedMiddy({
   opensearch: true,
   setToContext: true,
@@ -66,19 +81,14 @@ export const handler = authenticatedMiddy({
   const packageId = body.id.trim().toUpperCase();
   const authenticatedUser = context.authenticatedUser;
 
-  const mainResult = await getPackage(packageId);
-  const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
-  const draftResult = await getDraftPackage(packageId);
-  const hasActiveDraft = isActiveDraftPackage(draftResult);
+  if (!authenticatedUser) {
+    return {
+      statusCode: 401,
+      body: { message: "User is not authenticated" },
+    };
+  }
 
-  const resolvedPackage =
-    body.preferDraft === true && hasActiveDraft
-      ? draftResult
-      : hasActiveMainNonDraft
-        ? mainResult
-        : hasActiveDraft
-          ? draftResult
-          : undefined;
+  const resolvedPackage = await resolvePackageForArchive(packageId, body.preferDraft);
 
   if (!resolvedPackage || !resolvedPackage.found) {
     return {
@@ -89,8 +99,8 @@ export const handler = authenticatedMiddy({
 
   const packageState = resolvedPackage._source?.state?.toUpperCase();
   const isDraftPackage = resolvedPackage._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
-  const isCmsReviewer = authenticatedUser && isCmsUser(authenticatedUser);
-  const isHelpDesk = authenticatedUser && isHelpDeskUser(authenticatedUser);
+  const isCmsReviewer = isCmsUser(authenticatedUser);
+  const isHelpDesk = isHelpDeskUser(authenticatedUser);
 
   if (isDraftPackage && isCmsReviewer && !isHelpDesk) {
     return {
@@ -102,7 +112,6 @@ export const handler = authenticatedMiddy({
   if (
     !isCmsReviewer &&
     packageState &&
-    authenticatedUser &&
     !authenticatedUser.states?.includes(packageState)
   ) {
     return {

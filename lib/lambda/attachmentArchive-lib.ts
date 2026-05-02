@@ -2,7 +2,6 @@ import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { DescribeExecutionCommand, SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { createError } from "@middy/util";
-import { opensearch } from "shared-types";
 
 import {
   buildAttachmentArchiveCurrent,
@@ -21,6 +20,7 @@ import {
   isTerminalAttachmentArchiveFailure,
 } from "../attachment-archive/failure-state";
 import {
+  AttachmentArchiveChangelogItem,
   buildAttachmentArchiveSections,
   getAttachmentArchiveSectionById,
 } from "../attachment-archive/package-activity";
@@ -329,7 +329,7 @@ function buildPackageArchivePlan({
   archiveNamespace = "main",
 }: {
   packageId: string;
-  changelog: opensearch.changelog.ItemResult[];
+  changelog: AttachmentArchiveChangelogItem[];
   archiveNamespace?: AttachmentArchiveNamespace;
 }): PackageArchivePlan | undefined {
   const { keyPrefix } = getArchiveStorageConfig();
@@ -459,7 +459,7 @@ function getRequestedArtifact({
   packageId: string;
   scope: AttachmentArchiveScope;
   sectionId?: string;
-  changelog: opensearch.changelog.ItemResult[];
+  changelog: AttachmentArchiveChangelogItem[];
   archiveNamespace?: AttachmentArchiveNamespace;
 }): ArchiveArtifactPlan {
   const plan = buildPackageArchivePlan({ packageId, changelog, archiveNamespace });
@@ -798,7 +798,7 @@ export async function getRequestedAttachmentArchiveDownload({
   packageId: string;
   scope: AttachmentArchiveScope;
   sectionId?: string;
-  changelog: opensearch.changelog.ItemResult[];
+  changelog: AttachmentArchiveChangelogItem[];
   archiveNamespace?: AttachmentArchiveNamespace;
 }): Promise<{
   response: AttachmentArchiveDownloadResponse;
@@ -867,7 +867,7 @@ export async function getRequestedAttachmentArchiveStatus({
   packageId: string;
   scope: AttachmentArchiveScope;
   sectionId?: string;
-  changelog: opensearch.changelog.ItemResult[];
+  changelog: AttachmentArchiveChangelogItem[];
   archiveNamespace?: AttachmentArchiveNamespace;
 }) {
   const result = await getRequestedAttachmentArchiveDownload({
@@ -951,7 +951,7 @@ export async function rebuildPackageAttachmentArchives({
   archiveNamespace = "main",
 }: {
   packageId: string;
-  changelog: opensearch.changelog.ItemResult[];
+  changelog: AttachmentArchiveChangelogItem[];
   archiveNamespace?: AttachmentArchiveNamespace;
 }) {
   const plan = buildPackageArchivePlan({ packageId, changelog, archiveNamespace });

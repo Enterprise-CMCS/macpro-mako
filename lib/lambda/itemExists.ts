@@ -4,7 +4,7 @@ import {
   isActiveMainNonDraftPackage,
 } from "libs/api/package";
 import { APIGatewayEvent } from "shared-types";
-import { isCmsUser } from "shared-utils";
+import { isCmsUser, isHelpDeskUser } from "shared-utils";
 import { z } from "zod";
 
 import {
@@ -41,9 +41,10 @@ export const handler = authenticatedMiddy({
 
       const includeDrafts = Boolean(event.body?.includeDrafts);
       const isCms = Boolean(authenticatedUser && isCmsUser(authenticatedUser));
+      const isHelpDesk = Boolean(authenticatedUser && isHelpDeskUser(authenticatedUser));
       const hasActiveMainNonDraft = isActiveMainNonDraftPackage(packageResult);
 
-      const shouldFetchDraftIndex = includeDrafts && !isCms;
+      const shouldFetchDraftIndex = includeDrafts && (!isCms || isHelpDesk);
       const draftPackage = shouldFetchDraftIndex
         ? await getDraftPackage(event.body?.id?.toUpperCase())
         : undefined;

@@ -1,10 +1,12 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
 import {
   getRequestContext,
+  helpDeskUser,
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   setDefaultStateSubmitter,
   setMockUsername,
+  testReviewer,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
@@ -85,6 +87,68 @@ describe("getAttachmentArchive handler", () => {
 
     expect(response.statusCode).toBe(403);
     expect(response.body).toBe(JSON.stringify({ message: "Not authorized to view this resource" }));
+  });
+
+  it("returns 403 when a CMS reviewer requests a draft archive", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue(undefined as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "draftmain",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Draft",
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9999-P", scope: "all", preferDraft: true }),
+      requestContext: getRequestContext(testReviewer),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(403);
+    expect(response.body).toBe(JSON.stringify({ message: "Not authorized to view this resource" }));
+  });
+
+  it("allows HelpDesk users to request draft archives", async () => {
+    getRequestedAttachmentArchiveStatus.mockResolvedValue({
+      needsRebuild: false,
+      response: {
+        status: "READY",
+        filename: "archive.zip",
+        url: "http://example.com/archive.zip",
+      },
+    });
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue(undefined as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "draftmain",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Draft",
+        event: "new-medicaid-submission",
+        draft: {
+          savedAt: "2026-03-20T00:00:00.000Z",
+          data: {},
+        },
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9999-P", scope: "all", preferDraft: true }),
+      requestContext: getRequestContext(helpDeskUser),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(200);
   });
 
   it("returns 404 when the package is not found", async () => {

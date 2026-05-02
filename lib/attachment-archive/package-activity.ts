@@ -4,26 +4,42 @@ import { getPackageActivityLabelSlug } from "shared-utils";
 import { buildSectionArchiveFolderName, getSectionArchiveRootFolderName } from "./archive-manifest";
 import { AttachmentArchiveSectionInfo, AttachmentArchiveSourceAttachment } from "./types";
 
+export type AttachmentArchiveChangelogDocument = {
+  id: string;
+  packageId?: string;
+  event: opensearch.changelog.Document["event"];
+  timestamp?: string | number;
+  submitterName?: string;
+  attachments?: opensearch.changelog.Document["attachments"];
+  additionalInformation?: string | null;
+  detailMessage?: string;
+  isAdminChange?: boolean;
+};
+
+export type AttachmentArchiveChangelogItem = Omit<opensearch.changelog.ItemResult, "_source"> & {
+  _source: AttachmentArchiveChangelogDocument;
+};
+
 export interface AttachmentArchiveSectionDescriptor extends AttachmentArchiveSectionInfo {
   packageId: string;
   attachments: AttachmentArchiveSourceAttachment[];
 }
 
 export function getArchiveEligibleChangelogEntries(
-  changelog: opensearch.changelog.ItemResult[],
-): opensearch.changelog.Document[] {
+  changelog: AttachmentArchiveChangelogItem[],
+): AttachmentArchiveChangelogDocument[] {
   return changelog
     .map((item) => item._source)
-    .filter((document): document is opensearch.changelog.Document => Boolean(document))
+    .filter((document): document is AttachmentArchiveChangelogDocument => Boolean(document))
     .filter((document) => !document.isAdminChange);
 }
 
-function getArchiveEntryTimestamp(entry: opensearch.changelog.Document) {
+function getArchiveEntryTimestamp(entry: AttachmentArchiveChangelogDocument) {
   return typeof entry.timestamp === "number" ? entry.timestamp : undefined;
 }
 
 function getSectionAttachments(
-  entry: opensearch.changelog.Document,
+  entry: AttachmentArchiveChangelogDocument,
 ): AttachmentArchiveSourceAttachment[] {
   return (entry.attachments || []).map((attachment) => ({
     bucket: attachment.bucket,
@@ -34,7 +50,7 @@ function getSectionAttachments(
   }));
 }
 
-function getArchiveSectionLabel(entry: opensearch.changelog.Document): string {
+function getArchiveSectionLabel(entry: AttachmentArchiveChangelogDocument): string {
   if (entry.id.endsWith("-draft-updated-activity")) {
     return "draft-updated";
   }
@@ -51,7 +67,7 @@ export function buildAttachmentArchiveSections({
   changelog,
 }: {
   packageId: string;
-  changelog: opensearch.changelog.ItemResult[];
+  changelog: AttachmentArchiveChangelogItem[];
 }): AttachmentArchiveSectionDescriptor[] {
   return getArchiveEligibleChangelogEntries(changelog)
     .map((entry, originalIndex) => ({
@@ -99,7 +115,7 @@ export function getAttachmentArchiveSectionById({
   sectionId,
 }: {
   packageId: string;
-  changelog: opensearch.changelog.ItemResult[];
+  changelog: AttachmentArchiveChangelogItem[];
   sectionId: string;
 }): AttachmentArchiveSectionDescriptor | undefined {
   return buildAttachmentArchiveSections({ packageId, changelog }).find(
@@ -107,6 +123,6 @@ export function getAttachmentArchiveSectionById({
   );
 }
 
-export function hasArchiveableAttachments(changelog: opensearch.changelog.ItemResult[]): boolean {
+export function hasArchiveableAttachments(changelog: AttachmentArchiveChangelogItem[]): boolean {
   return buildAttachmentArchiveSections({ packageId: "_", changelog }).length > 0;
 }

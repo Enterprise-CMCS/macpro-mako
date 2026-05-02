@@ -1,7 +1,13 @@
 import { Context } from "aws-lambda";
 import * as packageApi from "libs/api/package";
 import * as os from "libs/opensearch-lib";
-import { getRequestContext, setDefaultStateSubmitter, setMockUsername, testReviewer } from "mocks";
+import {
+  getRequestContext,
+  setDefaultStateSubmitter,
+  setMockUsername,
+  TEST_STATE_SUBMITTER_EMAIL,
+  testReviewer,
+} from "mocks";
 import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -24,6 +30,12 @@ const buildPackageResult = (
       authority: "Medicaid SPA",
       seatoolStatus,
       deleted,
+      submitterEmail: TEST_STATE_SUBMITTER_EMAIL,
+      draft: {
+        createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+        draftOwnerEmail: TEST_STATE_SUBMITTER_EMAIL,
+        updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+      },
     },
   }) as any;
 
@@ -85,6 +97,33 @@ describe("deleteDraft handler", () => {
     expect(os.updateData).not.toHaveBeenCalled();
   });
 
+  it("returns 403 when user is not the draft creator or latest updater", async () => {
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      ...buildPackageResult(SEATOOL_STATUS.DRAFT),
+      _source: {
+        ...buildPackageResult(SEATOOL_STATUS.DRAFT)._source,
+        submitterEmail: "another.user@example.com",
+        draft: {
+          createdByEmail: "another.user@example.com",
+          draftOwnerEmail: "another.user@example.com",
+          updatedByEmail: "another.user@example.com",
+        },
+      },
+    });
+
+    const res = await handler(
+      {
+        body: JSON.stringify({ id: DRAFT_ID }),
+        requestContext: getRequestContext(),
+      } as APIGatewayEvent,
+      {} as Context,
+    );
+
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
   it("soft deletes a draft package", async () => {
     vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(
       buildPackageResult(SEATOOL_STATUS.DRAFT),
@@ -114,6 +153,32 @@ describe("deleteDraft handler", () => {
         }),
       }),
     );
+  });
+
+  it("allows the latest updater to delete a draft package", async () => {
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      ...buildPackageResult(SEATOOL_STATUS.DRAFT),
+      _source: {
+        ...buildPackageResult(SEATOOL_STATUS.DRAFT)._source,
+        submitterEmail: "creator@example.com",
+        draft: {
+          createdByEmail: "creator@example.com",
+          draftOwnerEmail: "creator@example.com",
+          updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+        },
+      },
+    });
+
+    const res = await handler(
+      {
+        body: JSON.stringify({ id: DRAFT_ID }),
+        requestContext: getRequestContext(),
+      } as APIGatewayEvent,
+      {} as Context,
+    );
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalled();
   });
 
   it("returns 409 when draft was changed by another request during delete", async () => {
