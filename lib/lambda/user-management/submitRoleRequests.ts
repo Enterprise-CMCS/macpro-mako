@@ -12,7 +12,7 @@ type RoleStatus = "active" | "denied" | "pending" | "revoked";
 
 export const submitRoleRequestEventSchema = z
   .object({
-    body: baseRoleInformationSchema as unknown as z.AnyZodObject,
+    body: baseRoleInformationSchema,
   })
   .passthrough();
 

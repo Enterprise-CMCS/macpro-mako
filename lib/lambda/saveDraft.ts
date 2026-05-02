@@ -11,27 +11,24 @@ import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
 import { getStatus, SEATOOL_STATUS } from "shared-types";
-import { isStateUser } from "shared-utils";
+import { DRAFTABLE_EVENTS, type DraftableEvent, isStateUser } from "shared-utils";
 import { z } from "zod";
 
 import { authenticatedMiddy, ContextWithAuthenticatedUser } from "./middleware";
 import { getUserByEmail } from "./user-management/userManagementService";
 
-const draftableEvents = [
-  "new-medicaid-submission",
-  "new-chip-submission",
-  "new-chip-details-submission",
-  "capitated-initial",
-  "capitated-renewal",
-  "capitated-amendment",
-  "contracting-initial",
-  "contracting-renewal",
-  "contracting-amendment",
-  "temporary-extension",
-  "app-k",
-] as const;
+const MAX_DRAFT_DATA_BYTES = 1_000_000;
 
-type DraftableEvent = (typeof draftableEvents)[number];
+const draftDataSchema = z.record(z.unknown()).superRefine((draftData, ctx) => {
+  const draftDataBytes = Buffer.byteLength(JSON.stringify(draftData), "utf8");
+
+  if (draftDataBytes > MAX_DRAFT_DATA_BYTES) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: `Draft data cannot exceed ${MAX_DRAFT_DATA_BYTES} bytes.`,
+    });
+  }
+});
 
 const eventToAuthority: Partial<Record<DraftableEvent, string>> = {
   "new-medicaid-submission": "Medicaid SPA",
@@ -65,7 +62,7 @@ const saveDraftEventSchema = z
         originalDraftId: z.string().trim().min(1).optional(),
         event: z.string(),
         authority: z.string().optional(),
-        draftData: z.record(z.unknown()),
+        draftData: draftDataSchema,
         ifSeqNo: z.number().int().nonnegative().optional(),
         ifPrimaryTerm: z.number().int().nonnegative().optional(),
       })
@@ -81,6 +78,40 @@ const DRAFT_ID_CONFLICT_MESSAGE =
 const DRAFT_CONCURRENCY_MESSAGE =
   "Draft was updated by another user. Refresh this page and try saving again.";
 
+type TemporaryExtensionDraftData = {
+  ids?: {
+    validAuthority?: {
+      authority?: unknown;
+    };
+  };
+};
+
+type OsUpdateVersionResponse = {
+  _seq_no?: number;
+  _primary_term?: number;
+  body?: {
+    _seq_no?: number;
+    _primary_term?: number;
+  };
+};
+
+const areJsonValuesEqual = (left: unknown, right: unknown) => {
+  return JSON.stringify(left) === JSON.stringify(right);
+};
+
+const unwrapUpdateVersionResponse = (updateResponse: unknown): OsUpdateVersionResponse => {
+  if (!updateResponse || typeof updateResponse !== "object") {
+    return {};
+  }
+
+  const result = updateResponse as OsUpdateVersionResponse;
+  return result.body ?? result;
+};
+
+const getTemporaryExtensionAuthority = (draftData: Record<string, unknown>) => {
+  return (draftData as TemporaryExtensionDraftData).ids?.validAuthority?.authority;
+};
+
 const resolveAuthority = (
   eventName: DraftableEvent,
   authority: string | undefined,
@@ -93,7 +124,7 @@ const resolveAuthority = (
     return draftData.authority.trim();
   }
 
-  const nestedAuthority = (draftData as any)?.ids?.validAuthority?.authority;
+  const nestedAuthority = getTemporaryExtensionAuthority(draftData);
   if (typeof nestedAuthority === "string" && nestedAuthority.trim()) {
     return nestedAuthority.trim();
   }
@@ -119,7 +150,7 @@ const isVersionConflictError = (error: unknown) => {
 
 const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
 
-const canMoveSourceDraft = (
+const canUserModifyDraft = (
   sourceDraftPackage: Awaited<ReturnType<typeof getDraftPackage>>,
   email: string,
 ) => {
@@ -160,7 +191,7 @@ export const handler = authenticatedMiddy({
     ifSeqNo,
     ifPrimaryTerm,
   } = event.body;
-  if (!draftableEvents.includes(eventName as DraftableEvent)) {
+  if (!DRAFTABLE_EVENTS.includes(eventName as DraftableEvent)) {
     return response({
       statusCode: 400,
       body: { message: `Drafts are not supported for event ${eventName}` },
@@ -218,7 +249,7 @@ export const handler = authenticatedMiddy({
     normalizedOriginalDraftId !== undefined && normalizedOriginalDraftId !== normalizedId;
   if (
     isMovingDraftToNewId &&
-    !canMoveSourceDraft(sourceDraftPackage, context.authenticatedUser.email)
+    !canUserModifyDraft(sourceDraftPackage, context.authenticatedUser.email)
   ) {
     return response({
       statusCode: 403,
@@ -229,8 +260,28 @@ export const handler = authenticatedMiddy({
   const isSavingExistingDraftAtSameId =
     normalizedOriginalDraftId !== undefined && normalizedOriginalDraftId === normalizedId;
   const hasActiveDraftAtTarget = isActiveDraftPackage(existingDraftPackage);
+  const isRetryOfOwnedNewDraftSave =
+    normalizedOriginalDraftId === undefined &&
+    hasActiveDraftAtTarget &&
+    canUserModifyDraft(existingDraftPackage, context.authenticatedUser.email) &&
+    areJsonValuesEqual(existingDraftPackage?._source?.draft?.data, draftData);
 
   if (hasActiveDraftAtTarget && !isSavingExistingDraftAtSameId) {
+    if (isRetryOfOwnedNewDraftSave) {
+      return response({
+        statusCode: 200,
+        body: {
+          message: "Draft saved",
+          id: normalizedId,
+          ...(typeof existingDraftPackage?._seq_no === "number" &&
+            typeof existingDraftPackage?._primary_term === "number" && {
+              seqNo: existingDraftPackage._seq_no,
+              primaryTerm: existingDraftPackage._primary_term,
+            }),
+        },
+      });
+    }
+
     return response({
       statusCode: 409,
       body: { message: DRAFT_ID_CONFLICT_MESSAGE },
@@ -358,8 +409,8 @@ export const handler = authenticatedMiddy({
   const deletedDraftVersion =
     shouldReplaceDeletedDraft && hasVersionInExistingDraft
       ? {
-          if_seq_no: existingDraftPackage._seq_no,
-          if_primary_term: existingDraftPackage._primary_term,
+          if_seq_no: existingDraftPackage?._seq_no,
+          if_primary_term: existingDraftPackage?._primary_term,
         }
       : undefined;
 
@@ -401,7 +452,7 @@ export const handler = authenticatedMiddy({
   if (normalizedOriginalDraftId && normalizedOriginalDraftId !== normalizedId) {
     if (
       !userStates.includes(normalizedOriginalDraftId.slice(0, 2)) ||
-      !canMoveSourceDraft(sourceDraftPackage, context.authenticatedUser.email)
+      !canUserModifyDraft(sourceDraftPackage, context.authenticatedUser.email)
     ) {
       return response({
         statusCode: 403,
@@ -441,8 +492,12 @@ export const handler = authenticatedMiddy({
             doc_as_upsert: false,
           },
         });
-      } catch {
-        // Best effort rollback. The user-facing result remains a concurrency conflict.
+      } catch (rollbackError) {
+        console.error("Failed to roll back moved draft after source draft delete failed", {
+          originalDraftId: normalizedOriginalDraftId,
+          newDraftId: normalizedId,
+          rollbackError,
+        });
       }
 
       if (isVersionConflictError(error)) {
@@ -456,7 +511,7 @@ export const handler = authenticatedMiddy({
     }
   }
 
-  const updateResult = (updateResponse as any)?.body ?? updateResponse;
+  const updateResult = unwrapUpdateVersionResponse(updateResponse);
   const seqNo = typeof updateResult?._seq_no === "number" ? updateResult._seq_no : undefined;
   const primaryTerm =
     typeof updateResult?._primary_term === "number" ? updateResult._primary_term : undefined;

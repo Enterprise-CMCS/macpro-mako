@@ -2,6 +2,7 @@ import { zodValidator } from "@dannywrayuk/middy-zod-validator";
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import httpJsonBodyParser from "@middy/http-json-body-parser";
+import { type ZodTypeAny } from "zod";
 
 import {
   isAuthenticated,
@@ -11,7 +12,7 @@ import {
 } from "./index";
 
 export type NonAuthenticatedMiddyOptions = NormalizeEventOptions & {
-  eventSchema?: unknown;
+  eventSchema?: ZodTypeAny;
 };
 
 const defaults: NonAuthenticatedMiddyOptions = {
@@ -44,7 +45,7 @@ export const nonAuthenticatedMiddy = (opts: NonAuthenticatedMiddyOptions = {}) =
     handler = handler.use(httpJsonBodyParser({ disableContentTypeError: true }));
 
     if (eventSchema) {
-      handler = handler.use(zodValidator({ eventSchema: eventSchema as any }));
+      handler = handler.use(zodValidator({ eventSchema }));
     }
   }
 
@@ -53,7 +54,7 @@ export const nonAuthenticatedMiddy = (opts: NonAuthenticatedMiddyOptions = {}) =
 
 export type AuthenticatedMiddyOptions = NormalizeEventOptions &
   IsAuthenticatedOptions & {
-    eventSchema?: unknown;
+    eventSchema?: ZodTypeAny;
   };
 
 /**

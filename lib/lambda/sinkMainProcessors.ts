@@ -25,7 +25,7 @@ import {
   seatool,
   transforms,
 } from "shared-types/opensearch/main";
-import { decodeBase64WithUtf8 } from "shared-utils";
+import { decodeBase64WithUtf8, DRAFTABLE_EVENTS } from "shared-utils";
 
 import {
   deleteAdminChangeSchema,
@@ -42,19 +42,7 @@ const adminRecordSchema = deleteAdminChangeSchema
   .or(splitSPAAdminChangeSchema)
   .or(extendSubmitNOSOAdminSchema);
 
-const eventsThatMayStartAsDrafts = new Set([
-  "new-medicaid-submission",
-  "new-chip-submission",
-  "new-chip-details-submission",
-  "capitated-initial",
-  "capitated-renewal",
-  "capitated-amendment",
-  "contracting-initial",
-  "contracting-renewal",
-  "contracting-amendment",
-  "temporary-extension",
-  "app-k",
-]);
+const eventsThatMayStartAsDrafts = new Set<string>(DRAFTABLE_EVENTS);
 
 const isDocumentMissingError = (error: unknown) => {
   if (error && typeof error === "object") {

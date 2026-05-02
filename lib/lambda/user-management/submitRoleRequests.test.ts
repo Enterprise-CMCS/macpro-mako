@@ -1,4 +1,5 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
+import { produceMessage } from "libs/api/kafka";
 import {
   errorRoleSearchHandler,
   getRequestContext,
@@ -10,16 +11,22 @@ import {
   setMockUsername,
   systemAdmin,
 } from "mocks";
-import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { mockedServiceServer as mockedServer } from "mocks/server";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./submitRoleRequests";
+
+vi.mock("libs/api/kafka", () => ({
+  produceMessage: vi.fn(),
+}));
+
+const mockedProduceMessage = vi.mocked(produceMessage);
 
 describe("submitRoleRequests handler", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     process.env.topicName = "request-role";
+    mockedProduceMessage.mockResolvedValue([{ message: "sent" }]);
   });
 
   it("should return 400 if the event body is missing", async () => {
@@ -84,7 +91,6 @@ describe("submitRoleRequests handler", () => {
   });
 
   it("should return 200 if a state user is submitting their first state request", async () => {
-    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(noStateSubmitter);
 
     const event = {
@@ -133,7 +139,6 @@ describe("submitRoleRequests handler", () => {
   // });
 
   it("should return 200 if the user is allowed to update the access", async () => {
-    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(osStateSystemAdmin);
     const event = {
       body: JSON.stringify({
@@ -164,7 +169,6 @@ describe("submitRoleRequests handler", () => {
   });
 
   it("should return 200 if the user is allowed to request access", async () => {
-    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(multiStateSubmitter);
     const event = {
       body: JSON.stringify({
@@ -195,7 +199,6 @@ describe("submitRoleRequests handler", () => {
   });
 
   it("should return 200 if the user is allowed to self revoke access", async () => {
-    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(multiStateSubmitter);
     const event = {
       body: JSON.stringify({
@@ -226,8 +229,6 @@ describe("submitRoleRequests handler", () => {
   });
 
   it("should call submitGroupDivision if user is a systemadmin updating a cmsroleapprover", async () => {
-    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
-    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(systemAdmin);
     const event = {
       body: JSON.stringify({

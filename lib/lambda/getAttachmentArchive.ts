@@ -109,11 +109,7 @@ export const handler = authenticatedMiddy({
     };
   }
 
-  if (
-    !isCmsReviewer &&
-    packageState &&
-    !authenticatedUser.states?.includes(packageState)
-  ) {
+  if (!isCmsReviewer && packageState && !authenticatedUser.states?.includes(packageState)) {
     return {
       statusCode: 403,
       body: { message: "Not authorized to view this resource" },

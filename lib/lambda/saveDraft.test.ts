@@ -349,6 +349,63 @@ describe("saveDraft handler", () => {
     expect(os.updateData).not.toHaveBeenCalled();
   });
 
+  it("treats an identical retry of a newly created draft as successful for the same user", async () => {
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: DRAFT_ID,
+      _seq_no: 10,
+      _primary_term: 2,
+      _source: {
+        id: DRAFT_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+        draft: {
+          createdByEmail: "state.user@example.com",
+          createdByName: "State User",
+          updatedByEmail: "state.user@example.com",
+          updatedByName: "State User",
+          data: {
+            id: DRAFT_ID,
+            proposedEffectiveDate: 1771480800000,
+          },
+        },
+      },
+    } as any);
+
+    const res = await handler(baseEvent, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Draft saved",
+        id: DRAFT_ID,
+        seqNo: 10,
+        primaryTerm: 2,
+      }),
+    );
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
+  it("returns 400 when draft data exceeds the maximum saved payload size", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => undefined);
+    const oversizedEvent = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: DRAFT_ID,
+        event: "new-medicaid-submission",
+        draftData: {
+          id: DRAFT_ID,
+          text: "x".repeat(1_000_001),
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(oversizedEvent, {} as Context);
+    logSpy.mockRestore();
+    expect(res.statusCode).toBe(400);
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
   it("returns 409 when active draft update misses optimistic concurrency values", async () => {
     vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
       found: true,

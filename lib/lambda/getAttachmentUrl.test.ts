@@ -1,3 +1,5 @@
+import { S3Client } from "@aws-sdk/client-s3";
+import { STSClient } from "@aws-sdk/client-sts";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
 import {
@@ -12,15 +14,46 @@ import {
 } from "mocks";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { createAttachmentBucketClientFactory, mockSend } = vi.hoisted(() => ({
-  createAttachmentBucketClientFactory: vi.fn(),
+const { mockSend, mockStsSend } = vi.hoisted(() => ({
   mockSend: vi.fn(),
+  mockStsSend: vi.fn(),
 }));
 
-vi.mock("../attachment-archive/bucket-routing", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("../attachment-archive/bucket-routing")>()),
-  createAttachmentBucketClientFactory,
-}));
+vi.mock("@aws-sdk/client-s3", () => {
+  class MockS3Command {
+    input: Record<string, unknown>;
+
+    constructor(input: Record<string, unknown>) {
+      this.input = input;
+    }
+  }
+
+  return {
+    S3Client: vi.fn().mockImplementation(() => ({
+      send: mockSend,
+    })),
+    GetObjectCommand: MockS3Command,
+    GetObjectTaggingCommand: MockS3Command,
+    HeadObjectCommand: MockS3Command,
+  };
+});
+
+vi.mock("@aws-sdk/client-sts", () => {
+  class MockAssumeRoleCommand {
+    input: Record<string, unknown>;
+
+    constructor(input: Record<string, unknown>) {
+      this.input = input;
+    }
+  }
+
+  return {
+    STSClient: vi.fn().mockImplementation(() => ({
+      send: mockStsSend,
+    })),
+    AssumeRoleCommand: MockAssumeRoleCommand,
+  };
+});
 
 vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),
@@ -38,13 +71,20 @@ import { handler } from "./getAttachmentUrl";
 
 describe("Lambda Handler", () => {
   beforeEach(() => {
-    mockSend.mockResolvedValue({});
-    createAttachmentBucketClientFactory.mockImplementation(
-      () => async () =>
+    vi.mocked(S3Client).mockImplementation(
+      () =>
         ({
           send: mockSend,
         }) as any,
     );
+    vi.mocked(STSClient).mockImplementation(
+      () =>
+        ({
+          send: mockStsSend,
+        }) as any,
+    );
+    mockSend.mockResolvedValue({});
+    mockStsSend.mockResolvedValue({});
     vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
   });
 
@@ -53,7 +93,7 @@ describe("Lambda Handler", () => {
     vi.restoreAllMocks();
     vi.clearAllMocks();
     mockSend.mockReset();
-    createAttachmentBucketClientFactory.mockReset();
+    mockStsSend.mockReset();
   });
 
   it("should return 400 if event body is missing", async () => {

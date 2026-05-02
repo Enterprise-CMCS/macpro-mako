@@ -1,4 +1,10 @@
-import { GetObjectCommand, GetObjectTaggingCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  GetObjectTaggingCommand,
+  HeadObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
@@ -12,7 +18,6 @@ import {
   isLegacyAttachmentUnavailableError,
 } from "../attachment-archive/attachment-errors";
 import {
-  createAttachmentBucketClientFactory,
   getAttachmentBucketMap,
   resolveTargetBucket as resolveMappedBucket,
 } from "../attachment-archive/bucket-routing";
@@ -30,12 +35,63 @@ import {
 import { buildResponseContentDisposition } from "./presignedAttachmentUrl";
 import { handleOpensearchError } from "./utils";
 
-function getClient(bucket: string) {
-  return createAttachmentBucketClientFactory({
-    region: process.env.region || process.env.AWS_REGION,
-    legacyS3AccessRoleArn: process.env.legacyS3AccessRoleArn,
-  })(bucket);
+const isLegacyUploadBucket = (bucket: string) => bucket.startsWith("uploads");
+
+function createAttachmentUrlClientFactory({
+  region,
+  legacyS3AccessRoleArn,
+}: {
+  region?: string;
+  legacyS3AccessRoleArn?: string;
+}) {
+  const clientCache = new Map<string, Promise<S3Client>>();
+  const stsClient = new STSClient({ region });
+
+  return async (bucket: string): Promise<S3Client> => {
+    const cachedClient = clientCache.get(bucket);
+    if (cachedClient) {
+      return cachedClient;
+    }
+
+    const clientPromise = (async () => {
+      if (!isLegacyUploadBucket(bucket) || !legacyS3AccessRoleArn) {
+        return new S3Client({ region });
+      }
+
+      const assumedRoleResponse = await stsClient.send(
+        new AssumeRoleCommand({
+          RoleArn: legacyS3AccessRoleArn,
+          RoleSessionName: "AttachmentUrlLegacyS3Access",
+        }),
+      );
+
+      const assumedCredentials = assumedRoleResponse.Credentials;
+      const accessKeyId = assumedCredentials?.AccessKeyId;
+      const secretAccessKey = assumedCredentials?.SecretAccessKey;
+
+      if (!accessKeyId || !secretAccessKey) {
+        throw new Error("No assumed credentials returned for legacy S3 access role");
+      }
+
+      return new S3Client({
+        region,
+        credentials: {
+          accessKeyId,
+          secretAccessKey,
+          sessionToken: assumedCredentials.SessionToken,
+        },
+      });
+    })();
+
+    clientCache.set(bucket, clientPromise);
+    return clientPromise;
+  };
 }
+
+const getClient = createAttachmentUrlClientFactory({
+  region: process.env.region || process.env.AWS_REGION,
+  legacyS3AccessRoleArn: process.env.legacyS3AccessRoleArn,
+});
 
 class AttachmentUnavailableError extends Error {
   statusCode = 410;

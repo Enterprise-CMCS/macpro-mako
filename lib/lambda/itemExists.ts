@@ -46,7 +46,7 @@ export const handler = authenticatedMiddy({
 
       const shouldFetchDraftIndex = includeDrafts && (!isCms || isHelpDesk);
       const draftPackage = shouldFetchDraftIndex
-        ? await getDraftPackage(event.body?.id?.toUpperCase())
+        ? await getDraftPackage(event.body.id.toUpperCase())
         : undefined;
       const hasActiveDraftPackage = isActiveDraftPackage(draftPackage);
 

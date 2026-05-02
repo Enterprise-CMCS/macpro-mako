@@ -9,6 +9,7 @@ export * from "./cloudformation";
 export * from "./decode";
 export * from "./validate-env-variable";
 export * from "./date-helper";
+export * from "./draft-events";
 export * from "./package-actions/getAvailableActions";
 export * from "./action-type";
 export * from "./legacy-event-type";

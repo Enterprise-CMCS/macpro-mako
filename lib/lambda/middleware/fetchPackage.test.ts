@@ -172,4 +172,35 @@ describe("fetchPackage", () => {
     expect(res.body).toEqual("OK");
     getPackageSpy.mockRestore();
   });
+
+  it("should store malformed main shell docs when active-main filtering is disabled", async () => {
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9100-P" }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+    const expectedPackage = {
+      found: true,
+      _id: "MD-26-9100-P",
+      _source: {
+        id: "MD-26-9100-P",
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as main.ItemResult;
+
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce(expectedPackage);
+
+    const handler = setupHandler({
+      expectedPackage,
+      options: { allowNotFound: true, requireActiveMainNonDraft: false },
+    });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual("OK");
+    getPackageSpy.mockRestore();
+  });
 });

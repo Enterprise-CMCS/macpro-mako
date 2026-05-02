@@ -8,7 +8,7 @@ import { nonAuthenticatedMiddy } from "../middleware";
 export const updateUserRolesEventSchema = z
   .object({
     body: z.object({
-      updatedRoles: z.array(baseUserRoleRequestSchema as unknown as z.ZodTypeAny),
+      updatedRoles: z.array(baseUserRoleRequestSchema),
     }),
   })
   .passthrough();
