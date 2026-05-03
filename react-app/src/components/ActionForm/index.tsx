@@ -727,10 +727,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pathnameToDisplayOn: formOrigins.pathname,
       });
 
-      await queryClient.invalidateQueries({ queryKey: ["record"] });
-      if (!isMountedRef.current) return;
-      navigate(formOrigins);
-
       const timeOnPageSec = (Date.now() - startTimePage) / 1000;
 
       sendGAEvent("submission_submit_click", { package_type: formData.event, package_id: id });
@@ -743,6 +739,17 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       } else if (formData.event == "withdraw-package") {
         sendGAEvent("withdraw-package", { package_id: id });
       }
+
+      if (isDraftMode) {
+        skipNavigationPromptRef.current = true;
+        navigate(formOrigins);
+        void queryClient.invalidateQueries({ queryKey: ["record"] });
+        return;
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ["record"] });
+      if (!isMountedRef.current) return;
+      navigate(formOrigins);
     } catch (error) {
       if (!isMountedRef.current) return;
       console.error(error);
@@ -859,9 +866,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       await queryClient.invalidateQueries({ queryKey: ["record", normalizedId] });
-      if (draftId && draftId !== normalizedId) {
-        await queryClient.invalidateQueries({ queryKey: ["record", draftId] });
-      }
       if (!isMountedRef.current) return;
 
       banner({

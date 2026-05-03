@@ -991,7 +991,7 @@ describe("ActionForm", () => {
     expect(invalidateQueriesSpy).toHaveBeenCalledWith({
       queryKey: ["record", newDraftId],
     });
-    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+    expect(invalidateQueriesSpy).not.toHaveBeenCalledWith({
       queryKey: ["record", oldDraftId],
     });
     expect(removeQueriesSpy).not.toHaveBeenCalledWith({
@@ -1053,6 +1053,11 @@ describe("ActionForm", () => {
 
   test("polls with includeDraft enabled while submitting an existing draft", async () => {
     const draftId = "MD-25-2525-SAVE";
+    const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData").mockResolvedValue({
+      correctDataStateFound: true,
+      maxAttemptsReached: false,
+    });
     const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
       data: {
         _id: draftId,
@@ -1102,7 +1107,14 @@ describe("ActionForm", () => {
         includeDraft: true,
       }),
     );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: ["record"] });
+    expect(mockNavigate.mock.invocationCallOrder.at(-1)).toBeLessThan(
+      invalidateQueriesSpy.mock.invocationCallOrder.at(-1) ?? 0,
+    );
 
+    invalidateQueriesSpy.mockRestore();
+    dataPollerSpy.mockRestore();
     useGetItemSpy.mockRestore();
   });
 
