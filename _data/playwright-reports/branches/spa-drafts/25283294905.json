@@ -1,0 +1,1767 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.setup.ts",
+    "globalTeardown": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+        "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+      },
+      "gitCommit": {
+        "shortHash": "c9d5e80",
+        "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+        "subject": "cleanup of actionform",
+        "body": "cleanup of actionform\n",
+        "author": {
+          "name": "James Dinh",
+          "email": "jdinh8124@gmail.com",
+          "time": 1777822432000
+        },
+        "committer": {
+          "name": "James Dinh",
+          "email": "jdinh8124@gmail.com",
+          "time": 1777822432000
+        },
+        "branch": "spa-drafts"
+      },
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "local-setup",
+        "name": "local-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/local\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "ci-setup",
+        "name": "ci-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/ci\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "val-setup",
+        "name": "val-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/val\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "eua-setup",
+        "name": "eua-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/eua\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "mfa-setup",
+        "name": "mfa-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/mfa\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "smoke-test",
+        "name": "smoke-test",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/smoke\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "local",
+        "name": "local",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "ci",
+        "name": "ci",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "val",
+        "name": "val",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "eua-user",
+        "name": "eua-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "mfa-user",
+        "name": "mfa-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "smoke-tests",
+        "name": "smoke-tests",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/smoke/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "commitHash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25283294905"
+          },
+          "gitCommit": {
+            "shortHash": "c9d5e80",
+            "hash": "c9d5e80d42a0f12fd5fe9a52364b312b38827d28",
+            "subject": "cleanup of actionform",
+            "body": "cleanup of actionform\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1777822432000
+            },
+            "branch": "spa-drafts"
+          },
+          "actualWorkers": 1
+        },
+        "id": "shared",
+        "name": "shared",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "e2e/specs/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "e2e/specs/dashboard.spec.ts",
+      "file": "e2e/specs/dashboard.spec.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "Dashboard page",
+          "file": "e2e/specs/dashboard.spec.ts",
+          "line": 66,
+          "column": 8,
+          "specs": [],
+          "suites": [
+            {
+              "title": "stateSubmitter dashboard",
+              "file": "e2e/specs/dashboard.spec.ts",
+              "line": 71,
+              "column": 10,
+              "specs": [],
+              "suites": [
+                {
+                  "title": "UI validations",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 86,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "navigation banner updates",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2931,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:18.026Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-79236770153f2bc1774a",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 87,
+                      "column": 9
+                    },
+                    {
+                      "title": "page header",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2846,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:21.047Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-d58f6cb96869baa5c8ca",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 101,
+                      "column": 9
+                    },
+                    {
+                      "title": "SPA and Waiver tabs",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2805,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:23.908Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-aaa4291f7cccb505955c",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 111,
+                      "column": 9
+                    },
+                    {
+                      "title": "search field",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2826,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:26.727Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-09e909a1a6477cabd9dc",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 119,
+                      "column": 9
+                    },
+                    {
+                      "title": "columns button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2742,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:29.567Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-c2aaa2e70a91136deaa4",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 128,
+                      "column": 9
+                    },
+                    {
+                      "title": "filters buttons",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2859,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:32.322Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-ccbb295142dad4447f3d",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 135,
+                      "column": 9
+                    },
+                    {
+                      "title": "export button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2777,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:35.194Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-292b179a233e813cb1fa",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 140,
+                      "column": 9
+                    }
+                  ],
+                  "suites": [
+                    {
+                      "title": "dashboard table",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 145,
+                      "column": 14,
+                      "specs": [],
+                      "suites": [
+                        {
+                          "title": "spas",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 146,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3031,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:38:37.986Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-9b54b2f13ec47145f067",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 147,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2742,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:38:41.030Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-9832e54ed6bc6e875887",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 184,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2722,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:38:43.786Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-6a9fe6fd1870cdaf3e89",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 188,
+                              "column": 13
+                            }
+                          ]
+                        },
+                        {
+                          "title": "waivers",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 193,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3256,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:38:46.522Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-a626b6eed07fdecc9042",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 198,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2891,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:38:49.792Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-61809a8110fdeff7508e",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 235,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2918,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:38:52.703Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-b5476ccae199bfd768d0",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 239,
+                              "column": 13
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "title": "Interactions",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 246,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "Download Exports for stateSubmitter user",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 6074,
+                              "errors": [],
+                              "stdout": [
+                                {
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-05_03_2026.csv\"\n"
+                                }
+                              ],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:38:55.635Z",
+                              "annotations": [],
+                              "attachments": [
+                                {
+                                  "name": "metadata",
+                                  "contentType": "application/json",
+                                  "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
+                                }
+                              ]
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-a2db929c6434ad64d2d1",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 247,
+                      "column": 9
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "title": "cmsReviewer dashboard",
+              "file": "e2e/specs/dashboard.spec.ts",
+              "line": 71,
+              "column": 10,
+              "specs": [],
+              "suites": [
+                {
+                  "title": "UI validations",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 86,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "navigation banner updates",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2902,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:01.724Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-49435fe861e54d37de40",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 87,
+                      "column": 9
+                    },
+                    {
+                      "title": "page header",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2739,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:04.642Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-feace4ed300c666899a1",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 101,
+                      "column": 9
+                    },
+                    {
+                      "title": "SPA and Waiver tabs",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2912,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:07.397Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-455bb432ffaaed58f362",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 111,
+                      "column": 9
+                    },
+                    {
+                      "title": "search field",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2900,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:10.323Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-9f724c34626455f57ae5",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 119,
+                      "column": 9
+                    },
+                    {
+                      "title": "columns button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2852,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:13.237Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-6ffaa1bbf26b0ba51345",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 128,
+                      "column": 9
+                    },
+                    {
+                      "title": "filters buttons",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2761,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:16.104Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-b07f1519c3c4a274bec3",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 135,
+                      "column": 9
+                    },
+                    {
+                      "title": "export button",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 2841,
+                              "errors": [],
+                              "stdout": [],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:18.876Z",
+                              "annotations": [],
+                              "attachments": []
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-931865d50e04c29cd203",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 140,
+                      "column": 9
+                    }
+                  ],
+                  "suites": [
+                    {
+                      "title": "dashboard table",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 145,
+                      "column": 14,
+                      "specs": [],
+                      "suites": [
+                        {
+                          "title": "spas",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 146,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3091,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:39:21.729Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-99c3838bc3fb0f0af16b",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 147,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2853,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:39:24.834Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-ff072afbb17733ee985f",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 184,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2735,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:39:27.701Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-07886babd48e8320c3ee",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 188,
+                              "column": 13
+                            }
+                          ]
+                        },
+                        {
+                          "title": "waivers",
+                          "file": "e2e/specs/dashboard.spec.ts",
+                          "line": 193,
+                          "column": 16,
+                          "specs": [
+                            {
+                              "title": "column headers",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3312,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:39:30.449Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-efd257844fbde96ced5d",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 198,
+                              "column": 13
+                            },
+                            {
+                              "title": "table data",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 2943,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:39:33.778Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-667b6675c2f89da21417",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 235,
+                              "column": 13
+                            },
+                            {
+                              "title": "table footer",
+                              "ok": true,
+                              "tags": [
+                                "CI"
+                              ],
+                              "tests": [
+                                {
+                                  "timeout": 30000,
+                                  "annotations": [],
+                                  "expectedStatus": "passed",
+                                  "projectId": "shared",
+                                  "projectName": "shared",
+                                  "results": [
+                                    {
+                                      "workerIndex": 0,
+                                      "parallelIndex": 0,
+                                      "status": "passed",
+                                      "duration": 3001,
+                                      "errors": [],
+                                      "stdout": [],
+                                      "stderr": [],
+                                      "retry": 0,
+                                      "startTime": "2026-05-03T15:39:36.736Z",
+                                      "annotations": [],
+                                      "attachments": []
+                                    }
+                                  ],
+                                  "status": "expected"
+                                }
+                              ],
+                              "id": "e31090cf21ac3d2f1505-b6337307151f9d48b5ff",
+                              "file": "e2e/specs/dashboard.spec.ts",
+                              "line": 239,
+                              "column": 13
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "title": "Interactions",
+                  "file": "e2e/specs/dashboard.spec.ts",
+                  "line": 246,
+                  "column": 12,
+                  "specs": [
+                    {
+                      "title": "Download Exports for cmsReviewer user",
+                      "ok": true,
+                      "tags": [
+                        "CI"
+                      ],
+                      "tests": [
+                        {
+                          "timeout": 30000,
+                          "annotations": [],
+                          "expectedStatus": "passed",
+                          "projectId": "shared",
+                          "projectName": "shared",
+                          "results": [
+                            {
+                              "workerIndex": 0,
+                              "parallelIndex": 0,
+                              "status": "passed",
+                              "duration": 6023,
+                              "errors": [],
+                              "stdout": [
+                                {
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-05_03_2026.csv\"\n"
+                                }
+                              ],
+                              "stderr": [],
+                              "retry": 0,
+                              "startTime": "2026-05-03T15:39:39.754Z",
+                              "annotations": [],
+                              "attachments": [
+                                {
+                                  "name": "metadata",
+                                  "contentType": "application/json",
+                                  "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
+                                }
+                              ]
+                            }
+                          ],
+                          "status": "expected"
+                        }
+                      ],
+                      "id": "e31090cf21ac3d2f1505-cae5ba9990e03d5efaa9",
+                      "file": "e2e/specs/dashboard.spec.ts",
+                      "line": 247,
+                      "column": 9
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-05-03T15:37:54.494Z",
+    "duration": 111367.001,
+    "expected": 28,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
