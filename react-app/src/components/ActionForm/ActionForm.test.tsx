@@ -1118,6 +1118,67 @@ describe("ActionForm", () => {
     useGetItemSpy.mockRestore();
   });
 
+  test("does not flash missing draft error while an existing draft is being submitted", async () => {
+    const draftId = "MD-25-2525-SAVE";
+    let draftDisappeared = false;
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockImplementation(
+      () =>
+        ({
+          data: draftDisappeared
+            ? undefined
+            : {
+                _id: draftId,
+                found: true,
+                _source: {
+                  id: draftId,
+                  seatoolStatus: SEATOOL_STATUS.DRAFT,
+                  draft: {
+                    savedAt: "2026-02-26T00:00:00.000Z",
+                    createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+                    updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+                    data: { id: draftId },
+                  },
+                  changelog: [],
+                },
+              },
+          isLoading: false,
+          isFetched: true,
+          error: null,
+        }) as any,
+    );
+    vi.spyOn(api, "itemExists").mockImplementation(async () => {
+      draftDisappeared = true;
+      return false;
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Submit Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    fireEvent.submit(await screen.findByTestId("submit-action-form"));
+
+    await waitFor(() => expect(screen.getByTestId("three-dots-loading")).toBeInTheDocument());
+    expect(screen.queryByText("No active draft package was found.")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
   test("shows warning modal when a non-owner saves a draft and allows continue", async () => {
     const user = userEvent.setup();
     const draftId = "NY-25-2342";

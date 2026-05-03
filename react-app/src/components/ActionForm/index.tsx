@@ -192,6 +192,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [footerTriggerElement, setFooterTriggerElement] = useState<HTMLDivElement | null>(null);
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const [draftSaveStatus, setDraftSaveStatus] = useState<DraftSaveStatus | null>(null);
+  const [isDraftSubmissionInProgress, setIsDraftSubmissionInProgress] = useState(false);
   const previousDraftIdRef = useRef<string | null>(null);
   const draftSaveStatusRef = useRef<HTMLParagraphElement | null>(null);
   const hasConfirmedNonOwnerDraftActionRef = useRef(false);
@@ -682,10 +683,18 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         }
       }
 
+      if (isDraftMode) {
+        setIsDraftSubmissionInProgress(true);
+      }
+
       try {
         await mutateAsync(formData);
         if (!isMountedRef.current) return;
       } catch (error) {
+        if (isDraftMode) {
+          setIsDraftSubmissionInProgress(false);
+        }
+
         if (draftEnabled && error?.response?.status === 409) {
           const resolvedId = getResolvedDraftId(formData as Record<string, unknown>);
           showDraftIdConflict(resolvedId || draftId || id || "");
@@ -752,6 +761,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       navigate(formOrigins);
     } catch (error) {
       if (!isMountedRef.current) return;
+      if (isDraftMode) {
+        setIsDraftSubmissionInProgress(false);
+      }
       console.error(error);
       banner({
         header: "An unexpected error has occurred:",
@@ -988,7 +1000,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <LoadingSpinner />;
   }
 
-  if (isDraftMode && isDraftLoading) {
+  if (isDraftMode && (isDraftLoading || isDraftSubmissionInProgress)) {
     return <LoadingSpinner />;
   }
 
