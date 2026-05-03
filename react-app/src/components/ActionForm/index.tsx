@@ -193,6 +193,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const [draftSaveStatus, setDraftSaveStatus] = useState<DraftSaveStatus | null>(null);
   const [isDraftSubmissionInProgress, setIsDraftSubmissionInProgress] = useState(false);
+  const [draftRouteTransitionId, setDraftRouteTransitionId] = useState<string | null>(null);
   const previousDraftIdRef = useRef<string | null>(null);
   const draftSaveStatusRef = useRef<HTMLParagraphElement | null>(null);
   const hasConfirmedNonOwnerDraftActionRef = useRef(false);
@@ -218,6 +219,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const rawDraftId = draftEnabled ? new URLSearchParams(search).get("draftId") : null;
   const draftId = rawDraftId ? rawDraftId.toUpperCase() : null;
   const isDraftMode = draftEnabled && !!draftId;
+  const isDraftSaveRouteTransition = isDraftMode && draftRouteTransitionId === draftId;
   const hasAppliedDraftRef = useRef(false);
 
   const {
@@ -363,17 +365,32 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       return;
     }
     hasAppliedDraftRef.current = false;
-    hasPromptedNonOwnerDraftActionRef.current = false;
-    hasConfirmedNonOwnerDraftActionRef.current = false;
-    pendingNonOwnerDraftActionRef.current = null;
-    if (shouldClearDraftSaveStatus) {
+    if (!isDraftSaveRouteTransition) {
+      hasPromptedNonOwnerDraftActionRef.current = false;
+      hasConfirmedNonOwnerDraftActionRef.current = false;
+      pendingNonOwnerDraftActionRef.current = null;
+      draftVersionRef.current = {};
+      setCurrentSessionDraftActor(null);
+    }
+    if (shouldClearDraftSaveStatus && !isDraftSaveRouteTransition) {
       setDraftSaveStatus(null);
     }
     setDraftIdConflict(null);
-    draftVersionRef.current = {};
-    setCurrentSessionDraftActor(null);
     previousDraftIdRef.current = draftId;
-  }, [draftId, isDraftMode]);
+  }, [draftId, isDraftMode, isDraftSaveRouteTransition]);
+
+  useEffect(() => {
+    if (!draftRouteTransitionId) return;
+
+    if (draftId !== draftRouteTransitionId) {
+      setDraftRouteTransitionId(null);
+      return;
+    }
+
+    if (!isDraftLoading && isDraftFetched) {
+      setDraftRouteTransitionId(null);
+    }
+  }, [draftId, draftRouteTransitionId, isDraftFetched, isDraftLoading]);
 
   useEffect(() => {
     if (!isNonOwnerDraftUser || !draftId || !userObj?.email) return;
@@ -904,6 +921,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         const nextSearch = new URLSearchParams(search);
         nextSearch.set("draftId", normalizedId);
         skipNavigationPromptRef.current = true;
+        setDraftRouteTransitionId(normalizedId);
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
       }
     } catch (error) {
@@ -1000,7 +1018,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <LoadingSpinner />;
   }
 
-  if (isDraftMode && (isDraftLoading || isDraftSubmissionInProgress)) {
+  if (
+    isDraftMode &&
+    (isDraftSubmissionInProgress || (isDraftLoading && !isDraftSaveRouteTransition))
+  ) {
     return <LoadingSpinner />;
   }
 
