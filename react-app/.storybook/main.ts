@@ -39,7 +39,7 @@ const config: StorybookConfig = {
   }),
   stories: ["../src/**/*.mdx", "../src/**/*.stories.{js,jsx,mjs,ts,tsx}"],
   typescript: { check: true },
-  staticDirs: ["./public", "../public", "../dist"],
+  staticDirs: ["../public", "../dist"],
   addons: [
     getAbsolutePath("@whitespace/storybook-addon-html"),
     getAbsolutePath("@storybook/addon-a11y"),
