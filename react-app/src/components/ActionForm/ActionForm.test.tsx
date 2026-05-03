@@ -24,6 +24,7 @@ import {
 } from "@/utils/drafts";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
+import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/render";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
 const mockNavigate = vi.fn();
@@ -783,6 +784,15 @@ describe("ActionForm", () => {
     });
 
     expect(userPromptSpy).not.toHaveBeenCalled();
+    expect(
+      JSON.parse(sessionStorage.getItem("onemac:draft-save-route-transition") ?? "{}"),
+    ).toEqual(
+      expect.objectContaining({
+        id: "MD-00-0001",
+        pathname: "/test/Medicaid SPA",
+        expiresAt: expect.any(Number),
+      }),
+    );
   });
 
   test("shows unsaved changes status after editing a saved draft", async () => {
@@ -1005,6 +1015,59 @@ describe("ActionForm", () => {
     removeQueriesSpy.mockRestore();
     useGetItemSpy.mockRestore();
     saveDraftSpy.mockRestore();
+  });
+
+  test("keeps the form visible while a saved draft route transition is unresolved", async () => {
+    const draftId = "MD-26-0108-P";
+    sessionStorage.setItem(
+      "onemac:draft-save-route-transition",
+      JSON.stringify({
+        id: draftId,
+        pathname: "/draft-route",
+        expiresAt: Date.now() + 30_000,
+      }),
+    );
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isFetched: true,
+      error: null,
+    } as any);
+    const form = (
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("detail-section-title")).toHaveTextContent("Draft Save Test"),
+    );
+    expect(screen.queryByTestId("three-dots-loading")).not.toBeInTheDocument();
+    expect(screen.queryByText("No active draft package was found.")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
   });
 
   test("ignores duplicate save clicks while a draft save is already in flight", async () => {

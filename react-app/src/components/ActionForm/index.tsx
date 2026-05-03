@@ -136,7 +136,79 @@ const getValueByPath = (values: Record<string, unknown>, path: string) => {
   }, values);
 };
 
-const DRAFT_SAVE_ROUTE_TRANSITION_KEY = "draftSaveRouteTransitionId";
+const DRAFT_SAVE_ROUTE_TRANSITION_KEY = "onemac:draft-save-route-transition";
+const DRAFT_SAVE_ROUTE_TRANSITION_TTL_MS = 30_000;
+
+type DraftSaveRouteTransition = {
+  id: string;
+  pathname: string;
+  expiresAt: number;
+};
+
+const normalizeDraftRouteTransitionId = (id?: string | null) => id?.trim().toUpperCase() || "";
+
+const clearDraftSaveRouteTransition = () => {
+  try {
+    sessionStorage.removeItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY);
+  } catch {
+    // Storage may be unavailable in private/locked-down contexts.
+  }
+};
+
+const readDraftSaveRouteTransition = (pathname: string): DraftSaveRouteTransition | null => {
+  try {
+    const rawTransition = sessionStorage.getItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY);
+    if (!rawTransition) return null;
+
+    const transition = JSON.parse(rawTransition) as Partial<DraftSaveRouteTransition>;
+    const normalizedId = normalizeDraftRouteTransitionId(transition.id);
+    const isCurrentRoute = transition.pathname === pathname;
+    const isFresh = typeof transition.expiresAt === "number" && transition.expiresAt > Date.now();
+
+    if (!normalizedId || !isCurrentRoute || !isFresh) {
+      clearDraftSaveRouteTransition();
+      return null;
+    }
+
+    return {
+      id: normalizedId,
+      pathname: transition.pathname,
+      expiresAt: transition.expiresAt,
+    };
+  } catch {
+    clearDraftSaveRouteTransition();
+    return null;
+  }
+};
+
+const startDraftSaveRouteTransition = (id: string, pathname: string): DraftSaveRouteTransition => {
+  const transition = {
+    id: normalizeDraftRouteTransitionId(id),
+    pathname,
+    expiresAt: Date.now() + DRAFT_SAVE_ROUTE_TRANSITION_TTL_MS,
+  };
+
+  try {
+    sessionStorage.setItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY, JSON.stringify(transition));
+  } catch {
+    // The in-memory marker still covers this mounted instance if storage fails.
+  }
+
+  return transition;
+};
+
+const matchesDraftSaveRouteTransition = (
+  transition: DraftSaveRouteTransition | null,
+  pathname: string,
+  draftId: string | null,
+) =>
+  Boolean(
+    draftId &&
+      transition &&
+      transition.pathname === pathname &&
+      transition.id === draftId &&
+      transition.expiresAt > Date.now(),
+  );
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   schema,
@@ -195,8 +267,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const [draftSaveStatus, setDraftSaveStatus] = useState<DraftSaveStatus | null>(null);
   const [isDraftSubmissionInProgress, setIsDraftSubmissionInProgress] = useState(false);
-  const [draftRouteTransitionId, setDraftRouteTransitionId] = useState<string | null>(null);
-  const draftRouteTransitionIdRef = useRef<string | null>(null);
+  const [draftRouteTransition, setDraftRouteTransition] = useState<DraftSaveRouteTransition | null>(
+    () => readDraftSaveRouteTransition(pathname),
+  );
+  const draftRouteTransitionRef = useRef<DraftSaveRouteTransition | null>(draftRouteTransition);
   const previousDraftIdRef = useRef<string | null>(null);
   const draftSaveStatusRef = useRef<HTMLParagraphElement | null>(null);
   const hasConfirmedNonOwnerDraftActionRef = useRef(false);
@@ -222,16 +296,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const rawDraftId = draftEnabled ? new URLSearchParams(search).get("draftId") : null;
   const draftId = rawDraftId ? rawDraftId.toUpperCase() : null;
   const isDraftMode = draftEnabled && !!draftId;
-  const storedDraftRouteTransitionId =
-    typeof window !== "undefined"
-      ? sessionStorage.getItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY)?.toUpperCase()
-      : null;
-
   const isDraftSaveRouteTransition =
     isDraftMode &&
-    (draftRouteTransitionId === draftId ||
-      draftRouteTransitionIdRef.current === draftId ||
-      storedDraftRouteTransitionId === draftId);
+    (matchesDraftSaveRouteTransition(draftRouteTransition, pathname, draftId) ||
+      matchesDraftSaveRouteTransition(draftRouteTransitionRef.current, pathname, draftId));
   const hasAppliedDraftRef = useRef(false);
 
   const {
@@ -244,6 +312,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     { enabled: isDraftMode },
     { includeDraft: true, preferDraft: true },
   );
+  const hasLoadedActiveDraftRecord =
+    isDraftFetched &&
+    draftRecord?._source?.deleted !== true &&
+    draftRecord?._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const draftCreatorActor = {
     email:
       draftRecord?._source?.draft?.createdByEmail ?? draftRecord?._source?.draft?.draftOwnerEmail,
@@ -367,6 +439,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       hasPromptedNonOwnerDraftActionRef.current = false;
       hasConfirmedNonOwnerDraftActionRef.current = false;
       pendingNonOwnerDraftActionRef.current = null;
+      if (!draftEnabled) {
+        draftRouteTransitionRef.current = null;
+        setDraftRouteTransition(null);
+        clearDraftSaveRouteTransition();
+      }
 
       if (previousDraftId !== null) {
         setDraftSaveStatus(null);
@@ -394,39 +471,44 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
 
     previousDraftIdRef.current = draftId;
-  }, [draftId, isDraftMode, isDraftSaveRouteTransition]);
+  }, [draftEnabled, draftId, isDraftMode, isDraftSaveRouteTransition]);
 
   useEffect(() => {
-    const storedTransitionId =
-      typeof window !== "undefined"
-        ? sessionStorage.getItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY)?.toUpperCase()
-        : null;
+    const activeTransition = draftRouteTransition ?? draftRouteTransitionRef.current;
 
-    if (!draftRouteTransitionId && !draftRouteTransitionIdRef.current && !storedTransitionId) {
+    if (!activeTransition || !draftId) {
       return;
     }
 
-    const activeTransitionId =
-      draftRouteTransitionId ?? draftRouteTransitionIdRef.current ?? storedTransitionId;
-
-    if (!draftId) {
+    if (activeTransition.expiresAt <= Date.now()) {
+      draftRouteTransitionRef.current = null;
+      clearDraftSaveRouteTransition();
+      setDraftRouteTransition(null);
       return;
     }
 
-    if (draftId !== activeTransitionId) {
+    if (draftId !== activeTransition.id || pathname !== activeTransition.pathname) {
       // We may be between setting the transition target and the URL catching up.
       // This happens when saving an existing draft under a new ID.
       // Do not clear the marker yet, or the route transition will show the page spinner.
       return;
     }
-    if (!isDraftLoading && isDraftFetched) {
-      draftRouteTransitionIdRef.current = null;
-      if (typeof window !== "undefined") {
-        sessionStorage.removeItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY);
-      }
-      setDraftRouteTransitionId(null);
+    if (!isDraftLoading && hasLoadedActiveDraftRecord) {
+      draftRouteTransitionRef.current = null;
+      clearDraftSaveRouteTransition();
+      setDraftRouteTransition(null);
+      return;
     }
-  }, [draftId, draftRouteTransitionId, isDraftFetched, isDraftLoading]);
+
+    const timeoutMs = activeTransition.expiresAt - Date.now();
+    const timeoutId = window.setTimeout(() => {
+      draftRouteTransitionRef.current = null;
+      clearDraftSaveRouteTransition();
+      setDraftRouteTransition(null);
+    }, timeoutMs);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [draftId, draftRouteTransition, hasLoadedActiveDraftRecord, isDraftLoading, pathname]);
 
   useEffect(() => {
     if (!isNonOwnerDraftUser || !draftId || !userObj?.email) return;
@@ -959,11 +1041,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         nextSearch.set("draftId", normalizedId);
 
         skipNavigationPromptRef.current = true;
-        draftRouteTransitionIdRef.current = normalizedId;
-        if (typeof window !== "undefined") {
-          sessionStorage.setItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY, normalizedId);
-        }
-        setDraftRouteTransitionId(normalizedId);
+        const routeTransition = startDraftSaveRouteTransition(normalizedId, pathname);
+        draftRouteTransitionRef.current = routeTransition;
+        setDraftRouteTransition(routeTransition);
 
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
       }
@@ -1065,17 +1145,25 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   if (
     isDraftMode &&
-    (isDraftSubmissionInProgress || (isDraftLoading && !isDraftSaveRouteTransition))
+    (isDraftSubmissionInProgress ||
+      form.formState.isSubmitting ||
+      (isDraftLoading && !isDraftSaveRouteTransition))
   ) {
     return <LoadingSpinner />;
   }
 
-  if (isDraftMode && isDraftFetched && draftRecord?._source?.deleted === true) {
+  if (
+    isDraftMode &&
+    !isDraftSaveRouteTransition &&
+    isDraftFetched &&
+    draftRecord?._source?.deleted === true
+  ) {
     return <Navigate to="/dashboard" replace />;
   }
 
   if (
     isDraftMode &&
+    !isDraftSaveRouteTransition &&
     (draftError ||
       (isDraftFetched &&
         (!draftRecord || draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT)))
