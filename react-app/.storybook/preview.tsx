@@ -9,7 +9,7 @@ import { withLaunchDarkly, withQueryClient } from "./decorators";
 initialize({
   onUnhandledRequest: "bypass",
   serviceWorker: {
-    url: "/mockServiceWorker.js",
+    url: "/storybookMockServiceWorker.mjs",
     options: {
       updateViaCache: "none",
     },

@@ -636,7 +636,7 @@ describe("saveDraft handler", () => {
     );
   });
 
-  it("returns 403 when moving a draft the user did not create or most recently update", async () => {
+  it("allows a same-state user to move a draft they did not create or most recently update", async () => {
     const nextDraftId = "MD-25-2526-SAVE";
     vi.spyOn(packageApi, "getDraftPackage").mockImplementation(async (id) => {
       if (id === nextDraftId) {
@@ -684,9 +684,35 @@ describe("saveDraft handler", () => {
 
     const res = await handler(eventWithChangedId, {} as Context);
 
-    expect(res.statusCode).toBe(403);
-    expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
-    expect(os.updateData).not.toHaveBeenCalled();
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenNthCalledWith(
+      1,
+      expect.any(String),
+      expect.objectContaining({
+        id: nextDraftId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            draft: expect.objectContaining({
+              createdByEmail: "other.user@example.com",
+              updatedByEmail: "state.user@example.com",
+            }),
+          }),
+        }),
+      }),
+    );
+    expect(os.updateData).toHaveBeenNthCalledWith(
+      2,
+      expect.any(String),
+      expect.objectContaining({
+        id: DRAFT_ID,
+        if_seq_no: 10,
+        if_primary_term: 2,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({ deleted: true }),
+          doc_as_upsert: false,
+        }),
+      }),
+    );
   });
 
   it("returns 409 when OpenSearch reports a version conflict during compare-and-write", async () => {

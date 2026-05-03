@@ -889,9 +889,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         nextSearch.set("draftId", normalizedId);
         skipNavigationPromptRef.current = true;
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
-        window.setTimeout(() => {
-          skipNavigationPromptRef.current = false;
-        }, 0);
       }
     } catch (error) {
       if (!isMountedRef.current) return;

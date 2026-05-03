@@ -46,6 +46,7 @@ describe("handler", () => {
       {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
+        deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
         statusDate: { type: "date" },
@@ -57,6 +58,7 @@ describe("handler", () => {
       `${OPENSEARCH_INDEX_NAMESPACE}draftmain`,
       {
         changedDate: { type: "date" },
+        deleted: { type: "boolean" },
         makoChangedDate: { type: "date" },
         statusDate: { type: "date" },
       },

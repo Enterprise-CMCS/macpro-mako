@@ -260,18 +260,6 @@ export const handler = authenticatedMiddy({
     });
   }
 
-  const isMovingDraftToNewId =
-    normalizedOriginalDraftId !== undefined && normalizedOriginalDraftId !== normalizedId;
-  if (
-    isMovingDraftToNewId &&
-    !canUserModifyDraft(sourceDraftPackage, context.authenticatedUser.email)
-  ) {
-    return response({
-      statusCode: 403,
-      body: { message: "Not authorized to view this resource" },
-    });
-  }
-
   const isSavingExistingDraftAtSameId =
     normalizedOriginalDraftId !== undefined && normalizedOriginalDraftId === normalizedId;
   const hasActiveDraftAtTarget = isActiveDraftPackage(existingDraftPackage);
@@ -467,10 +455,7 @@ export const handler = authenticatedMiddy({
   }
 
   if (normalizedOriginalDraftId && normalizedOriginalDraftId !== normalizedId) {
-    if (
-      !userStates.includes(normalizedOriginalDraftId.slice(0, 2)) ||
-      !canUserModifyDraft(sourceDraftPackage, context.authenticatedUser.email)
-    ) {
+    if (!userStates.includes(normalizedOriginalDraftId.slice(0, 2))) {
       return response({
         statusCode: 403,
         body: { message: "Not authorized to view this resource" },
