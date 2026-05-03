@@ -136,6 +136,8 @@ const getValueByPath = (values: Record<string, unknown>, path: string) => {
   }, values);
 };
 
+const DRAFT_SAVE_ROUTE_TRANSITION_KEY = "draftSaveRouteTransitionId";
+
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   schema,
   defaultValues = {} as DefaultValues<z.TypeOf<InferUntransformedSchema<Schema>>>,
@@ -220,9 +222,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const rawDraftId = draftEnabled ? new URLSearchParams(search).get("draftId") : null;
   const draftId = rawDraftId ? rawDraftId.toUpperCase() : null;
   const isDraftMode = draftEnabled && !!draftId;
+  const storedDraftRouteTransitionId =
+    typeof window !== "undefined"
+      ? sessionStorage.getItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY)?.toUpperCase()
+      : null;
+
   const isDraftSaveRouteTransition =
     isDraftMode &&
-    (draftRouteTransitionId === draftId || draftRouteTransitionIdRef.current === draftId);
+    (draftRouteTransitionId === draftId ||
+      draftRouteTransitionIdRef.current === draftId ||
+      storedDraftRouteTransitionId === draftId);
   const hasAppliedDraftRef = useRef(false);
 
   const {
@@ -383,18 +392,27 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }, [draftId, isDraftMode, isDraftSaveRouteTransition]);
 
   useEffect(() => {
-    if (!draftRouteTransitionId && !draftRouteTransitionIdRef.current) return;
+    const storedTransitionId =
+      typeof window !== "undefined"
+        ? sessionStorage.getItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY)?.toUpperCase()
+        : null;
 
-    const activeTransitionId = draftRouteTransitionId ?? draftRouteTransitionIdRef.current;
+    if (!draftRouteTransitionId && !draftRouteTransitionIdRef.current && !storedTransitionId)
+      return;
+
+    const activeTransitionId =
+      draftRouteTransitionId ?? draftRouteTransitionIdRef.current ?? storedTransitionId;
 
     if (draftId !== activeTransitionId) {
       draftRouteTransitionIdRef.current = null;
+      sessionStorage.removeItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY);
       setDraftRouteTransitionId(null);
       return;
     }
 
     if (!isDraftLoading && isDraftFetched) {
       draftRouteTransitionIdRef.current = null;
+      sessionStorage.removeItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY);
       setDraftRouteTransitionId(null);
     }
   }, [draftId, draftRouteTransitionId, isDraftFetched, isDraftLoading]);
@@ -931,6 +949,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
         skipNavigationPromptRef.current = true;
         draftRouteTransitionIdRef.current = normalizedId;
+        sessionStorage.setItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY, normalizedId);
         setDraftRouteTransitionId(normalizedId);
 
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
