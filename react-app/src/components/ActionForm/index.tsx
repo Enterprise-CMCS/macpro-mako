@@ -414,14 +414,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
 
     if (draftId !== activeTransitionId) {
-      draftRouteTransitionIdRef.current = null;
-      if (typeof window !== "undefined") {
-        sessionStorage.removeItem(DRAFT_SAVE_ROUTE_TRANSITION_KEY);
-      }
-      setDraftRouteTransitionId(null);
+      // We may be between setting the transition target and the URL catching up.
+      // This happens when saving an existing draft under a new ID.
+      // Do not clear the marker yet, or the route transition will show the page spinner.
       return;
     }
-
     if (!isDraftLoading && isDraftFetched) {
       draftRouteTransitionIdRef.current = null;
       if (typeof window !== "undefined") {
