@@ -194,6 +194,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const [draftSaveStatus, setDraftSaveStatus] = useState<DraftSaveStatus | null>(null);
   const [isDraftSubmissionInProgress, setIsDraftSubmissionInProgress] = useState(false);
   const [draftRouteTransitionId, setDraftRouteTransitionId] = useState<string | null>(null);
+  const draftRouteTransitionIdRef = useRef<string | null>(null);
   const previousDraftIdRef = useRef<string | null>(null);
   const draftSaveStatusRef = useRef<HTMLParagraphElement | null>(null);
   const hasConfirmedNonOwnerDraftActionRef = useRef(false);
@@ -219,7 +220,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const rawDraftId = draftEnabled ? new URLSearchParams(search).get("draftId") : null;
   const draftId = rawDraftId ? rawDraftId.toUpperCase() : null;
   const isDraftMode = draftEnabled && !!draftId;
-  const isDraftSaveRouteTransition = isDraftMode && draftRouteTransitionId === draftId;
+  const isDraftSaveRouteTransition =
+    isDraftMode &&
+    (draftRouteTransitionId === draftId || draftRouteTransitionIdRef.current === draftId);
   const hasAppliedDraftRef = useRef(false);
 
   const {
@@ -380,14 +383,18 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }, [draftId, isDraftMode, isDraftSaveRouteTransition]);
 
   useEffect(() => {
-    if (!draftRouteTransitionId) return;
+    if (!draftRouteTransitionId && !draftRouteTransitionIdRef.current) return;
 
-    if (draftId !== draftRouteTransitionId) {
+    const activeTransitionId = draftRouteTransitionId ?? draftRouteTransitionIdRef.current;
+
+    if (draftId !== activeTransitionId) {
+      draftRouteTransitionIdRef.current = null;
       setDraftRouteTransitionId(null);
       return;
     }
 
     if (!isDraftLoading && isDraftFetched) {
+      draftRouteTransitionIdRef.current = null;
       setDraftRouteTransitionId(null);
     }
   }, [draftId, draftRouteTransitionId, isDraftFetched, isDraftLoading]);
@@ -920,8 +927,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       if (didDraftIdChange) {
         const nextSearch = new URLSearchParams(search);
         nextSearch.set("draftId", normalizedId);
+
         skipNavigationPromptRef.current = true;
+        draftRouteTransitionIdRef.current = normalizedId;
         setDraftRouteTransitionId(normalizedId);
+
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
       }
     } catch (error) {
