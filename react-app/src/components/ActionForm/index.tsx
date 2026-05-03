@@ -901,7 +901,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         pendingDraftIdRemovalRef.current = draftId;
       }
 
-      await queryClient.invalidateQueries({ queryKey: ["record", normalizedId] });
       if (!isMountedRef.current) return;
 
       banner({
@@ -910,6 +909,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         variant: "success",
         pathnameToDisplayOn: window.location.pathname,
       });
+
       setDraftSaveStatus({
         variant: "success",
         message: `Progress saved at ${new Intl.DateTimeFormat("en-US", {
@@ -917,6 +917,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           minute: "2-digit",
         }).format(new Date())}`,
       });
+
       setCurrentSessionDraftActor({
         email: userObj?.email,
         name: userObj?.fullName,
@@ -934,6 +935,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
         navigate(`${pathname}?${nextSearch.toString()}`, { replace: true });
       }
+
+      void queryClient.invalidateQueries({ queryKey: ["record", normalizedId] });
     } catch (error) {
       if (!isMountedRef.current) return;
       const errorMessage = (() => {
