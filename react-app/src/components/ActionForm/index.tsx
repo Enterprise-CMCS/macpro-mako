@@ -360,34 +360,39 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   useEffect(() => {
     const previousDraftId = previousDraftIdRef.current;
-    const shouldClearDraftSaveStatus = previousDraftId !== null && draftId !== previousDraftId;
+    const didDraftIdChange = previousDraftId !== draftId;
 
     if (!isDraftMode) {
       hasAppliedDraftRef.current = false;
       hasPromptedNonOwnerDraftActionRef.current = false;
       hasConfirmedNonOwnerDraftActionRef.current = false;
       pendingNonOwnerDraftActionRef.current = null;
+
       if (previousDraftId !== null) {
         setDraftSaveStatus(null);
       }
+
       setDraftIdConflict(null);
       draftVersionRef.current = {};
       setCurrentSessionDraftActor(null);
       previousDraftIdRef.current = draftId;
       return;
     }
-    hasAppliedDraftRef.current = false;
-    if (!isDraftSaveRouteTransition) {
-      hasPromptedNonOwnerDraftActionRef.current = false;
-      hasConfirmedNonOwnerDraftActionRef.current = false;
-      pendingNonOwnerDraftActionRef.current = null;
-      draftVersionRef.current = {};
-      setCurrentSessionDraftActor(null);
+
+    if (didDraftIdChange) {
+      hasAppliedDraftRef.current = false;
+      setDraftIdConflict(null);
+
+      if (!isDraftSaveRouteTransition) {
+        hasPromptedNonOwnerDraftActionRef.current = false;
+        hasConfirmedNonOwnerDraftActionRef.current = false;
+        pendingNonOwnerDraftActionRef.current = null;
+        draftVersionRef.current = {};
+        setCurrentSessionDraftActor(null);
+        setDraftSaveStatus(null);
+      }
     }
-    if (shouldClearDraftSaveStatus && !isDraftSaveRouteTransition) {
-      setDraftSaveStatus(null);
-    }
-    setDraftIdConflict(null);
+
     previousDraftIdRef.current = draftId;
   }, [draftId, isDraftMode, isDraftSaveRouteTransition]);
 
