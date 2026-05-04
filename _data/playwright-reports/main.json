@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-        "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+        "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
       },
       "gitCommit": {
-        "shortHash": "6e596ea",
-        "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-        "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-        "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+        "shortHash": "76455e1",
+        "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+        "subject": "Merge branch 'val' into main",
+        "body": "Merge branch 'val' into main",
         "author": {
           "name": "James Dinh",
           "email": "james.d@globalalliantinc.com",
-          "time": 1777907128000
+          "time": 1777913045000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1777907128000
+          "time": 1777913045000
         },
         "branch": "main"
       }
@@ -42,24 +42,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -82,24 +82,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -122,24 +122,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -162,24 +162,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -202,24 +202,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -242,24 +242,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -282,24 +282,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -322,24 +322,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -362,24 +362,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -402,24 +402,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -442,24 +442,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -482,24 +482,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -522,24 +522,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
           },
           "gitCommit": {
-            "shortHash": "6e596ea",
-            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
-            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
-            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
+            "shortHash": "76455e1",
+            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
+            "subject": "Merge branch 'val' into main",
+            "body": "Merge branch 'val' into main",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777907128000
+              "time": 1777913045000
             },
             "branch": "main"
           }
@@ -603,8 +603,8 @@
     }
   ],
   "stats": {
-    "startTime": "2026-05-04T15:58:14.802Z",
-    "duration": 24449.1,
+    "startTime": "2026-05-04T16:48:33.276Z",
+    "duration": 22337.284,
     "expected": 0,
     "skipped": 0,
     "unexpected": 0,
