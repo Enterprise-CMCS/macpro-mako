@@ -81,6 +81,7 @@ export type ExportHeaderOptions<TData> = {
 
 export type BaseIndex =
   | "main"
+  | "draftmain"
   | "insights"
   | "changelog"
   | "types"

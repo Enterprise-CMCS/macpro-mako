@@ -1,3 +1,5 @@
+import { S3Client } from "@aws-sdk/client-s3";
+import { STSClient } from "@aws-sdk/client-sts";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
 import {
@@ -12,20 +14,52 @@ import {
 } from "mocks";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
-const { createAttachmentBucketClientFactory, mockSend } = vi.hoisted(() => ({
-  createAttachmentBucketClientFactory: vi.fn(),
+const { mockSend, mockStsSend } = vi.hoisted(() => ({
   mockSend: vi.fn(),
+  mockStsSend: vi.fn(),
 }));
 
-vi.mock("../attachment-archive/bucket-routing", async (importOriginal) => ({
-  ...(await importOriginal<typeof import("../attachment-archive/bucket-routing")>()),
-  createAttachmentBucketClientFactory,
-}));
+vi.mock("@aws-sdk/client-s3", () => {
+  class MockS3Command {
+    input: Record<string, unknown>;
+
+    constructor(input: Record<string, unknown>) {
+      this.input = input;
+    }
+  }
+
+  return {
+    S3Client: vi.fn().mockImplementation(() => ({
+      send: mockSend,
+    })),
+    GetObjectCommand: MockS3Command,
+    GetObjectTaggingCommand: MockS3Command,
+    HeadObjectCommand: MockS3Command,
+  };
+});
+
+vi.mock("@aws-sdk/client-sts", () => {
+  class MockAssumeRoleCommand {
+    input: Record<string, unknown>;
+
+    constructor(input: Record<string, unknown>) {
+      this.input = input;
+    }
+  }
+
+  return {
+    STSClient: vi.fn().mockImplementation(() => ({
+      send: mockStsSend,
+    })),
+    AssumeRoleCommand: MockAssumeRoleCommand,
+  };
+});
 
 vi.mock("@aws-sdk/s3-request-presigner", () => ({
   getSignedUrl: vi.fn(),
 }));
 
+import * as packageApi from "../libs/api/package";
 import { handler } from "./getAttachmentUrl";
 
 (globalThis as any).logger = {
@@ -37,13 +71,21 @@ import { handler } from "./getAttachmentUrl";
 
 describe("Lambda Handler", () => {
   beforeEach(() => {
-    mockSend.mockResolvedValue({});
-    createAttachmentBucketClientFactory.mockImplementation(
-      () => async () =>
+    vi.mocked(S3Client).mockImplementation(
+      () =>
         ({
           send: mockSend,
         }) as any,
     );
+    vi.mocked(STSClient).mockImplementation(
+      () =>
+        ({
+          send: mockStsSend,
+        }) as any,
+    );
+    mockSend.mockResolvedValue({});
+    mockStsSend.mockResolvedValue({});
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
   });
 
   afterEach(() => {
@@ -51,7 +93,7 @@ describe("Lambda Handler", () => {
     vi.restoreAllMocks();
     vi.clearAllMocks();
     mockSend.mockReset();
-    createAttachmentBucketClientFactory.mockReset();
+    mockStsSend.mockReset();
   });
 
   it("should return 400 if event body is missing", async () => {
@@ -187,6 +229,67 @@ describe("Lambda Handler", () => {
     expect(signedUrlCommand?.input?.ResponseContentDisposition).toBe(
       `attachment; filename="Screenshot 2026-02-19 at 1.13.37 PM.png"; filename*=UTF-8''Screenshot%202026-02-19%20at%201.13.37%E2%80%AFPM.png`,
     );
+  });
+
+  it("returns a presigned url for draft attachments when preferDraft is requested", async () => {
+    const mockUrl = `https://${ATTACHMENT_BUCKET_NAME}.s3.${ATTACHMENT_BUCKET_REGION}.amazonaws.com/draft-object`;
+    vi.mocked(getSignedUrl).mockResolvedValueOnce(mockUrl);
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "main",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Submitted",
+      },
+    } as any);
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "draftmain",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        state: "MD",
+        seatoolStatus: "Draft",
+        event: "new-medicaid-submission",
+        draft: {
+          savedAt: "2026-03-20T00:00:00.000Z",
+          data: {
+            attachments: {
+              cmsForm179: {
+                files: [
+                  {
+                    bucket: ATTACHMENT_BUCKET_NAME,
+                    key: "draft-doc-001",
+                    filename: "draft-contract.pdf",
+                    uploadDate: 1772564996000,
+                  },
+                ],
+              },
+            },
+          },
+        },
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({
+        id: "MD-26-9999-P",
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "draft-doc-001",
+        filename: "draft-contract.pdf",
+        preferDraft: true,
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ url: mockUrl }));
   });
 
   it("should remap legacy bucket requests and log when remapping is applied", async () => {

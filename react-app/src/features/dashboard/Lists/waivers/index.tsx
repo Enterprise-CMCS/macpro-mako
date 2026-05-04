@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { CMS_READ_ONLY_ROLES, SEATOOL_STATUS, UserRoles } from "shared-types";
+import { CMS_READ_ONLY_ROLES, opensearch, SEATOOL_STATUS, UserRoles } from "shared-types";
 import { formatActionType, formatDateToET, formatDateToUTC } from "shared-utils";
 
 import { OneMacUser } from "@/api";
@@ -13,6 +13,9 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
   if (!user || user === null) {
     return [];
   }
+
+  const getDraftAwareSubmitterName = (data: opensearch.main.Document) =>
+    data.seatoolStatus === SEATOOL_STATUS.DRAFT ? BLANK_VALUE : (data.submitterName ?? BLANK_VALUE);
 
   return [
     // hide actions column for: readonly,help desk
@@ -32,7 +35,7 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
       label: "Waiver Number",
       locked: true,
       transform: (data) => data.id,
-      cell: ({ id, authority }) => <CellDetailsLink id={id} authority={authority} />,
+      cell: (data) => <CellDetailsLink record={data} />,
     },
     {
       field: "state.keyword",
@@ -80,7 +83,7 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
 
         return (
           <>
-            <p>{status}</p>
+            <p className={data.seatoolStatus === SEATOOL_STATUS.DRAFT ? "italic" : ""}>{status}</p>
             {data.raiWithdrawEnabled &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
@@ -150,14 +153,13 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
     {
       field: "submitterName.keyword",
       label: "Submitted By",
-      transform: (data) => data.submitterName ?? BLANK_VALUE,
-      cell: (data) => data.submitterName,
+      transform: (data) => getDraftAwareSubmitterName(data),
+      cell: (data) => getDraftAwareSubmitterName(data),
     },
   ];
 };
 
 export const WaiversList = ({ oneMacUser }: { oneMacUser: OneMacUser }) => {
   const columns = useMemo(() => getColumns(oneMacUser), [oneMacUser]);
-
   return <OsMainView columns={columns} />;
 };

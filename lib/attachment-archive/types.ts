@@ -1,5 +1,7 @@
 export const ATTACHMENT_ARCHIVE_SCOPES = ["all", "section"] as const;
 export type AttachmentArchiveScope = (typeof ATTACHMENT_ARCHIVE_SCOPES)[number];
+export const ATTACHMENT_ARCHIVE_NAMESPACES = ["main", "draft"] as const;
+export type AttachmentArchiveNamespace = (typeof ATTACHMENT_ARCHIVE_NAMESPACES)[number];
 
 export const ATTACHMENT_ARCHIVE_STATUSES = ["PENDING", "RUNNING", "READY", "FAILED"] as const;
 export type AttachmentArchiveStatus = (typeof ATTACHMENT_ARCHIVE_STATUSES)[number];
@@ -114,5 +116,6 @@ export interface AttachmentArchiveStateMachineInput {
 export interface AttachmentArchiveRebuildMessage {
   packageId: string;
   latestTimestamp?: number;
+  preferDraft?: boolean;
   source: "request" | "sink-changelog" | "backfill";
 }

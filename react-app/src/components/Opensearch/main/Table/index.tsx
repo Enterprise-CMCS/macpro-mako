@@ -1,5 +1,5 @@
 import { type FC, useState } from "react";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import * as UI from "@/components";
 import { LoadingSpinner, useOsUrl } from "@/components";
@@ -90,7 +90,10 @@ export const OsTable: FC<{
                 return (
                   <UI.TableCell
                     key={`${COL.field}-${DAT._source.id}`}
-                    className="font-medium whitespace-nowrap"
+                    className={cn("font-medium whitespace-nowrap", {
+                      italic:
+                        DAT._source.seatoolStatus === SEATOOL_STATUS.DRAFT && COL.isSystem !== true,
+                    })}
                   >
                     {COL.cell(DAT._source) ?? BLANK_VALUE}
                   </UI.TableCell>

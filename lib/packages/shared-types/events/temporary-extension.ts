@@ -13,7 +13,7 @@ export const baseSchema = z.object({
         "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
     }),
   waiverNumber: z.string().min(1, { message: "Required" }),
-  authority: z.string(),
+  authority: z.string().min(1, { message: "Required" }),
   additionalInformation: z.string().max(4000).nullable().default(null).optional(),
   attachments: z.object({
     waiverExtensionRequest: z.object({

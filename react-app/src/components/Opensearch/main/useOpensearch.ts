@@ -37,6 +37,8 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
     ],
   },
 };
+
+export const OS_DASHBOARD_REFRESH_EVENT = "os-dashboard-refresh";
 /**
  *
 @summary
@@ -56,7 +58,10 @@ export const useOsData = () => {
   const [tabLoading, setTabLoading] = useState(false);
   const previousTab = useRef(params.state.tab);
 
-  const onRequest = async (query: opensearch.main.State, options?: any) => {
+  const onRequest = async (
+    query: opensearch.main.State,
+    options?: Parameters<typeof mutateAsync>[1],
+  ) => {
     try {
       if (params.state.tab !== previousTab.current) {
         setTabLoading(true);
@@ -87,10 +92,33 @@ export const useOsData = () => {
       setTabLoading(false);
     }
   };
+
   useEffect(() => {
     onRequest(params.state);
   }, [params.queryString]); // eslint-disable-line react-hooks/exhaustive-deps
-  return { data, isLoading, error, ...params, tabLoading };
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+
+    const handleDashboardRefresh = () => {
+      onRequest(params.state);
+    };
+
+    window.addEventListener(OS_DASHBOARD_REFRESH_EVENT, handleDashboardRefresh);
+    return () => {
+      window.removeEventListener(OS_DASHBOARD_REFRESH_EVENT, handleDashboardRefresh);
+    };
+  }, [params.queryString]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  return {
+    data,
+    isLoading,
+    error,
+    ...params,
+    tabLoading,
+  };
 };
 export const useOsAggregate = () => {
   const { data: user } = useGetUser();

@@ -93,5 +93,6 @@ export const ChipForm = () => (
       cancelButtonText: "Return to form",
       areButtonsReversed: true,
     }}
+    draftOptions={{ enabled: true, event: "new-chip-submission" }}
   />
 );

@@ -26,7 +26,12 @@ export const apiHandlers = [
 
 export { errorApiCheckIdentifierUsageHandler } from "./checkIdentifierUsage";
 export { errorApiCpocHandler } from "./cpocs";
-export { errorApiItemExistsHandler, errorApiItemHandler, onceApiItemHandler } from "./items";
+export {
+  errorApiItemExistsHandler,
+  errorApiItemHandler,
+  onceApiItemHandler,
+  resetApiItemsState,
+} from "./items";
 export { errorApiNotificationHandler } from "./notifications";
 export { errorApiPackageActionsHandler, onceApiPackageActionsHandler } from "./packageActions";
 export { errorApiSearchHandler } from "./search";

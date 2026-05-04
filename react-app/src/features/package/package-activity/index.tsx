@@ -1,7 +1,7 @@
 import { useMemo } from "react";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
-import { formatDateToET, getPackageActivityLabel } from "shared-utils";
+import { formatDateToET, getDraftAttachments, getPackageActivityLabel } from "shared-utils";
 
 import {
   Accordion,
@@ -21,6 +21,76 @@ import { BLANK_VALUE } from "@/consts";
 import { sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
+
+type PackageActivityRecord = {
+  id: string;
+  packageId: string;
+  label: string;
+  submitterName?: string;
+  timestamp?: string | number;
+  attachments: opensearch.changelog.Document["attachments"];
+  additionalInformation?: string | null;
+  detailMessage?: string;
+  isAdminChange?: boolean;
+  isSyntheticDraft?: boolean;
+};
+
+const getDraftPackageActivities = (
+  submission?: opensearch.main.Document,
+): PackageActivityRecord[] => {
+  if (!submission || submission.seatoolStatus !== SEATOOL_STATUS.DRAFT) {
+    return [];
+  }
+
+  const attachments = getDraftAttachments(submission);
+  const draft = submission.draft;
+  const createdByName = draft?.createdByName ?? draft?.draftOwnerName ?? submission.submitterName;
+  const createdByEmail =
+    draft?.createdByEmail ?? draft?.draftOwnerEmail ?? submission.submitterEmail;
+  const createdAt = draft?.createdAt ?? draft?.savedAt ?? submission.makoChangedDate;
+  const updatedByName = draft?.updatedByName ?? submission.submitterName;
+  const updatedByEmail = draft?.updatedByEmail ?? submission.submitterEmail;
+  const updatedAt = draft?.updatedAt ?? draft?.savedAt ?? submission.makoChangedDate;
+  const updatedByDifferentUser = Boolean(
+    updatedByName &&
+      (updatedByEmail
+        ? updatedByEmail.toLowerCase() !== createdByEmail?.toLowerCase()
+        : updatedByName !== createdByName),
+  );
+  const additionalInformation = draft?.data?.additionalInformation as string | undefined;
+
+  const createdActivity: PackageActivityRecord = {
+    id: `${submission.id}-draft-activity`,
+    packageId: submission.id,
+    label: "Created",
+    submitterName: createdByName,
+    timestamp: createdAt,
+    attachments: updatedByDifferentUser ? [] : attachments,
+    additionalInformation: updatedByDifferentUser ? undefined : additionalInformation,
+    detailMessage: updatedByDifferentUser
+      ? "This draft creation record remains static. The latest saved documents and additional information are shown in the Updated By activity."
+      : undefined,
+    isSyntheticDraft: true,
+  };
+
+  if (!updatedByDifferentUser) {
+    return [createdActivity];
+  }
+
+  return [
+    {
+      id: `${submission.id}-draft-updated-activity`,
+      packageId: submission.id,
+      label: "Updated",
+      submitterName: updatedByName,
+      timestamp: updatedAt,
+      attachments,
+      additionalInformation,
+      isSyntheticDraft: true,
+    },
+    createdActivity,
+  ];
+};
 
 const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
 
@@ -63,11 +133,11 @@ const AttachmentDetails = ({ id, packageId, attachments, onClick }: AttachmentDe
 );
 
 type SubmissionProps = {
-  packageActivity: opensearch.changelog.Document;
+  packageActivity: PackageActivityRecord;
 };
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
-  const { attachments = [], id, packageId, additionalInformation } = packageActivity;
+  const { attachments = [], id, packageId, additionalInformation, detailMessage } = packageActivity;
   const {
     archiveErrorMessage,
     archiveWarningMessage,
@@ -75,15 +145,23 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     onArchive,
     onUrl,
     loading,
-  } = useAttachmentService({ packageId });
+  } = useAttachmentService({
+    packageId,
+    preferDraft: packageActivity.isSyntheticDraft,
+  });
   const archiveMessage = archiveErrorMessage || archiveWarningMessage;
+  const hasAdditionalInformation = Boolean(additionalInformation?.trim());
+
+  if (detailMessage && attachments.length === 0 && !hasAdditionalInformation) {
+    return <p className="text-gray-700">{detailMessage}</p>;
+  }
 
   return (
     <div className="flex flex-col gap-6">
       <div>
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
 
-        {attachments && attachments?.length > 0 ? (
+        {attachments && attachments.length > 0 ? (
           <Table>
             <TableHeader>
               <TableRow>
@@ -108,7 +186,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           </p>
         )}
       </div>
-      {attachments && attachments.length > 1 && (
+      {attachments.length > 1 && (
         <>
           <Button
             variant="outline"
@@ -144,20 +222,17 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
 };
 
 type PackageActivityProps = {
-  packageActivity: opensearch.changelog.Document;
+  packageActivity: PackageActivityRecord;
 };
 
 const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
-  const label = useMemo(() => {
-    return getPackageActivityLabel(packageActivity.event) || BLANK_VALUE;
-  }, [packageActivity.event]);
-
   return (
     <AccordionItem value={packageActivity.id}>
       <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
         <p className="flex flex-row gap-2 text-gray-600">
           <strong className="text-left">
-            {label} {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
+            {packageActivity.label}{" "}
+            {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
           </strong>
           {" - "}
           <span className="text-right">
@@ -174,26 +249,27 @@ const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
 
 type DownloadAllButtonProps = {
   packageId: string;
-  submissionChangelog: ItemResult[];
+  packageActivities: PackageActivityRecord[];
 };
 
-const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButtonProps) => {
-  const { archiveErrorMessage, archiveWarningMessage, loading, onArchive } = useAttachmentService({
-    packageId,
-  });
-  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
-
-  if (submissionChangelog?.length === 0) {
-    return null;
-  }
-
-  const attachmentsAggregate = submissionChangelog.reduce<Attachments>((acc, changelogItem) => {
-    if (!changelogItem._source.attachments) {
+const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonProps) => {
+  const attachmentsAggregate = packageActivities.reduce<Attachments>((acc, packageActivity) => {
+    if (!packageActivity.attachments || packageActivity.attachments.length === 0) {
       return acc;
     }
 
-    return acc.concat(changelogItem._source.attachments);
+    return acc.concat(packageActivity.attachments);
   }, []);
+  const preferDraft = packageActivities.some((packageActivity) => packageActivity.isSyntheticDraft);
+  const { archiveErrorMessage, archiveWarningMessage, loading, onArchive } = useAttachmentService({
+    packageId,
+    preferDraft,
+  });
+  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
+
+  if (attachmentsAggregate.length === 0) {
+    return null;
+  }
 
   const onDownloadAll = () => {
     if (attachmentsAggregate.length === 0) {
@@ -233,32 +309,59 @@ const DownloadAllButton = ({ packageId, submissionChangelog }: DownloadAllButton
 type PackageActivitiesProps = {
   id: string;
   changelog: ItemResult[];
+  submission?: opensearch.main.Document;
 };
 
-export const PackageActivities = ({ id, changelog }: PackageActivitiesProps) => {
-  const changelogWithoutAdminChanges = changelog.filter((item) => !item._source.isAdminChange);
+const mapChangelogItemToPackageActivity = ({
+  _source: packageActivity,
+}: ItemResult): PackageActivityRecord => {
+  const label = getPackageActivityLabel(packageActivity.event) || BLANK_VALUE;
+
+  return {
+    id: packageActivity.id,
+    packageId: packageActivity.packageId,
+    label,
+    submitterName: packageActivity.submitterName,
+    timestamp: packageActivity.timestamp,
+    attachments: packageActivity.attachments,
+    additionalInformation: packageActivity.additionalInformation,
+    isAdminChange: packageActivity.isAdminChange,
+  };
+};
+
+export const PackageActivities = ({ id, changelog, submission }: PackageActivitiesProps) => {
+  const packageActivities = useMemo(() => {
+    const changelogWithoutAdminChanges = changelog
+      .filter((item) => !item._source.isAdminChange)
+      .map(mapChangelogItemToPackageActivity);
+
+    if (changelogWithoutAdminChanges.length > 0) {
+      return changelogWithoutAdminChanges;
+    }
+
+    return getDraftPackageActivities(submission);
+  }, [changelog, submission]);
 
   return (
     <DetailsSection
       id="package_activity"
       title={
         <div className="flex justify-between">
-          Package Activity ({changelogWithoutAdminChanges.length || 0})
-          <DownloadAllButton submissionChangelog={changelogWithoutAdminChanges} packageId={id} />
+          Package Activity ({packageActivities.length || 0})
+          <DownloadAllButton packageActivities={packageActivities} packageId={id} />
         </div>
       }
     >
-      {changelogWithoutAdminChanges.length > 0 ? (
+      {packageActivities.length > 0 ? (
         <Accordion
-          // `changelogWithoutAdminChanges[0]._source.id` to re-render the `defaultValue` whenever `keyAndDefaultValue` changes
-          key={changelogWithoutAdminChanges[0]._source.id}
+          key={packageActivities[0].id}
           type="multiple"
           className="flex flex-col gap-2"
-          defaultValue={[changelogWithoutAdminChanges[0]._source.id]}
+          defaultValue={[packageActivities[0].id]}
           asChild
         >
           <ol>
-            {changelogWithoutAdminChanges.map(({ _source: packageActivity }) => (
+            {packageActivities.map((packageActivity) => (
               <li key={packageActivity.id}>
                 <PackageActivity packageActivity={packageActivity} />
               </li>
