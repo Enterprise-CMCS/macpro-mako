@@ -32,12 +32,18 @@ export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
   const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
 
-  const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("1915(b)");
+  const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("");
 
+  const actionType = submission?._source?.actionType;
+  const actionTypeLabel =
+    actionType && actionType in actionTypeMap
+      ? actionTypeMap[actionType as keyof typeof actionTypeMap]
+      : undefined;
   const type =
-    submission && submission._source
-      ? `${submission._source.authority} ${actionTypeMap[submission._source.actionType]}`
+    submission?._source && actionTypeLabel
+      ? `${submission._source.authority} ${actionTypeLabel}`
       : null;
+  const attachmentAuthority = submission?._source?.authority ?? temporaryExtensionType;
 
   return (
     <ActionForm
@@ -68,7 +74,7 @@ export const TemporaryExtensionForm = () => {
                       field.onChange(value);
                       setTemporaryExtensionType(value);
                     }}
-                    defaultValue={field.value}
+                    value={field.value ?? ""}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -183,7 +189,7 @@ export const TemporaryExtensionForm = () => {
         },
       }}
       attachments={{
-        faqLink: getFAQLinkForAttachments(`temporary-extension-${temporaryExtensionType}`),
+        faqLink: getFAQLinkForAttachments(`temporary-extension-${attachmentAuthority}`),
       }}
       documentPollerArgs={{
         property: (data) => data.id,
@@ -193,6 +199,18 @@ export const TemporaryExtensionForm = () => {
         header: "Temporary extension request submitted",
         body: "Your submission has been received.",
         variant: "success",
+      }}
+      draftOptions={{
+        enabled: true,
+        event: "temporary-extension",
+        idPath: "ids.id",
+        authorityPath: "ids.validAuthority.authority",
+        requiredSaveFields: [
+          {
+            path: "ids.validAuthority.authority",
+            message: "Please select a Temporary Extension Type before saving.",
+          },
+        ],
       }}
     />
   );

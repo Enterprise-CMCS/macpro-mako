@@ -41,4 +41,22 @@ describe("getAttachmentArchive tests", () => {
       }),
     );
   });
+
+  it("passes preferDraft through to the API body when requested", async () => {
+    const postSpy = vi.spyOn(API, "post").mockResolvedValue({
+      status: "READY",
+      filename: "1234-attachments.zip",
+      url: "https://example.com/1234-attachments.zip",
+    });
+
+    await getAttachmentArchive("1234", "all", undefined, { preferDraft: true });
+
+    expect(postSpy).toHaveBeenCalledWith("os", "/getAttachmentArchive", {
+      body: {
+        id: "1234",
+        scope: "all",
+        preferDraft: true,
+      },
+    });
+  });
 });

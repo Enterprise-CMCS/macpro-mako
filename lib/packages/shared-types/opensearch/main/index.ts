@@ -91,6 +91,19 @@ export type Document = AppkDocument &
     mockEvent?: string;
     withdrawEmailSent?: boolean;
     fullName?: string;
+    event?: string;
+    draft?: {
+      savedAt: string;
+      createdAt?: string;
+      createdByEmail?: string;
+      createdByName?: string;
+      updatedAt?: string;
+      updatedByEmail?: string;
+      updatedByName?: string;
+      draftOwnerEmail?: string;
+      draftOwnerName?: string;
+      data: Record<string, unknown>;
+    };
     attachments?: {
       [key: string]: {
         label: string;
@@ -108,6 +121,9 @@ export type Document = AppkDocument &
 export type Response = Res<Document>;
 export type ItemResult = Hit<Document> & {
   found: boolean;
+  _seq_no?: number;
+  _primary_term?: number;
+  _version?: number;
 };
 
 export type Field = keyof Document | `${keyof Document}.keyword`;

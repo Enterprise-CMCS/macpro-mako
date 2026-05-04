@@ -1,29 +1,53 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
+  EXISTING_ITEM_PENDING_ID,
   GET_ERROR_ITEM_ID,
   setDefaultReviewer,
   setDefaultStateSubmitter,
   SUBMISSION_ERROR_ITEM_ID,
+  TEST_STATE_SUBMITTER_EMAIL,
 } from "mocks";
-import { EXISTING_ITEM_PENDING_ID } from "mocks";
 import { attachmentArraySchemaOptional, SEATOOL_STATUS } from "shared-types";
 import { isCmsReadonlyUser } from "shared-utils";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { z } from "zod";
 
+import * as api from "@/api";
 import * as components from "@/components";
+import { queryClient } from "@/utils";
+import {
+  DRAFT_ID_CONFLICT_MESSAGE,
+  getDraftIdConflictFieldMessage,
+  getNonOwnerDraftWarningModalBody,
+  markDraftContinueConfirmed,
+} from "@/utils/drafts";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
+import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/render";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
+
+const mockNavigate = vi.fn();
+vi.mock("react-router", async () => {
+  const actual = await vi.importActual<typeof import("react-router")>("react-router");
+  return {
+    ...actual,
+    Navigate: () => null,
+    useNavigate: () => mockNavigate,
+  };
+});
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
+const MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE =
+  getDraftIdConflictFieldMessage("new-medicaid-submission");
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
 describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     vi.clearAllMocks();
+    vi.spyOn(api, "itemExists").mockResolvedValue(false);
+    sessionStorage.clear();
     window.gtag = vi.fn();
   });
 
@@ -58,7 +82,7 @@ describe("ActionForm", () => {
       />,
     );
 
-    expect(screen.queryByText("Action Form Title")).toBeInTheDocument();
+    expect(screen.getByTestId("detail-section-title")).toHaveTextContent("Action Form Title");
   });
 
   test("renders `attachments.faqLink`", async () => {
@@ -327,7 +351,9 @@ describe("ActionForm", () => {
     fireEvent.submit(await screen.findByTestId("submit-action-form"));
 
     await waitFor(() =>
-      expect(documentPollerSpy).toHaveBeenCalledWith(EXISTING_ITEM_PENDING_ID, documentChecker),
+      expect(documentPollerSpy).toHaveBeenCalledWith(EXISTING_ITEM_PENDING_ID, documentChecker, {
+        includeDraft: false,
+      }),
     );
   });
 
@@ -710,6 +736,999 @@ describe("ActionForm", () => {
 
     expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
   });
+
+  test("does not show leave-form prompt on first draft save", async () => {
+    const user = userEvent.setup();
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const bannerSpy = vi.spyOn(components, "banner");
+    const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
+    const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    await user.type(screen.getByLabelText("Package ID"), "MD-00-0001");
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Progress saved",
+          body: "Changes made to MD-00-0001 have been saved.",
+          variant: "success",
+        }),
+      ),
+    );
+    await waitFor(() =>
+      expect(screen.getByTestId("draft-save-status")).toHaveTextContent(/^Progress saved at /),
+    );
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+      queryKey: ["record", "MD-00-0001"],
+    });
+    expect(removeQueriesSpy).not.toHaveBeenCalledWith({
+      queryKey: ["record", "MD-00-0001"],
+    });
+
+    expect(userPromptSpy).not.toHaveBeenCalled();
+    expect(
+      JSON.parse(sessionStorage.getItem("onemac:draft-save-route-transition") ?? "{}"),
+    ).toEqual(
+      expect.objectContaining({
+        id: "MD-00-0001",
+        pathname: "/test/Medicaid SPA",
+        expiresAt: expect.any(Number),
+      }),
+    );
+  });
+
+  test("shows unsaved changes status after editing a saved draft", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: "MD-00-0003",
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    const packageIdField = screen.getByLabelText("Package ID");
+    await user.type(packageIdField, "MD-00-0003");
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(screen.getByTestId("draft-save-status")).toHaveTextContent(/^Progress saved at /),
+    );
+
+    await user.type(packageIdField, "A");
+
+    await waitFor(() =>
+      expect(screen.getByTestId("draft-save-status")).toHaveTextContent("Unsaved changes"),
+    );
+
+    saveDraftSpy.mockRestore();
+  });
+
+  test("uses and rolls optimistic concurrency values while saving an existing draft", async () => {
+    const user = userEvent.setup();
+    const draftId = "NY-25-2342";
+    const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        _seq_no: 5,
+        _primary_term: 1,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const saveDraftSpy = vi
+      .spyOn(api, "saveDraft")
+      .mockResolvedValueOnce({
+        message: "Draft saved",
+        id: draftId,
+        seqNo: 6,
+        primaryTerm: 1,
+      })
+      .mockResolvedValueOnce({
+        message: "Draft saved",
+        id: draftId,
+        seqNo: 7,
+        primaryTerm: 1,
+      });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(saveDraftSpy).toHaveBeenNthCalledWith(
+      1,
+      expect.objectContaining({
+        id: draftId,
+        originalDraftId: draftId,
+        event: "new-medicaid-submission",
+        ifSeqNo: 5,
+        ifPrimaryTerm: 1,
+      }),
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(2));
+    expect(saveDraftSpy).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        id: draftId,
+        originalDraftId: draftId,
+        event: "new-medicaid-submission",
+        ifSeqNo: 6,
+        ifPrimaryTerm: 1,
+      }),
+    );
+    expect(removeQueriesSpy).not.toHaveBeenCalledWith({
+      queryKey: ["record", draftId],
+    });
+
+    removeQueriesSpy.mockRestore();
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("does not remove the old draft query before navigating after a draft ID change", async () => {
+    const user = userEvent.setup();
+    const oldDraftId = "NY-25-2342";
+    const newDraftId = "MD-26-0108-P";
+    const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
+    const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: oldDraftId,
+        _seq_no: 5,
+        _primary_term: 1,
+        found: true,
+        _source: {
+          id: oldDraftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: oldDraftId },
+          },
+        },
+      },
+      isLoading: false,
+      isFetched: true,
+      error: null,
+    } as any);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: newDraftId,
+      seqNo: 6,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: oldDraftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${oldDraftId}`,
+    );
+
+    const packageIdField = screen.getByLabelText("Package ID");
+    await user.clear(packageIdField);
+    await user.type(packageIdField, newDraftId);
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(saveDraftSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        id: newDraftId,
+        originalDraftId: oldDraftId,
+        event: "new-medicaid-submission",
+      }),
+    );
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({
+      queryKey: ["record", newDraftId],
+    });
+    expect(invalidateQueriesSpy).not.toHaveBeenCalledWith({
+      queryKey: ["record", oldDraftId],
+    });
+    expect(removeQueriesSpy).not.toHaveBeenCalledWith({
+      queryKey: ["record", oldDraftId, "preferDraft"],
+      exact: true,
+    });
+    expect(mockNavigate).toHaveBeenCalledWith(expect.stringContaining(`draftId=${newDraftId}`), {
+      replace: true,
+    });
+
+    removeQueriesSpy.mockRestore();
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("keeps the form visible while a saved draft route transition is unresolved", async () => {
+    const draftId = "MD-26-0108-P";
+    sessionStorage.setItem(
+      "onemac:draft-save-route-transition",
+      JSON.stringify({
+        id: draftId,
+        pathname: "/draft-route",
+        expiresAt: Date.now() + 30_000,
+      }),
+    );
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isFetched: true,
+      error: null,
+    } as any);
+    const form = (
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() =>
+      expect(screen.getByTestId("detail-section-title")).toHaveTextContent("Draft Save Test"),
+    );
+    expect(screen.queryByTestId("three-dots-loading")).not.toBeInTheDocument();
+    expect(screen.queryByText("No active draft package was found.")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("ignores duplicate save clicks while a draft save is already in flight", async () => {
+    let resolveSaveDraft: ((value: api.SaveDraftResponse) => void) | undefined;
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockImplementation(
+      () =>
+        new Promise<api.SaveDraftResponse>((resolve) => {
+          resolveSaveDraft = resolve;
+        }),
+    );
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "MD-00-0002" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    const saveButton = await screen.findByTestId("save-draft-form");
+    fireEvent.click(saveButton);
+    fireEvent.click(saveButton);
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+
+    resolveSaveDraft?.({
+      message: "Draft saved",
+      id: "MD-00-0002",
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+
+    saveDraftSpy.mockRestore();
+  });
+
+  test("polls with includeDraft enabled while submitting an existing draft", async () => {
+    const draftId = "MD-25-2525-SAVE";
+    const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData").mockResolvedValue({
+      correctDataStateFound: true,
+      maxAttemptsReached: false,
+    });
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+          changelog: [],
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
+    const documentChecker: documentPoller.CheckDocumentFunction = () => true;
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Submit Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    fireEvent.submit(await screen.findByTestId("submit-action-form"));
+
+    await waitFor(() =>
+      expect(documentPollerSpy).toHaveBeenCalledWith(draftId, expect.any(Function), {
+        includeDraft: true,
+      }),
+    );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: ["record"] });
+    expect(mockNavigate.mock.invocationCallOrder.at(-1)).toBeLessThan(
+      invalidateQueriesSpy.mock.invocationCallOrder.at(-1) ?? 0,
+    );
+
+    invalidateQueriesSpy.mockRestore();
+    dataPollerSpy.mockRestore();
+    useGetItemSpy.mockRestore();
+  });
+
+  test("does not flash missing draft error while an existing draft is being submitted", async () => {
+    const draftId = "MD-25-2525-SAVE";
+    let draftDisappeared = false;
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockImplementation(
+      () =>
+        ({
+          data: draftDisappeared
+            ? undefined
+            : {
+                _id: draftId,
+                found: true,
+                _source: {
+                  id: draftId,
+                  seatoolStatus: SEATOOL_STATUS.DRAFT,
+                  draft: {
+                    savedAt: "2026-02-26T00:00:00.000Z",
+                    createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+                    updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+                    data: { id: draftId },
+                  },
+                  changelog: [],
+                },
+              },
+          isLoading: false,
+          isFetched: true,
+          error: null,
+        }) as any,
+    );
+    vi.spyOn(api, "itemExists").mockImplementation(async () => {
+      draftDisappeared = true;
+      return false;
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Submit Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    fireEvent.submit(await screen.findByTestId("submit-action-form"));
+
+    await waitFor(() => expect(screen.getByTestId("three-dots-loading")).toBeInTheDocument());
+    expect(screen.queryByText("No active draft package was found.")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("shows warning modal when a non-owner saves a draft and allows continue", async () => {
+    const user = userEvent.setup();
+    const draftId = "NY-25-2342";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            draftOwnerEmail: "someone.else@example.com",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft owner test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    expect(userPromptSpy).not.toHaveBeenCalled();
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(userPromptSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Confirm action",
+          body: getNonOwnerDraftWarningModalBody(draftId),
+          acceptButtonText: "Yes, continue",
+          cancelButtonText: "Cancel",
+        }),
+      ),
+    );
+
+    const firstPromptArgs = userPromptSpy.mock.calls[0][0] as {
+      body: string;
+      onAccept: () => void;
+    };
+    expect(firstPromptArgs.body).not.toMatch(/delete draft package/i);
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+    firstPromptArgs.onAccept();
+
+    expect(userPromptSpy).toHaveBeenCalledTimes(1);
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("does not show the non-owner warning after the user confirms from Continue Package", async () => {
+    const user = userEvent.setup();
+    const draftId = "NY-25-2342";
+    markDraftContinueConfirmed(draftId, TEST_STATE_SUBMITTER_EMAIL);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            draftOwnerEmail: "someone.else@example.com",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft owner test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(userPromptSpy).not.toHaveBeenCalled();
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("does not show the non-owner warning for a legacy draft owned by the current user name", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-26-0108-P";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            draftOwnerName: "Stateuser Tester",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Legacy Draft Owner Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(userPromptSpy).not.toHaveBeenCalled();
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("shows duplicate ID conflict on draft save and re-enables actions after the ID changes", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-26-7685-P";
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-12T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+    vi.mocked(api.itemExists).mockResolvedValue(true);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft conflict test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => (
+          <>
+            <input aria-label="Package ID" {...form.register("id")} />
+            {form.formState.errors.id?.message && (
+              <p role="alert" data-testid="draft-id-error">
+                {String(form.formState.errors.id.message)}
+              </p>
+            )}
+          </>
+        )}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Unable to save package",
+          body: DRAFT_ID_CONFLICT_MESSAGE,
+          variant: "destructive",
+        }),
+      ),
+    );
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+    expect(screen.getByLabelText("Package ID")).not.toBeDisabled();
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
+    expect(screen.getByTestId("save-draft-form")).toBeDisabled();
+    expect(screen.getByTestId("draft-save-status")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+
+    await user.type(screen.getByLabelText("Package ID"), "-NEW");
+
+    await waitFor(() => expect(screen.queryByTestId("draft-id-error")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId("save-draft-form")).not.toBeDisabled());
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("sets inline ID error when backend detects duplicate draft ID during save", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-26-7685-P";
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-12T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const conflictError = Object.assign(new Error(DRAFT_ID_CONFLICT_MESSAGE), {
+      response: { status: 409 },
+    });
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockRejectedValue(conflictError);
+    vi.mocked(api.itemExists).mockResolvedValueOnce(false).mockResolvedValue(true);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft conflict test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => (
+          <>
+            <input aria-label="Package ID" {...form.register("id")} />
+            {form.formState.errors.id?.message && (
+              <p role="alert" data-testid="draft-id-error">
+                {String(form.formState.errors.id.message)}
+              </p>
+            )}
+          </>
+        )}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(bannerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        header: "Unable to save package",
+        body: DRAFT_ID_CONFLICT_MESSAGE,
+        variant: "destructive",
+      }),
+    );
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
+    expect(screen.getByTestId("save-draft-form")).toBeDisabled();
+    expect(screen.getByTestId("draft-save-status")).toHaveTextContent(DRAFT_ID_CONFLICT_MESSAGE);
+
+    await user.type(screen.getByLabelText("Package ID"), "-NEW");
+
+    await waitFor(() => expect(screen.queryByTestId("draft-id-error")).not.toBeInTheDocument());
+    await waitFor(() => expect(screen.getByTestId("save-draft-form")).not.toBeDisabled());
+
+    useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("re-enables draft actions after a previously conflicting ID becomes available again", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-26-7685-P";
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-03-12T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+
+    vi.mocked(api.itemExists)
+      .mockResolvedValueOnce(true)
+      .mockResolvedValueOnce(true)
+      .mockResolvedValue(false);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft conflict test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => (
+          <>
+            <input aria-label="Package ID" {...form.register("id")} />
+            {form.formState.errors.id?.message && (
+              <p role="alert" data-testid="draft-id-error">
+                {String(form.formState.errors.id.message)}
+              </p>
+            )}
+          </>
+        )}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(screen.getByTestId("save-draft-form")).toBeDisabled());
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
+    expect(bannerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        header: "Unable to save package",
+        body: DRAFT_ID_CONFLICT_MESSAGE,
+      }),
+    );
+
+    fireEvent.focus(window);
+
+    await waitFor(() => expect(screen.getByTestId("save-draft-form")).not.toBeDisabled());
+    await waitFor(() => expect(screen.queryByTestId("draft-id-error")).not.toBeInTheDocument());
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("redirects away when non-owner cancels the draft warning modal", async () => {
+    const draftId = "NY-25-2342";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            draftOwnerEmail: "someone.else@example.com",
+            data: { id: draftId },
+          },
+        },
+      },
+      isLoading: false,
+      error: null,
+    } as any);
+    const userPromptSpy = vi.spyOn(components, "userPrompt").mockImplementation(() => undefined);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft owner test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+      undefined,
+      "Medicaid SPA",
+      `draftId=${draftId}`,
+    );
+
+    await userEvent.click(screen.getByTestId("save-draft-form"));
+    await waitFor(() => expect(userPromptSpy).toHaveBeenCalledTimes(1));
+    const firstPromptArgs = userPromptSpy.mock.calls[0][0] as {
+      onCancel?: () => void;
+    };
+    firstPromptArgs.onCancel?.();
+
+    expect(mockNavigate).toHaveBeenCalled();
+    const firstNavigateArg = mockNavigate.mock.calls[0][0];
+    if (firstNavigateArg !== -1) {
+      expect(firstNavigateArg).toEqual(expect.objectContaining({ pathname: "/dashboard" }));
+    }
+
+    useGetItemSpy.mockRestore();
+  });
+
   test("calls onSubmit directly when `promptPreSubmission` is not defined", async () => {
     const user = userEvent.setup();
 

@@ -6,6 +6,9 @@ export default (async () =>
   mergeConfig(
     await viteConfig({ command: "serve", mode: "test" }),
     defineConfig({
+      resolve: {
+        dedupe: ["msw"],
+      },
       test: {
         globals: true,
         exclude: [

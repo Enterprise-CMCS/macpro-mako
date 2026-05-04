@@ -158,15 +158,39 @@ describe("attachment archive manifest helpers", () => {
     expect(getArchiveCurrentKey({ packageId: "MD-25-2525-IJJJ", scope: "all" })).toBe(
       "package/MD-25-2525-IJJJ/all/current.json",
     );
+    expect(
+      getArchiveCurrentKey({
+        packageId: "MD-25-2525-IJJJ",
+        scope: "all",
+        archiveNamespace: "draft",
+      }),
+    ).toBe("package/MD-25-2525-IJJJ/draft/all/current.json");
     expect(getArchiveManifestKey({ packageId: "MD-25-2525-IJJJ", scope: "all" }, "hash")).toBe(
       "package/MD-25-2525-IJJJ/all/hash.manifest.json",
     );
+    expect(
+      getArchiveManifestKey(
+        { packageId: "MD-25-2525-IJJJ", scope: "all", archiveNamespace: "draft" },
+        "hash",
+      ),
+    ).toBe("package/MD-25-2525-IJJJ/draft/all/hash.manifest.json");
     expect(
       getArchiveArtifactKey(
         { packageId: "MD-25-2525-IJJJ", scope: "section", sectionId: "abc" },
         "hash",
       ),
     ).toBe("package/MD-25-2525-IJJJ/section/abc/hash.zip");
+    expect(
+      getArchiveArtifactKey(
+        {
+          packageId: "MD-25-2525-IJJJ",
+          scope: "section",
+          sectionId: "abc",
+          archiveNamespace: "draft",
+        },
+        "hash",
+      ),
+    ).toBe("package/MD-25-2525-IJJJ/draft/section/abc/hash.zip");
     expect(
       getArchiveDownloadFilename({
         packageId: "MD-25-2525-IJJJ",

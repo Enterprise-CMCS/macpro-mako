@@ -13,6 +13,7 @@ const alertVariants = cva(
         infoBlock:
           "border-l-[6px] border-y-0 border-r-0 border-cyan-500 bg-cyan-300/10 rounded-none",
         success: "border-l-[6px] border-[#2E8540] border-y-0 border-r-0 bg-[#E7F4E4]",
+        warning: "border-l-[6px] border-y-0 border-r-0 border-amber-500 bg-amber-100/70",
       },
     },
     defaultVariants: {
@@ -20,7 +21,7 @@ const alertVariants = cva(
     },
   },
 );
-export type AlertVariant = "default" | "destructive" | "infoBlock" | "success";
+export type AlertVariant = "default" | "destructive" | "infoBlock" | "success" | "warning";
 
 const Alert = React.forwardRef<
   HTMLDivElement,

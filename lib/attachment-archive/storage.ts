@@ -3,8 +3,11 @@ import {
   HeadObjectCommand,
   NoSuchKey,
   PutObjectCommand,
-  S3Client,
 } from "@aws-sdk/client-s3";
+
+type S3LikeClient = {
+  send(command: unknown): Promise<any>;
+};
 
 function isNotFoundError(error: unknown): boolean {
   if (error instanceof NoSuchKey) {
@@ -23,7 +26,7 @@ export async function getObjectText({
   bucket,
   key,
 }: {
-  client: S3Client;
+  client: S3LikeClient;
   bucket: string;
   key: string;
 }): Promise<string | undefined> {
@@ -54,7 +57,7 @@ export async function getJsonObject<T>({
   bucket,
   key,
 }: {
-  client: S3Client;
+  client: S3LikeClient;
   bucket: string;
   key: string;
 }): Promise<T | undefined> {
@@ -73,7 +76,7 @@ export async function putJsonObject({
   key,
   body,
 }: {
-  client: S3Client;
+  client: S3LikeClient;
   bucket: string;
   key: string;
   body: unknown;
@@ -93,7 +96,7 @@ export async function objectExists({
   bucket,
   key,
 }: {
-  client: S3Client;
+  client: S3LikeClient;
   bucket: string;
   key: string;
 }): Promise<boolean> {

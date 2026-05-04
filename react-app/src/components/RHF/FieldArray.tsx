@@ -10,9 +10,11 @@ import { Field } from "./Field";
 import { slotInitializer } from "./utils";
 
 export const RHFFieldArray = <TFields extends FieldValues>(props: FieldArrayProps<TFields>) => {
-  const fieldArr = useFieldArray<any>({
-    control: props.control,
-    name: props.name,
+  const fieldArr = useFieldArray<any, any, "id">({
+    // `shared-types` and the app currently resolve RHF through different type instances in build,
+    // so keep the runtime behavior but collapse the type boundary here.
+    control: props.control as any,
+    name: props.name as never,
     shouldUnregister: true,
   });
 
