@@ -12,28 +12,27 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-        "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+        "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
       },
       "gitCommit": {
-        "shortHash": "bb45966",
-        "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-        "subject": "fixing runtime issues (straight to main)",
-        "body": "fixing runtime issues (straight to main)\n",
+        "shortHash": "6e596ea",
+        "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+        "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+        "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
         "author": {
-          "name": "Biju Joseph",
-          "email": "biju.joseph@semanticbits.com",
-          "time": 1777487639000
+          "name": "James Dinh",
+          "email": "james.d@globalalliantinc.com",
+          "time": 1777907128000
         },
         "committer": {
-          "name": "Biju Joseph",
-          "email": "biju.joseph@semanticbits.com",
-          "time": 1777487639000
+          "name": "GitHub",
+          "email": "noreply@github.com",
+          "time": 1777907128000
         },
         "branch": "main"
-      },
-      "actualWorkers": 1
+      }
     },
     "preserveOutput": "always",
     "projects": [
@@ -43,28 +42,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "local-setup",
         "name": "local-setup",
@@ -84,28 +82,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "ci-setup",
         "name": "ci-setup",
@@ -125,28 +122,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "val-setup",
         "name": "val-setup",
@@ -166,28 +162,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "eua-setup",
         "name": "eua-setup",
@@ -207,28 +202,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "mfa-setup",
         "name": "mfa-setup",
@@ -248,28 +242,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "smoke-test",
         "name": "smoke-test",
@@ -289,28 +282,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "local",
         "name": "local",
@@ -330,28 +322,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "ci",
         "name": "ci",
@@ -371,28 +362,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "val",
         "name": "val",
@@ -412,28 +402,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "eua-user",
         "name": "eua-user",
@@ -453,28 +442,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "mfa-user",
         "name": "mfa-user",
@@ -494,28 +482,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "smoke-tests",
         "name": "smoke-tests",
@@ -535,28 +522,27 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/bb4596612bf173faaf305e4458ab812fffc1e294",
-            "commitHash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25127044378"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "commitHash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25326673082"
           },
           "gitCommit": {
-            "shortHash": "bb45966",
-            "hash": "bb4596612bf173faaf305e4458ab812fffc1e294",
-            "subject": "fixing runtime issues (straight to main)",
-            "body": "fixing runtime issues (straight to main)\n",
+            "shortHash": "6e596ea",
+            "hash": "6e596eaf6c5eb6bb2eb57320648797f69251be23",
+            "subject": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)",
+            "body": "feat(Save in Progress): Add logic to add drafts for initial submissions to all form types (#1832)\n\n* add initial draft status to records\n\n* cleanup\n\n* clean\n\n* Update items.ts\n\n* Add sticky footer to all forms\n\n* Update index.tsx\n\n* cleanup\n\n* Update medicaid.test.tsx\n\n* add cleanup logic for drafts\n\n* update tests\n\n* add logic to not show modal on save\n\n* Add figma logic\n\n* details first\n\n* add spa id disable\n\n* Add italics excel logic\n\n* add logic to not hit api endpoint with empty string\n\n* fix export csv tests\n\n* add refresh logic\n\n* add original submitter logic\n\n* add logic to not accept overwrites when multiple users are editing\n\n* add upsert logic\n\n* add new index logic per bens guidance\n\n* continue to add draft logic to hooks and endpoints\n\n* add includedraft logic with pull\n\n* add more draft guards\n\n* add help desk logic to view this feature\n\n* update banner\n\n* update tests\n\n* Update index.tsx\n\n* cleanup logic with refined feedback\n\n* fix tests\n\n* submitted by cleanup logic\n\n* added package activity\n\n* Update index.tsx\n\n* add fall back\n\n* Add logic to fix TE\n\n* Add TE fix and package activity\n\n* add logic for non original submitter modal\n\n* Update index.test.tsx\n\n* Update index.tsx\n\n* add draft login on package lookups\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.tsx\n\n* fix ui bugs\n\n* Update index.tsx\n\n* cleanup\n\n* update logic for options when draft is locked\n\n* update draft owner logic\n\n* update draft owner logic\n\n* continue clean up\n\n* Update item.ts\n\n* Update drafts.ts\n\n* Update item.ts\n\n* Update hasPermissions.ts\n\n* Update hasPermissions.ts\n\n* clean up\n\n* Update hasPermissions.ts\n\n* logs\n\n* Update details.tsx\n\n* add tightened header logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* add helpdesk logic to alert messages\n\n* Update details.tsx\n\n* cleanup\n\n* Update details.tsx\n\n* Update details.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update ChipDetails.tsx\n\n* Update ChipDetails.tsx\n\n* first UI attatchment update\n\n* cleanup\n\n* update language and cleanup\n\n* Add TE logic\n\n* update\n\n* Update index.test.tsx.snap\n\n* Update drafts.ts\n\n* cleanup\n\n* idea download all guards\n\n* clean reuse draft\n\n* clean\n\n* cleanup logic\n\n* lock\n\n* add guardrails\n\n* give HD back visibility\n\n* add query delete and save logic\n\n* add label logic\n\n* draft attach section cleanup\n\n* Update index.tsx\n\n* Try attachment fallback\n\n* Update draft-attachments.ts\n\n* Create draft-package-details.spec.ts\n\n* add logic to try to prevent stale record throwing an error\n\n* fix visual sidebar\n\n* add build fixes\n\n* add logic and prevent use from editing details when locked\n\n* Update Field.tsx\n\n* draft kebab lag options\n\n* add redirect logic\n\n* fix\n\n* tighten error message\n\n* keep trying logic\n\n* cleanup\n\n* cleanup\n\n* Update index.test.tsx\n\n* cleanup\n\n* Update index.test.tsx\n\n* update\n\n* Update index.test.tsx\n\n* update logic\n\n* cleanup\n\n* add logic based on AC\n\n* add logic to handle legacy drafts\n\n* add latest attachment logic\n\n* cleanup flashing loading logic\n\n* add user prompting logic\n\n* preserve draft context after first save\n\n* cleanup\n\n* add warning before\n\n* add warning for conflict\n\n* add id conflict inline\n\n* attempt improvements based on QA feedback on package activity\n\n* Update drafts.ts\n\n* Clean up error message UX, add hardening of delete logic\n\n* strengthening branch\n\n* cleanup\n\n* snapshot test cleanup\n\n* Update index.test.tsx\n\n* All critical patches\n\n* through major finding 19\n\n* Up to 40\n\n* findings 41-49\n\n* Logic up until issue 94\n\n* first cleanup\n\n* add cleanup logic based on PR feedback and UI testing\n\n* add comment\n\n* clean up\n\n* UI cleanup\n\n* add logic to not flicker an error on submission\n\n* add spinner logic\n\n* attempt additional spinner logic\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* Update index.tsx\n\n* cleanup of actionform",
             "author": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "James Dinh",
+              "email": "james.d@globalalliantinc.com",
+              "time": 1777907128000
             },
             "committer": {
-              "name": "Biju Joseph",
-              "email": "biju.joseph@semanticbits.com",
-              "time": 1777487639000
+              "name": "GitHub",
+              "email": "noreply@github.com",
+              "time": 1777907128000
             },
             "branch": "main"
-          },
-          "actualWorkers": 1
+          }
         },
         "id": "shared",
         "name": "shared",
@@ -603,1163 +589,23 @@
     "workers": 1,
     "webServer": null
   },
-  "suites": [
+  "suites": [],
+  "errors": [
     {
-      "title": "e2e/specs/dashboard.spec.ts",
-      "file": "e2e/specs/dashboard.spec.ts",
-      "column": 0,
-      "line": 0,
-      "specs": [],
-      "suites": [
-        {
-          "title": "Dashboard page",
-          "file": "e2e/specs/dashboard.spec.ts",
-          "line": 66,
-          "column": 8,
-          "specs": [],
-          "suites": [
-            {
-              "title": "stateSubmitter dashboard",
-              "file": "e2e/specs/dashboard.spec.ts",
-              "line": 71,
-              "column": 10,
-              "specs": [],
-              "suites": [
-                {
-                  "title": "UI validations",
-                  "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 86,
-                  "column": 12,
-                  "specs": [
-                    {
-                      "title": "navigation banner updates",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2921,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:40:40.633Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-79236770153f2bc1774a",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 87,
-                      "column": 9
-                    },
-                    {
-                      "title": "page header",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2927,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:40:43.646Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-d58f6cb96869baa5c8ca",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 101,
-                      "column": 9
-                    },
-                    {
-                      "title": "SPA and Waiver tabs",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2830,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:40:46.587Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-aaa4291f7cccb505955c",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 111,
-                      "column": 9
-                    },
-                    {
-                      "title": "search field",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2941,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:40:49.433Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-09e909a1a6477cabd9dc",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 119,
-                      "column": 9
-                    },
-                    {
-                      "title": "columns button",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2858,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:40:52.387Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-c2aaa2e70a91136deaa4",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 128,
-                      "column": 9
-                    },
-                    {
-                      "title": "filters buttons",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2782,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:40:55.354Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-ccbb295142dad4447f3d",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 135,
-                      "column": 9
-                    },
-                    {
-                      "title": "export button",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2988,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:40:58.148Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-292b179a233e813cb1fa",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 140,
-                      "column": 9
-                    }
-                  ],
-                  "suites": [
-                    {
-                      "title": "dashboard table",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 145,
-                      "column": 14,
-                      "specs": [],
-                      "suites": [
-                        {
-                          "title": "spas",
-                          "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 146,
-                          "column": 16,
-                          "specs": [
-                            {
-                              "title": "column headers",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3019,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:01.150Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-9b54b2f13ec47145f067",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 147,
-                              "column": 13
-                            },
-                            {
-                              "title": "table data",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2815,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:04.185Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-9832e54ed6bc6e875887",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 184,
-                              "column": 13
-                            },
-                            {
-                              "title": "table footer",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3004,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:07.018Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-6a9fe6fd1870cdaf3e89",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 188,
-                              "column": 13
-                            }
-                          ]
-                        },
-                        {
-                          "title": "waivers",
-                          "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 193,
-                          "column": 16,
-                          "specs": [
-                            {
-                              "title": "column headers",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3365,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:10.036Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-a626b6eed07fdecc9042",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 198,
-                              "column": 13
-                            },
-                            {
-                              "title": "table data",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3082,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:13.418Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-61809a8110fdeff7508e",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 235,
-                              "column": 13
-                            },
-                            {
-                              "title": "table footer",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3111,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:16.517Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-b5476ccae199bfd768d0",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 239,
-                              "column": 13
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "title": "Interactions",
-                  "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 246,
-                  "column": 12,
-                  "specs": [
-                    {
-                      "title": "Download Exports for stateSubmitter user",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 5249,
-                              "errors": [],
-                              "stdout": [
-                                {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-04_29_2026.csv\"\n"
-                                }
-                              ],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:19.644Z",
-                              "annotations": [],
-                              "attachments": [
-                                {
-                                  "name": "metadata",
-                                  "contentType": "application/json",
-                                  "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
-                                }
-                              ]
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-a2db929c6434ad64d2d1",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 247,
-                      "column": 9
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "title": "cmsReviewer dashboard",
-              "file": "e2e/specs/dashboard.spec.ts",
-              "line": 71,
-              "column": 10,
-              "specs": [],
-              "suites": [
-                {
-                  "title": "UI validations",
-                  "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 86,
-                  "column": 12,
-                  "specs": [
-                    {
-                      "title": "navigation banner updates",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 3254,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:24.907Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-49435fe861e54d37de40",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 87,
-                      "column": 9
-                    },
-                    {
-                      "title": "page header",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2852,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:28.173Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-feace4ed300c666899a1",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 101,
-                      "column": 9
-                    },
-                    {
-                      "title": "SPA and Waiver tabs",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2916,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:31.041Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-455bb432ffaaed58f362",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 111,
-                      "column": 9
-                    },
-                    {
-                      "title": "search field",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2885,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:33.973Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-9f724c34626455f57ae5",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 119,
-                      "column": 9
-                    },
-                    {
-                      "title": "columns button",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2883,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:36.875Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-6ffaa1bbf26b0ba51345",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 128,
-                      "column": 9
-                    },
-                    {
-                      "title": "filters buttons",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2840,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:39.772Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-b07f1519c3c4a274bec3",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 135,
-                      "column": 9
-                    },
-                    {
-                      "title": "export button",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 2869,
-                              "errors": [],
-                              "stdout": [],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:41:42.626Z",
-                              "annotations": [],
-                              "attachments": []
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-931865d50e04c29cd203",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 140,
-                      "column": 9
-                    }
-                  ],
-                  "suites": [
-                    {
-                      "title": "dashboard table",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 145,
-                      "column": 14,
-                      "specs": [],
-                      "suites": [
-                        {
-                          "title": "spas",
-                          "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 146,
-                          "column": 16,
-                          "specs": [
-                            {
-                              "title": "column headers",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2982,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:45.509Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-99c3838bc3fb0f0af16b",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 147,
-                              "column": 13
-                            },
-                            {
-                              "title": "table data",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2799,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:48.505Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-ff072afbb17733ee985f",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 184,
-                              "column": 13
-                            },
-                            {
-                              "title": "table footer",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 2778,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:51.317Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-07886babd48e8320c3ee",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 188,
-                              "column": 13
-                            }
-                          ]
-                        },
-                        {
-                          "title": "waivers",
-                          "file": "e2e/specs/dashboard.spec.ts",
-                          "line": 193,
-                          "column": 16,
-                          "specs": [
-                            {
-                              "title": "column headers",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3207,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:54.108Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-efd257844fbde96ced5d",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 198,
-                              "column": 13
-                            },
-                            {
-                              "title": "table data",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3033,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:41:57.330Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-667b6675c2f89da21417",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 235,
-                              "column": 13
-                            },
-                            {
-                              "title": "table footer",
-                              "ok": true,
-                              "tags": [
-                                "CI"
-                              ],
-                              "tests": [
-                                {
-                                  "timeout": 30000,
-                                  "annotations": [],
-                                  "expectedStatus": "passed",
-                                  "projectId": "shared",
-                                  "projectName": "shared",
-                                  "results": [
-                                    {
-                                      "workerIndex": 0,
-                                      "parallelIndex": 0,
-                                      "status": "passed",
-                                      "duration": 3145,
-                                      "errors": [],
-                                      "stdout": [],
-                                      "stderr": [],
-                                      "retry": 0,
-                                      "startTime": "2026-04-29T18:42:00.381Z",
-                                      "annotations": [],
-                                      "attachments": []
-                                    }
-                                  ],
-                                  "status": "expected"
-                                }
-                              ],
-                              "id": "e31090cf21ac3d2f1505-b6337307151f9d48b5ff",
-                              "file": "e2e/specs/dashboard.spec.ts",
-                              "line": 239,
-                              "column": 13
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                },
-                {
-                  "title": "Interactions",
-                  "file": "e2e/specs/dashboard.spec.ts",
-                  "line": 246,
-                  "column": 12,
-                  "specs": [
-                    {
-                      "title": "Download Exports for cmsReviewer user",
-                      "ok": true,
-                      "tags": [
-                        "CI"
-                      ],
-                      "tests": [
-                        {
-                          "timeout": 30000,
-                          "annotations": [],
-                          "expectedStatus": "passed",
-                          "projectId": "shared",
-                          "projectName": "shared",
-                          "results": [
-                            {
-                              "workerIndex": 0,
-                              "parallelIndex": 0,
-                              "status": "passed",
-                              "duration": 5386,
-                              "errors": [],
-                              "stdout": [
-                                {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-04_29_2026.csv\"\n"
-                                }
-                              ],
-                              "stderr": [],
-                              "retry": 0,
-                              "startTime": "2026-04-29T18:42:03.543Z",
-                              "annotations": [],
-                              "attachments": [
-                                {
-                                  "name": "metadata",
-                                  "contentType": "application/json",
-                                  "body": "ewogICJpZCI6ICJETC0wMDAxIiwKICAidGl0bGUiOiAiRXhwb3J0IERhc2hib2FyZCBSZWNvcmRzIiwKICAiZmlsZSI6ICJkYXNoYm9hcmQuc3BlYy50cyIsCiAgImZlYXR1cmUiOiAiRGFzaGJvYXJkIiwKICAidHlwZSI6ICJzbW9rZSIsCiAgInRhZ3MiOiBbCiAgICAic21va2UiCiAgXSwKICAiamlyYSI6ICIiLAogICJ0ZXN0cmFpbF9jYXNlX2lkIjogIiIKfQ=="
-                                }
-                              ]
-                            }
-                          ],
-                          "status": "expected"
-                        }
-                      ],
-                      "id": "e31090cf21ac3d2f1505-cae5ba9990e03d5efaa9",
-                      "file": "e2e/specs/dashboard.spec.ts",
-                      "line": 247,
-                      "column": 9
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
+      "message": "Error: Failed to create authenticated storage state for env=ci role=stateSubmitter. Root error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Dashboard' })\n. Debug screenshot: .auth/ci/stateSubmitter-auth-setup-failure.png",
+      "stack": "Error: Failed to create authenticated storage state for env=ci role=stateSubmitter. Root error: expect(locator).toBeVisible() failed\n\nLocator: getByRole('heading', { name: 'Dashboard' })\nExpected: visible\nTimeout: 10000ms\nError: element(s) not found\n\nCall log:\n  - Expect \"to.be.visible\" with timeout 10000ms\n  - waiting for getByRole('heading', { name: 'Dashboard' })\n. Debug screenshot: .auth/ci/stateSubmitter-auth-setup-failure.png\n    at createStorageState (/home/runner/work/macpro-mako/macpro-mako/test/lib/createStorageState.ts:88:11)\n    at globalSetup (/home/runner/work/macpro-mako/macpro-mako/test/lib/global.setup.ts:110:5)",
+      "location": {
+        "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/createStorageState.ts",
+        "column": 11,
+        "line": 88
+      },
+      "snippet": "   at lib/createStorageState.ts:88\n\n\u001b[0m \u001b[90m 86 |\u001b[39m\n \u001b[90m 87 |\u001b[39m     \u001b[36mconst\u001b[39m errorMessage \u001b[33m=\u001b[39m error \u001b[36minstanceof\u001b[39m \u001b[33mError\u001b[39m \u001b[33m?\u001b[39m error\u001b[33m.\u001b[39mmessage \u001b[33m:\u001b[39m \u001b[33mString\u001b[39m(error)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 88 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 89 |\u001b[39m       \u001b[32m`Failed to create authenticated storage state for env=${env} role=${role}. `\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 90 |\u001b[39m         \u001b[32m`Root error: ${errorMessage}. Debug screenshot: ${screenshotPath}`\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 91 |\u001b[39m     )\u001b[33m;\u001b[39m\u001b[0m"
     }
   ],
-  "errors": [],
   "stats": {
-    "startTime": "2026-04-29T18:40:21.567Z",
-    "duration": 107457.453,
-    "expected": 28,
+    "startTime": "2026-05-04T15:19:34.667Z",
+    "duration": 22580.395,
+    "expected": 0,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
