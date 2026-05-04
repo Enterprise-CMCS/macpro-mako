@@ -71,10 +71,10 @@ export class CreateTopics extends Construct {
       securityGroups,
       bundling: commonBundlingOptions,
     });
-
     const customResourceLogGroup = new LogGroup(this, `createTopicsCustomResourceLogGroup`, {
       removalPolicy: RemovalPolicy.DESTROY,
     });
+    lambda.grantInvoke(new ServicePrincipal("cloudformation.amazonaws.com"));
 
     const customResource = new AwsCustomResource(this, "CustomResource", {
       onCreate: {
