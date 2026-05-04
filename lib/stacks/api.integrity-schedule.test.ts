@@ -147,8 +147,8 @@ describe("Api attachment archive integrity scheduling", () => {
       stage: "production",
       openSearchDomainEndpoint: "search-test-domain.us-east-1.es.amazonaws.com",
       indexNamespace: "production",
-      archiveWriteBucketName: "mako-production-attachment-archives-123456789012", // pragma: allowlist secret
-      archiveBaseReadBucketName: "mako-production-attachment-archives-123456789012", // pragma: allowlist secret
+      archiveWriteBucketName: "mako-production-attachment-archives-123456789012",
+      archiveBaseReadBucketName: "mako-production-attachment-archives-123456789012",
       archiveOverlayPrefix: "",
     });
     expect(productionEnvironment.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY).toBe(

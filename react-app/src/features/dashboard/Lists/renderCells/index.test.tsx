@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   TEST_1915B_ITEM,
@@ -10,16 +10,58 @@ import {
 } from "mocks";
 import { Action, CognitoUserAttributes, opensearch, SEATOOL_STATUS } from "shared-types";
 import { UserRole } from "shared-types/events/legacy-user";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { renderWithMemoryRouter } from "@/utils/test-helpers";
+import { queryClient } from "@/utils";
+import {
+  DRAFT_CONTINUE_ACTION_LABEL,
+  DRAFT_DELETE_ACTION_LABEL,
+  DRAFT_DELETE_MODAL_BODY,
+  DRAFT_DELETE_MODAL_HEADER,
+  getNonOwnerDraftDeleteModalBody,
+  getNonOwnerDraftWarningModalBody,
+} from "@/utils/drafts";
+import {
+  renderWithMemoryRouter,
+  renderWithQueryClient,
+  renderWithQueryClientAndMemoryRouter,
+} from "@/utils/test-helpers";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
+
+vi.mock("@/api", async () => {
+  const actual = await vi.importActual<typeof import("@/api")>("@/api");
+  return {
+    ...actual,
+  };
+});
+
+vi.mock("@/api/deleteDraft", () => ({
+  deleteDraft: vi.fn(),
+}));
+
+vi.mock("@/components", async () => {
+  const actual = await vi.importActual<typeof import("@/components")>("@/components");
+  return {
+    ...actual,
+    banner: vi.fn(),
+    userPrompt: vi.fn(),
+  };
+});
+
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
 }));
+
+const { banner, userPrompt } = await import("@/components");
+const { deleteDraft } = await import("@/api/deleteDraft");
 const { sendGAEvent } = await import("@/utils/ReactGA/SendGAEvent");
 import { MemoryRouter } from "react-router";
+
+beforeEach(() => {
+  vi.clearAllMocks();
+  sessionStorage.clear();
+});
 
 describe("CellDetailsLink GA event", () => {
   it("should send GA event when link is clicked", async () => {
@@ -28,7 +70,7 @@ describe("CellDetailsLink GA event", () => {
 
     render(
       <MemoryRouter>
-        <CellDetailsLink id={item.id} authority={item.authority} />
+        <CellDetailsLink record={item} />
       </MemoryRouter>,
     );
 
@@ -54,7 +96,7 @@ describe("renderCellActions GA event", () => {
 
     const cell = renderCellActions({ ...TEST_STATE_SUBMITTER_USER, role: "statesubmitter" })(item);
 
-    render(<MemoryRouter>{cell}</MemoryRouter>);
+    renderWithQueryClient(cell);
 
     await user.click(screen.getByLabelText("Available package actions"));
 
@@ -80,11 +122,11 @@ describe("renderCells", () => {
   describe("CellDetailsLink", () => {
     const setup = (item: opensearch.main.Document) => {
       renderWithMemoryRouter(
-        <CellDetailsLink id={item.id} authority={item.authority} />,
+        <CellDetailsLink record={item} />,
         [
           {
             path: "/test",
-            element: <CellDetailsLink id={item.id} authority={item.authority} />,
+            element: <CellDetailsLink record={item} />,
           },
         ],
         {
@@ -94,26 +136,37 @@ describe("renderCells", () => {
     };
     it("should return a link for cell details for a Medicaid SPA item", () => {
       setup(TEST_MED_SPA_ITEM._source);
-      expect(screen.getByText(TEST_MED_SPA_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_MED_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_MED_SPA_ITEM._id)}`,
+      expect(screen.getByText(TEST_MED_SPA_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_MED_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_MED_SPA_ITEM._source.id)}`,
       );
     });
     it("should return a link for cell details for a CHIP SPA item", () => {
       setup(TEST_CHIP_SPA_ITEM._source);
-      expect(screen.getByText(TEST_CHIP_SPA_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_CHIP_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_CHIP_SPA_ITEM._id)}`,
+      expect(screen.getByText(TEST_CHIP_SPA_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_CHIP_SPA_ITEM._source.authority)}/${encodeURIComponent(TEST_CHIP_SPA_ITEM._source.id)}`,
       );
     });
     it("should return a link for cell details for a 1915(c) waiver item", () => {
       setup(TEST_1915B_ITEM._source);
-      expect(screen.getByText(TEST_1915B_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_1915B_ITEM._source.authority)}/${encodeURIComponent(TEST_1915B_ITEM._id)}`,
+      expect(screen.getByText(TEST_1915B_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_1915B_ITEM._source.authority)}/${encodeURIComponent(TEST_1915B_ITEM._source.id)}`,
       );
     });
     it("should return a link for cell details for a 1915(c) waiver item", () => {
       setup(TEST_1915C_ITEM._source);
-      expect(screen.getByText(TEST_1915C_ITEM._id).getAttribute("href")).toEqual(
-        `/details/${encodeURIComponent(TEST_1915C_ITEM._source.authority)}/${encodeURIComponent(TEST_1915C_ITEM._id)}`,
+      expect(screen.getByText(TEST_1915C_ITEM._source.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(TEST_1915C_ITEM._source.authority)}/${encodeURIComponent(TEST_1915C_ITEM._source.id)}`,
+      );
+    });
+    it("should return a link to details for draft items", () => {
+      const draftItem: opensearch.main.Document = {
+        ...TEST_MED_SPA_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        event: "new-medicaid-submission",
+      };
+      setup(draftItem);
+      expect(screen.getByText(draftItem.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(draftItem.authority)}/${encodeURIComponent(draftItem.id)}?preferDraft=true`,
       );
     });
   });
@@ -126,7 +179,7 @@ describe("renderCells", () => {
     ) => {
       const user = userEvent.setup();
       const element = renderCellActions(role ? { ...userAttributes, role } : null)(item);
-      const rendered = renderWithMemoryRouter(
+      const rendered = renderWithQueryClientAndMemoryRouter(
         element,
         [
           {
@@ -158,6 +211,164 @@ describe("renderCells", () => {
     });
 
     describe("as a State Submitter", () => {
+      const draftItem: opensearch.main.Document = {
+        ...TEST_MED_SPA_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        stateStatus: "Draft",
+        cmsStatus: "Draft",
+        event: "new-medicaid-submission",
+        draft: {
+          savedAt: "2026-03-26T00:00:00.000Z",
+          createdByEmail: TEST_STATE_SUBMITTER_USER.email,
+          createdByName: "State Submitter",
+          data: {},
+        },
+      };
+
+      it("should show draft actions for draft records", async () => {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+
+        expect(await screen.findByText(DRAFT_CONTINUE_ACTION_LABEL)).toHaveAttribute(
+          "href",
+          `/new-submission/spa/medicaid/create?draftId=${draftItem.id}&origin=spas`,
+        );
+        expect(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
+          }),
+        ).toBeInTheDocument();
+      });
+
+      it("should open a delete confirmation modal for draft actions", async () => {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+        await user.click(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
+          }),
+        );
+
+        expect(userPrompt).toHaveBeenCalledWith(
+          expect.objectContaining({
+            header: DRAFT_DELETE_MODAL_HEADER,
+            body: DRAFT_DELETE_MODAL_BODY,
+            acceptButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            cancelVariant: "link",
+          }),
+        );
+      });
+
+      it("should show owner-aware delete copy for non-owner draft users", async () => {
+        const nonOwnerDraftItem: opensearch.main.Document = {
+          ...draftItem,
+          draft: {
+            savedAt: "2026-03-26T00:00:00.000Z",
+            draftOwnerEmail: "someoneelse@example.com",
+            draftOwnerName: "Someone Else",
+            data: {},
+          },
+        };
+
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", nonOwnerDraftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+        await user.click(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${nonOwnerDraftItem.id}`,
+          }),
+        );
+
+        expect(userPrompt).toHaveBeenCalledWith(
+          expect.objectContaining({
+            header: DRAFT_DELETE_MODAL_HEADER,
+            body: getNonOwnerDraftDeleteModalBody(nonOwnerDraftItem.id),
+            acceptButtonText: "Delete",
+            cancelButtonText: "Cancel",
+            cancelVariant: "link",
+          }),
+        );
+      });
+
+      it("should prompt non-owner draft users before continuing from the dashboard", async () => {
+        const nonOwnerDraftItem: opensearch.main.Document = {
+          ...draftItem,
+          draft: {
+            savedAt: "2026-03-26T00:00:00.000Z",
+            draftOwnerEmail: "someoneelse@example.com",
+            draftOwnerName: "Someone Else",
+            data: {},
+          },
+        };
+
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", nonOwnerDraftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+        await user.click(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_CONTINUE_ACTION_LABEL} for ${nonOwnerDraftItem.id}`,
+          }),
+        );
+
+        expect(userPrompt).toHaveBeenCalledWith(
+          expect.objectContaining({
+            header: "Confirm action",
+            body: getNonOwnerDraftWarningModalBody(nonOwnerDraftItem.id),
+            acceptButtonText: "Yes, continue",
+            cancelButtonText: "Cancel",
+            cancelVariant: "link",
+          }),
+        );
+      });
+
+      it("should keep users on the dashboard when delete modal is canceled", async () => {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
+
+        await user.click(screen.getByLabelText("Available package actions"));
+        await user.click(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
+          }),
+        );
+
+        const promptData = vi.mocked(userPrompt).mock.calls.at(-1)?.[0];
+        expect(promptData).toBeDefined();
+
+        promptData?.onCancel?.();
+
+        expect(deleteDraft).not.toHaveBeenCalled();
+        expect(banner).not.toHaveBeenCalled();
+      });
+
+      it("should delete the draft when confirmed", async () => {
+        const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", draftItem);
+        vi.mocked(deleteDraft).mockResolvedValueOnce(undefined);
+        const removeQueriesSpy = vi.spyOn(queryClient, "removeQueries");
+
+        await user.click(screen.getByLabelText("Available package actions"));
+        await user.click(
+          screen.getByRole("menuitem", {
+            name: `${DRAFT_DELETE_ACTION_LABEL} for ${draftItem.id}`,
+          }),
+        );
+
+        const promptData = vi.mocked(userPrompt).mock.calls.at(-1)?.[0];
+        expect(promptData).toBeDefined();
+
+        await promptData?.onAccept?.();
+
+        await waitFor(() => {
+          expect(deleteDraft).toHaveBeenCalledWith(draftItem.id);
+          expect(removeQueriesSpy).toHaveBeenCalledWith({
+            queryKey: ["record", draftItem.id],
+          });
+          expect(banner).toHaveBeenCalled();
+        });
+      });
+
       it(`should handle button click and display [${Action.RESPOND_TO_RAI},${Action.WITHDRAW_PACKAGE}]`, async () => {
         const { user } = setup(TEST_STATE_SUBMITTER_USER, "statesubmitter", {
           ...TEST_MED_SPA_ITEM._source,

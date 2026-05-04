@@ -1,3 +1,4 @@
+import { checkIdentifierUsageHandlers } from "./checkIdentifierUsage";
 import { cpocHandlers } from "./cpocs";
 import { itemHandlers } from "./items";
 import { notificationHandlers } from "./notifications";
@@ -20,10 +21,17 @@ export const apiHandlers = [
   ...userDetailsHandlers,
   ...userProfileHandlers,
   ...webformHandlers,
+  ...checkIdentifierUsageHandlers,
 ];
 
+export { errorApiCheckIdentifierUsageHandler } from "./checkIdentifierUsage";
 export { errorApiCpocHandler } from "./cpocs";
-export { errorApiItemExistsHandler, errorApiItemHandler, onceApiItemHandler } from "./items";
+export {
+  errorApiItemExistsHandler,
+  errorApiItemHandler,
+  onceApiItemHandler,
+  resetApiItemsState,
+} from "./items";
 export { errorApiNotificationHandler } from "./notifications";
 export { errorApiPackageActionsHandler, onceApiPackageActionsHandler } from "./packageActions";
 export { errorApiSearchHandler } from "./search";

@@ -1,6 +1,5 @@
 import { cleanup, screen, waitForElementToBeRemoved, within } from "@testing-library/react";
 import userEvent, { UserEvent } from "@testing-library/user-event";
-import { ExportToCsv } from "export-to-csv";
 import {
   DEFAULT_CMS_USER,
   HELP_DESK_USER,
@@ -8,11 +7,12 @@ import {
   TEST_REVIEWER_USER,
   TEST_STATE_SUBMITTER_USER,
 } from "mocks";
-import { FullUser, opensearch } from "shared-types";
+import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatActionType } from "shared-utils";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
+import * as exportUtils from "@/components/Opensearch/main/Filtering/Export/export.utils";
 import { BLANK_VALUE } from "@/consts";
 import {
   APPROVED_ITEM,
@@ -213,15 +213,19 @@ const verifyRow = (
   const row = within(screen.getByTestId("os-table")).getByText(doc.id).parentElement.parentElement;
   const cells = row.children;
   let cellIndex = hasActions ? 1 : 0;
+  const expectedSubmitterName =
+    doc.seatoolStatus === SEATOOL_STATUS.DRAFT ? BLANK_VALUE : doc.submitterName || BLANK_VALUE;
 
   if (hasActions) {
     // Actions
     expect(within(row).getByTestId("available-actions"));
   }
   expect(cells[cellIndex].textContent).toEqual(doc.id); // SPA ID
-  expect(cells[cellIndex].firstElementChild.getAttribute("href")).toEqual(
-    `/details/${encodeURI(doc.authority)}/${doc.id}`,
-  );
+  const expectedDetailsHref =
+    doc.seatoolStatus === SEATOOL_STATUS.DRAFT
+      ? `/details/${encodeURI(doc.authority)}/${doc.id}?preferDraft=true`
+      : `/details/${encodeURI(doc.authority)}/${doc.id}`;
+  expect(cells[cellIndex].firstElementChild.getAttribute("href")).toEqual(expectedDetailsHref);
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.state || BLANK_VALUE); // State
   cellIndex++;
@@ -243,7 +247,7 @@ const verifyRow = (
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.leadAnalystName || BLANK_VALUE); // CPOC Name
   cellIndex++;
-  expect(cells[cellIndex].textContent).toEqual(doc.submitterName || BLANK_VALUE); // Submitted By
+  expect(cells[cellIndex].textContent).toEqual(expectedSubmitterName); // Submitted By
 };
 
 describe("WaiversList", () => {
@@ -436,15 +440,76 @@ describe("WaiversList", () => {
     });
 
     it("should handle export", async () => {
-      const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
+      const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
 
-      await user.keyboard("{Escape}"); // ⚠️ close columns menu after testing
+      if (!screen.queryByText("Final Disposition", { selector: "th>div" })) {
+        await user.click(screen.getByRole("button", { name: "Columns (3 hidden)" }));
+        const columns = screen.getByTestId("columns-menu");
+        await user.click(within(columns).getByText("Final Disposition"));
+        await user.click(within(columns).getByText("Formal RAI Requested"));
+        await user.click(within(columns).getByText("CPOC Name"));
+      }
+
+      await user.keyboard("{Escape}");
 
       await user.click(screen.queryByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
-      console.log("what is expected data: ", expectedData);
-      expect(spy).toHaveBeenCalledWith(expectedData);
+      expect(csvSpy).toHaveBeenCalledTimes(1);
+      const [rows, filename] = csvSpy.mock.calls[0];
+      expect(rows).toEqual(expectedData);
+      expect(filename).toMatch(/-export-\d{2}_\d{2}_\d{4}$/);
+    });
+  });
+
+  it("shows blank Submitted By for waiver draft rows", async () => {
+    const draftDoc = {
+      ...pendingDoc,
+      id: "MD-26-8888-W",
+      submissionDate: undefined,
+      finalDispositionDate: undefined,
+      raiRequestedDate: undefined,
+      raiReceivedDate: undefined,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      submitterName: "Latest Saver",
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        draftOwnerName: "Draft Owner",
+        data: { id: "MD-26-8888-W" },
+      },
+    } as opensearch.main.Document;
+
+    const { user } = await setup(
+      {
+        hits: [
+          {
+            _index: "mock-index",
+            _id: draftDoc.id,
+            _score: 1,
+            _source: draftDoc,
+            sort: [0],
+          },
+        ],
+        max_score: 1,
+        total: { value: 1, relation: "eq" },
+      },
+      getDashboardQueryString({ tab: "waivers" }),
+      TEST_STATE_SUBMITTER_USER,
+      false,
+    );
+
+    await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
+    const columns = screen.getByTestId("columns-menu");
+    await user.click(within(columns).getByText("Final Disposition"));
+    await user.click(within(columns).getByText("Formal RAI Requested"));
+    await user.click(within(columns).getByText("CPOC Name"));
+
+    verifyRow(draftDoc, {
+      hasActions: true,
+      status: "Draft",
+      makoChangedDate: "01/31/2024",
     });
   });
 });

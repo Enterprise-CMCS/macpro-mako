@@ -15,6 +15,7 @@ export const handler: Handler = async (event, __, callback) => {
 
     const indices: Index[] = [
       `${indexNamespace}main`,
+      `${indexNamespace}draftmain`,
       `${indexNamespace}changelog`,
       `${indexNamespace}insights`,
       `${indexNamespace}types`,

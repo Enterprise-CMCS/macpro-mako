@@ -3,3 +3,4 @@ playwright-reports
 test-results
 .auth
 playwright
+local/

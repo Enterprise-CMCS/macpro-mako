@@ -132,6 +132,7 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
         property: "id",
         documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
+      draftOptions={{ enabled: true, event: "capitated-amendment" }}
     />
   );
 };

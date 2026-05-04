@@ -28,6 +28,7 @@ const LDProvider = await asyncWithLDProvider({
   clientSideID: LAUNCHDARKLY_CLIENT_ID,
   options: {
     bootstrap: "localStorage",
+    streaming: false,
     baseUrl: "https://clientsdk.launchdarkly.us",
     streamUrl: "https://clientstream.launchdarkly.us",
     eventsUrl: "https://events.launchdarkly.us",

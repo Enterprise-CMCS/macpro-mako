@@ -92,7 +92,6 @@ const getGroupDisplayValue = (value?: string) => {
 };
 
 const getDivisionDisplayValue = (value?: string, groupValue?: string) => {
-  console.log("getDivisionDisplayValue", value, groupValue);
   if (!value) return "";
   const trimmed = value.trim();
   if (!trimmed) return "";

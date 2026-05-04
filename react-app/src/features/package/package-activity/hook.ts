@@ -14,6 +14,9 @@ type AttachmentArchiveRequest = {
 const DEFAULT_POLL_AFTER_SECONDS = 3;
 const DEFAULT_ATTACHMENT_ERROR_MESSAGE = "This attachment is no longer available.";
 const DEFAULT_ARCHIVE_ERROR_MESSAGE = "Unable to prepare the attachment archive";
+const DEFAULT_ARCHIVE_TIMEOUT_MESSAGE =
+  "Attachment archive is taking longer than expected. Please try again in a few moments.";
+const MAX_ARCHIVE_POLL_ATTEMPTS = 20;
 
 function sleep(ms: number) {
   return new Promise((resolve) => {
@@ -44,9 +47,17 @@ function getApiErrorMessage(error: unknown, fallback: string) {
   return fallback;
 }
 
-export const useAttachmentService = ({ packageId }: { packageId: string }) => {
+export const useAttachmentService = ({
+  packageId,
+  preferDraft = false,
+}: {
+  packageId: string;
+  preferDraft?: boolean;
+}) => {
   const { mutateAsync, error, isLoading } = useMutation((attachment: Attachments[number]) =>
-    getAttachmentUrl(packageId, attachment.bucket, attachment.key, attachment.filename),
+    getAttachmentUrl(packageId, attachment.bucket, attachment.key, attachment.filename, {
+      preferDraft,
+    }),
   );
   const [archiveLoading, setArchiveLoading] = useState(false);
   const [archiveErrorMessage, setArchiveErrorMessage] = useState<string | undefined>();
@@ -75,8 +86,10 @@ export const useAttachmentService = ({ packageId }: { packageId: string }) => {
     setArchiveLoading(true);
 
     try {
-      while (true) {
-        const response = await getAttachmentArchive(packageId, scope, sectionId);
+      for (let attempt = 1; attempt <= MAX_ARCHIVE_POLL_ATTEMPTS; attempt += 1) {
+        const response = await getAttachmentArchive(packageId, scope, sectionId, {
+          preferDraft,
+        });
 
         if (response.status === "READY") {
           setArchiveWarningMessage(response.warningMessage);
@@ -85,6 +98,10 @@ export const useAttachmentService = ({ packageId }: { packageId: string }) => {
 
         if (response.status === "FAILED") {
           throw new Error(response.message || DEFAULT_ARCHIVE_ERROR_MESSAGE);
+        }
+
+        if (attempt === MAX_ARCHIVE_POLL_ATTEMPTS) {
+          throw new Error(DEFAULT_ARCHIVE_TIMEOUT_MESSAGE);
         }
 
         await sleep((response.pollAfterSeconds || DEFAULT_POLL_AFTER_SECONDS) * 1000);

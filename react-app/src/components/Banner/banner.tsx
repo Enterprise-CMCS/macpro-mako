@@ -30,6 +30,10 @@ export const banner = (newBanner: Banner) => {
   return bannerState.create(newBanner);
 };
 
+export const dismissBanner = () => {
+  return bannerState.dismiss();
+};
+
 export const Banner = () => {
   const bannerObserverRef = useRef<(() => void) | null>(null);
   const { pathname } = useLocation();

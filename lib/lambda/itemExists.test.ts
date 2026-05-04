@@ -1,14 +1,17 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
+import * as packageApi from "libs/api/package";
 import {
   GET_ERROR_ITEM_ID,
   getRequestContext,
+  helpDeskUser,
   HI_TEST_ITEM_ID,
   NOT_EXISTING_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   setMockUsername,
   TEST_ITEM_ID,
 } from "mocks";
-import { describe, expect, it } from "vitest";
+import { SEATOOL_STATUS } from "shared-types";
+import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./itemExists";
 
@@ -40,6 +43,21 @@ describe("Handler for checking if record exists", () => {
   it("should return 400 if the item id not valid", async () => {
     const event = {
       body: JSON.stringify({ id: false }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual(
+      expect.objectContaining({ message: "Event failed validation" }),
+    );
+  });
+
+  it("should return 400 if the item id is blank", async () => {
+    const event = {
+      body: JSON.stringify({ id: "   " }),
       requestContext: getRequestContext(),
     } as APIGatewayEvent;
 
@@ -124,6 +142,30 @@ describe("Handler for checking if record exists", () => {
     );
   });
 
+  it("should return 200 and exists: false for malformed main shell docs without a seatoolStatus", async () => {
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+      found: true,
+      _id: NOT_FOUND_ITEM_ID,
+      _source: {
+        id: NOT_FOUND_ITEM_ID,
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "No record found for the given id", exists: false }),
+    );
+    getPackageSpy.mockRestore();
+  });
+
   it("should return 200 and exists: false if an error occurs during processing", async () => {
     const event = {
       body: JSON.stringify({ id: GET_ERROR_ITEM_ID }),
@@ -137,5 +179,63 @@ describe("Handler for checking if record exists", () => {
     expect(res.body).toEqual(
       JSON.stringify({ message: "No record found for the given id", exists: false }),
     );
+  });
+
+  it("should return draft status from draftmain when includeDrafts is true", async () => {
+    const getDraftPackageSpy = vi.spyOn(packageApi, "getDraftPackage").mockResolvedValueOnce({
+      found: true,
+      _id: NOT_FOUND_ITEM_ID,
+      _source: {
+        id: NOT_FOUND_ITEM_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID, includeDrafts: true }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Record found for the given id",
+        exists: true,
+        status: SEATOOL_STATUS.DRAFT,
+      }),
+    );
+    getDraftPackageSpy.mockRestore();
+  });
+
+  it("should return draft status from draftmain for HelpDesk users when includeDrafts is true", async () => {
+    const getDraftPackageSpy = vi.spyOn(packageApi, "getDraftPackage").mockResolvedValueOnce({
+      found: true,
+      _id: NOT_FOUND_ITEM_ID,
+      _source: {
+        id: NOT_FOUND_ITEM_ID,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: NOT_FOUND_ITEM_ID, includeDrafts: true }),
+      requestContext: getRequestContext(helpDeskUser),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message: "Record found for the given id",
+        exists: true,
+        status: SEATOOL_STATUS.DRAFT,
+      }),
+    );
+    getDraftPackageSpy.mockRestore();
   });
 });

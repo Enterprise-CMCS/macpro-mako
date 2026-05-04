@@ -6,7 +6,7 @@ import {
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { decodeUtf8, updateFieldMapping } from "./opensearch-lib";
+import { decodeUtf8, getAwsSdkLogger, updateFieldMapping } from "./opensearch-lib";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 
@@ -54,6 +54,29 @@ async function importWithMockedClient(mockedClient: {
 }
 
 describe("opensearch-lib tests", () => {
+  describe("getAwsSdkLogger tests", () => {
+    it("returns the global logger when it has the AWS logger methods", () => {
+      const logger = {
+        debug: vi.fn(),
+        info: vi.fn(),
+        warn: vi.fn(),
+        error: vi.fn(),
+      };
+      vi.stubGlobal("logger", logger);
+
+      expect(getAwsSdkLogger()).toBe(logger);
+    });
+
+    it("falls back to console when the global logger is incomplete", () => {
+      vi.stubGlobal("logger", {
+        debug: vi.fn(),
+        info: vi.fn(),
+      });
+
+      expect(getAwsSdkLogger()).toBe(console);
+    });
+  });
+
   describe("updateFieldMapping tests", () => {
     it("should handle a server error when updating a field mapping", async () => {
       mockedServer.use(errorUpdateFieldMappingHandler);
@@ -114,6 +137,28 @@ describe("opensearch-lib tests", () => {
       });
 
       expect(searchMock).toHaveBeenCalledTimes(1);
+      expect(response).toEqual(body);
+    });
+
+    it("should pass comma-separated multi-index searches through to OpenSearch", async () => {
+      const body = {
+        hits: {
+          hits: [],
+        },
+      };
+      const searchMock = vi.fn().mockResolvedValue({ body });
+      const module = await importWithMockedClient({ search: searchMock });
+      const multiIndex = `${OPENSEARCH_INDEX},${OPENSEARCH_INDEX_NAMESPACE}draftmain` as Parameters<
+        typeof module.search
+      >[1];
+      const query = { size: 0 };
+
+      const response = await module.search(OPENSEARCH_DOMAIN, multiIndex, query);
+
+      expect(searchMock).toHaveBeenCalledWith({
+        index: multiIndex,
+        body: query,
+      });
       expect(response).toEqual(body);
     });
 
