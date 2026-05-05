@@ -5,6 +5,7 @@ import { isStateUser } from "shared-utils";
 
 import { deleteDraft, useGetPackageActions, useGetUser } from "@/api";
 import { banner, LoadingSpinner, userPrompt } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import {
   DETAILS_ORIGIN,
   mapActionLabel,
@@ -33,8 +34,10 @@ type PackageActionsCardProps = {
 export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) => {
   const location = useLocation();
   const navigate = useNavigate();
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
   const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
-  const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
+  const isDraftPackage = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
+  const isDraft = isSaveInProgressEnabled && isDraftPackage;
   const draftLink = isDraft ? getDraftEditLink(submission) : null;
   const isNonOwnerDraftUser = Boolean(
     isDraft &&
@@ -62,7 +65,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
 
   const { data, isLoading } = useGetPackageActions(id, {
     retry: false,
-    enabled: !isDraft,
+    enabled: !isDraftPackage,
   });
 
   if (isDraft && isUserLoading) {
@@ -165,7 +168,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
     );
   }
 
-  if (isDraft) {
+  if (isDraftPackage) {
     return (
       <div className="my-3" aria-labelledby="package-actions-heading">
         <em className="text-gray-400 my-3">

@@ -28,7 +28,7 @@ vi.stubGlobal(
 
 vi.mock("@/hooks/useFeatureFlag", () => ({
   useFeatureFlag: (flag: string) => {
-    if (flag === "STICKY_FORM_FOOTER") return true;
+    if (flag === "STICKY_FORM_FOOTER" || flag === "SAVE_IN_PROGRESS") return true;
     return false;
   },
 }));

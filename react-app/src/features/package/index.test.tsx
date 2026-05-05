@@ -11,6 +11,11 @@ import { renderWithQueryClient, renderWithQueryClientAndMemoryRouter } from "@/u
 
 import { DetailsContent, packageDetailsLoader } from ".";
 
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
+}));
+
 const useGetPackageActionsSpy = vi.spyOn(rootApi, "useGetPackageActions");
 const useRootGetUserSpy = vi.spyOn(rootApi, "useGetUser");
 const useGetItemSpy = vi.spyOn(rootApi, "useGetItem");
@@ -35,6 +40,7 @@ describe("package details", () => {
       error: null,
     } as any);
     itemExistsSpy.mockResolvedValue(false);
+    mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
   });
 
   it("renders package detail sections when the record is loaded", async () => {
@@ -116,6 +122,25 @@ describe("package details", () => {
         }),
       );
     });
+  });
+
+  it("requests main-only package details when save-in-progress is disabled", async () => {
+    mockUseFeatureFlag.mockReturnValue(false);
+    vi.spyOn(api, "useGetUser").mockImplementation(() => makeMockUserResult());
+
+    renderWithQueryClient(<DetailsContent id={ADMIN_ITEM_ID} preferDraft />);
+
+    await waitFor(() => {
+      expect(useGetItemSpy).toHaveBeenCalledWith(
+        ADMIN_ITEM_ID,
+        undefined,
+        expect.objectContaining({
+          includeDraft: false,
+          preferDraft: false,
+        }),
+      );
+    });
+    expect(itemExistsSpy).not.toHaveBeenCalled();
   });
 
   it("passes preferDraft to the loader request when present in the URL", async () => {

@@ -8,6 +8,7 @@ import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 import { deleteDraft } from "@/api/deleteDraft";
 import { banner, userPrompt } from "@/components";
 import { OS_DASHBOARD_REFRESH_EVENT } from "@/components/Opensearch/main/useOpensearch";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { DASHBOARD_ORIGIN, mapActionLabel, ORIGIN, queryClient } from "@/utils";
 import {
   DRAFT_CONTINUE_ACTION_LABEL,
@@ -34,7 +35,8 @@ export type CellIdLinkProps = {
 
 export const CellDetailsLink = ({ record }: CellIdLinkProps) => {
   const { id, authority } = record;
-  const isDraft = record.seatoolStatus === SEATOOL_STATUS.DRAFT;
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const isDraft = isSaveInProgressEnabled && record.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const handleLinkClick = () => {
     sendGAEvent("dash_package_link", {
       package_type: authority, // The 'authority' prop is the package type
@@ -76,7 +78,9 @@ const ActionMenuCell = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const canDeleteDraft = data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const canDeleteDraft =
+    isSaveInProgressEnabled && data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
   const canContinueDraft = canDeleteDraft && !!draftLink;
   const actions = canDeleteDraft ? [] : getAvailableActions(user, data);
   const draftLinkState = {
