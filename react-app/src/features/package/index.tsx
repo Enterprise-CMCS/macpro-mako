@@ -14,6 +14,7 @@ import {
   LoadingSpinner,
 } from "@/components";
 import { BreadCrumbs } from "@/components/BreadCrumb";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { detailsAndActionsCrumbs, sendGAEvent } from "@/utils";
 import { DRAFT_ID_CONFLICT_MESSAGE } from "@/utils/drafts";
 
@@ -78,13 +79,15 @@ const injectChipEligibilityAttachment = (
 };
 
 export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps) => {
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const effectivePreferDraft = isSaveInProgressEnabled && preferDraft;
   const {
     data: record,
     isLoading,
     error,
   } = useGetItem(id, undefined, {
-    includeDraft: true,
-    preferDraft,
+    includeDraft: isSaveInProgressEnabled,
+    preferDraft: effectivePreferDraft,
   });
 
   const submission = record?._source;
@@ -102,21 +105,24 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
     ["draft-id-conflict", id],
     () => itemExists(id, { includeDrafts: true, allowDraftId: id }),
     {
-      enabled: Boolean(isDraft && id),
+      enabled: Boolean(isSaveInProgressEnabled && isDraft && id),
       retry: false,
       staleTime: 30_000,
     },
   );
 
   if (isLoading) return <LoadingSpinner />;
-  if (preferDraft && (error || !record || !updatedSubmission || submission?.deleted === true)) {
+  if (
+    effectivePreferDraft &&
+    (error || !record || !updatedSubmission || submission?.deleted === true)
+  ) {
     return <Navigate to="/dashboard" replace />;
   }
   if (error || !record || !updatedSubmission) return <ErrorAlert error={error} />;
 
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
-      {isDraft && hasDraftIdConflict && (
+      {isSaveInProgressEnabled && isDraft && hasDraftIdConflict && (
         <Alert variant="warning" className="my-2 sm:my-3">
           <AlertTitle>This package ID is already in use</AlertTitle>
           <AlertDescription>{DRAFT_ID_CONFLICT_MESSAGE}</AlertDescription>

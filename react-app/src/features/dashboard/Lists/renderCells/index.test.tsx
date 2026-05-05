@@ -29,6 +29,7 @@ import {
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "./index";
 
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
 vi.mock("@/api", async () => {
   const actual = await vi.importActual<typeof import("@/api")>("@/api");
   return {
@@ -53,6 +54,10 @@ vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
 }));
 
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
+}));
+
 const { banner, userPrompt } = await import("@/components");
 const { deleteDraft } = await import("@/api/deleteDraft");
 const { sendGAEvent } = await import("@/utils/ReactGA/SendGAEvent");
@@ -60,6 +65,7 @@ import { MemoryRouter } from "react-router";
 
 beforeEach(() => {
   vi.clearAllMocks();
+  mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
   sessionStorage.clear();
 });
 
@@ -167,6 +173,21 @@ describe("renderCells", () => {
       setup(draftItem);
       expect(screen.getByText(draftItem.id).getAttribute("href")).toEqual(
         `/details/${encodeURIComponent(draftItem.authority)}/${encodeURIComponent(draftItem.id)}?preferDraft=true`,
+      );
+    });
+
+    it("should not link directly to draft details when save-in-progress is disabled", () => {
+      mockUseFeatureFlag.mockReturnValue(false);
+      const draftItem: opensearch.main.Document = {
+        ...TEST_MED_SPA_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        event: "new-medicaid-submission",
+      };
+
+      setup(draftItem);
+
+      expect(screen.getByText(draftItem.id).getAttribute("href")).toEqual(
+        `/details/${encodeURIComponent(draftItem.authority)}/${encodeURIComponent(draftItem.id)}`,
       );
     });
   });

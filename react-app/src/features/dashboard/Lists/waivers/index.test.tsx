@@ -40,6 +40,10 @@ import {
 
 import { WaiversList } from "./index";
 
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+}));
+
 const pendingDoc = {
   ...PENDING_SUBMITTED_ITEM._source,
   authority: "1915(b)",
