@@ -12,24 +12,24 @@
     "maxFailures": 0,
     "metadata": {
       "ci": {
-        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-        "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+        "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
       },
       "gitCommit": {
-        "shortHash": "76455e1",
-        "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-        "subject": "Merge branch 'val' into main",
-        "body": "Merge branch 'val' into main",
+        "shortHash": "3aa25bd",
+        "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+        "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+        "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
         "author": {
           "name": "James Dinh",
           "email": "james.d@globalalliantinc.com",
-          "time": 1777913045000
+          "time": 1778011187000
         },
         "committer": {
           "name": "GitHub",
           "email": "noreply@github.com",
-          "time": 1777913045000
+          "time": 1778011187000
         },
         "branch": "main"
       },
@@ -43,24 +43,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -84,24 +84,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -125,24 +125,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -166,24 +166,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -207,24 +207,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -248,24 +248,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -289,24 +289,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -330,24 +330,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -371,24 +371,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -412,24 +412,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -453,24 +453,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -494,24 +494,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -535,24 +535,24 @@
         "retries": 0,
         "metadata": {
           "ci": {
-            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "commitHash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25331151617"
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/3aa25bdbb57670975942713a2774d212b098fe7a",
+            "commitHash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25399134642"
           },
           "gitCommit": {
-            "shortHash": "76455e1",
-            "hash": "76455e1bd95f694ca1555a6a9362b51a507cb8a6",
-            "subject": "Merge branch 'val' into main",
-            "body": "Merge branch 'val' into main",
+            "shortHash": "3aa25bd",
+            "hash": "3aa25bdbb57670975942713a2774d212b098fe7a",
+            "subject": "fix(Save in progress follow): Save in progress tightening of logic (#1884)",
+            "body": "fix(Save in progress follow): Save in progress tightening of logic (#1884)\n\n* add feature flagging for save in progress\n\n* add feature flag mocks\n\n* add delete logic, any user can delete any drafts regardless of owner or updater",
             "author": {
               "name": "James Dinh",
               "email": "james.d@globalalliantinc.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "committer": {
               "name": "GitHub",
               "email": "noreply@github.com",
-              "time": 1777913045000
+              "time": 1778011187000
             },
             "branch": "main"
           },
@@ -649,12 +649,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3033,
+                              "duration": 3182,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:19.005Z",
+                              "startTime": "2026-05-05T20:09:44.912Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -685,12 +685,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2942,
+                              "duration": 2842,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:22.136Z",
+                              "startTime": "2026-05-05T20:09:48.186Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -721,12 +721,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3012,
+                              "duration": 2838,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:25.093Z",
+                              "startTime": "2026-05-05T20:09:51.043Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -757,12 +757,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2949,
+                              "duration": 2925,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:28.120Z",
+                              "startTime": "2026-05-05T20:09:53.894Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -793,12 +793,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2927,
+                              "duration": 2972,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:31.083Z",
+                              "startTime": "2026-05-05T20:09:56.834Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -829,12 +829,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2904,
+                              "duration": 2849,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:34.023Z",
+                              "startTime": "2026-05-05T20:09:59.824Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -865,12 +865,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2925,
+                              "duration": 2860,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:36.941Z",
+                              "startTime": "2026-05-05T20:10:02.687Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -916,12 +916,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3067,
+                                      "duration": 3024,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:52:39.878Z",
+                                      "startTime": "2026-05-05T20:10:05.562Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -952,12 +952,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2892,
+                                      "duration": 2887,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:52:42.958Z",
+                                      "startTime": "2026-05-05T20:10:08.599Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -988,12 +988,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2838,
+                                      "duration": 2953,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:52:45.864Z",
+                                      "startTime": "2026-05-05T20:10:11.501Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1032,12 +1032,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3209,
+                                      "duration": 3409,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:52:48.716Z",
+                                      "startTime": "2026-05-05T20:10:14.472Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1068,12 +1068,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2234,
+                                      "duration": 3144,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:52:51.941Z",
+                                      "startTime": "2026-05-05T20:10:17.899Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1104,12 +1104,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2976,
+                                      "duration": 3063,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:52:54.189Z",
+                                      "startTime": "2026-05-05T20:10:21.065Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1152,16 +1152,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 5432,
+                              "duration": 5210,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-05_04_2026.csv\"\n"
+                                  "text": "[Download] for stateSubmitter Filename suggested by browser: spas-export-05_05_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:52:57.179Z",
+                              "startTime": "2026-05-05T20:10:24.143Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1215,12 +1215,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2904,
+                              "duration": 3003,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:02.623Z",
+                              "startTime": "2026-05-05T20:10:29.367Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1251,12 +1251,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 3002,
+                              "duration": 2907,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:05.539Z",
+                              "startTime": "2026-05-05T20:10:32.384Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1287,12 +1287,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2930,
+                              "duration": 2931,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:08.556Z",
+                              "startTime": "2026-05-05T20:10:35.305Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1323,12 +1323,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2886,
+                              "duration": 2911,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:11.502Z",
+                              "startTime": "2026-05-05T20:10:38.249Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1359,12 +1359,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2061,
+                              "duration": 2825,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:14.403Z",
+                              "startTime": "2026-05-05T20:10:41.173Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1395,12 +1395,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2872,
+                              "duration": 2863,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:16.477Z",
+                              "startTime": "2026-05-05T20:10:44.009Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1431,12 +1431,12 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 2857,
+                              "duration": 2886,
                               "errors": [],
                               "stdout": [],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:19.360Z",
+                              "startTime": "2026-05-05T20:10:46.885Z",
                               "annotations": [],
                               "attachments": []
                             }
@@ -1482,12 +1482,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2981,
+                                      "duration": 2985,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:53:22.229Z",
+                                      "startTime": "2026-05-05T20:10:49.788Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1518,12 +1518,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2828,
+                                      "duration": 2827,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:53:25.221Z",
+                                      "startTime": "2026-05-05T20:10:52.787Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1554,12 +1554,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2849,
+                                      "duration": 2806,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:53:28.060Z",
+                                      "startTime": "2026-05-05T20:10:55.628Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1598,12 +1598,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 3221,
+                                      "duration": 3364,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:53:30.922Z",
+                                      "startTime": "2026-05-05T20:10:58.446Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1634,12 +1634,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2952,
+                                      "duration": 3090,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:53:34.160Z",
+                                      "startTime": "2026-05-05T20:11:01.822Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1670,12 +1670,12 @@
                                       "workerIndex": 0,
                                       "parallelIndex": 0,
                                       "status": "passed",
-                                      "duration": 2975,
+                                      "duration": 2118,
                                       "errors": [],
                                       "stdout": [],
                                       "stderr": [],
                                       "retry": 0,
-                                      "startTime": "2026-05-04T17:53:37.127Z",
+                                      "startTime": "2026-05-05T20:11:04.932Z",
                                       "annotations": [],
                                       "attachments": []
                                     }
@@ -1718,16 +1718,16 @@
                               "workerIndex": 0,
                               "parallelIndex": 0,
                               "status": "passed",
-                              "duration": 4772,
+                              "duration": 5562,
                               "errors": [],
                               "stdout": [
                                 {
-                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-05_04_2026.csv\"\n"
+                                  "text": "[Download] for cmsReviewer Filename suggested by browser: spas-export-05_05_2026.csv\"\n"
                                 }
                               ],
                               "stderr": [],
                               "retry": 0,
-                              "startTime": "2026-05-04T17:53:40.117Z",
+                              "startTime": "2026-05-05T20:11:07.065Z",
                               "annotations": [],
                               "attachments": [
                                 {
@@ -1757,8 +1757,8 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-05-04T17:52:03.137Z",
-    "duration": 101854.44600000001,
+    "startTime": "2026-05-05T20:09:26.067Z",
+    "duration": 106657.721,
     "expected": 28,
     "skipped": 0,
     "unexpected": 0,
