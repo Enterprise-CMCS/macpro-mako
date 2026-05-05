@@ -256,13 +256,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }>();
   const { pathname, search } = useLocation();
   const startTimePage = Date.now();
-  const effectiveSubmitButtonLabel =
-    draftOptions?.enabled && submitButtonLabel === "Submit" ? "Save & Submit" : submitButtonLabel;
-
   const navigate = useNavigate();
   const { data: userObj, isLoading: isUserLoading } = useGetUserDetails();
   const skipNavigationPromptRef = useRef(false);
   const isStickyFooterEnabled = useFeatureFlag("STICKY_FORM_FOOTER");
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
   const [footerTriggerElement, setFooterTriggerElement] = useState<HTMLDivElement | null>(null);
   const [isFooterFixed, setIsFooterFixed] = useState(false);
   const [draftSaveStatus, setDraftSaveStatus] = useState<DraftSaveStatus | null>(null);
@@ -292,7 +290,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   latestDefaultValuesRef.current = defaultValues;
 
   const breadcrumbs = optionCrumbsFromPath(pathname, authority, id);
-  const draftEnabled = draftOptions?.enabled === true;
+  const draftEnabled = isSaveInProgressEnabled && draftOptions?.enabled === true;
+  const effectiveSubmitButtonLabel =
+    draftEnabled && submitButtonLabel === "Submit" ? "Save & Submit" : submitButtonLabel;
   const rawDraftId = draftEnabled ? new URLSearchParams(search).get("draftId") : null;
   const draftId = rawDraftId ? rawDraftId.toUpperCase() : null;
   const isDraftMode = draftEnabled && !!draftId;

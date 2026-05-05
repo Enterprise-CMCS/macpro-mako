@@ -15,6 +15,7 @@ type QueryProps<T> = {
   sort?: opensearch.QueryState<T>["sort"];
   pagination: opensearch.QueryState<T>["pagination"];
   aggs?: opensearch.AggQuery<T>[];
+  includeDrafts?: boolean;
 };
 
 export const getOsData = async <TProps, TResponse extends opensearch.Response<any>>(
@@ -26,6 +27,7 @@ export const getOsData = async <TProps, TResponse extends opensearch.Response<an
       ...paginationQueryBuilder(props.pagination),
       ...(!!props.sort && sortQueryBuilder(props.sort)),
       ...(!!props.aggs && aggQueryBuilder(props.aggs)),
+      ...(props.includeDrafts !== undefined && { includeDrafts: props.includeDrafts }),
       track_total_hits: true,
     },
   });

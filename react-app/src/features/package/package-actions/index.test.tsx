@@ -60,6 +60,10 @@ vi.mock("@/components", async () => {
   };
 });
 
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+}));
+
 const apiModule = await import("@/api");
 const { deleteDraft } = apiModule;
 const { banner, userPrompt } = await import("@/components");

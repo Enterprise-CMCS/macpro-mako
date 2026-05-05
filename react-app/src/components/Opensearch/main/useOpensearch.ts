@@ -5,6 +5,7 @@ import { opensearch } from "shared-types";
 
 import { getOsData, useGetUser, useOsSearch } from "@/api";
 import { useLzUrl } from "@/hooks";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import { createSearchFilterable } from "../utils";
 import { OsTab } from "./types";
@@ -49,6 +50,7 @@ Comments
  */
 export const useOsData = () => {
   const params = useOsUrl();
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
   const [data, setData] = useState<opensearch.main.Response["hits"]>();
   const { mutateAsync, isLoading, error } = useOsSearch<
     opensearch.main.Field,
@@ -77,7 +79,18 @@ export const useOsData = () => {
             ...query.filters,
             ...createSearchFilterable(query.search || ""),
             ...(DEFAULT_FILTERS[params.state.tab].filters || []),
+            ...(!isSaveInProgressEnabled
+              ? [
+                  {
+                    field: "seatoolStatus.keyword",
+                    type: "term" as const,
+                    value: "Draft",
+                    prefix: "must_not" as const,
+                  },
+                ]
+              : []),
           ],
+          includeDrafts: isSaveInProgressEnabled,
         },
         {
           ...options,

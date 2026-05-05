@@ -37,10 +37,12 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     query.query.bool.must = query.query.bool?.must || [];
     query.query.bool.must_not = query.query.bool?.must_not || [];
     query.query.bool.must_not.push({ term: { deleted: true } });
+    const includeDrafts = query.includeDrafts !== false;
+    delete query.includeDrafts;
 
     const { stateFilter, canViewDrafts } = await getSearchUserScope(event);
     const shouldIncludeDrafts =
-      requestedIndex === "main" && (Boolean(stateFilter) || canViewDrafts);
+      includeDrafts && requestedIndex === "main" && (Boolean(stateFilter) || canViewDrafts);
     if (stateFilter) {
       query.query.bool.must.push(stateFilter);
       if (shouldIncludeDrafts) {

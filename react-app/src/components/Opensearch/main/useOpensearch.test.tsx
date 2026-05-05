@@ -8,6 +8,7 @@ const { mutateAsyncMock, useLzUrlMock } = vi.hoisted(() => ({
   mutateAsyncMock: vi.fn(),
   useLzUrlMock: vi.fn(),
 }));
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
 
 vi.mock("@/api", () => ({
   getOsData: vi.fn(),
@@ -21,6 +22,10 @@ vi.mock("@/api", () => ({
 
 vi.mock("@/hooks", () => ({
   useLzUrl: useLzUrlMock,
+}));
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
 }));
 
 const defaultState = {
@@ -39,6 +44,7 @@ const Probe = () => {
 describe("useOsData", () => {
   afterEach(() => {
     vi.clearAllMocks();
+    mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
   });
 
   test("refreshes dashboard data when the dashboard refresh event is dispatched", async () => {
@@ -70,6 +76,44 @@ describe("useOsData", () => {
 
     await waitFor(() => {
       expect(mutateAsyncMock).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  test("opts dashboard search out of drafts when save-in-progress is disabled", async () => {
+    mockUseFeatureFlag.mockReturnValue(false);
+    useLzUrlMock.mockReturnValue({
+      state: defaultState,
+      queryString: "query",
+      onSet: vi.fn(),
+      onClear: vi.fn(),
+    });
+    mutateAsyncMock.mockImplementation(
+      async (_query: unknown, options?: { onSuccess?: (data: unknown) => void }) => {
+        options?.onSuccess?.({ hits: { hits: [], total: { value: 0, relation: "eq" } } });
+      },
+    );
+
+    render(
+      <MemoryRouter>
+        <Probe />
+      </MemoryRouter>,
+    );
+
+    await waitFor(() => {
+      expect(mutateAsyncMock).toHaveBeenCalledWith(
+        expect.objectContaining({
+          includeDrafts: false,
+          filters: expect.arrayContaining([
+            expect.objectContaining({
+              field: "seatoolStatus.keyword",
+              prefix: "must_not",
+              type: "term",
+              value: "Draft",
+            }),
+          ]),
+        }),
+        expect.any(Object),
+      );
     });
   });
 

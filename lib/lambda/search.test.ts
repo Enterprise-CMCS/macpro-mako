@@ -67,4 +67,23 @@ describe("getSearchData Handler", () => {
       searchSpy.mock.calls.some(([, index]) => String(index).includes("draftmain")),
     ).toBeTruthy();
   });
+
+  it("should not include the draft index when the request opts out of drafts", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} }, includeDrafts: false }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(helpDeskUser),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(
+      searchSpy.mock.calls.some(([, index]) => String(index).includes("draftmain")),
+    ).toBeFalsy();
+    expect(
+      searchSpy.mock.calls.some(([, , query]) => JSON.stringify(query).includes("includeDrafts")),
+    ).toBeFalsy();
+  });
 });

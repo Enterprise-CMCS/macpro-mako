@@ -27,6 +27,7 @@ import * as documentPoller from "@/utils/Poller/documentPoller";
 import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers/render";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
 const mockNavigate = vi.fn();
 vi.mock("react-router", async () => {
   const actual = await vi.importActual<typeof import("react-router")>("react-router");
@@ -37,6 +38,10 @@ vi.mock("react-router", async () => {
   };
 });
 
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
+}));
+
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
 const MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE =
@@ -46,6 +51,7 @@ describe("ActionForm", () => {
   beforeEach(() => {
     setDefaultStateSubmitter();
     vi.clearAllMocks();
+    mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
     vi.spyOn(api, "itemExists").mockResolvedValue(false);
     sessionStorage.clear();
     window.gtag = vi.fn();
@@ -735,6 +741,30 @@ describe("ActionForm", () => {
     );
 
     expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
+  });
+
+  test("does not expose draft save controls when save-in-progress is disabled", async () => {
+    mockUseFeatureFlag.mockReturnValue(false);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft flag test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    expect(screen.queryByTestId("save-draft-form")).not.toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toHaveTextContent("Submit");
   });
 
   test("does not show leave-form prompt on first draft save", async () => {
