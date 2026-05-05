@@ -18,6 +18,10 @@ import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { TemporaryExtensionForm } from "./index";
 
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+}));
+
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 
 describe("Temporary Extension", () => {
