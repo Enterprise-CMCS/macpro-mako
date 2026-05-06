@@ -14,36 +14,78 @@ const ITEM_NOT_FOUND_MESSAGE = "No record found for the given id";
 const includesNotFoundMessage = (value: unknown) =>
   String(value ?? "").includes(ITEM_NOT_FOUND_MESSAGE);
 
+const normalizeStatusCode = (value: unknown) => {
+  const statusCode = typeof value === "string" ? Number(value) : value;
+  return typeof statusCode === "number" && Number.isFinite(statusCode) ? statusCode : undefined;
+};
+
+const collectErrorValues = (
+  value: unknown,
+  values: unknown[] = [],
+  seen = new Set<unknown>(),
+  depth = 0,
+) => {
+  if (value === null || value === undefined || depth > 4 || seen.has(value)) {
+    return values;
+  }
+
+  seen.add(value);
+  values.push(value);
+
+  if (typeof value !== "object") {
+    return values;
+  }
+
+  for (const key of Object.getOwnPropertyNames(value)) {
+    try {
+      collectErrorValues((value as Record<string, unknown>)[key], values, seen, depth + 1);
+    } catch {
+      // Some Error-like objects have getters that can throw.
+    }
+  }
+
+  return values;
+};
+
 const isNotFoundItemPayload = (value: unknown): boolean => {
   const candidate = value as {
     found?: boolean;
     message?: unknown;
     _source?: unknown;
+    request?: {
+      status?: number;
+    };
     response?: {
       status?: number;
       statusCode?: number;
+      statusText?: string;
       data?: unknown;
+    };
+    $metadata?: {
+      httpStatusCode?: number;
     };
     status?: number;
     statusCode?: number;
   };
 
-  const responseData = candidate?.response?.data;
-  const responseMessage =
-    typeof responseData === "string"
-      ? responseData
-      : typeof responseData === "object" && responseData && "message" in responseData
-        ? (responseData as { message?: unknown }).message
-        : undefined;
-  const responseStatus = candidate?.response?.status ?? candidate?.response?.statusCode;
+  const responseStatus =
+    candidate?.response?.status ??
+    candidate?.response?.statusCode ??
+    candidate?.request?.status ??
+    candidate?.$metadata?.httpStatusCode;
   const directStatus = candidate?.status ?? candidate?.statusCode;
+  const errorValues = collectErrorValues(value);
+  const errorText = errorValues.map((errorValue) => String(errorValue ?? "")).join(" ");
 
   return (
     candidate?.found === false ||
-    includesNotFoundMessage(candidate?.message) ||
-    includesNotFoundMessage(responseMessage) ||
-    responseStatus === 404 ||
-    directStatus === 404
+    includesNotFoundMessage(errorText) ||
+    /status code 404/i.test(errorText) ||
+    /\b404\b/i.test(errorText) ||
+    /not found/i.test(errorText) ||
+    normalizeStatusCode(responseStatus) === 404 ||
+    normalizeStatusCode(directStatus) === 404 ||
+    errorValues.some((errorValue) => normalizeStatusCode(errorValue) === 404)
   );
 };
 
@@ -76,7 +118,11 @@ export const getItem = async (
     }
 
     sendGAEvent("api_error", { message: `failure /item ${normalizedId}` });
-    return undefined;
+    if (options?.includeDraft && options.preferDraft) {
+      return undefined;
+    }
+
+    throw error;
   }
 };
 

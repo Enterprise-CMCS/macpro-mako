@@ -1100,6 +1100,205 @@ describe("ActionForm", () => {
     useGetItemSpy.mockRestore();
   });
 
+  test("does not render an error when a draft route no longer has an active draft", async () => {
+    const draftId = "MD-26-8120-P";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isFetched: true,
+      error: null,
+    } as any);
+    const form = (
+      <ActionForm
+        title="Deleted Draft Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() =>
+      expect(screen.queryByText("No active draft package was found.")).not.toBeInTheDocument(),
+    );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
+    expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("does not render an error when a draft refetch returns not found", async () => {
+    const draftId = "MD-26-8120-P";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isFetched: true,
+      error: {
+        response: {
+          status: 404,
+          data: { message: "No record found for the given id" },
+        },
+      },
+    } as any);
+    const form = (
+      <ActionForm
+        title="Deleted Draft Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() =>
+      expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument(),
+    );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
+    expect(screen.queryByText("No record found for the given id")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("redirects an inactive draft route when the draft lookup fails without a recognizable 404 shape", async () => {
+    const draftId = "MD-26-8120-P";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isFetched: true,
+      error: new Error("Request failed"),
+    } as any);
+    const form = (
+      <ActionForm
+        title="Deleted Draft Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
+    expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("does not render an error when a stale cached draft refetch returns a generic error", async () => {
+    const draftId = "MD-25-3524-JJJJ";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+          changelog: [],
+        },
+      },
+      isLoading: false,
+      isFetched: true,
+      error: new Error("Request failed"),
+    } as any);
+    const form = (
+      <ActionForm
+        title="Deleted Draft Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-chip-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() =>
+      expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument(),
+    );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
+    expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
   test("ignores duplicate save clicks while a draft save is already in flight", async () => {
     let resolveSaveDraft: ((value: api.SaveDraftResponse) => void) | undefined;
     const saveDraftSpy = vi.spyOn(api, "saveDraft").mockImplementation(
