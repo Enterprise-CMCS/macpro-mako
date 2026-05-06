@@ -1218,13 +1218,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }, [footerTriggerElement, isStickyFooterEnabled]);
 
   const draftNotFoundError = Boolean(draftError && isNotFoundApiError(draftError));
+  const draftLookupFailed = isDraftFetched && Boolean(draftError);
   const draftRecordIsInactive =
     isDraftFetched &&
     (!draftRecord ||
       draftRecord._source?.deleted === true ||
       draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
   const shouldRedirectFromInactiveDraft =
-    isDraftMode && !isDraftSaveRouteTransition && (draftNotFoundError || draftRecordIsInactive);
+    isDraftMode &&
+    !isDraftSaveRouteTransition &&
+    (draftLookupFailed || draftNotFoundError || draftRecordIsInactive);
 
   useEffect(() => {
     if (!shouldRedirectFromInactiveDraft || hasRedirectedFromInactiveDraftRef.current) {
