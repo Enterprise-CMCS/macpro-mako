@@ -117,5 +117,20 @@ describe("zod schema helpers", () => {
         }),
       );
     });
+
+    it("returns undefined for draft-preferred lookups when the API throws an error", async () => {
+      mockedServer.use(errorApiItemHandler);
+
+      await expect(
+        unit.getItem("TEST_ID", { includeDraft: true, preferDraft: true }),
+      ).resolves.toBeUndefined();
+
+      expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
+        "api_error",
+        expect.objectContaining({
+          message: "failure /item TEST_ID",
+        }),
+      );
+    });
   });
 });

@@ -387,7 +387,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     error: draftError,
   } = useGetItem(
     draftId ?? "",
-    { enabled: isDraftMode },
+    { enabled: isDraftMode, retry: false },
     { includeDraft: true, preferDraft: true },
   );
   const hasLoadedActiveDraftRecord =

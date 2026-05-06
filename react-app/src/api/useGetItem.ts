@@ -118,6 +118,10 @@ export const getItem = async (
     }
 
     sendGAEvent("api_error", { message: `failure /item ${normalizedId}` });
+    if (options?.includeDraft && options.preferDraft) {
+      return undefined;
+    }
+
     throw error;
   }
 };
