@@ -1152,31 +1152,23 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <LoadingSpinner />;
   }
 
-  if (
+  const shouldRedirectFromInactiveDraft =
     isDraftMode &&
     !isDraftSaveRouteTransition &&
     isDraftFetched &&
-    draftRecord?._source?.deleted === true
-  ) {
+    !draftError &&
+    (!draftRecord ||
+      draftRecord._source?.deleted === true ||
+      draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
+
+  if (shouldRedirectFromInactiveDraft) {
     return <Navigate to="/dashboard" replace />;
   }
 
-  if (
-    isDraftMode &&
-    !isDraftSaveRouteTransition &&
-    (draftError ||
-      (isDraftFetched &&
-        (!draftRecord || draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT)))
-  ) {
+  if (isDraftMode && !isDraftSaveRouteTransition && draftError) {
     return (
       <SimplePageContainer>
-        <ErrorAlert
-          error={
-            (draftError as ReactQueryApiError | undefined) ?? {
-              response: { data: { message: "No active draft package was found." } },
-            }
-          }
-        />
+        <ErrorAlert error={draftError as ReactQueryApiError} />
       </SimplePageContainer>
     );
   }
