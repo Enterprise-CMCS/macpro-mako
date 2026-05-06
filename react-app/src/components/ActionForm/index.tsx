@@ -4,7 +4,7 @@ import { API } from "aws-amplify";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
-import { Authority, ReactQueryApiError, SEATOOL_STATUS, UserDetails } from "shared-types";
+import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
@@ -16,7 +16,6 @@ import {
   BreadCrumbs,
   Button,
   dismissBanner,
-  ErrorAlert,
   FAQFooter,
   Form,
   FormField,
@@ -209,83 +208,6 @@ const matchesDraftSaveRouteTransition = (
       transition.id === draftId &&
       transition.expiresAt > Date.now(),
   );
-
-const collectErrorValues = (
-  value: unknown,
-  values: unknown[] = [],
-  seen = new Set<unknown>(),
-  depth = 0,
-) => {
-  if (value === null || value === undefined || depth > 4 || seen.has(value)) {
-    return values;
-  }
-
-  seen.add(value);
-  values.push(value);
-
-  if (typeof value !== "object") {
-    return values;
-  }
-
-  for (const key of Object.getOwnPropertyNames(value)) {
-    try {
-      collectErrorValues((value as Record<string, unknown>)[key], values, seen, depth + 1);
-    } catch {
-      // Some Error-like objects have getters that can throw.
-    }
-  }
-
-  return values;
-};
-
-const getApiErrorStatus = (error: unknown) => {
-  const errorValues = collectErrorValues(error);
-  const candidate = error as {
-    status?: number | string;
-    statusCode?: number | string;
-    request?: { status?: number | string };
-    response?: { status?: number | string; statusCode?: number | string; statusText?: string };
-    $metadata?: { httpStatusCode?: number | string };
-  };
-  const status =
-    candidate?.response?.status ??
-    candidate?.response?.statusCode ??
-    candidate?.request?.status ??
-    candidate?.$metadata?.httpStatusCode ??
-    candidate?.status ??
-    candidate?.statusCode ??
-    errorValues.find((errorValue) => {
-      const statusCode = typeof errorValue === "string" ? Number(errorValue) : errorValue;
-      return typeof statusCode === "number" && Number.isFinite(statusCode);
-    });
-  const statusCode = typeof status === "string" ? Number(status) : status;
-
-  return typeof statusCode === "number" && Number.isFinite(statusCode) ? statusCode : undefined;
-};
-
-const getApiErrorMessage = (error: unknown) => {
-  const candidate = error as {
-    message?: unknown;
-    response?: { data?: { message?: unknown } | string; statusText?: string };
-  };
-  const responseData = candidate?.response?.data;
-
-  if (typeof responseData === "string") return responseData;
-  if (responseData && typeof responseData === "object" && "message" in responseData) {
-    return String(responseData.message ?? "");
-  }
-
-  return collectErrorValues(error)
-    .map((errorValue) => String(errorValue ?? ""))
-    .join(" ");
-};
-
-const isNotFoundApiError = (error: unknown) =>
-  getApiErrorStatus(error) === 404 ||
-  /status code 404/i.test(getApiErrorMessage(error)) ||
-  /\b404\b/i.test(getApiErrorMessage(error)) ||
-  /not found/i.test(getApiErrorMessage(error)) ||
-  /No record found for the given id/i.test(getApiErrorMessage(error));
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   schema,
@@ -1217,17 +1139,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return () => observer.disconnect();
   }, [footerTriggerElement, isStickyFooterEnabled]);
 
-  const draftNotFoundError = Boolean(draftError && isNotFoundApiError(draftError));
-  const draftLookupFailed = isDraftFetched && Boolean(draftError);
   const draftRecordIsInactive =
     isDraftFetched &&
     (!draftRecord ||
       draftRecord._source?.deleted === true ||
       draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
   const shouldRedirectFromInactiveDraft =
-    isDraftMode &&
-    !isDraftSaveRouteTransition &&
-    (draftLookupFailed || draftNotFoundError || draftRecordIsInactive);
+    isDraftMode && !isDraftSaveRouteTransition && (Boolean(draftError) || draftRecordIsInactive);
 
   useEffect(() => {
     if (!shouldRedirectFromInactiveDraft || hasRedirectedFromInactiveDraftRef.current) {
@@ -1262,14 +1180,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
   if (shouldRedirectFromInactiveDraft) {
     return <LoadingSpinner />;
-  }
-
-  if (isDraftMode && !isDraftSaveRouteTransition && draftError && !draftNotFoundError) {
-    return (
-      <SimplePageContainer>
-        <ErrorAlert error={draftError as ReactQueryApiError} />
-      </SimplePageContainer>
-    );
   }
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
