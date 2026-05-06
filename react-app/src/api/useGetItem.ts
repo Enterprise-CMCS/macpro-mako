@@ -14,6 +14,11 @@ const ITEM_NOT_FOUND_MESSAGE = "No record found for the given id";
 const includesNotFoundMessage = (value: unknown) =>
   String(value ?? "").includes(ITEM_NOT_FOUND_MESSAGE);
 
+const normalizeStatusCode = (value: unknown) => {
+  const statusCode = typeof value === "string" ? Number(value) : value;
+  return typeof statusCode === "number" && Number.isFinite(statusCode) ? statusCode : undefined;
+};
+
 const isNotFoundItemPayload = (value: unknown): boolean => {
   const candidate = value as {
     found?: boolean;
@@ -48,15 +53,21 @@ const isNotFoundItemPayload = (value: unknown): boolean => {
     candidate?.request?.status ??
     candidate?.$metadata?.httpStatusCode;
   const directStatus = candidate?.status ?? candidate?.statusCode;
+  const errorText = [
+    candidate?.message,
+    responseMessage,
+    candidate?.response?.statusText,
+    typeof value === "string" ? value : undefined,
+  ].join(" ");
 
   return (
     candidate?.found === false ||
-    includesNotFoundMessage(candidate?.message) ||
-    includesNotFoundMessage(responseMessage) ||
-    String(candidate?.message ?? "").includes("status code 404") ||
-    candidate?.response?.statusText === "Not Found" ||
-    responseStatus === 404 ||
-    directStatus === 404
+    includesNotFoundMessage(errorText) ||
+    /status code 404/i.test(errorText) ||
+    /\b404\b/i.test(errorText) ||
+    /not found/i.test(errorText) ||
+    normalizeStatusCode(responseStatus) === 404 ||
+    normalizeStatusCode(directStatus) === 404
   );
 };
 

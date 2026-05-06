@@ -1197,6 +1197,102 @@ describe("ActionForm", () => {
     useGetItemSpy.mockRestore();
   });
 
+  test("does not render an error when a draft refetch returns a string 404 status", async () => {
+    const draftId = "MD-26-8120-P";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isFetched: true,
+      error: {
+        response: {
+          status: "404",
+          statusText: "Not Found",
+        },
+      },
+    } as any);
+    const form = (
+      <ActionForm
+        title="Deleted Draft Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
+    expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("does not render an error when a draft refetch only reports Not Found in status text", async () => {
+    const draftId = "MD-26-8120-P";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: undefined,
+      isLoading: false,
+      isFetched: true,
+      error: {
+        message: "Error",
+        response: {
+          statusText: "Not Found",
+        },
+      },
+    } as any);
+    const form = (
+      <ActionForm
+        title="Deleted Draft Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
+    expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
   test("does not render an error when a stale cached draft refetch returns a 404 error", async () => {
     const draftId = "MD-25-3524-JJJJ";
     const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({

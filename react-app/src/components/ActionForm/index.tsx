@@ -212,21 +212,22 @@ const matchesDraftSaveRouteTransition = (
 
 const getApiErrorStatus = (error: unknown) => {
   const candidate = error as {
-    status?: number;
-    statusCode?: number;
-    request?: { status?: number };
-    response?: { status?: number; statusCode?: number; statusText?: string };
-    $metadata?: { httpStatusCode?: number };
+    status?: number | string;
+    statusCode?: number | string;
+    request?: { status?: number | string };
+    response?: { status?: number | string; statusCode?: number | string; statusText?: string };
+    $metadata?: { httpStatusCode?: number | string };
   };
-
-  return (
+  const status =
     candidate?.response?.status ??
     candidate?.response?.statusCode ??
     candidate?.request?.status ??
     candidate?.$metadata?.httpStatusCode ??
     candidate?.status ??
-    candidate?.statusCode
-  );
+    candidate?.statusCode;
+  const statusCode = typeof status === "string" ? Number(status) : status;
+
+  return typeof statusCode === "number" && Number.isFinite(statusCode) ? statusCode : undefined;
 };
 
 const getApiErrorMessage = (error: unknown) => {
@@ -241,12 +242,13 @@ const getApiErrorMessage = (error: unknown) => {
     return String(responseData.message ?? "");
   }
 
-  return String(candidate?.message ?? candidate?.response?.statusText ?? "");
+  return [candidate?.message, candidate?.response?.statusText].filter(Boolean).join(" ");
 };
 
 const isNotFoundApiError = (error: unknown) =>
   getApiErrorStatus(error) === 404 ||
   /status code 404/i.test(getApiErrorMessage(error)) ||
+  /\b404\b/i.test(getApiErrorMessage(error)) ||
   /not found/i.test(getApiErrorMessage(error)) ||
   /No record found for the given id/i.test(getApiErrorMessage(error));
 

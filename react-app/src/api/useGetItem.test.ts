@@ -95,6 +95,16 @@ describe("zod schema helpers", () => {
       await expect(unit.getItem("TEST_ID")).resolves.toBeUndefined();
     });
 
+    it("returns undefined when the API throws a 404 status string", async () => {
+      mockedServer.use(
+        http.post("https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item", () =>
+          HttpResponse.json({ message: "Not Found" }, { status: 404 }),
+        ),
+      );
+
+      await expect(unit.getItem("TEST_ID")).resolves.toBeUndefined();
+    });
+
     it("should call sendGAEvent when the API throws an error", async () => {
       mockedServer.use(errorApiItemHandler);
 
