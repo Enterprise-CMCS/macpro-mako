@@ -1220,7 +1220,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const draftNotFoundError = Boolean(draftError && isNotFoundApiError(draftError));
   const draftRecordIsInactive =
     isDraftFetched &&
-    !draftError &&
     (!draftRecord ||
       draftRecord._source?.deleted === true ||
       draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
