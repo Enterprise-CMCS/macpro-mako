@@ -210,6 +210,35 @@ const matchesDraftSaveRouteTransition = (
       transition.expiresAt > Date.now(),
   );
 
+const getApiErrorStatus = (error: unknown) => {
+  const candidate = error as {
+    status?: number;
+    statusCode?: number;
+    response?: { status?: number; statusCode?: number };
+  };
+
+  return candidate?.response?.status ?? candidate?.response?.statusCode ?? candidate?.status;
+};
+
+const getApiErrorMessage = (error: unknown) => {
+  const candidate = error as {
+    message?: unknown;
+    response?: { data?: { message?: unknown } | string };
+  };
+  const responseData = candidate?.response?.data;
+
+  if (typeof responseData === "string") return responseData;
+  if (responseData && typeof responseData === "object" && "message" in responseData) {
+    return String(responseData.message ?? "");
+  }
+
+  return String(candidate?.message ?? "");
+};
+
+const isNotFoundApiError = (error: unknown) =>
+  getApiErrorStatus(error) === 404 ||
+  /No record found for the given id/i.test(getApiErrorMessage(error));
+
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   schema,
   defaultValues = {} as DefaultValues<z.TypeOf<InferUntransformedSchema<Schema>>>,
@@ -1156,8 +1185,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     isDraftMode &&
     !isDraftSaveRouteTransition &&
     isDraftFetched &&
-    !draftError &&
-    (!draftRecord ||
+    ((draftError && isNotFoundApiError(draftError)) ||
+      !draftRecord ||
       draftRecord._source?.deleted === true ||
       draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
 
@@ -1165,7 +1194,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <Navigate to="/dashboard" replace />;
   }
 
-  if (isDraftMode && !isDraftSaveRouteTransition && draftError) {
+  if (isDraftMode && !isDraftSaveRouteTransition && draftError && !isNotFoundApiError(draftError)) {
     return (
       <SimplePageContainer>
         <ErrorAlert error={draftError as ReactQueryApiError} />
