@@ -214,16 +214,25 @@ const getApiErrorStatus = (error: unknown) => {
   const candidate = error as {
     status?: number;
     statusCode?: number;
-    response?: { status?: number; statusCode?: number };
+    request?: { status?: number };
+    response?: { status?: number; statusCode?: number; statusText?: string };
+    $metadata?: { httpStatusCode?: number };
   };
 
-  return candidate?.response?.status ?? candidate?.response?.statusCode ?? candidate?.status;
+  return (
+    candidate?.response?.status ??
+    candidate?.response?.statusCode ??
+    candidate?.request?.status ??
+    candidate?.$metadata?.httpStatusCode ??
+    candidate?.status ??
+    candidate?.statusCode
+  );
 };
 
 const getApiErrorMessage = (error: unknown) => {
   const candidate = error as {
     message?: unknown;
-    response?: { data?: { message?: unknown } | string };
+    response?: { data?: { message?: unknown } | string; statusText?: string };
   };
   const responseData = candidate?.response?.data;
 
@@ -232,12 +241,13 @@ const getApiErrorMessage = (error: unknown) => {
     return String(responseData.message ?? "");
   }
 
-  return String(candidate?.message ?? "");
+  return String(candidate?.message ?? candidate?.response?.statusText ?? "");
 };
 
 const isNotFoundApiError = (error: unknown) =>
   getApiErrorStatus(error) === 404 ||
   /status code 404/i.test(getApiErrorMessage(error)) ||
+  /not found/i.test(getApiErrorMessage(error)) ||
   /No record found for the given id/i.test(getApiErrorMessage(error));
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
@@ -307,6 +317,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
   const pendingDraftIdRemovalRef = useRef<string | null>(null);
+  const hasRedirectedFromInactiveDraftRef = useRef(false);
   const [draftIdConflict, setDraftIdConflict] = useState<string | null>(null);
   const [currentSessionDraftActor, setCurrentSessionDraftActor] = useState<{
     email?: string | null;
@@ -1169,6 +1180,34 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return () => observer.disconnect();
   }, [footerTriggerElement, isStickyFooterEnabled]);
 
+  const draftNotFoundError = Boolean(draftError && isNotFoundApiError(draftError));
+  const draftRecordIsInactive =
+    isDraftFetched &&
+    !draftError &&
+    (!draftRecord ||
+      draftRecord._source?.deleted === true ||
+      draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
+  const shouldRedirectFromInactiveDraft =
+    isDraftMode && !isDraftSaveRouteTransition && (draftNotFoundError || draftRecordIsInactive);
+
+  useEffect(() => {
+    if (!shouldRedirectFromInactiveDraft || hasRedirectedFromInactiveDraftRef.current) {
+      return;
+    }
+
+    hasRedirectedFromInactiveDraftRef.current = true;
+    skipNavigationPromptRef.current = true;
+
+    if (draftId) {
+      queryClient.removeQueries({
+        queryKey: ["record", draftId, "preferDraft"],
+        exact: true,
+      });
+    }
+
+    navigate("/dashboard", { replace: true });
+  }, [draftId, navigate, shouldRedirectFromInactiveDraft]);
+
   if (isUserLoading === true) {
     return <LoadingSpinner />;
   }
@@ -1182,20 +1221,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <LoadingSpinner />;
   }
 
-  const shouldRedirectFromInactiveDraft =
-    isDraftMode &&
-    !isDraftSaveRouteTransition &&
-    isDraftFetched &&
-    ((draftError && isNotFoundApiError(draftError)) ||
-      !draftRecord ||
-      draftRecord._source?.deleted === true ||
-      draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
-
   if (shouldRedirectFromInactiveDraft) {
-    return <Navigate to="/dashboard" replace />;
+    return <LoadingSpinner />;
   }
 
-  if (isDraftMode && !isDraftSaveRouteTransition && draftError && !isNotFoundApiError(draftError)) {
+  if (isDraftMode && !isDraftSaveRouteTransition && draftError && !draftNotFoundError) {
     return (
       <SimplePageContainer>
         <ErrorAlert error={draftError as ReactQueryApiError} />

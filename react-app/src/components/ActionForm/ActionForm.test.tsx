@@ -1139,6 +1139,7 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(screen.queryByText("No active draft package was found.")).not.toBeInTheDocument(),
     );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
     expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument();
     expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
 
@@ -1189,6 +1190,7 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument(),
     );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
     expect(screen.queryByText("No record found for the given id")).not.toBeInTheDocument();
     expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
 
@@ -1248,6 +1250,7 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument(),
     );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalledWith("/dashboard", { replace: true }));
     expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
 
     useGetItemSpy.mockRestore();

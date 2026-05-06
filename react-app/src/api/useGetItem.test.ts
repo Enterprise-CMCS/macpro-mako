@@ -98,7 +98,7 @@ describe("zod schema helpers", () => {
     it("should call sendGAEvent when the API throws an error", async () => {
       mockedServer.use(errorApiItemHandler);
 
-      await expect(unit.getItem("TEST_ID")).resolves.toBeUndefined();
+      await expect(unit.getItem("TEST_ID")).rejects.toBeTruthy();
 
       expect(gaModule.sendGAEvent).toHaveBeenCalledWith(
         "api_error",

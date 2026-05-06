@@ -19,10 +19,17 @@ const isNotFoundItemPayload = (value: unknown): boolean => {
     found?: boolean;
     message?: unknown;
     _source?: unknown;
+    request?: {
+      status?: number;
+    };
     response?: {
       status?: number;
       statusCode?: number;
+      statusText?: string;
       data?: unknown;
+    };
+    $metadata?: {
+      httpStatusCode?: number;
     };
     status?: number;
     statusCode?: number;
@@ -35,13 +42,19 @@ const isNotFoundItemPayload = (value: unknown): boolean => {
       : typeof responseData === "object" && responseData && "message" in responseData
         ? (responseData as { message?: unknown }).message
         : undefined;
-  const responseStatus = candidate?.response?.status ?? candidate?.response?.statusCode;
+  const responseStatus =
+    candidate?.response?.status ??
+    candidate?.response?.statusCode ??
+    candidate?.request?.status ??
+    candidate?.$metadata?.httpStatusCode;
   const directStatus = candidate?.status ?? candidate?.statusCode;
 
   return (
     candidate?.found === false ||
     includesNotFoundMessage(candidate?.message) ||
     includesNotFoundMessage(responseMessage) ||
+    String(candidate?.message ?? "").includes("status code 404") ||
+    candidate?.response?.statusText === "Not Found" ||
     responseStatus === 404 ||
     directStatus === 404
   );
@@ -76,7 +89,7 @@ export const getItem = async (
     }
 
     sendGAEvent("api_error", { message: `failure /item ${normalizedId}` });
-    return undefined;
+    throw error;
   }
 };
 
