@@ -1195,6 +1195,64 @@ describe("ActionForm", () => {
     useGetItemSpy.mockRestore();
   });
 
+  test("does not render an error when a stale cached draft refetch returns a 404 error", async () => {
+    const draftId = "MD-25-3524-JJJJ";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockReturnValue({
+      data: {
+        _id: draftId,
+        found: true,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          draft: {
+            savedAt: "2026-02-26T00:00:00.000Z",
+            createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+            data: { id: draftId },
+          },
+          changelog: [],
+        },
+      },
+      isLoading: false,
+      isFetched: true,
+      error: new Error("Request failed with status code 404"),
+    } as any);
+    const form = (
+      <ActionForm
+        title="Deleted Draft Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: draftId }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-chip-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />
+    );
+
+    renderWithQueryClientAndMemoryRouter(
+      form,
+      [
+        {
+          path: "/draft-route",
+          element: form,
+        },
+      ],
+      { initialEntries: [`/draft-route?draftId=${draftId}`] },
+    );
+
+    await waitFor(() =>
+      expect(screen.queryByText("An error has occurred")).not.toBeInTheDocument(),
+    );
+    expect(screen.queryByTestId("detail-section-title")).not.toBeInTheDocument();
+
+    useGetItemSpy.mockRestore();
+  });
+
   test("ignores duplicate save clicks while a draft save is already in flight", async () => {
     let resolveSaveDraft: ((value: api.SaveDraftResponse) => void) | undefined;
     const saveDraftSpy = vi.spyOn(api, "saveDraft").mockImplementation(

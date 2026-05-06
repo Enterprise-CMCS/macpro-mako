@@ -237,6 +237,7 @@ const getApiErrorMessage = (error: unknown) => {
 
 const isNotFoundApiError = (error: unknown) =>
   getApiErrorStatus(error) === 404 ||
+  /status code 404/i.test(getApiErrorMessage(error)) ||
   /No record found for the given id/i.test(getApiErrorMessage(error));
 
 export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
