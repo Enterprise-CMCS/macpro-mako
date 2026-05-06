@@ -4,7 +4,7 @@ import { API } from "aws-amplify";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
-import { Authority, ReactQueryApiError, SEATOOL_STATUS, UserDetails } from "shared-types";
+import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
 import { isStateUser } from "shared-utils";
 import { z } from "zod";
 
@@ -16,7 +16,6 @@ import {
   BreadCrumbs,
   Button,
   dismissBanner,
-  ErrorAlert,
   FAQFooter,
   Form,
   FormField,
@@ -277,6 +276,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   const draftVersionRef = useRef<{ seqNo?: number; primaryTerm?: number }>({});
   const saveDraftInFlightRef = useRef(false);
   const pendingDraftIdRemovalRef = useRef<string | null>(null);
+  const hasRedirectedFromInactiveDraftRef = useRef(false);
   const [draftIdConflict, setDraftIdConflict] = useState<string | null>(null);
   const [currentSessionDraftActor, setCurrentSessionDraftActor] = useState<{
     email?: string | null;
@@ -309,7 +309,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     error: draftError,
   } = useGetItem(
     draftId ?? "",
-    { enabled: isDraftMode },
+    { enabled: isDraftMode, retry: false },
     { includeDraft: true, preferDraft: true },
   );
   const hasLoadedActiveDraftRecord =
@@ -1139,6 +1139,32 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return () => observer.disconnect();
   }, [footerTriggerElement, isStickyFooterEnabled]);
 
+  const draftRecordIsInactive =
+    isDraftFetched &&
+    (!draftRecord ||
+      draftRecord._source?.deleted === true ||
+      draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT);
+  const shouldRedirectFromInactiveDraft =
+    isDraftMode && !isDraftSaveRouteTransition && (Boolean(draftError) || draftRecordIsInactive);
+
+  useEffect(() => {
+    if (!shouldRedirectFromInactiveDraft || hasRedirectedFromInactiveDraftRef.current) {
+      return;
+    }
+
+    hasRedirectedFromInactiveDraftRef.current = true;
+    skipNavigationPromptRef.current = true;
+
+    if (draftId) {
+      queryClient.removeQueries({
+        queryKey: ["record", draftId, "preferDraft"],
+        exact: true,
+      });
+    }
+
+    navigate("/dashboard", { replace: true });
+  }, [draftId, navigate, shouldRedirectFromInactiveDraft]);
+
   if (isUserLoading === true) {
     return <LoadingSpinner />;
   }
@@ -1152,33 +1178,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     return <LoadingSpinner />;
   }
 
-  if (
-    isDraftMode &&
-    !isDraftSaveRouteTransition &&
-    isDraftFetched &&
-    draftRecord?._source?.deleted === true
-  ) {
-    return <Navigate to="/dashboard" replace />;
-  }
-
-  if (
-    isDraftMode &&
-    !isDraftSaveRouteTransition &&
-    (draftError ||
-      (isDraftFetched &&
-        (!draftRecord || draftRecord._source?.seatoolStatus !== SEATOOL_STATUS.DRAFT)))
-  ) {
-    return (
-      <SimplePageContainer>
-        <ErrorAlert
-          error={
-            (draftError as ReactQueryApiError | undefined) ?? {
-              response: { data: { message: "No active draft package was found." } },
-            }
-          }
-        />
-      </SimplePageContainer>
-    );
+  if (shouldRedirectFromInactiveDraft) {
+    return <LoadingSpinner />;
   }
 
   const doesUserHaveAccessToForm = conditionsDeterminingUserAccess.some((condition) =>
