@@ -210,7 +210,36 @@ const matchesDraftSaveRouteTransition = (
       transition.expiresAt > Date.now(),
   );
 
+const collectErrorValues = (
+  value: unknown,
+  values: unknown[] = [],
+  seen = new Set<unknown>(),
+  depth = 0,
+) => {
+  if (value === null || value === undefined || depth > 4 || seen.has(value)) {
+    return values;
+  }
+
+  seen.add(value);
+  values.push(value);
+
+  if (typeof value !== "object") {
+    return values;
+  }
+
+  for (const key of Object.getOwnPropertyNames(value)) {
+    try {
+      collectErrorValues((value as Record<string, unknown>)[key], values, seen, depth + 1);
+    } catch {
+      // Some Error-like objects have getters that can throw.
+    }
+  }
+
+  return values;
+};
+
 const getApiErrorStatus = (error: unknown) => {
+  const errorValues = collectErrorValues(error);
   const candidate = error as {
     status?: number | string;
     statusCode?: number | string;
@@ -224,7 +253,11 @@ const getApiErrorStatus = (error: unknown) => {
     candidate?.request?.status ??
     candidate?.$metadata?.httpStatusCode ??
     candidate?.status ??
-    candidate?.statusCode;
+    candidate?.statusCode ??
+    errorValues.find((errorValue) => {
+      const statusCode = typeof errorValue === "string" ? Number(errorValue) : errorValue;
+      return typeof statusCode === "number" && Number.isFinite(statusCode);
+    });
   const statusCode = typeof status === "string" ? Number(status) : status;
 
   return typeof statusCode === "number" && Number.isFinite(statusCode) ? statusCode : undefined;
@@ -242,7 +275,9 @@ const getApiErrorMessage = (error: unknown) => {
     return String(responseData.message ?? "");
   }
 
-  return [candidate?.message, candidate?.response?.statusText].filter(Boolean).join(" ");
+  return collectErrorValues(error)
+    .map((errorValue) => String(errorValue ?? ""))
+    .join(" ");
 };
 
 const isNotFoundApiError = (error: unknown) =>
