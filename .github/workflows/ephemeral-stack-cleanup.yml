@@ -1,0 +1,103 @@
+name: Ephemeral Stack Cleanup
+
+on:
+  schedule:
+    - cron: "0 6 * * 1" # Every Monday at 6am UTC
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Set to true to list stacks without destroying (safe preview)"
+        required: true
+        default: "true"
+      max_age_days:
+        description: "Destroy ephemeral stacks last updated more than this many days ago"
+        required: true
+        default: "30"
+
+jobs:
+  cleanup:
+    name: Destroy Stale Ephemeral Stacks
+    runs-on: ubuntu-22.04
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - uses: ./.github/actions/setup
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
+          aws-region: us-east-1
+          role-duration-seconds: 10800
+
+      - name: Identify and optionally destroy stale ephemeral stacks
+        env:
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || 'false' }}
+          MAX_AGE_DAYS: ${{ github.event_name == 'workflow_dispatch' && inputs.max_age_days || '30' }}
+        run: |
+          set -euo pipefail
+
+          PROTECTED_STAGES="main val production datasink snyk"
+          CUTOFF_EPOCH=$(date -d "-${MAX_AGE_DAYS} days" +%s 2>/dev/null || date -v -${MAX_AGE_DAYS}d +%s)
+
+          echo "Scanning for stacks tagged PROJECT=${PROJECT} older than ${MAX_AGE_DAYS} days..."
+          echo "Dry run: ${DRY_RUN}"
+          echo ""
+
+          STACK_DATA=$(aws cloudformation describe-stacks \
+            --query "Stacks[?Tags[?Key=='PROJECT' && Value=='${PROJECT}']].[StackName, Tags[?Key=='STAGE'].Value|[0], to_string(LastUpdatedTime), to_string(CreationTime)]" \
+            --output json)
+
+          declare -A STALE_STAGES
+          declare -A ACTIVE_STAGES
+          declare -A PROTECTED
+
+          while IFS= read -r line; do
+            STACK_NAME=$(echo "$line" | jq -r '.[0]')
+            STAGE=$(echo "$line" | jq -r '.[1] // ""')
+            LAST_UPDATED=$(echo "$line" | jq -r '.[2] // .[3]' | tr -d '"')
+
+            if [[ -z "$STAGE" ]]; then
+              continue
+            fi
+
+            if echo "$PROTECTED_STAGES" | grep -qw "$STAGE"; then
+              PROTECTED["$STAGE"]=1
+              continue
+            fi
+
+            STACK_EPOCH=$(date -d "$LAST_UPDATED" +%s 2>/dev/null || date -j -f "%Y-%m-%dT%H:%M:%S" "${LAST_UPDATED%%.*}" +%s 2>/dev/null || echo 0)
+
+            if [[ "$STACK_EPOCH" -gt "$CUTOFF_EPOCH" ]]; then
+              echo "[ACTIVE]  stage=${STAGE}  stack=${STACK_NAME}  last_updated=${LAST_UPDATED}"
+              ACTIVE_STAGES["$STAGE"]=1
+            else
+              echo "[STALE]   stage=${STAGE}  stack=${STACK_NAME}  last_updated=${LAST_UPDATED}"
+              STALE_STAGES["$STAGE"]=1
+            fi
+          done < <(echo "$STACK_DATA" | jq -c '.[]')
+
+          # Promote any stage with at least one active nested stack out of the stale set
+          for stage in "${!ACTIVE_STAGES[@]}"; do
+            unset "STALE_STAGES[$stage]" 2>/dev/null || true
+          done
+
+          DESTROYED=0
+
+          for stage in "${!STALE_STAGES[@]}"; do
+            if [[ "$DRY_RUN" == "true" ]]; then
+              echo "  → DRY RUN: would run destroy --stage ${stage}"
+            else
+              echo "  → Destroying stage=${stage}..."
+              run destroy --stage "${stage}" --verify false
+            fi
+            DESTROYED=$((DESTROYED + 1))
+          done
+
+          echo ""
+          echo "Summary: ${DESTROYED} stale stages ($([ "$DRY_RUN" == "true" ] && echo "would destroy" || echo "destroyed")) | ${#ACTIVE_STAGES[@]} active stages (kept) | ${#PROTECTED[@]} protected (skipped)"
