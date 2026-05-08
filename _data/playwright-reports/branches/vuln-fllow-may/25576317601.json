@@ -1,0 +1,613 @@
+{
+  "config": {
+    "configFile": "/home/runner/work/macpro-mako/macpro-mako/test/playwright.config.ts",
+    "rootDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+    "forbidOnly": true,
+    "fullyParallel": true,
+    "globalSetup": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.setup.ts",
+    "globalTeardown": "/home/runner/work/macpro-mako/macpro-mako/test/lib/global.teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "ci": {
+        "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+        "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+        "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+      },
+      "gitCommit": {
+        "shortHash": "e70209f",
+        "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+        "subject": "update",
+        "body": "update\n",
+        "author": {
+          "name": "James Dinh",
+          "email": "jdinh8124@gmail.com",
+          "time": 1778269944000
+        },
+        "committer": {
+          "name": "James Dinh",
+          "email": "jdinh8124@gmail.com",
+          "time": 1778269944000
+        },
+        "branch": "vuln-fllow-may"
+      }
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "local-setup",
+        "name": "local-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/local\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "ci-setup",
+        "name": "ci-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/ci\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "val-setup",
+        "name": "val-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/val\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "eua-setup",
+        "name": "eua-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/eua\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "mfa-setup",
+        "name": "mfa-setup",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/mfa\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "smoke-test",
+        "name": "smoke-test",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "/smoke\\.setup\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "local",
+        "name": "local",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "ci",
+        "name": "ci",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "val",
+        "name": "val",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "eua-user",
+        "name": "eua-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "mfa-user",
+        "name": "mfa-user",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "smoke-tests",
+        "name": "smoke-tests",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "**/smoke/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/home/runner/work/macpro-mako/macpro-mako/test/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "ci": {
+            "commitHref": "https://github.com/Enterprise-CMCS/macpro-mako/commit/e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "commitHash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "buildHref": "https://github.com/Enterprise-CMCS/macpro-mako/actions/runs/25576317601"
+          },
+          "gitCommit": {
+            "shortHash": "e70209f",
+            "hash": "e70209f9faa3a91c59eb3780129588794bfdcf1d",
+            "subject": "update",
+            "body": "update\n",
+            "author": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "committer": {
+              "name": "James Dinh",
+              "email": "jdinh8124@gmail.com",
+              "time": 1778269944000
+            },
+            "branch": "vuln-fllow-may"
+          }
+        },
+        "id": "shared",
+        "name": "shared",
+        "testDir": "/home/runner/work/macpro-mako/macpro-mako/test",
+        "testIgnore": [
+          "**/*.test.{ts,tsx}",
+          "**/smoke/**/*.spec.ts"
+        ],
+        "testMatch": [
+          "e2e/specs/**/*.spec.ts"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "github",
+        null
+      ],
+      [
+        "html",
+        {
+          "outputFolder": "./playwright-reports/html-report",
+          "open": "never"
+        }
+      ],
+      [
+        "json",
+        {
+          "outputFile": "./playwright-reports/playwright-summary.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.59.1",
+    "workers": 1,
+    "webServer": null
+  },
+  "suites": [],
+  "errors": [
+    {
+      "message": "Error: Failed to create authenticated storage state for env=ci role=stateSubmitter. Root error: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('heading', { name: 'Dashboard' }) to be visible\n. Debug screenshot: .auth/ci/stateSubmitter-auth-setup-failure.png",
+      "stack": "Error: Failed to create authenticated storage state for env=ci role=stateSubmitter. Root error: locator.waitFor: Timeout 30000ms exceeded.\nCall log:\n  - waiting for getByRole('heading', { name: 'Dashboard' }) to be visible\n. Debug screenshot: .auth/ci/stateSubmitter-auth-setup-failure.png\n    at createStorageState (/home/runner/work/macpro-mako/macpro-mako/test/lib/createStorageState.ts:88:11)\n    at globalSetup (/home/runner/work/macpro-mako/macpro-mako/test/lib/global.setup.ts:110:5)",
+      "location": {
+        "file": "/home/runner/work/macpro-mako/macpro-mako/test/lib/createStorageState.ts",
+        "column": 11,
+        "line": 88
+      },
+      "snippet": "   at lib/createStorageState.ts:88\n\n\u001b[0m \u001b[90m 86 |\u001b[39m\n \u001b[90m 87 |\u001b[39m     \u001b[36mconst\u001b[39m errorMessage \u001b[33m=\u001b[39m error \u001b[36minstanceof\u001b[39m \u001b[33mError\u001b[39m \u001b[33m?\u001b[39m error\u001b[33m.\u001b[39mmessage \u001b[33m:\u001b[39m \u001b[33mString\u001b[39m(error)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 88 |\u001b[39m     \u001b[36mthrow\u001b[39m \u001b[36mnew\u001b[39m \u001b[33mError\u001b[39m(\n \u001b[90m    |\u001b[39m           \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 89 |\u001b[39m       \u001b[32m`Failed to create authenticated storage state for env=${env} role=${role}. `\u001b[39m \u001b[33m+\u001b[39m\n \u001b[90m 90 |\u001b[39m         \u001b[32m`Root error: ${errorMessage}. Debug screenshot: ${screenshotPath}`\u001b[39m\u001b[33m,\u001b[39m\n \u001b[90m 91 |\u001b[39m     )\u001b[33m;\u001b[39m\u001b[0m"
+    }
+  ],
+  "stats": {
+    "startTime": "2026-05-08T20:10:29.746Z",
+    "duration": 35958.810999999994,
+    "expected": 0,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
