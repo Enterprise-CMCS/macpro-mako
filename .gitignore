@@ -37,3 +37,4 @@ docs/local/*
 graphify-out/cache/
 graphify-out/manifest.json
 graphify-out/cost.json
+.cursor/hooks/state/continual-learning.json
