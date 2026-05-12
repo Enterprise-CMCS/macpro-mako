@@ -8,6 +8,7 @@ import * as LC from "local-constructs";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
+import { containerImageRefresh } from "../config/container-image-refresh";
 import { DeploymentConfigProperties } from "../config/deployment-config";
 import {
   getArchiveBaseReadBucket,
@@ -1085,6 +1086,9 @@ export class Api extends cdk.NestedStack {
       this,
       "AttachmentArchiveWorkerImage",
       {
+        buildArgs: {
+          CACHE_BUST: containerImageRefresh.attachmentArchiveWorker,
+        },
         directory: join(__dirname, "../attachment-archive"),
         platform: cdk.aws_ecr_assets.Platform.LINUX_AMD64,
       },
