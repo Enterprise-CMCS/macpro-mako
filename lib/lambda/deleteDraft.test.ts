@@ -97,7 +97,7 @@ describe("deleteDraft handler", () => {
     expect(os.updateData).not.toHaveBeenCalled();
   });
 
-  it("returns 403 when user is not the draft creator or latest updater", async () => {
+  it("allows an in-state user to delete a draft they did not create or update", async () => {
     vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
       ...buildPackageResult(SEATOOL_STATUS.DRAFT),
       _source: {
@@ -119,8 +119,25 @@ describe("deleteDraft handler", () => {
       {} as Context,
     );
 
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toEqual(JSON.stringify({ message: "Draft deleted", id: DRAFT_ID }));
+    expect(os.updateData).toHaveBeenCalled();
+  });
+
+  it("returns 403 when user cannot access the draft state", async () => {
+    const outOfStateDraftId = "AK-25-2525-SAVE";
+
+    const res = await handler(
+      {
+        body: JSON.stringify({ id: outOfStateDraftId }),
+        requestContext: getRequestContext(),
+      } as APIGatewayEvent,
+      {} as Context,
+    );
+
     expect(res.statusCode).toBe(403);
     expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    expect(packageApi.getDraftPackage).not.toHaveBeenCalled();
     expect(os.updateData).not.toHaveBeenCalled();
   });
 

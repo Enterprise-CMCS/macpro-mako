@@ -82,6 +82,13 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   * Toggle save-in-progress draft workflows
+   */
+  SAVE_IN_PROGRESS: {
+    flag: "save-in-progress",
+    defaultValue: true,
+  },
+  /*
    *  Toggle visibility of details page of the chip spa eligibility submission
    */
   CHIP_SPA_DETAILS: {
