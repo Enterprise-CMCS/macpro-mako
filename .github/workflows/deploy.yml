@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - "*"
+      - "!renovate/**"
       - "!skipci*"
 
 concurrency:
