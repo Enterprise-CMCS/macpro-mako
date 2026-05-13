@@ -1,12 +1,12 @@
-# Graph Report - macpro-mako  (2026-04-28)
+# Graph Report - macpro-mako  (2026-05-01)
 
 ## Corpus Check
-- 1296 files · ~377,503 words
+- 1297 files · ~379,375 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 2593 nodes · 2458 edges · 94 communities detected
-- Extraction: 74% EXTRACTED · 26% INFERRED · 0% AMBIGUOUS · INFERRED: 643 edges (avg confidence: 0.8)
+- 2604 nodes · 2478 edges · 94 communities detected
+- Extraction: 74% EXTRACTED · 26% INFERRED · 0% AMBIGUOUS · INFERRED: 645 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
 
 ## Community Hubs (Navigation)
@@ -108,7 +108,7 @@
 ## God Nodes (most connected - your core abstractions)
 1. `response()` - 29 edges
 2. `getDomainAndNamespace()` - 26 edges
-3. `search()` - 23 edges
+3. `search()` - 24 edges
 4. `lookupUserAttributes()` - 23 edges
 5. `itemExists()` - 22 edges
 6. `main()` - 21 edges
@@ -118,8 +118,6 @@
 10. `logError()` - 18 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `packageDetailsLoader()` --calls--> `getItem()`  [INFERRED]
-  react-app/src/features/package/index.tsx → lib/libs/opensearch-lib.ts
 - `OneMAC Upgrade` --semantically_similar_to--> `Playwright Test Configuration`  [INFERRED] [semantically similar]
   README.md → test/README.md
 - `StateRoleSignup()` --calls--> `isStateRole()`  [INFERRED]
@@ -128,6 +126,8 @@
   react-app/src/features/faq/faqs/waiver/withdraw-waiver-rai-response.tsx → lib/libs/handler-lib.ts
 - `WithdrawSpaRaiResponse()` --calls--> `response()`  [INFERRED]
   react-app/src/features/faq/faqs/spa/withdraw-spa-rai-response.tsx → lib/libs/handler-lib.ts
+- `WithdrawChipSpaRaiResponse()` --calls--> `response()`  [INFERRED]
+  react-app/src/features/faq/faqs/spa/withdraw-chip-spa-rai-response.tsx → lib/libs/handler-lib.ts
 
 ## Hyperedges (group relationships)
 - **OneMAC Submission Type Portfolio** — readme_medicaid_spa, readme_chip_eligibility_spa, readme_1915b_waiver, readme_1915c_appendix_k, readme_temporary_extension [EXTRACTED 1.00]
@@ -138,47 +138,47 @@
 
 ### Community 0 - "Community 0"
 Cohesion: 0.05
-Nodes (59): AccessChangeNoticeEmail(), appK(), getAppkChildren(), ApproverInfo(), capitatedAmendment(), capitatedInitial(), capitatedRenewal(), getPackageChangelog() (+51 more)
+Nodes (58): AccessChangeNoticeEmail(), appK(), getAppkChildren(), ApproverInfo(), capitatedAmendment(), capitatedInitial(), capitatedRenewal(), checkIdentifierUsage() (+50 more)
 
 ### Community 1 - "Community 1"
 Cohesion: 0.03
-Nodes (45): getAttachmentArchive(), getAttachmentUrl(), ErrorPage(), RoleStatusCard(), triggerGAEvent(), useGetLinks(), UserDropdownMenu(), userProfileLoader() (+37 more)
+Nodes (38): formatActionType(), formatActionTypeWithWaiver(), setup(), setup(), AppKCMSEmailPreview(), AppKStateEmailPreview(), setup(), setup() (+30 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.03
-Nodes (38): formatActionType(), formatActionTypeWithWaiver(), setup(), setup(), AppKCMSEmailPreview(), AppKStateEmailPreview(), setup(), setup() (+30 more)
+Cohesion: 0.05
+Nodes (62): buildAttachmentArchiveCurrent(), isAllAttachmentsUnavailableArchive(), getAttachmentErrorInfo(), getAttachmentErrorMessage(), isAttachmentAccessDeniedError(), isAttachmentNotFoundError(), isLegacyAttachmentUnavailableError(), logAttachmentErrorClassification() (+54 more)
 
 ### Community 3 - "Community 3"
 Cohesion: 0.04
-Nodes (44): main(), checkIdentifierUsageHandler(), fetchAppkChildren(), setupHandler(), fetchChangelog(), setupHandler(), fetchPackage(), setupHandler() (+36 more)
+Nodes (42): main(), checkIdentifierUsageHandler(), fetchAppkChildren(), setupHandler(), fetchChangelog(), setupHandler(), fetchPackage(), setupHandler() (+34 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.06
-Nodes (62): markAttachmentArchiveFailed(), getUpdatedAtMs(), resolveAttachmentArchiveCurrentState(), buildAllAttachmentsUnavailableArchiveFailure(), buildAttachmentArchiveBlockedAttachment(), buildAttachmentArchiveFailureMessage(), buildAttachmentNotCleanArchiveFailure(), getAttachmentArchiveFailureMessage() (+54 more)
+Cohesion: 0.04
+Nodes (39): ErrorPage(), RoleStatusCard(), triggerGAEvent(), useGetLinks(), UserDropdownMenu(), userProfileLoader(), FlagRouter(), useChipSpaOptions() (+31 more)
 
 ### Community 5 - "Community 5"
 Cohesion: 0.06
-Nodes (44): transformDeleteSchema(), transformUpdateValuesSchema(), decodeBase64WithUtf8(), isSkippableError(), SkippableValidationError, transform(), getDateStringOrNullFromEpoc(), getFinalDispositionDate() (+36 more)
+Nodes (51): buildPackageAttachmentArchiveManifest(), buildSectionArchiveFolderName(), buildSectionAttachmentArchiveManifest(), formatEasternDownloadDate(), getArchiveArtifactKey(), getArchiveBasePrefix(), getArchiveCurrentKey(), getArchiveDownloadFilename() (+43 more)
 
 ### Community 6 - "Community 6"
 Cohesion: 0.06
-Nodes (48): buildPackageAttachmentArchiveManifest(), buildSectionArchiveFolderName(), buildSectionAttachmentArchiveManifest(), formatEasternDownloadDate(), getArchiveArtifactKey(), getArchiveBasePrefix(), getArchiveCurrentKey(), getArchiveDownloadFilename() (+40 more)
+Nodes (43): transformDeleteSchema(), transformUpdateValuesSchema(), decodeBase64WithUtf8(), isSkippableError(), SkippableValidationError, transform(), getDateStringOrNullFromEpoc(), getFinalDispositionDate() (+35 more)
 
 ### Community 7 - "Community 7"
 Cohesion: 0.04
-Nodes (25): getFAQLinkForAttachments(), onAppend(), getForm(), getMaxVersion(), useDetailsSidebarLinks(), Amendment(), DetailsContent(), DetailsSidebar() (+17 more)
+Nodes (36): handler(), onAppend(), getForm(), getMaxVersion(), useDetailsSidebarLinks(), DetailsContent(), DetailsSidebar(), if() (+28 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.07
-Nodes (32): handler(), getAllStateUsersFromOpenSearch(), getEmailTemplates(), getLatestMatchingEvent(), getUserRoleTemplate(), hasAuthority(), hasEvent(), isEmailEvent() (+24 more)
+Cohesion: 0.04
+Nodes (28): handleInputChange(), banner(), BannerObserver, autoSubmit(), onCancel(), onSubmit(), formatDateToET(), getAttachmentArchive() (+20 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.09
-Nodes (34): getAttachmentErrorInfo(), getAttachmentErrorMessage(), isAttachmentAccessDeniedError(), isAttachmentNotFoundError(), isLegacyAttachmentUnavailableError(), logAttachmentErrorClassification(), loadArchiveAttachment(), logSkippedAttachment() (+26 more)
+Cohesion: 0.08
+Nodes (52): applyArchiveKeyPrefix(), buildChunkKey(), buildCsvAttachment(), buildCsvAttachmentForRows(), buildCsvContent(), buildCsvRow(), buildDiscrepancy(), buildDiscrepancyTypeCounts() (+44 more)
 
 ### Community 10 - "Community 10"
 Cohesion: 0.06
-Nodes (19): AccessPendingNoticeEmail(), AppKStateEmail(), ChipSpaStateEmail(), formatDate(), formatDateToET(), formatNinetyDaysDate(), isWithinDays(), handleActionClick() (+11 more)
+Nodes (16): generateAuthFile(), cognitoLogin(), createStorageState(), attachDashboardSetupDiagnostics(), catch(), getFAQLinkForAttachments(), globalSetup(), Amendment() (+8 more)
 
 ### Community 11 - "Community 11"
 Cohesion: 0.08
@@ -190,67 +190,67 @@ Nodes (32): parseAttachmentArchiveCurrent(), applyArchiveKeyPrefix(), buildClass
 
 ### Community 13 - "Community 13"
 Cohesion: 0.07
-Nodes (19): handleInputChange(), banner(), BannerObserver, autoSubmit(), onCancel(), onSubmit(), delay(), handleCancel() (+11 more)
+Nodes (16): AccessPendingNoticeEmail(), AppKStateEmail(), ChipSpaStateEmail(), formatDate(), formatNinetyDaysDate(), isWithinDays(), MedSpaStateEmail(), getBusinessDayTimestamp() (+8 more)
 
 ### Community 14 - "Community 14"
+Cohesion: 0.09
+Nodes (21): getPackageChangelog(), getAllStateUsersFromOpenSearch(), getPackageType(), isKnownPackageEvent(), getEmailTemplates(), getLatestMatchingEvent(), getUserRoleTemplate(), hasAuthority() (+13 more)
+
+### Community 15 - "Community 15"
 Cohesion: 0.12
 Nodes (28): isClientAllowedForObject(), badRequest(), defaultFilenameFromKey(), getClientIdFromAuthorizer(), getKnownErrorResponse(), getLatestChangelogTimestamp(), handleArchiveRequest(), handler() (+20 more)
 
-### Community 15 - "Community 15"
+### Community 16 - "Community 16"
 Cohesion: 0.1
 Nodes (24): downloadAVDefinitions(), scanLocalFile(), updateAVDefinitonsWithFreshclam(), uploadAVDefinitions(), startClamd(), handler(), areMimeTypesEquivalent(), checkFileExt() (+16 more)
-
-### Community 16 - "Community 16"
-Cohesion: 0.09
-Nodes (10): generateAuthFile(), cognitoLogin(), createStorageState(), attachDashboardSetupDiagnostics(), catch(), globalSetup(), LoginPage, canBeRenewedOrAmended() (+2 more)
 
 ### Community 17 - "Community 17"
 Cohesion: 0.12
 Nodes (22): Api, buildApiTemplate(), createInlineLambda(), getArchiveBaseReadBucket(), getArchiveOverlayPrefix(), getEphemeralArchiveOverlayBucket(), isSharedArchiveStage(), resolveArchiveBaseReadStage() (+14 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.15
-Nodes (25): syncManifestToWriteBucket(), buildDiscrepancyEmailBody(), buildFailureEmailBody(), buildRawEmail(), chunkBase64(), createFailureSummary(), getEmailAddressLookupSecretName(), getIntegrityStageName() (+17 more)
-
-### Community 19 - "Community 19"
 Cohesion: 0.14
 Nodes (21): ensureNonEmptyString(), getActiveClient(), getExternalApiAuthConfig(), parseAllowedLocations(), parseBase64(), parseClient(), parseConfig(), parseHex() (+13 more)
 
-### Community 20 - "Community 20"
-Cohesion: 0.17
-Nodes (18): buildAttachmentArchiveCurrent(), isAllAttachmentsUnavailableArchive(), appendSectionManifest(), buildArchiveFromManifest(), buildCurrentFromManifest(), getCurrentArchiveStatus(), hasTransformToWebStream(), isAsyncIterableStream() (+10 more)
-
-### Community 21 - "Community 21"
+### Community 19 - "Community 19"
 Cohesion: 0.11
 Nodes (8): getExport(), createUser(), setPassword(), DeploymentConfig, handler(), handler(), updateUserAttributes(), uploadToS3()
 
-### Community 22 - "Community 22"
+### Community 20 - "Community 20"
+Cohesion: 0.2
+Nodes (20): buildDiscrepancyEmailBody(), buildFailureEmailBody(), buildRawEmail(), chunkBase64(), createFailureSummary(), getEmailAddressLookupSecretName(), getIntegrityStageName(), getRecipientConfig() (+12 more)
+
+### Community 21 - "Community 21"
 Cohesion: 0.11
 Nodes (20): OneMAC Storybook Docs Entry, 1915(b) Waiver Submissions, 1915(c) Appendix K Waiver Submissions, CC0 1.0 Universal License, CHIP Eligibility SPA Submissions, CMS Review Workflows, CodeClimate Quality Gate, GitHub Wiki Documentation (+12 more)
 
-### Community 23 - "Community 23"
+### Community 22 - "Community 22"
 Cohesion: 0.18
 Nodes (9): getValueAndMessage(), isDateObject(), isNullOrUndefined(), isObject(), isObjectType(), isRegex(), isString(), isUndefined() (+1 more)
 
-### Community 24 - "Community 24"
+### Community 23 - "Community 23"
 Cohesion: 0.19
 Nodes (13): getArchiveStorageConfig(), getCurrentStatus(), handler(), listArchiveCurrentKeys(), listNonReadyCurrentKeys(), removeArchiveKeyPrefix(), sampleItems(), getAttachmentArchiveBackfillPage() (+5 more)
 
-### Community 25 - "Community 25"
+### Community 24 - "Community 24"
 Cohesion: 0.21
 Nodes (11): countBy(), filterCurrentKeys(), getAccountId(), getArchiveBucketName(), inspectCurrentEntries(), listArchiveCurrentKeys(), main(), parseArgs() (+3 more)
 
-### Community 26 - "Community 26"
+### Community 25 - "Community 25"
 Cohesion: 0.17
 Nodes (5): handler(), mockMediaQuery(), ResizeObserverMock, setupLayoutTest(), deleteTopics()
 
-### Community 27 - "Community 27"
+### Community 26 - "Community 26"
 Cohesion: 0.23
 Nodes (8): optionCrumbsFromPath(), actionCrumb(), dashboardCrumb(), detailsAndActionsCrumbs(), detailsCrumb(), getDashboardTabForAuthority(), getFormOrigin(), mapActionLabel()
 
-### Community 28 - "Community 28"
+### Community 27 - "Community 27"
 Cohesion: 0.47
 Nodes (10): additionalInfo(), createSectionId(), deliverySystemCharactaristics(), disenrollment(), generateDependency(), managedCare(), participationExclusions(), participationRequirements() (+2 more)
+
+### Community 28 - "Community 28"
+Cohesion: 0.33
+Nodes (4): main(), OpenSearchExporter, parseArgs(), printUsage()
 
 ### Community 29 - "Community 29"
 Cohesion: 0.2
@@ -627,17 +627,17 @@ Nodes (2): deleteAllTriggersForFunctions(), handler()
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `processRecord()` connect `Community 8` to `Community 0`, `Community 10`, `Community 5`?**
+- **Why does `getItem()` connect `Community 7` to `Community 0`, `Community 3`, `Community 14`?**
   _High betweenness centrality (0.031) - this node is a cross-community bridge._
-- **Why does `getPackageChangelog()` connect `Community 0` to `Community 3`, `Community 4`, `Community 5`, `Community 6`, `Community 8`, `Community 9`, `Community 14`?**
-  _High betweenness centrality (0.030) - this node is a cross-community bridge._
-- **Why does `getItem()` connect `Community 8` to `Community 0`, `Community 3`, `Community 7`?**
+- **Why does `processRecord()` connect `Community 14` to `Community 0`, `Community 13`, `Community 6`, `Community 7`?**
+  _High betweenness centrality (0.031) - this node is a cross-community bridge._
+- **Why does `getPackage()` connect `Community 3` to `Community 0`, `Community 2`, `Community 6`, `Community 7`, `Community 9`, `Community 15`?**
   _High betweenness centrality (0.025) - this node is a cross-community bridge._
 - **Are the 28 inferred relationships involving `response()` (e.g. with `WithdrawWaiverRaiResponse()` and `WithdrawSpaRaiResponse()`) actually correct?**
   _`response()` has 28 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 23 inferred relationships involving `getDomainAndNamespace()` (e.g. with `getItems()` and `bulkUpdateDataWrapper()`) actually correct?**
   _`getDomainAndNamespace()` has 23 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 20 inferred relationships involving `search()` (e.g. with `checkIdentifierUsage()` and `getPackageChangelog()`) actually correct?**
-  _`search()` has 20 INFERRED edges - model-reasoned connections that need verification._
+- **Are the 21 inferred relationships involving `search()` (e.g. with `.scrollSearch()` and `checkIdentifierUsage()`) actually correct?**
+  _`search()` has 21 INFERRED edges - model-reasoned connections that need verification._
 - **Are the 17 inferred relationships involving `lookupUserAttributes()` (e.g. with `getPackageActions()` and `capitatedInitial()`) actually correct?**
   _`lookupUserAttributes()` has 17 INFERRED edges - model-reasoned connections that need verification._
