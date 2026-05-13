@@ -1,7 +1,7 @@
 FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24 AS builder
 
 # Increment CACHE_BUST to force Docker to pull a fresh base image (e.g., for security patches)
-ARG CACHE_BUST=2026-05-08-clamav-al2023-refresh
+ARG CACHE_BUST=2026-05-13-clamav-al2023-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR ${LAMBDA_TASK_ROOT}
@@ -15,7 +15,7 @@ RUN npm run build
 
 FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24
 
-ARG CACHE_BUST=2026-05-08-clamav-al2023-refresh
+ARG CACHE_BUST=2026-05-13-clamav-al2023-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR ${LAMBDA_TASK_ROOT}
