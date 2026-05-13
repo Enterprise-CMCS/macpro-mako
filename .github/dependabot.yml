@@ -1,0 +1,57 @@
+version: 2
+updates:
+  - package-ecosystem: "bun"
+    directory: "/lib/attachment-archive"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "11:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "security"
+    open-pull-requests-limit: 5
+    groups:
+      container-aws-sdk:
+        patterns:
+          - "@aws-sdk/*"
+
+  - package-ecosystem: "docker"
+    directory: "/lib/attachment-archive"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "11:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "security"
+    open-pull-requests-limit: 5
+
+  - package-ecosystem: "npm"
+    directory: "/lib/local-constructs/clamav-scanning"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "11:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "security"
+    open-pull-requests-limit: 5
+    groups:
+      container-aws-sdk:
+        patterns:
+          - "@aws-sdk/*"
+
+  - package-ecosystem: "docker"
+    directory: "/lib/local-constructs/clamav-scanning"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "11:00"
+      timezone: "UTC"
+    labels:
+      - "dependencies"
+      - "security"
+    open-pull-requests-limit: 5
