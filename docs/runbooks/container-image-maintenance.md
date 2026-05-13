@@ -2,7 +2,7 @@
 
 ## What is automated
 
-- Renovate opens dependency update PRs for:
+- Dependabot opens dependency update PRs for:
   - `lib/attachment-archive`
   - `lib/local-constructs/clamav-scanning`
 - The shared refresh values in `lib/config/container-image-refresh.ts` give CDK a single place to force image rebuilds when the base OS packages need to refresh.
@@ -20,5 +20,5 @@
 
 ## GitHub setup
 
-- The Renovate workflow expects a repository or organization secret named `RENOVATE_TOKEN`.
-- Use a PAT or GitHub App token that can open branches and pull requests in this repository.
+- No separate bot token is required for Dependabot in this repository.
+- Dependabot configuration lives in `.github/dependabot.yml`.
