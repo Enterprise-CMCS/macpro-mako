@@ -384,6 +384,22 @@ describe("FilterChips", () => {
       expect(screen.getByText("State: Ohio, OH")).toBeInTheDocument();
     });
 
+    it("should hide Draft status chips when save-in-progress is disabled", () => {
+      setup([
+        {
+          label: "Status",
+          field: "stateStatus.keyword",
+          component: "multiCheck",
+          prefix: "must",
+          type: "terms",
+          value: ["Draft"],
+        },
+      ]);
+
+      expect(screen.queryByText("Status: Draft")).not.toBeInTheDocument();
+      expect(screen.queryAllByRole("button")).toEqual([]);
+    });
+
     it("should display no chips if there are no supported filters", () => {
       const { container } = setup([
         {

@@ -38,6 +38,7 @@ export const getOsData = async <TProps, TResponse extends opensearch.Response<an
 export const getMainExportData = async (
   filters?: opensearch.main.Filterable[],
   sort?: opensearch.main.State["sort"],
+  options: { includeDrafts?: boolean } = {},
 ) => {
   if (!filters) return [];
 
@@ -51,6 +52,7 @@ export const getMainExportData = async (
         ...filterQueryBuilder(filters),
         ...(!!sort && sortQueryBuilder(sort)),
         ...paginationQueryBuilder({ number: startPage, size: 1000 }),
+        ...(options.includeDrafts !== undefined && { includeDrafts: options.includeDrafts }),
       },
     });
 
