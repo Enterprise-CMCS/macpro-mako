@@ -75,10 +75,17 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
-   *  Toggle visibility of save and submit form
+   *  Toggle visibility of sticky form footer
    */
-  MED_SPA_FOOTER: {
-    flag: "med-spa-footer",
+  STICKY_FORM_FOOTER: {
+    flag: "sticky-form-footer",
+    defaultValue: true,
+  },
+  /*
+   * Toggle save-in-progress draft workflows
+   */
+  SAVE_IN_PROGRESS: {
+    flag: "save-in-progress",
     defaultValue: true,
   },
   /*

@@ -16,7 +16,7 @@ function createInlineLambda(
   functionName: string,
 ): cdk.aws_lambda.Function {
   return new cdk.aws_lambda.Function(stack, id, {
-    runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+    runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
     handler: "index.handler",
     code: cdk.aws_lambda.Code.fromInline("exports.handler = async () => ({ status: 'ok' });"),
     functionName,
@@ -147,8 +147,8 @@ describe("Api attachment archive integrity scheduling", () => {
       stage: "production",
       openSearchDomainEndpoint: "search-test-domain.us-east-1.es.amazonaws.com",
       indexNamespace: "production",
-      archiveWriteBucketName: "mako-production-attachment-archives-123456789012", // pragma: allowlist secret
-      archiveBaseReadBucketName: "mako-production-attachment-archives-123456789012", // pragma: allowlist secret
+      archiveWriteBucketName: "mako-production-attachment-archives-123456789012",
+      archiveBaseReadBucketName: "mako-production-attachment-archives-123456789012",
       archiveOverlayPrefix: "",
     });
     expect(productionEnvironment.ATTACHMENT_ARCHIVE_INTEGRITY_EXCEPTION_KEY).toBe(

@@ -46,6 +46,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   brokerString: DeploymentConfigProperties["brokerString"];
   dbInfoSecretName: DeploymentConfigProperties["dbInfoSecretName"];
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
+  externalApiAuthSecretArn: DeploymentConfigProperties["externalApiAuthSecretArn"];
   emailAddressLookupSecretName: DeploymentConfigProperties["emailAddressLookupSecretName"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
@@ -72,6 +73,7 @@ export class Api extends cdk.NestedStack {
       privateSubnets,
       brokerString,
       legacyS3AccessRoleArn,
+      externalApiAuthSecretArn,
       emailAddressLookupSecretName,
       lambdaSecurityGroup,
       topicNamespace,
@@ -269,10 +271,108 @@ export class Api extends cdk.NestedStack {
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${notificationSecretName}-*`,
               ],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+              resources: [externalApiAuthSecretArn],
+            }),
           ],
         }),
       },
     });
+
+    const externalAttachmentDownloadRole = new cdk.aws_iam.Role(
+      this,
+      "ExternalAttachmentDownloadRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          ExternalAttachmentDownloadPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "es:ESHttpHead",
+                  "es:ESHttpPost",
+                  "es:ESHttpGet",
+                  "es:ESHttpPatch",
+                  "es:ESHttpDelete",
+                  "es:ESHttpPut",
+                ],
+                resources: [`${openSearchDomainArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["sts:AssumeRole"],
+                resources: [legacyS3AccessRoleArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${attachmentsBucket.bucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${sharedAttachmentReadBucket.arn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveBaseReadBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveBaseReadBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["sqs:SendMessage"],
+                resources: [attachmentArchiveRebuildQueue.queueArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["states:DescribeExecution"],
+                resources: [
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive:*`,
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive-historical-backfill:*`,
+                ],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [externalApiAuthSecretArn],
+              }),
+            ],
+          }),
+        },
+      },
+    );
 
     const attachmentArchiveRequestRole = new cdk.aws_iam.Role(
       this,
@@ -510,7 +610,7 @@ export class Api extends cdk.NestedStack {
       });
 
       const fn = new NodejsFunction(this, id, {
-        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
         functionName: `${project}-${stage}-${stack}-${id}`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
@@ -589,6 +689,35 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
+        id: "externalToken",
+        entry: join(__dirname, "../lambda/externalToken.ts"),
+        environment: {
+          externalApiAuthSecretArn,
+        },
+      },
+      {
+        id: "externalAttachmentAuthorizer",
+        entry: join(__dirname, "../lambda/externalAttachmentAuthorizer.ts"),
+        environment: {
+          externalApiAuthSecretArn,
+        },
+      },
+      {
+        id: "getExternalAttachmentUrl",
+        entry: join(__dirname, "../lambda/getExternalAttachmentUrl.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          legacyS3AccessRoleArn,
+          indexNamespace,
+          externalApiAuthSecretArn,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
+          ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
+        },
+        role: externalAttachmentDownloadRole,
+      },
+      {
         id: "getAttachmentArchive",
         entry: join(__dirname, "../lambda/getAttachmentArchive.ts"),
         environment: {
@@ -617,6 +746,24 @@ export class Api extends cdk.NestedStack {
           dbInfoSecretName,
           topicName,
           brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "saveDraft",
+        entry: join(__dirname, "../lambda/saveDraft.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "deleteDraft",
+        entry: join(__dirname, "../lambda/deleteDraft.ts"),
+        environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
         },
@@ -813,6 +960,14 @@ export class Api extends cdk.NestedStack {
         },
       },
       {
+        id: "checkIdentifierUsage",
+        entry: join(__dirname, "../lambda/checkIdentifierUsage.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+      },
+      {
         id: "markAttachmentArchiveFailed",
         entry: join(__dirname, "../lambda/markAttachmentArchiveFailed.ts"),
         environment: {
@@ -926,12 +1081,17 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
+    const attachmentArchiveImageCacheBust = "2026-05-13-attachment-archive-security-refresh";
+
     const archiveWorkerImage = new cdk.aws_ecr_assets.DockerImageAsset(
       this,
       "AttachmentArchiveWorkerImage",
       {
         directory: join(__dirname, "../attachment-archive"),
         platform: cdk.aws_ecr_assets.Platform.LINUX_AMD64,
+        buildArgs: {
+          CACHE_BUST: attachmentArchiveImageCacheBust,
+        },
       },
     );
 
@@ -1332,7 +1492,26 @@ export class Api extends cdk.NestedStack {
       },
     });
 
-    const apiResources = {
+    const externalTokenAuthorizer = new cdk.aws_apigateway.TokenAuthorizer(
+      this,
+      "ExternalTokenAuthorizer",
+      {
+        handler: lambdas.externalAttachmentAuthorizer,
+        identitySource: cdk.aws_apigateway.IdentitySource.header("Authorization"),
+        resultsCacheTtl: cdk.Duration.minutes(5),
+      },
+    );
+
+    type RouteAuthorization = "IAM" | "NONE" | "CUSTOM";
+    type ApiResourceDefinition = {
+      path: string;
+      lambda: NodejsFunction;
+      method: string;
+      authorizationType?: RouteAuthorization;
+      authorizer?: cdk.aws_apigateway.IAuthorizer;
+    };
+
+    const apiResources: Record<string, ApiResourceDefinition> = {
       search: {
         path: "search/{index}",
         lambda: lambdas.search,
@@ -1357,6 +1536,25 @@ export class Api extends cdk.NestedStack {
         path: "getUploadUrl",
         lambda: lambdas.getUploadUrl,
         method: "POST",
+      },
+      oauthToken: {
+        path: "oauth/token",
+        lambda: lambdas.externalToken,
+        method: "POST",
+        authorizationType: "NONE",
+      },
+      externalGetAttachmentUrl: {
+        path: "external/getAttachmentUrl",
+        lambda: lambdas.getExternalAttachmentUrl,
+        method: "POST",
+        authorizationType: "CUSTOM",
+        authorizer: externalTokenAuthorizer,
+      },
+      checkIdentifierUsage: {
+        path: "checkIdentifierUsage",
+        lambda: lambdas.checkIdentifierUsage,
+        method: "GET",
+        authorizationType: "IAM",
       },
       requestBaseCMSAccess: {
         path: "requestBaseCMSAccess",
@@ -1405,6 +1603,8 @@ export class Api extends cdk.NestedStack {
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
+      saveDraft: { path: "saveDraft", lambda: lambdas.saveDraft, method: "POST" },
+      deleteDraft: { path: "deleteDraft", lambda: lambdas.deleteDraft, method: "POST" },
       getTypes: {
         path: "getTypes",
         lambda: lambdas.getTypes,
@@ -1438,6 +1638,8 @@ export class Api extends cdk.NestedStack {
       path: string,
       lambdaFunction: cdk.aws_lambda.Function,
       method: string = "POST",
+      authorizationType: RouteAuthorization = "IAM",
+      authorizer?: cdk.aws_apigateway.IAuthorizer,
     ) => {
       const resource = api.root.resourceForPath(path);
 
@@ -1447,9 +1649,29 @@ export class Api extends cdk.NestedStack {
         credentialsRole: apiGatewayRole,
       });
 
-      // Add method for specified HTTP method
-      resource.addMethod(method, integration, {
-        authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
+      if (authorizationType === "CUSTOM" && !authorizer) {
+        throw new Error(`Route ${path} is configured for CUSTOM auth but has no authorizer.`);
+      }
+
+      const authOptions: Pick<
+        cdk.aws_apigateway.MethodOptions,
+        "authorizationType" | "authorizer"
+      > =
+        authorizationType === "NONE"
+          ? {
+              authorizationType: cdk.aws_apigateway.AuthorizationType.NONE,
+            }
+          : authorizationType === "CUSTOM"
+            ? {
+                authorizationType: cdk.aws_apigateway.AuthorizationType.CUSTOM,
+                authorizer,
+              }
+            : {
+                authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
+              };
+
+      const methodOptions: cdk.aws_apigateway.MethodOptions = {
+        ...authOptions,
         apiKeyRequired: false,
         methodResponses: [
           {
@@ -1461,11 +1683,20 @@ export class Api extends cdk.NestedStack {
             },
           },
         ],
-      });
+      };
+
+      // Add method for specified HTTP method
+      resource.addMethod(method, integration, methodOptions);
     };
 
     Object.values(apiResources).forEach((resource) => {
-      addApiResource(resource.path, resource.lambda, resource.method);
+      addApiResource(
+        resource.path,
+        resource.lambda,
+        resource.method,
+        resource.authorizationType,
+        resource.authorizer,
+      );
     });
 
     // Define CloudWatch Alarms

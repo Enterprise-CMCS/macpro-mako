@@ -1,10 +1,15 @@
 import { APIGatewayEvent, APIGatewayProxyEventPathParameters } from "aws-lambda";
-import { getRequestContext, testStateSubmitter } from "mocks";
-import { describe, expect, it } from "vitest";
+import * as osLib from "libs/opensearch-lib";
+import { getRequestContext, helpDeskUser, testStateSubmitter } from "mocks";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./search";
 
 describe("getSearchData Handler", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
   it("should call validateEnvVariable and return 400 if index path parameter is missing", async () => {
     const event = { pathParameters: {} } as APIGatewayEvent;
 
@@ -45,5 +50,40 @@ describe("getSearchData Handler", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(500);
     expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+  });
+
+  it("should include the draft index for Helpdesk users searching main", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} } }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(helpDeskUser),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(
+      searchSpy.mock.calls.some(([, index]) => String(index).includes("draftmain")),
+    ).toBeTruthy();
+  });
+
+  it("should not include the draft index when the request opts out of drafts", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} }, includeDrafts: false }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(helpDeskUser),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(
+      searchSpy.mock.calls.some(([, index]) => String(index).includes("draftmain")),
+    ).toBeFalsy();
+    expect(
+      searchSpy.mock.calls.some(([, , query]) => JSON.stringify(query).includes("includeDrafts")),
+    ).toBeFalsy();
   });
 });

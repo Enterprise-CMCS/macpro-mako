@@ -119,5 +119,6 @@ export const Renewal = () => (
       property: "id",
       documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
     }}
+    draftOptions={{ enabled: true, event: "capitated-renewal" }}
   />
 );

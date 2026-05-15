@@ -26,7 +26,7 @@ export const updateAVDefinitonsWithFreshclam = (): boolean => {
     logger.info("Update message");
     logger.info(stdout.toString());
 
-    logger.info("Downloaded:", fs.readdirSync(constants.FRESHCLAM_WORK_DIR));
+    logger.info({ downloaded: fs.readdirSync(constants.FRESHCLAM_WORK_DIR) }, "Downloaded");
 
     if (stderr) {
       logger.error("stderr");

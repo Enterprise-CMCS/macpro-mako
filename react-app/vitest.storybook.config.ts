@@ -5,26 +5,27 @@ import { defineConfig, mergeConfig } from "vitest/config";
 
 import viteConfig from "./.storybook/vite.config";
 
-export default mergeConfig(
-  viteConfig,
-  defineConfig({
-    plugins: [
-      storybookTest({
-        configDir: path.join(__dirname, ".storybook"),
-        // This should match your package.json script to run Storybook
-        // The --ci flag will skip prompts and not open a browser
-        storybookScript: "bun storybook --ci",
-      }),
-    ],
-    test: {
-      setupFiles: "./.storybook/vitest.setup.ts",
-      reporters: process.env.GITHUB_ACTIONS
-        ? ["default", "html", "json", "github-actions"]
-        : ["default", "html", "json"],
-      outputFile: {
-        html: "../accessibility/html-report/index.html",
-        json: "../accessibility/json-report.json",
+export default (async () =>
+  mergeConfig(
+    await viteConfig,
+    defineConfig({
+      plugins: [
+        storybookTest({
+          configDir: path.join(__dirname, ".storybook"),
+          // This should match your package.json script to run Storybook
+          // The --ci flag will skip prompts and not open a browser
+          storybookScript: "bun storybook --ci",
+        }),
+      ],
+      test: {
+        setupFiles: "./.storybook/vitest.setup.ts",
+        reporters: process.env.GITHUB_ACTIONS
+          ? ["default", "html", "json", "github-actions"]
+          : ["default", "html", "json"],
+        outputFile: {
+          html: "../accessibility/html-report/index.html",
+          json: "../accessibility/json-report.json",
+        },
       },
-    },
-  }),
-);
+    }),
+  ))();

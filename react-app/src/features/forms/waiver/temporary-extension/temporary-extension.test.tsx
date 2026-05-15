@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   EXISTING_ITEM_APPROVED_NEW_ID,
@@ -9,6 +9,8 @@ import {
 } from "mocks";
 import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 
+import * as api from "@/api";
+import * as components from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { skipCleanup } from "@/utils/test-helpers";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -16,11 +18,75 @@ import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { TemporaryExtensionForm } from "./index";
 
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+}));
+
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
 
 describe("Temporary Extension", () => {
   afterEach(() => {
     vi.clearAllMocks();
+  });
+
+  test("submit button stays disabled until a temporary extension type is selected", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      VALID_ITEM_TEMPORARY_EXTENSION_ID,
+    );
+
+    const waiverExtensionRequestLabel = await upload("waiverExtensionRequest");
+    expect(waiverExtensionRequestLabel).not.toHaveClass("text-destructive");
+
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
+  test("does not fetch the original waiver on initial render", async () => {
+    const getItemSpy = vi.spyOn(api, "getItem");
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    expect(getItemSpy).not.toHaveBeenCalled();
+  });
+
+  test("save draft requires selecting a temporary extension type", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      VALID_ITEM_TEMPORARY_EXTENSION_ID,
+    );
+
+    await upload("waiverExtensionRequest");
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Unable to save package",
+          body: "Please select a Temporary Extension Type before saving.",
+          variant: "destructive",
+        }),
+      ),
+    );
+
+    expect(saveDraftSpy).not.toHaveBeenCalled();
   });
 
   test("EXISTING WAIVER ID", async () => {

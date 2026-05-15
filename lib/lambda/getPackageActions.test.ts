@@ -1,4 +1,5 @@
 import { APIGatewayEvent } from "aws-lambda";
+import * as packageApi from "libs/api/package/getPackage";
 import { getRequestContext, noStateSubmitter, setMockUsername } from "mocks";
 import {
   GET_ERROR_ITEM_ID,
@@ -7,12 +8,17 @@ import {
   NOT_FOUND_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks/data/items";
-import { Action } from "shared-types";
-import { describe, expect, it } from "vitest";
+import { Action, SEATOOL_STATUS } from "shared-types";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./getPackageActions";
 
 describe("getPackageActions Handler", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);
+  });
+
   it("should return 400 if event body is missing", async () => {
     const event = {} as APIGatewayEvent;
 
@@ -51,7 +57,7 @@ describe("getPackageActions Handler", () => {
     );
   });
 
-  it("should return 500 if event body is invalid", async () => {
+  it("should return 400 if event body is invalid JSON", async () => {
     const event = {
       body: {},
       requestContext: getRequestContext(),
@@ -60,8 +66,8 @@ describe("getPackageActions Handler", () => {
     const res = await handler(event);
 
     expect(res).toBeTruthy();
-    expect(res.statusCode).toEqual(500);
-    expect(res.body).toEqual(JSON.stringify({ message: "Internal server error" }));
+    expect(res.statusCode).toEqual(400);
+    expect(res.body).toEqual(JSON.stringify({ message: "Event body must be valid JSON" }));
   });
 
   it("should return 404 if the package is not found", async () => {
@@ -103,6 +109,41 @@ describe("getPackageActions Handler", () => {
     expect(res.body).toEqual(
       JSON.stringify({ actions: [Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE] }),
     );
+  });
+
+  it("should ignore a malformed main shell doc and resolve package actions against an active draft", async () => {
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+      found: true,
+      _id: "MD-26-9100-P",
+      _source: {
+        id: "MD-26-9100-P",
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as any);
+    const getDraftPackageSpy = vi.spyOn(packageApi, "getDraftPackage").mockResolvedValueOnce({
+      found: true,
+      _id: "MD-26-9100-P",
+      _source: {
+        id: "MD-26-9100-P",
+        state: "MD",
+        authority: "CHIP SPA",
+        event: "new-chip-submission",
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9100-P" }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(JSON.stringify({ actions: [Action.WITHDRAW_PACKAGE] }));
+    getPackageSpy.mockRestore();
+    getDraftPackageSpy.mockRestore();
   });
 
   it("should handle errors during processing", async () => {

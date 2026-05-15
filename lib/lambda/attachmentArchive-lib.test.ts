@@ -29,6 +29,7 @@ import {
 import * as packageActivity from "../attachment-archive/package-activity";
 import * as storage from "../attachment-archive/storage";
 import {
+  getRequestedAttachmentArchiveDownload,
   getRequestedAttachmentArchiveStatus,
   markAttachmentArchiveFailed,
   rebuildPackageAttachmentArchives,
@@ -398,6 +399,47 @@ describe("attachmentArchive-lib", () => {
     });
   });
 
+  it("returns unsigned archive download details for external callers", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "READY",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 2,
+          appendedAttachmentCount: 1,
+          skippedAttachmentCount: 1,
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+        }),
+      ),
+    );
+    objectExists.mockResolvedValue(true);
+
+    const result = await getRequestedAttachmentArchiveDownload({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: false,
+      response: {
+        status: "READY",
+        bucketName: "mako-test-attachment-archives",
+        artifactKey,
+        filename: "MD-10-6772-section-1-initial-package-submitted-attachments.zip",
+        warningMessage:
+          "Some attachments in this download are no longer available and were not included.",
+      },
+    });
+  });
+
   it("returns a date-based package download filename in Eastern Time", async () => {
     getObjectText.mockResolvedValue(
       JSON.stringify(
@@ -506,6 +548,28 @@ describe("attachmentArchive-lib", () => {
     expect(putJsonObject).toHaveBeenCalled();
   });
 
+  it("uses a dedicated draft archive namespace when rebuilding synthetic draft archives", async () => {
+    getObjectText.mockResolvedValue(undefined);
+    stepFunctionsSpy.mockResolvedValue({} as never);
+
+    await rebuildPackageAttachmentArchives({
+      packageId: "MD-10-6772",
+      changelog: [],
+      archiveNamespace: "draft",
+    });
+
+    expect(putJsonObject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        key: expect.stringContaining("package/MD-10-6772/draft/section/section-a/"),
+      }),
+    );
+    expect(putJsonObject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        key: expect.stringContaining("package/MD-10-6772/draft/all/"),
+      }),
+    );
+  });
+
   it("returns a ready response from the base archive bucket when the overlay is missing", async () => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = "mako-ephemeral-attachment-archives";
     process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME = "mako-main-attachment-archives";
@@ -561,6 +625,54 @@ describe("attachmentArchive-lib", () => {
       }),
       expect.anything(),
     );
+  });
+
+  it("returns base-bucket unsigned archive download details when the overlay is missing", async () => {
+    process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = "mako-ephemeral-attachment-archives";
+    process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME = "mako-main-attachment-archives";
+    process.env.ATTACHMENT_ARCHIVE_KEY_PREFIX = "stage/migrate";
+
+    getObjectText.mockImplementation(async ({ bucket, key }) => {
+      if (
+        bucket === "mako-main-attachment-archives" &&
+        key === `package/MD-10-6772/section/${sectionDescriptor.sectionId}/current.json`
+      ) {
+        return JSON.stringify(
+          buildAttachmentArchiveCurrent({
+            scope: "section",
+            hash: manifest.hash,
+            status: "READY",
+            artifactKey,
+            manifestKey,
+            attachmentCount: 1,
+            sectionId: sectionDescriptor.sectionId,
+            sectionNumber: sectionDescriptor.sectionNumber,
+            sectionLabel: sectionDescriptor.sectionLabel,
+            sectionFolderName: sectionDescriptor.sectionFolderName,
+          }),
+        );
+      }
+
+      return undefined;
+    });
+    objectExists.mockResolvedValue(true);
+
+    const result = await getRequestedAttachmentArchiveDownload({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: false,
+      response: {
+        status: "READY",
+        bucketName: "mako-main-attachment-archives",
+        artifactKey,
+        filename: "MD-10-6772-section-1-initial-package-submitted-attachments.zip",
+      },
+    });
   });
 
   it("reuses ready base section manifests when rebuilding a mixed package in the overlay", async () => {

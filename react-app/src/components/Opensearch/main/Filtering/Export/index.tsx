@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-import { ExportToCsv } from "export-to-csv";
 import { motion } from "framer-motion";
 import { Download, Loader } from "lucide-react";
 import { useState } from "react";
@@ -20,6 +18,12 @@ import { ConfirmationDialog } from "@/components/ConfirmationDialog";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { DEFAULT_FILTERS } from "../../useOpensearch";
+import {
+  buildCsvExportRows,
+  exportCsvRows,
+  getExportFilenameBase,
+  getVisibleExportColumns,
+} from "./export.utils";
 
 const EXPORT_LIMIT = 10000;
 
@@ -34,7 +38,6 @@ export const OsExportData: FC<{
 
   const exportToCsv = async () => {
     setLoading(true);
-    const exportData: Record<any, any>[] = [];
     const filters = [
       ...url.state.filters,
       ...(DEFAULT_FILTERS[url.state.tab]?.filters || []),
@@ -42,27 +45,13 @@ export const OsExportData: FC<{
     ];
 
     const resolvedData = await getMainExportData(filters, url.state.sort);
-
-    for (const item of resolvedData) {
-      const column: Record<any, any> = {};
-
-      for (const header of columns) {
-        if (!header.transform) continue;
-        if (header.hidden) continue;
-        column[header.label] = header.transform(item);
-      }
-      exportData.push(column);
-    }
-
-    const csvExporter = new ExportToCsv({
-      useKeysAsHeaders: true,
-      filename: `${url.state.tab}-export-${format(new Date(), "MM/dd/yyyy")}`,
-    });
-
-    csvExporter.generateCsv(exportData);
+    const visibleColumns = getVisibleExportColumns(columns);
+    const filenameBase = getExportFilenameBase(url.state.tab);
+    const exportRows = buildCsvExportRows(visibleColumns, resolvedData);
+    exportCsvRows(exportRows, filenameBase);
 
     sendGAEvent("dash_export_csv", {
-      row_count: exportData.length,
+      row_count: resolvedData.length,
     });
     setLoading(false);
   };

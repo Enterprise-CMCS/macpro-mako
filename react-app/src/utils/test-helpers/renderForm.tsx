@@ -20,6 +20,7 @@ export const renderFormWithPackageSectionAsync = async (
   form: ReactElement,
   id?: string,
   authority?: string,
+  search?: string,
 ) => {
   const routes = [
     {
@@ -39,11 +40,14 @@ export const renderFormWithPackageSectionAsync = async (
       element: form,
     },
   ];
+  const normalizedSearch = search ? (search.startsWith("?") ? search : `?${search}`) : "";
   const routeOptions = {
     initialEntries: [
-      id
-        ? `/test/${id}/${(authority || items[id]?._source?.authority || "Medicaid SPA") as Authority}`
-        : `/test/${(authority || "Medicaid SPA") as Authority}`,
+      `${
+        id
+          ? `/test/${id}/${(authority || items[id]?._source?.authority || "Medicaid SPA") as Authority}`
+          : `/test/${(authority || "Medicaid SPA") as Authority}`
+      }${normalizedSearch}`,
     ],
   };
 

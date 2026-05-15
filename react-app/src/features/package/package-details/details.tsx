@@ -1,10 +1,11 @@
 import { ReactNode, useState } from "react";
-import { Authority, opensearch } from "shared-types";
+import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
 import {
   formatActionType,
   formatDateToET,
   formatDateToUTC,
   isCmsUser,
+  isHelpDeskUser,
   isStateUser,
 } from "shared-utils";
 
@@ -53,28 +54,62 @@ type GetLabelAndValueFromSubmission = (
   chipFlagEnabled: boolean,
 ) => LabelAndValue[];
 
+const getDraftWaiverNumber = (submission: opensearch.main.Document) => {
+  const draftData = submission.draft?.data as Record<string, unknown> | undefined;
+  const nestedWaiverNumber = (
+    draftData?.ids as { validAuthority?: { waiverNumber?: unknown } } | undefined
+  )?.validAuthority?.waiverNumber;
+  const directWaiverNumber = draftData?.waiverNumber;
+
+  if (typeof nestedWaiverNumber === "string" && nestedWaiverNumber.trim()) {
+    return nestedWaiverNumber;
+  }
+
+  return typeof directWaiverNumber === "string" && directWaiverNumber.trim()
+    ? directWaiverNumber
+    : undefined;
+};
+
+const getDraftTitle = (submission: opensearch.main.Document) => {
+  const draftTitle = submission.draft?.data?.title;
+
+  return typeof draftTitle === "string" && draftTitle.trim() ? draftTitle : undefined;
+};
+
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   submission,
   { user },
   chipFlagEnabled,
 ) => {
-  const hasChipEligibilityAttachment = Object.values(submission.attachments || {}).some(
-    (attachment) =>
-      attachment.label?.toLowerCase().includes("chip eligibility") &&
-      Array.isArray(attachment.files) &&
-      attachment.files.length > 0,
-  );
+  const isEligibilityChipSubmissionType = submission.event === "new-chip-details-submission";
+  const chipSubmissionTypeFromDraftData = submission.draft?.data?.chipSubmissionType;
 
   const hasChipSubmissionType =
-    Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
+    (Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0) ||
+    (Array.isArray(chipSubmissionTypeFromDraftData) && chipSubmissionTypeFromDraftData.length > 0);
+  const amendmentTitle = submission.title ?? getDraftTitle(submission);
+  const shouldShowAmendmentTitle = submission.event === "app-k" || amendmentTitle !== undefined;
+
+  let chipSubmissionValue = (
+    <span className="break-words">{submission.chipSubmissionType?.join(", ")}</span>
+  );
+
+  if (
+    Array.isArray(chipSubmissionTypeFromDraftData) &&
+    chipSubmissionTypeFromDraftData.length > 0
+  ) {
+    chipSubmissionValue = (
+      <span className="break-words">{chipSubmissionTypeFromDraftData.join(", ")}</span>
+    );
+  }
 
   const chipSubmissionTypeField: LabelAndValue[] =
-    chipFlagEnabled && (hasChipEligibilityAttachment || hasChipSubmissionType)
+    chipFlagEnabled && (isEligibilityChipSubmissionType || hasChipSubmissionType)
       ? [
           {
             label: "CHIP Submission Type",
             value: hasChipSubmissionType ? (
-              <span className="break-words">{submission.chipSubmissionType.join(", ")}</span>
+              chipSubmissionValue
             ) : (
               <span className="italic text-gray-500">{BLANK_VALUE}</span>
             ),
@@ -104,8 +139,8 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Amendment Title",
-      value: submission.title || BLANK_VALUE,
-      canView: submission.title !== undefined,
+      value: amendmentTitle ?? BLANK_VALUE,
+      canView: shouldShowAmendmentTitle,
     },
     {
       label: "Subject",
@@ -150,7 +185,7 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Approved Initial or Renewal Number",
-      value: submission.originalWaiverNumber,
+      value: submission.originalWaiverNumber ?? getDraftWaiverNumber(submission) ?? BLANK_VALUE,
       canView: submission.actionType === "Extend",
     },
     ...chipSubmissionTypeField,
@@ -180,7 +215,17 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
   },
   {
     label: "Proposed Effective Date",
-    value: submission.proposedDate ? formatDateToUTC(submission.proposedDate) : "Pending",
+    value: (() => {
+      const proposedDateFromDraftData = submission.draft?.data?.proposedEffectiveDate;
+      const draftDateValue =
+        typeof proposedDateFromDraftData === "string" ||
+        typeof proposedDateFromDraftData === "number"
+          ? proposedDateFromDraftData
+          : undefined;
+      const effectiveDate = submission.proposedDate ?? draftDateValue;
+
+      return effectiveDate ? formatDateToUTC(effectiveDate) : "-- --";
+    })(),
     canView: submission.actionType !== "Extend",
   },
   {
@@ -202,18 +247,34 @@ export const getDescriptionDetails: GetLabelAndValueFromSubmission = (submission
 
 export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
   //possibly add details new drop down here
-  {
-    label: "Submitted By",
-    value: <p className="text-lg">{submission.submitterName || BLANK_VALUE}</p>,
-  },
-  {
-    label: "CPOC",
-    value: <p className="text-lg">{submission.leadAnalystName || BLANK_VALUE}</p>,
-    canView: submission.actionType !== "Extend",
-  },
-  {
-    label: "SRT",
-    value: <ReviewTeamList reviewTeam={submission.reviewTeam} />,
-    canView: isCmsUser(user) && submission.actionType !== "Extend",
-  },
+  ...(() => {
+    const isDraft = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const createdByName =
+      submission.draft?.createdByName ??
+      submission.draft?.draftOwnerName ??
+      submission.submitterName;
+    const canViewCreatedBy = isDraft ? isStateUser(user) || isHelpDeskUser(user) : true;
+
+    return [
+      {
+        label: isDraft ? "Created By" : "Submitted By",
+        value: (
+          <p className="text-lg">
+            {(isDraft ? createdByName : submission.submitterName) || BLANK_VALUE}
+          </p>
+        ),
+        canView: canViewCreatedBy,
+      },
+      {
+        label: "CPOC",
+        value: <p className="text-lg">{submission.leadAnalystName || BLANK_VALUE}</p>,
+        canView: submission.actionType !== "Extend",
+      },
+      {
+        label: "SRT",
+        value: <ReviewTeamList reviewTeam={submission.reviewTeam} />,
+        canView: isCmsUser(user) && submission.actionType !== "Extend",
+      },
+    ];
+  })(),
 ];
