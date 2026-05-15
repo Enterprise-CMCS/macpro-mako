@@ -23,30 +23,30 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.12% </span>
+                <span class="strong">95.45% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>39/41</span>
+                <span class='fraction'>42/44</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">92.59% </span>
+                <span class="strong">93.1% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>25/27</span>
+                <span class='fraction'>27/29</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">93.75% </span>
+                <span class="strong">94.11% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>15/16</span>
+                <span class='fraction'>16/17</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>35/35</span>
+                <span class='fraction'>38/38</span>
             </div>
         
             
@@ -199,7 +199,15 @@
 <a name='L134'></a><a href='#L134'>134</a>
 <a name='L135'></a><a href='#L135'>135</a>
 <a name='L136'></a><a href='#L136'>136</a>
-<a name='L137'></a><a href='#L137'>137</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L137'></a><a href='#L137'>137</a>
+<a name='L138'></a><a href='#L138'>138</a>
+<a name='L139'></a><a href='#L139'>139</a>
+<a name='L140'></a><a href='#L140'>140</a>
+<a name='L141'></a><a href='#L141'>141</a>
+<a name='L142'></a><a href='#L142'>142</a>
+<a name='L143'></a><a href='#L143'>143</a>
+<a name='L144'></a><a href='#L144'>144</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -277,12 +285,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">106x</span>
-<span class="cline-any cline-yes">323x</span>
-<span class="cline-any cline-yes">323x</span>
+<span class="cline-any cline-yes">326x</span>
+<span class="cline-any cline-yes">326x</span>
+<span class="cline-any cline-yes">326x</span>
+<span class="cline-any cline-yes">326x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">323x</span>
-<span class="cline-any cline-yes">323x</span>
-<span class="cline-any cline-yes">323x</span>
+<span class="cline-any cline-yes">144x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">326x</span>
+<span class="cline-any cline-yes">326x</span>
+<span class="cline-any cline-yes">326x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -304,7 +318,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">323x</span>
+<span class="cline-any cline-yes">326x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -337,11 +351,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { UTCDate } from "@date-fns/utc";
 import { format } from "date-fns";
-import { type FC, useCallback } from "react";
+import { type FC, useCallback, useMemo } from "react";
 import { opensearch } from "shared-types";
 &nbsp;
-import { checkMultiFilter, Chip, useOsUrl } from "@/components";
+import { checkMultiFilter, Chip, removeDraftStatusFilters, useOsUrl } from "@/components";
 import { useLabelMapping } from "@/hooks";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 &nbsp;
 import { useFilterDrawerContext } from "../FilterProvider";
 &nbsp;
@@ -415,9 +430,15 @@ export const ChipTerms: FC&lt;RenderProp&gt; = ({ filter, clearFilter, openDrawe
 export const FilterChips: FC = () =&gt; {
   const url = useOsUrl();
   const { setDrawerState } = useFilterDrawerContext();
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const visibleFilters = useMemo(
+    () =&gt;
+      isSaveInProgressEnabled ? url.state.filters : removeDraftStatusFilters(url.state.filters),
+    [isSaveInProgressEnabled, url.state.filters],
+  );
 &nbsp;
   const openDrawer = useCallback(<span class="fstat-no" title="function not covered" >() =&gt; <span class="cstat-no" title="statement not covered" >s</span>etDrawerState(true), [</span>setDrawerState]);
-  const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
+  const twoOrMoreFiltersApplied = checkMultiFilter(visibleFilters, 2);
   const clearFilter = (filter: opensearch.main.Filterable, valIndex?: number) =&gt; {
     url.onSet((s) =&gt; {
       let filters = s.filters;
@@ -453,7 +474,7 @@ export const FilterChips: FC = () =&gt; {
       className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2"
       data-testid="chips"
     &gt;
-      {url.state.filters.map((filter, index) =&gt; {
+      {visibleFilters.map((filter, index) =&gt; {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
         const key = `${filter.field}-${index}`;
 &nbsp;
@@ -478,7 +499,7 @@ export const FilterChips: FC = () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-05-15T02:23:36.997Z
+                at 2026-05-15T21:25:50.542Z
             </div>
         <script src="../../../../../../../prettify.js"></script>
         <script>
