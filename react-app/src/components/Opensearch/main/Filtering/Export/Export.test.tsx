@@ -1,6 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { API } from "aws-amplify";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { OsExportData, OsTableColumn } from "@/components";
 import * as ga from "@/utils/ReactGA/SendGAEvent";
@@ -29,6 +30,10 @@ const setup = (disabled?: boolean, count: number = 123) => {
 };
 
 describe("Tooltip component within export button", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("Tooltip content hidden when not hovering", async () => {
     setup(true);
 
@@ -55,6 +60,7 @@ describe("Tooltip component within export button", () => {
   it("should export on click if button is enabled", async () => {
     const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
     const gaSpy = vi.spyOn(ga, "sendGAEvent").mockImplementation(() => {});
+    const postSpy = vi.spyOn(API, "post");
 
     const { user } = setup(false);
 
@@ -72,6 +78,22 @@ describe("Tooltip component within export button", () => {
     );
     expect(filenameArg).toMatch(/-export-\d{2}_\d{2}_\d{4}$/);
     expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 12 });
+    expect(postSpy).toHaveBeenCalledWith("os", "/search/main", {
+      body: expect.objectContaining({
+        includeDrafts: false,
+        query: expect.objectContaining({
+          bool: expect.objectContaining({
+            must_not: expect.arrayContaining([
+              expect.objectContaining({
+                term: {
+                  "seatoolStatus.keyword": "Draft",
+                },
+              }),
+            ]),
+          }),
+        }),
+      }),
+    });
   });
 
   it("should show modal when count is greater than 10000", async () => {
