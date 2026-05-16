@@ -4,11 +4,13 @@ import { z } from "zod";
 import {
   ATTACHMENT_ARCHIVE_BUILD_VERSION,
   ATTACHMENT_ARCHIVE_FAILURE_CODES,
+  ATTACHMENT_ARCHIVE_NAMESPACES,
   ATTACHMENT_ARCHIVE_SCOPES,
   ATTACHMENT_ARCHIVE_STATUSES,
   AttachmentArchiveBlockedAttachment,
   AttachmentArchiveCurrent,
   AttachmentArchiveFailureCode,
+  AttachmentArchiveNamespace,
   AttachmentArchivePackageManifest,
   AttachmentArchivePackageManifestSection,
   AttachmentArchiveScope,
@@ -133,28 +135,36 @@ export function getArchiveBasePrefix({
   packageId,
   scope,
   sectionId,
+  archiveNamespace = "main",
 }: {
   packageId: string;
   scope: AttachmentArchiveScope;
   sectionId?: string;
+  archiveNamespace?: AttachmentArchiveNamespace;
 }): string {
+  if (!ATTACHMENT_ARCHIVE_NAMESPACES.includes(archiveNamespace)) {
+    throw new Error(`Unsupported attachment archive namespace: ${archiveNamespace}`);
+  }
+
   const normalizedPackageId = normalizeArchivePathComponent(packageId);
+  const namespacePrefix = archiveNamespace === "draft" ? "/draft" : "";
 
   if (scope === "all") {
-    return `package/${normalizedPackageId}/all`;
+    return `package/${normalizedPackageId}${namespacePrefix}/all`;
   }
 
   if (!sectionId) {
     throw new Error("sectionId is required for section-scoped archives");
   }
 
-  return `package/${normalizedPackageId}/section/${normalizeArchivePathComponent(sectionId)}`;
+  return `package/${normalizedPackageId}${namespacePrefix}/section/${normalizeArchivePathComponent(sectionId)}`;
 }
 
 export function getArchiveCurrentKey(request: {
   packageId: string;
   scope: AttachmentArchiveScope;
   sectionId?: string;
+  archiveNamespace?: AttachmentArchiveNamespace;
 }): string {
   return `${getArchiveBasePrefix(request)}/current.json`;
 }
@@ -164,6 +174,7 @@ export function getArchiveManifestKey(
     packageId: string;
     scope: AttachmentArchiveScope;
     sectionId?: string;
+    archiveNamespace?: AttachmentArchiveNamespace;
   },
   hash: string,
 ): string {
@@ -175,6 +186,7 @@ export function getArchiveArtifactKey(
     packageId: string;
     scope: AttachmentArchiveScope;
     sectionId?: string;
+    archiveNamespace?: AttachmentArchiveNamespace;
   },
   hash: string,
 ): string {

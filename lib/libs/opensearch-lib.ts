@@ -12,6 +12,37 @@ import { getDomainAndNamespace } from "./utils";
 
 let client: Client;
 
+type AwsSdkLogger = {
+  debug: (...content: any[]) => void;
+  info: (...content: any[]) => void;
+  warn: (...content: any[]) => void;
+  error: (...content: any[]) => void;
+};
+
+const isAwsSdkLogger = (logger: unknown): logger is AwsSdkLogger => {
+  const candidate = logger as Partial<AwsSdkLogger> | undefined;
+  if (
+    candidate &&
+    typeof candidate.debug === "function" &&
+    typeof candidate.info === "function" &&
+    typeof candidate.warn === "function" &&
+    typeof candidate.error === "function"
+  ) {
+    return true;
+  }
+
+  return false;
+};
+
+export const getAwsSdkLogger = (): AwsSdkLogger => {
+  const logger = (globalThis as { logger?: unknown }).logger;
+  if (isAwsSdkLogger(logger)) {
+    return logger;
+  }
+
+  return console;
+};
+
 export async function getClient(host: string) {
   return new Client({
     ...createAwsConnector(await defaultProvider()()),
@@ -44,7 +75,7 @@ function createAwsConnector(credentials: any) {
 export async function updateData(host: string, indexObject: any) {
   client = client || (await getClient(host));
   // Add a document to the index.
-  await client.update(indexObject);
+  return await client.update(indexObject);
 }
 
 function sleep(ms: number): Promise<void> {
@@ -139,6 +170,7 @@ export async function mapRole(
   try {
     const sts = new STSClient({
       region: process.env.region,
+      logger: getAwsSdkLogger(),
     });
     const assumedRoleCommandData = await sts.send(
       new AssumeRoleCommand({
@@ -175,7 +207,9 @@ export async function mapRole(
   }
 }
 
-export async function search(host: string, index: opensearch.Index, query: any) {
+type SearchIndex = opensearch.Index | `${opensearch.Index},${opensearch.Index}`;
+
+export async function search(host: string, index: SearchIndex, query: any) {
   client = client || (await getClient(host));
   const response = await client.search({
     index: index,

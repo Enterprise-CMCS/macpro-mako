@@ -1,3 +1,4 @@
+import * as os from "libs/opensearch-lib";
 import {
   getRequestContext,
   TEST_CHIP_SPA_ITEM,
@@ -64,6 +65,36 @@ describe("handler", () => {
     const result = await handler(invalidPackage);
 
     expect(result?.statusCode).toEqual(400);
+  });
+
+  it("should return 400 if package ID is only whitespace", async () => {
+    const invalidPackage = {
+      body: JSON.stringify({
+        packageId: "   ",
+        changeMade: "Split SPA",
+        changeReason: "Administrative correction",
+      }),
+    } as unknown as APIGatewayEvent;
+
+    const result = await handler(invalidPackage);
+
+    expect(result?.statusCode).toEqual(400);
+  });
+
+  it("should trim and look up malformed non-empty package IDs", async () => {
+    const getItemSpy = vi.spyOn(os, "getItem").mockResolvedValueOnce(undefined);
+    const malformedPackage = {
+      body: JSON.stringify({
+        packageId: " abc ",
+        changeMade: "Split SPA",
+        changeReason: "Administrative correction",
+      }),
+    } as unknown as APIGatewayEvent;
+
+    const result = await handler(malformedPackage);
+
+    expect(result?.statusCode).toEqual(404);
+    expect(getItemSpy).toHaveBeenCalledWith(expect.any(String), expect.any(String), "abc");
   });
 
   it("should fail to split a package with no topic name", async () => {

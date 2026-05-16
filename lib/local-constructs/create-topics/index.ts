@@ -42,7 +42,7 @@ export class CreateTopics extends Construct {
     const lambda = new NodejsFunction(this, "CreateTopicsLambda", {
       entry: join(__dirname, "src/createTopics.ts"),
       handler: "handler",
-      runtime: Runtime.NODEJS_20_X,
+      runtime: Runtime.NODEJS_22_X,
       timeout: Duration.minutes(5),
       depsLockFilePath: join(__dirname, "../../../bun.lockb"),
       role: new Role(this, "CreateTopicsLambdaExecutionRole", {
@@ -71,10 +71,10 @@ export class CreateTopics extends Construct {
       securityGroups,
       bundling: commonBundlingOptions,
     });
-
     const customResourceLogGroup = new LogGroup(this, `createTopicsCustomResourceLogGroup`, {
       removalPolicy: RemovalPolicy.DESTROY,
     });
+    lambda.grantInvoke(new ServicePrincipal("cloudformation.amazonaws.com"));
 
     const customResource = new AwsCustomResource(this, "CustomResource", {
       onCreate: {

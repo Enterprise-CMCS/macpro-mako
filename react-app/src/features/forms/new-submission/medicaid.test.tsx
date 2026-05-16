@@ -1,4 +1,4 @@
-import { act, screen } from "@testing-library/react";
+import { act, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { EXISTING_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, test, vi } from "vitest";
@@ -10,11 +10,14 @@ import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { MedicaidForm } from "./Medicaid";
 
-const intersectionObserverCb = vi.fn();
+let intersectionObserverCb:
+  | ((entries: Array<Pick<IntersectionObserverEntry, "isIntersecting">>) => void)
+  | undefined;
 vi.stubGlobal(
   "IntersectionObserver",
-  vi.fn((cb) => {
-    intersectionObserverCb.mockImplementation(cb);
+  vi.fn((cb: IntersectionObserverCallback) => {
+    intersectionObserverCb = (entries) =>
+      cb(entries as IntersectionObserverEntry[], {} as IntersectionObserver);
     return {
       observe: vi.fn(),
       unobserve: vi.fn(),
@@ -25,7 +28,7 @@ vi.stubGlobal(
 
 vi.mock("@/hooks/useFeatureFlag", () => ({
   useFeatureFlag: (flag: string) => {
-    if (flag === "MED_SPA_FOOTER") return true;
+    if (flag === "STICKY_FORM_FOOTER" || flag === "SAVE_IN_PROGRESS") return true;
     return false;
   },
 }));
@@ -103,18 +106,21 @@ describe("Medicaid SPA", () => {
     }
   });
 
-  test("MedSpaFooter shows/hides on scroll", () => {
-    const footer = screen.getByTestId("medicaid-form-footer");
+  test("sticky footer shows/hides on scroll", async () => {
+    const footer = screen.getByTestId("action-form-footer");
     expect(footer).not.toHaveClass("fixed");
+    await waitFor(() => {
+      expect(intersectionObserverCb).toBeDefined();
+    });
 
     act(() => {
-      intersectionObserverCb([{ isIntersecting: false }]);
+      intersectionObserverCb?.([{ isIntersecting: false }]);
     });
 
     expect(footer).toHaveClass("fixed");
 
     act(() => {
-      intersectionObserverCb([{ isIntersecting: true }]);
+      intersectionObserverCb?.([{ isIntersecting: true }]);
     });
 
     expect(footer).not.toHaveClass("fixed");

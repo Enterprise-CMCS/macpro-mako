@@ -1,17 +1,21 @@
 import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
-import { getPackage } from "libs/api/package";
+import { getPackage, isActiveMainNonDraftPackage } from "libs/api/package";
 
 import { storePackageInRequest } from "./utils";
 
 export type FetchPackageOptions = {
   allowNotFound?: boolean;
   setToContext?: boolean;
+  rethrowErrors?: boolean;
+  requireActiveMainNonDraft?: boolean;
 };
 
 const defaults: FetchPackageOptions = {
   allowNotFound: false,
   setToContext: false,
+  rethrowErrors: false,
+  requireActiveMainNonDraft: true,
 };
 
 /**
@@ -19,6 +23,8 @@ const defaults: FetchPackageOptions = {
  * @param {object} opts Options for running the middleware
  * @param {boolean} opts.allowNotFound [false] if true, do not error if the package is not found
  * @param {boolean} opts.setToContext [false] if true, also stores the package in context, so it can be accessed in the handler
+ * @param {boolean} opts.rethrowErrors [false] if true, rethrow non-404 errors from the package lookup even when allowNotFound is true
+ * @param {boolean} opts.requireActiveMainNonDraft [true] if true, treat deleted, draft, and incomplete shell records as not found
  * @returns {MiddlewareObj} middleware to fetch a package before the handler runs
  */
 export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
@@ -32,8 +38,16 @@ export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
       let packageResult;
       try {
         packageResult = await getPackage(id);
+        if (options.requireActiveMainNonDraft && !isActiveMainNonDraftPackage(packageResult)) {
+          packageResult = undefined;
+        }
       } catch (err) {
-        if (!options.allowNotFound) {
+        const statusCode = (err as { statusCode?: number; meta?: { statusCode?: number } })
+          ?.statusCode;
+        const metaStatusCode = (err as { meta?: { statusCode?: number } })?.meta?.statusCode;
+        const isNotFoundError = statusCode === 404 || metaStatusCode === 404;
+
+        if (!options.allowNotFound || (options.rethrowErrors && !isNotFoundError)) {
           throw err;
         }
       }
