@@ -96,5 +96,6 @@ export const InitialForm = () => (
       property: "id",
       documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
     }}
+    draftOptions={{ enabled: true, event: "capitated-initial" }}
   />
 );

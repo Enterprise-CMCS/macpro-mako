@@ -548,6 +548,28 @@ describe("attachmentArchive-lib", () => {
     expect(putJsonObject).toHaveBeenCalled();
   });
 
+  it("uses a dedicated draft archive namespace when rebuilding synthetic draft archives", async () => {
+    getObjectText.mockResolvedValue(undefined);
+    stepFunctionsSpy.mockResolvedValue({} as never);
+
+    await rebuildPackageAttachmentArchives({
+      packageId: "MD-10-6772",
+      changelog: [],
+      archiveNamespace: "draft",
+    });
+
+    expect(putJsonObject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        key: expect.stringContaining("package/MD-10-6772/draft/section/section-a/"),
+      }),
+    );
+    expect(putJsonObject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        key: expect.stringContaining("package/MD-10-6772/draft/all/"),
+      }),
+    );
+  });
+
   it("returns a ready response from the base archive bucket when the overlay is missing", async () => {
     process.env.ATTACHMENT_ARCHIVE_BUCKET_NAME = "mako-ephemeral-attachment-archives";
     process.env.ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME = "mako-main-attachment-archives";

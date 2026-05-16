@@ -29,7 +29,7 @@ describe("useAttachmentService", () => {
       .spyOn(api, "getAttachmentUrl")
       .mockResolvedValue("http://example.com/testFile");
 
-    const { result } = renderHook(() => useAttachmentService({ packageId }), {
+    const { result } = renderHook(() => useAttachmentService({ packageId, preferDraft: true }), {
       wrapper,
     });
 
@@ -40,6 +40,7 @@ describe("useAttachmentService", () => {
       attachment.bucket,
       attachment.key,
       attachment.filename,
+      { preferDraft: true },
     );
     expect(url).toBe("http://example.com/testFile");
     expect(result.current.attachmentErrorMessage).toBeUndefined();
@@ -82,13 +83,19 @@ describe("useAttachmentService", () => {
       url: "http://example.com/archive.zip",
     });
 
-    const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
-      wrapper,
-    });
+    const { result } = renderHook(
+      () => useAttachmentService({ packageId: "testPackage", preferDraft: true }),
+      {
+        wrapper,
+      },
+    );
 
     await expect(result.current.onArchive({ scope: "all" })).resolves.toBe(
       "http://example.com/archive.zip",
     );
+    expect(api.getAttachmentArchive).toHaveBeenCalledWith("testPackage", "all", undefined, {
+      preferDraft: true,
+    });
     expect(result.current.archiveWarningMessage).toBeUndefined();
   });
 
@@ -164,6 +171,40 @@ describe("useAttachmentService", () => {
       expect(result.current.archiveErrorMessage).toBe("Archive generation failed");
     });
     expect(consoleErrorSpy).toHaveBeenCalled();
+  });
+
+  it("stops polling and surfaces an error when an archive stays pending too long", async () => {
+    vi.useFakeTimers();
+    try {
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => undefined);
+      const getAttachmentArchiveSpy = vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
+        status: "PENDING",
+        pollAfterSeconds: 1,
+      });
+
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
+      });
+
+      const archivePromise = result.current.onArchive({ scope: "all" });
+
+      await vi.runAllTimersAsync();
+
+      await expect(archivePromise).resolves.toBeUndefined();
+
+      vi.useRealTimers();
+
+      await waitFor(() => {
+        expect(result.current.archiveErrorMessage).toBe(
+          "Attachment archive is taking longer than expected. Please try again in a few moments.",
+        );
+        expect(result.current.loading).toBe(false);
+      });
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(20);
+      expect(consoleErrorSpy).toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("stops polling when the backend returns a terminal archive failure", async () => {

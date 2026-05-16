@@ -20,8 +20,7 @@ export const EnableWithdrawRaiForm = () => {
         documentChecker: (check) => check.recordExists && check.hasEnabledRaiWithdraw,
       }}
       breadcrumbText="Enable Formal RAI Response Withdraw"
-      formDescription="Once you submit this form, the most recent Formal RAI Response for this
-    package will be able to be withdrawn by the state"
+      formDescription="Once you submit this form, the most recent Formal RAI Response for this package will be able to be withdrawn by the state"
       showPreSubmissionMessage={false}
       areFieldsRequired={false}
       bannerPostSubmission={{

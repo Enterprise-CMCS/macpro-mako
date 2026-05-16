@@ -610,7 +610,7 @@ export class Api extends cdk.NestedStack {
       });
 
       const fn = new NodejsFunction(this, id, {
-        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
         functionName: `${project}-${stage}-${stack}-${id}`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
@@ -746,6 +746,24 @@ export class Api extends cdk.NestedStack {
           dbInfoSecretName,
           topicName,
           brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "saveDraft",
+        entry: join(__dirname, "../lambda/saveDraft.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "deleteDraft",
+        entry: join(__dirname, "../lambda/deleteDraft.ts"),
+        environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
         },
@@ -1063,12 +1081,17 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
+    const attachmentArchiveImageCacheBust = "2026-05-13-attachment-archive-security-refresh";
+
     const archiveWorkerImage = new cdk.aws_ecr_assets.DockerImageAsset(
       this,
       "AttachmentArchiveWorkerImage",
       {
         directory: join(__dirname, "../attachment-archive"),
         platform: cdk.aws_ecr_assets.Platform.LINUX_AMD64,
+        buildArgs: {
+          CACHE_BUST: attachmentArchiveImageCacheBust,
+        },
       },
     );
 
@@ -1580,6 +1603,8 @@ export class Api extends cdk.NestedStack {
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
+      saveDraft: { path: "saveDraft", lambda: lambdas.saveDraft, method: "POST" },
+      deleteDraft: { path: "deleteDraft", lambda: lambdas.deleteDraft, method: "POST" },
       getTypes: {
         path: "getTypes",
         lambda: lambdas.getTypes,

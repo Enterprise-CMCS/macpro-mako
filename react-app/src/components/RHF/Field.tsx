@@ -1,4 +1,4 @@
-import { FieldValues, RegisterOptions } from "react-hook-form";
+import { FieldValues } from "react-hook-form";
 import { FieldArrayProps, RHFSlotProps, RHFTextField } from "shared-types";
 
 import { FormField, FormLabel } from "../Inputs/form";
@@ -8,12 +8,6 @@ interface FieldProps<T extends FieldValues> extends FieldArrayProps<T> {
   index: number;
   SLOT: RHFSlotProps;
 }
-
-// Define a type for the rules if not already defined
-type CustomRegisterOptions = Omit<
-  RegisterOptions<FieldValues, never>,
-  "disabled" | "valueAsNumber" | "valueAsDate" | "setValueAs"
->;
 
 export const Field = <TFields extends FieldValues>({
   name,
@@ -51,9 +45,10 @@ export const Field = <TFields extends FieldValues>({
   const formField = (
     <FormField
       key={adjustedSlotName}
-      // @ts-expect-error
-      control={control}
-      rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules) as CustomRegisterOptions}
+      // `shared-types` and the app currently resolve RHF through different type instances in build,
+      // so keep the runtime behavior but collapse the type boundary here.
+      control={control as any}
+      rules={ruleGenerator(SLOT.rules, SLOT.addtnlRules) as any}
       name={adjustedSlotName as never}
       render={RHFSlot({
         ...SLOT,

@@ -164,7 +164,7 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
             <dd
               class="py-2"
             >
-              Pending
+              -- --
             </dd>
           </dl>
           <dl>
@@ -414,7 +414,7 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
             <dd
               class="py-2"
             >
-              Pending
+              -- --
             </dd>
           </dl>
           <dl>
@@ -664,7 +664,7 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
             <dd
               class="py-2"
             >
-              Pending
+              -- --
             </dd>
           </dl>
           <dl>
@@ -815,7 +815,9 @@ exports[`package details > as CMS Reviewer > renders package details for a Tempo
             </dt>
             <dd
               class="py-2"
-            />
+            >
+              -- --
+            </dd>
           </dl>
           <dl>
             <dt
@@ -1000,7 +1002,7 @@ exports[`package details > as State Submitter > renders package details for a 19
             <dd
               class="py-2"
             >
-              Pending
+              -- --
             </dd>
           </dl>
           <dl>
@@ -1190,7 +1192,7 @@ exports[`package details > as State Submitter > renders package details for a 19
             <dd
               class="py-2"
             >
-              Pending
+              -- --
             </dd>
           </dl>
           <dl>
@@ -1380,7 +1382,7 @@ exports[`package details > as State Submitter > renders package details for a 19
             <dd
               class="py-2"
             >
-              Pending
+              -- --
             </dd>
           </dl>
           <dl>
@@ -1507,7 +1509,9 @@ exports[`package details > as State Submitter > renders package details for a Te
             </dt>
             <dd
               class="py-2"
-            />
+            >
+              -- --
+            </dd>
           </dl>
           <dl>
             <dt

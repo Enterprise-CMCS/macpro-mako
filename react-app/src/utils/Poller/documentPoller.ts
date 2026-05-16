@@ -8,7 +8,15 @@ export type CheckDocumentFunction = (
   check: ReturnType<typeof PackageCheck> & { recordExists: boolean },
 ) => boolean;
 
-export const documentPoller = (id: string, documentChecker: CheckDocumentFunction) =>
+type DocumentPollerOptions = {
+  includeDraft?: boolean;
+};
+
+export const documentPoller = (
+  id: string,
+  documentChecker: CheckDocumentFunction,
+  options?: DocumentPollerOptions,
+) =>
   new DataPoller({
     interval: 1000,
     pollAttempts: 20,
@@ -17,5 +25,5 @@ export const documentPoller = (id: string, documentChecker: CheckDocumentFunctio
 
       return documentChecker({ ...check, recordExists: !!data });
     },
-    fetcher: () => getItem(id),
+    fetcher: () => getItem(id, { includeDraft: options?.includeDraft }),
   });

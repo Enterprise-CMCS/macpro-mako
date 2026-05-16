@@ -169,6 +169,33 @@ describe("buildAttachmentArchiveSections", () => {
       sectionNumber: 2,
     });
   });
+
+  it("uses draft-specific archive folder names for synthetic draft activity", () => {
+    const sections = buildAttachmentArchiveSections({
+      packageId: "MD-26-9289-P",
+      changelog: [
+        buildChangelogItem({
+          id: "MD-26-9289-P-draft-activity",
+          event: "app-k",
+          timestamp: 100,
+        }),
+        buildChangelogItem({
+          id: "MD-26-9289-P-draft-updated-activity",
+          event: "app-k",
+          timestamp: 200,
+        }),
+      ],
+    });
+
+    expect(sections.map((section) => section.sectionFolderName)).toEqual([
+      "section-1-draft-created",
+      "section-2-draft-updated",
+    ]);
+    expect(sections.map((section) => section.rootFolderName)).toEqual([
+      "MD-26-9289-P-section-1-draft-created",
+      "MD-26-9289-P-section-2-draft-updated",
+    ]);
+  });
 });
 
 describe("hasArchiveableAttachments", () => {
