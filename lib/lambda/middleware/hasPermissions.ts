@@ -1,5 +1,6 @@
 import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
+import { SEATOOL_STATUS } from "shared-types";
 import { isCmsUser, isUserManagerUser } from "shared-utils";
 
 import { getAuthUserFromRequest, getPackageFromRequest } from "./utils";
@@ -11,14 +12,13 @@ import { getAuthUserFromRequest, getPackageFromRequest } from "./utils";
 export const canViewPackage = (): MiddlewareObj => ({
   before: async (request: Request) => {
     const packageResult = await getPackageFromRequest(request);
-
     let state: string;
-    if (packageResult) {
+    if (packageResult && packageResult._source?.state) {
       state = packageResult?._source?.state.toUpperCase();
     } else {
       // the event body should already have been validated by `validator` before this handler runs
       const { id } = request.event.body as { id: string };
-      state = id.substring(0, 2).toUpperCase();
+      state = id.substring(0, 2)?.toUpperCase();
     }
 
     if (!state) {
@@ -30,6 +30,10 @@ export const canViewPackage = (): MiddlewareObj => ({
 
     if (!user) {
       throw new Error("User was not stored on the request");
+    }
+
+    if (packageResult?._source?.seatoolStatus === SEATOOL_STATUS.DRAFT && isCmsUser(user)) {
+      throw createError(403, JSON.stringify({ message: "Not authorized to view this resource" }));
     }
 
     if (!isCmsUser(user) && (!user.states || !user.states.includes(state))) {

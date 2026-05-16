@@ -5,7 +5,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { APIGatewayEvent } from "aws-lambda";
 import { CognitoUserAttributes } from "shared-types";
-import { isCmsUser, isCmsWriteUser } from "shared-utils";
+import { isCmsUser, isCmsWriteUser, isHelpDeskUser } from "shared-utils";
 
 import {
   getActiveStatesForUserByEmail,
@@ -137,36 +137,59 @@ export const isAuthorizedToGetPackageActions = async (
   );
 };
 
-// originally intended for /_search
-export const getStateFilter = async (event: APIGatewayEvent) => {
-  // Retrieve authentication details of the user
+type SearchUserScope =
+  | {
+      stateFilter: false;
+      canViewDrafts: false;
+    }
+  | {
+      stateFilter: null;
+      canViewDrafts: boolean;
+    }
+  | {
+      stateFilter: {
+        terms: {
+          state: string[];
+        };
+      };
+      canViewDrafts: false;
+    };
+
+export const getSearchUserScope = async (event: APIGatewayEvent): Promise<SearchUserScope> => {
   const authDetails = getAuthDetails(event);
-
-  // Look up user attributes from Cognito
   const userAttributes = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
-
   const activeRole = await getLatestActiveRoleByEmail(userAttributes.email);
 
   if (!activeRole) {
-    return false;
+    return {
+      stateFilter: false,
+      canViewDrafts: false,
+    };
   }
 
-  if (!isCmsUser({ ...userAttributes, role: activeRole.role })) {
+  const userWithRole = { ...userAttributes, role: activeRole.role };
+
+  if (!isCmsUser(userWithRole)) {
     const states = await getActiveStatesForUserByEmail(userAttributes.email, activeRole.role);
     if (states.length > 0) {
-      const filter = {
-        terms: {
-          //NOTE: this could instead be
-          // "state.keyword": userAttributes["custom:state"],
-          state: states.map((state) => state.toLocaleLowerCase()),
+      return {
+        stateFilter: {
+          terms: {
+            state: states.map((state) => state.toLocaleLowerCase()),
+          },
         },
+        canViewDrafts: false,
       };
-
-      return filter;
     }
     throw "State user detected, but no associated states.  Cannot continue";
-  } else {
-    console.log("CMS User detected.  No state filter required.");
-    return null;
   }
+
+  return {
+    stateFilter: null,
+    canViewDrafts: isHelpDeskUser(userWithRole),
+  };
 };
+
+// originally intended for /_search
+export const getStateFilter = async (event: APIGatewayEvent) =>
+  (await getSearchUserScope(event)).stateFilter;

@@ -1,15 +1,23 @@
 import * as os from "libs/opensearch-lib";
-import { ItemResult } from "shared-types/opensearch/main";
+import { BaseIndex } from "shared-types/opensearch";
+import type { ItemResult } from "shared-types/opensearch/main";
 
 import { getDomainAndNamespace } from "../../utils";
 
 export interface ExtendedItemResult extends ItemResult {
-  appkChildren?: any[];
+  appkChildren?: Omit<ItemResult, "found">[];
 }
-export const getPackage = async (id: string): Promise<ItemResult | undefined> => {
-  const { domain, index } = getDomainAndNamespace("main");
 
-  const packageResult = await os.getItem(domain, index, id);
-
-  return packageResult;
+const getPackageByIndex = async (
+  id: string,
+  baseIndex: BaseIndex,
+): Promise<ItemResult | undefined> => {
+  const { domain, index } = getDomainAndNamespace(baseIndex);
+  return await os.getItem(domain, index, id);
 };
+
+export const getPackage = async (id: string): Promise<ItemResult | undefined> =>
+  getPackageByIndex(id, "main");
+
+export const getDraftPackage = async (id: string): Promise<ItemResult | undefined> =>
+  getPackageByIndex(id, "draftmain");

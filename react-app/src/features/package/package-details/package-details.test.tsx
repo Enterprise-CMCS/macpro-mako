@@ -1,4 +1,4 @@
-import { screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
 import {
   EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
@@ -9,7 +9,7 @@ import {
   TEST_STATE_SUBMITTER_USERNAME,
 } from "mocks";
 import items from "mocks/data/items";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, test, vi } from "vitest";
 
 import * as gaUtils from "@/utils";
@@ -73,5 +73,174 @@ describe("package details", () => {
       expect(screen.getByText(header)).toBeInTheDocument();
       expect(asFragment()).toMatchSnapshot();
     });
+
+    it("shows the approved waiver number for a temporary extension draft from saved draft data", async () => {
+      const temporaryExtensionDraft = {
+        ...TEST_TEMPORARY_EXTENSION_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        originalWaiverNumber: undefined,
+        draft: {
+          savedAt: "2026-03-16T20:56:00.000Z",
+          data: {
+            ids: {
+              validAuthority: {
+                waiverNumber: "AL-2200.R00.00",
+                authority: "",
+              },
+            },
+          },
+        },
+      } as opensearch.main.Document;
+
+      await setup(temporaryExtensionDraft);
+
+      expect(screen.getByText("Approved Initial or Renewal Number")).toBeInTheDocument();
+      expect(screen.getByText("AL-2200.R00.00")).toBeInTheDocument();
+    });
+
+    it("shows the approved waiver number for a temporary extension draft from direct saved draft data", async () => {
+      const temporaryExtensionDraft = {
+        ...TEST_TEMPORARY_EXTENSION_ITEM._source,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        originalWaiverNumber: undefined,
+        draft: {
+          savedAt: "2026-03-16T20:56:00.000Z",
+          data: {
+            waiverNumber: "AL-3300.R00.00",
+          },
+        },
+      } as opensearch.main.Document;
+
+      await setup(temporaryExtensionDraft);
+
+      expect(screen.getByText("Approved Initial or Renewal Number")).toBeInTheDocument();
+      expect(screen.getByText("AL-3300.R00.00")).toBeInTheDocument();
+    });
+  });
+
+  it("shows Created By instead of Submitted By for draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const draftSubmission = {
+      ...TEST_1915B_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      submitterName: "Latest Saver",
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        createdByName: "Original Draft Creator",
+        data: { id: TEST_1915B_ITEM._source.id },
+      },
+    } as opensearch.main.Document;
+
+    await setup(draftSubmission);
+
+    expect(screen.getByText("Created By")).toBeInTheDocument();
+    expect(screen.queryByText("Submitted By")).not.toBeInTheDocument();
+    expect(screen.getByText("Original Draft Creator")).toBeInTheDocument();
+  });
+
+  it("shows Proposed Effective Date from draft data for draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const draftSubmission = {
+      ...TEST_1915B_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      proposedDate: undefined,
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        data: {
+          id: TEST_1915B_ITEM._source.id,
+          proposedEffectiveDate: 1774396800000,
+        },
+      },
+    } as unknown as opensearch.main.Document;
+
+    await setup(draftSubmission);
+
+    expect(screen.getByText("Proposed Effective Date")).toBeInTheDocument();
+    expect(screen.getByText("March 25, 2026")).toBeInTheDocument();
+    expect(screen.queryByText("Pending")).not.toBeInTheDocument();
+  });
+
+  it("shows Amendment Title from saved draft data for App K draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const appKDraftSubmission = {
+      ...TEST_1915C_APPK_ITEM._source,
+      event: "app-k",
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      title: undefined,
+      draft: {
+        savedAt: "2026-04-01T20:30:00.000Z",
+        data: {
+          id: TEST_1915C_APPK_ITEM._source.id,
+          title: "this is a app k package",
+        },
+      },
+    } as opensearch.main.Document;
+
+    await setup(appKDraftSubmission);
+
+    expect(screen.getByText("Amendment Title")).toBeInTheDocument();
+    expect(screen.getByText("this is a app k package")).toBeInTheDocument();
+  });
+
+  it("shows -- -- for a blank Amendment Title on App K draft packages", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const appKDraftSubmission = {
+      ...TEST_1915C_APPK_ITEM._source,
+      event: "app-k",
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      title: undefined,
+      draft: {
+        savedAt: "2026-04-02T20:30:00.000Z",
+        data: {
+          id: TEST_1915C_APPK_ITEM._source.id,
+          title: "   ",
+        },
+      },
+    } as opensearch.main.Document;
+
+    await setup(appKDraftSubmission);
+
+    const amendmentTitleField = screen.getByText("Amendment Title").closest("dl");
+
+    expect(amendmentTitleField).not.toBeNull();
+    expect(within(amendmentTitleField!).getByText("-- --")).toBeInTheDocument();
+  });
+
+  it("shows -- -- for a missing draft proposed effective date", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    const draftSubmission = {
+      ...TEST_1915B_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      proposedDate: undefined,
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        data: {
+          id: TEST_1915B_ITEM._source.id,
+        },
+      },
+    } as unknown as opensearch.main.Document;
+
+    await setup(draftSubmission);
+
+    const proposedEffectiveDateField = screen.getByText("Proposed Effective Date").closest("dl");
+
+    expect(proposedEffectiveDateField).not.toBeNull();
+    expect(within(proposedEffectiveDateField!).getByText("-- --")).toBeInTheDocument();
+    expect(screen.queryByText("Pending")).not.toBeInTheDocument();
   });
 });

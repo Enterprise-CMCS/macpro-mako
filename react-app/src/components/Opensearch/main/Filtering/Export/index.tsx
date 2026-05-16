@@ -1,5 +1,3 @@
-import { format } from "date-fns";
-import { ExportToCsv } from "export-to-csv";
 import { motion } from "framer-motion";
 import { Download, Loader } from "lucide-react";
 import { useState } from "react";
@@ -17,9 +15,20 @@ import {
   useOsUrl,
 } from "@/components";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
-import { DEFAULT_FILTERS } from "../../useOpensearch";
+import {
+  DEFAULT_FILTERS,
+  getSaveInProgressDashboardFilters,
+  removeDraftStatusFilters,
+} from "../../useOpensearch";
+import {
+  buildCsvExportRows,
+  exportCsvRows,
+  getExportFilenameBase,
+  getVisibleExportColumns,
+} from "./export.utils";
 
 const EXPORT_LIMIT = 10000;
 
@@ -31,38 +40,29 @@ export const OsExportData: FC<{
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
 
   const exportToCsv = async () => {
     setLoading(true);
-    const exportData: Record<any, any>[] = [];
     const filters = [
-      ...url.state.filters,
+      ...(isSaveInProgressEnabled
+        ? url.state.filters
+        : removeDraftStatusFilters(url.state.filters)),
       ...(DEFAULT_FILTERS[url.state.tab]?.filters || []),
       ...createSearchFilterable(url.state.search || ""),
+      ...getSaveInProgressDashboardFilters(isSaveInProgressEnabled),
     ];
 
-    const resolvedData = await getMainExportData(filters, url.state.sort);
-
-    for (const item of resolvedData) {
-      const column: Record<any, any> = {};
-
-      for (const header of columns) {
-        if (!header.transform) continue;
-        if (header.hidden) continue;
-        column[header.label] = header.transform(item);
-      }
-      exportData.push(column);
-    }
-
-    const csvExporter = new ExportToCsv({
-      useKeysAsHeaders: true,
-      filename: `${url.state.tab}-export-${format(new Date(), "MM/dd/yyyy")}`,
+    const resolvedData = await getMainExportData(filters, url.state.sort, {
+      includeDrafts: isSaveInProgressEnabled,
     });
-
-    csvExporter.generateCsv(exportData);
+    const visibleColumns = getVisibleExportColumns(columns);
+    const filenameBase = getExportFilenameBase(url.state.tab);
+    const exportRows = buildCsvExportRows(visibleColumns, resolvedData);
+    exportCsvRows(exportRows, filenameBase);
 
     sendGAEvent("dash_export_csv", {
-      row_count: exportData.length,
+      row_count: resolvedData.length,
     });
     setLoading(false);
   };

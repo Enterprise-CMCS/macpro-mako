@@ -7,6 +7,7 @@ DELETE_IMAGES=${DELETE_IMAGES:-false}
 CRITICAL_ONLY=${CRITICAL_ONLY:-true}
 MIN_IMAGE_AGE_DAYS=${MIN_IMAGE_AGE_DAYS:-3}
 REPOSITORY_NAME=${REPOSITORY_NAME:-}
+ALLOW_NON_CDK_ASSET_REPOSITORY=${ALLOW_NON_CDK_ASSET_REPOSITORY:-false}
 
 if ! command -v aws >/dev/null 2>&1; then
   echo "aws is required." >&2
@@ -24,9 +25,22 @@ if ! command -v python3 >/dev/null 2>&1; then
 fi
 
 ACCOUNT_ID=$(aws sts get-caller-identity --query 'Account' --output text)
+EXPECTED_REPOSITORY_NAME="cdk-hnb659fds-container-assets-${ACCOUNT_ID}-${AWS_REGION}"
 
 if [[ -z "$REPOSITORY_NAME" ]]; then
-  REPOSITORY_NAME="cdk-hnb659fds-container-assets-${ACCOUNT_ID}-${AWS_REGION}"
+  REPOSITORY_NAME="${EXPECTED_REPOSITORY_NAME}"
+fi
+
+if [[ "$REPOSITORY_NAME" != "$EXPECTED_REPOSITORY_NAME" && "$ALLOW_NON_CDK_ASSET_REPOSITORY" != "true" ]]; then
+  cat >&2 <<EOF
+Refusing to operate on repository '${REPOSITORY_NAME}'.
+This script only deletes ECR image digests from the shared CDK bootstrap asset repository by default:
+  ${EXPECTED_REPOSITORY_NAME}
+
+If you intentionally want to target a different ECR repository, re-run with:
+  ALLOW_NON_CDK_ASSET_REPOSITORY=true
+EOF
+  exit 1
 fi
 
 REPOSITORY_URI="${ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${REPOSITORY_NAME}"
@@ -126,7 +140,10 @@ if [[ ! -s "$IMAGE_ROWS_FILE" ]]; then
   exit 0
 fi
 
+echo "Scope: ECR image digests only. This script does not delete IAM roles, S3 buckets, stacks, or other AWS resources."
 echo "Repository: ${REPOSITORY_NAME}"
+echo "Mode: $([[ "$DELETE_IMAGES" == "true" ]] && echo "delete" || echo "report-only")"
+echo "Criteria: unreferenced by active Lambda image functions and active ECS task definitions, age >= ${MIN_IMAGE_AGE_DAYS} day(s)"
 if [[ -s "$REFERENCED_DIGESTS_FILE" ]]; then
   echo "Referenced digests found: $(wc -l < "$REFERENCED_DIGESTS_FILE" | tr -d ' ')"
 else

@@ -15,13 +15,18 @@ import {
   TEST_STATE_SUBMITTER_USER,
   TEST_STATE_SYSTEM_ADMIN_USER,
 } from "mocks";
-import { FullUser } from "shared-types";
+import {
+  FullUser,
+  SEATOOL_STATUS,
+  statusToDisplayToCmsUser,
+  statusToDisplayToStateUser,
+} from "shared-types";
 import { main } from "shared-types/opensearch";
 import { describe, expect, it } from "vitest";
 import { z } from "zod";
 
 import { canViewPackage, canViewUser } from "./hasPermissions";
-import { storeAuthUserInRequest } from "./utils";
+import { storeAuthUserInRequest, storePackageInRequest } from "./utils";
 
 const TEST_STATE_USER: FullUser = {
   ...TEST_STATE_SUBMITTER_USER,
@@ -51,6 +56,7 @@ describe("Permissions middleware", () => {
   describe("canViewPackage", () => {
     const setupHandler = ({
       user = undefined,
+      packageResult = undefined,
     }: { user?: FullUser; packageResult?: main.ItemResult } = {}) =>
       middy()
         .use(
@@ -75,6 +81,9 @@ describe("Permissions middleware", () => {
         .before(async (request: Request) => {
           if (user) {
             storeAuthUserInRequest(user, request, false);
+          }
+          if (packageResult) {
+            storePackageInRequest(packageResult, request, false);
           }
         })
         .use(canViewPackage())
@@ -173,6 +182,35 @@ describe("Permissions middleware", () => {
       } as APIGatewayEvent;
 
       const handler = setupHandler({ user: TEST_STATE_USER });
+
+      const res = await handler(event, {} as Context);
+
+      expect(res).toBeTruthy();
+      expect(res.statusCode).toEqual(403);
+      expect(res.body).toEqual(JSON.stringify({ message: "Not authorized to view this resource" }));
+    });
+
+    it("should return 403 if a CMS user tries to view a draft package", async () => {
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        headers: {
+          "Content-Type": "application/json",
+        } as APIGatewayProxyEventHeaders,
+      } as APIGatewayEvent;
+
+      const draftPackage = {
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: {
+          id: TEST_ITEM_ID,
+          state: "MD",
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.DRAFT],
+          cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.DRAFT],
+        },
+      } as main.ItemResult;
+
+      const handler = setupHandler({ user: TEST_CMS_USER, packageResult: draftPackage });
 
       const res = await handler(event, {} as Context);
 

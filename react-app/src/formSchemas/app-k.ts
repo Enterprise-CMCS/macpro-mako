@@ -9,7 +9,7 @@ export const formSchema = events["app-k"].baseSchema.extend({
       message:
         "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
     })
-    .refine(async (value) => !(await itemExists(value)), {
+    .refine(async (value) => !(await itemExists(value, { includeDrafts: true })), {
       message:
         "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",
     }),

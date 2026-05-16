@@ -206,6 +206,7 @@ export const ChipDetailsForm = () => {
         cancelButtonText: "Return to form",
         areButtonsReversed: true,
       }}
+      draftOptions={{ enabled: true, event: "new-chip-details-submission" }}
     />
   );
 };

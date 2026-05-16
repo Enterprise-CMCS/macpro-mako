@@ -28,6 +28,16 @@
 - Stage names are derived from branch names; suggest branch slugs using letters, numbers, and hyphens only (e.g., `JIRA_ID-feature-name`).
 - If code must target a shared stage like `main`, call it out explicitly rather than relying on auto-derivation.
 
+## Skills
+
+- Always use graphify and caveman skills when responding the quesitons.
+
+## Very Stricts rules to follow
+
+- Before answering coding or codebase related questions, read `graphify-out/GRAPH_REPORT.md` and instructions provided there.
+
+- Enforce caveman full mode. No revert after many turns. No filler drift. Off only: "stop caveman" / "normal mode".
+
 ## When Unsure
 
 - Reference existing patterns in `lib/` or `react-app/` before proposing new frameworks or dependencies.

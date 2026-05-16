@@ -1,9 +1,17 @@
+import {
+  getDraftPackage,
+  isActiveDraftPackage,
+  isActiveMainNonDraftPackage,
+} from "libs/api/package";
+import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
+import { isCmsUser, isHelpDeskUser } from "shared-utils";
 import { z } from "zod";
 
 import {
   authenticatedMiddy,
   canViewPackage,
+  ContextWithAuthenticatedUser,
   ContextWithPackage,
   fetchAppkChildren,
   fetchChangelog,
@@ -14,7 +22,9 @@ const itemEventSchema = z
   .object({
     body: z
       .object({
-        id: z.string(),
+        id: z.string().trim().min(1),
+        includeDraft: z.boolean().optional(),
+        preferDraft: z.boolean().optional(),
       })
       .strict(),
   })
@@ -27,15 +37,68 @@ export const handler = authenticatedMiddy({
   setToContext: true,
   eventSchema: itemEventSchema,
 })
-  .use(fetchPackage({ setToContext: true }))
+  .use(fetchPackage({ allowNotFound: true, rethrowErrors: true, setToContext: true }))
   .use(canViewPackage())
   .use(fetchAppkChildren({ setToContext: true }))
   .use(fetchChangelog({ setToContext: true }))
-  .handler(async (event: ItemEvent, context: ContextWithPackage) => {
-    const { packageResult } = context;
+  .handler(async (event: ItemEvent, context: ContextWithPackage & ContextWithAuthenticatedUser) => {
+    const { packageResult, authenticatedUser } = context;
 
-    return {
-      statusCode: 200,
-      body: packageResult,
-    };
+    if (event.body?.includeDraft === true && event.body?.preferDraft === true) {
+      const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
+      const isActiveDraft = isActiveDraftPackage(draftPackageResult);
+
+      if (
+        draftPackageResult &&
+        isActiveDraft &&
+        (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
+      ) {
+        return response({
+          statusCode: 200,
+          body: {
+            ...draftPackageResult,
+            _source: {
+              ...draftPackageResult._source,
+              changelog: draftPackageResult._source?.changelog ?? [],
+            },
+          },
+        });
+      }
+    }
+
+    const isActiveMainNonDraft = isActiveMainNonDraftPackage(packageResult);
+
+    if (isActiveMainNonDraft) {
+      return response({
+        statusCode: 200,
+        body: packageResult,
+      });
+    }
+
+    if (event.body?.includeDraft === true) {
+      const draftPackageResult = await getDraftPackage(event.body.id.toUpperCase());
+      const isActiveDraft = isActiveDraftPackage(draftPackageResult);
+
+      if (
+        draftPackageResult &&
+        isActiveDraft &&
+        (!authenticatedUser || !isCmsUser(authenticatedUser) || isHelpDeskUser(authenticatedUser))
+      ) {
+        return response({
+          statusCode: 200,
+          body: {
+            ...draftPackageResult,
+            _source: {
+              ...draftPackageResult._source,
+              changelog: draftPackageResult._source?.changelog ?? [],
+            },
+          },
+        });
+      }
+    }
+
+    return response({
+      statusCode: 404,
+      body: { message: "No record found for the given id" },
+    });
   });

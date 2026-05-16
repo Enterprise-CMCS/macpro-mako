@@ -64,6 +64,8 @@ beforeEach(() => {
   process.env.brokerString = KAFKA_BROKERS;
   process.env.idmAuthzApiKeyArn = "test-secret"; // pragma: allowlist secret
   process.env.idmAuthzApiEndpoint = "https://dimAuthzEndpoint.com";
+  process.env.externalApiAuthSecretArn =
+    "arn:aws:secretsmanager:us-east-1:123456789012:secret:test-external-api-auth";
 });
 
 afterEach(() => {

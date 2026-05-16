@@ -1,8 +1,7 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ExportToCsv } from "export-to-csv";
-import { getFilteredDocList } from "mocks";
-import { describe, expect, it, vi } from "vitest";
+import { API } from "aws-amplify";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { OsExportData, OsTableColumn } from "@/components";
 import * as ga from "@/utils/ReactGA/SendGAEvent";
@@ -13,6 +12,8 @@ import {
   NO_TRANSFORM_COLUMN,
   renderFilterDrawer,
 } from "@/utils/test-helpers";
+
+import * as exportUtils from "./export.utils";
 
 const columns: OsTableColumn[] = [...DEFAULT_COLUMNS, NO_TRANSFORM_COLUMN, HIDDEN_COLUMN];
 
@@ -29,6 +30,10 @@ const setup = (disabled?: boolean, count: number = 123) => {
 };
 
 describe("Tooltip component within export button", () => {
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("Tooltip content hidden when not hovering", async () => {
     setup(true);
 
@@ -53,21 +58,42 @@ describe("Tooltip component within export button", () => {
   });
 
   it("should export on click if button is enabled", async () => {
-    const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
+    const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
     const gaSpy = vi.spyOn(ga, "sendGAEvent").mockImplementation(() => {});
-
-    const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => ({
-      Authority: doc.authority,
-      "SPA ID": doc.id,
-      State: doc.state,
-    }));
+    const postSpy = vi.spyOn(API, "post");
 
     const { user } = setup(false);
 
     await user.click(screen.queryByTestId("export-csv-btn"));
 
-    expect(spy).toHaveBeenCalledWith(expected);
+    expect(csvSpy).toHaveBeenCalledTimes(1);
+    const [rowsArg, filenameArg] = csvSpy.mock.calls[0] ?? [[], ""];
+    expect(rowsArg).toHaveLength(12);
+    expect(rowsArg[0]).toEqual(
+      expect.objectContaining({
+        "SPA ID": expect.any(String),
+        State: expect.any(String),
+        Authority: expect.any(String),
+      }),
+    );
+    expect(filenameArg).toMatch(/-export-\d{2}_\d{2}_\d{4}$/);
     expect(gaSpy).toHaveBeenCalledWith("dash_export_csv", { row_count: 12 });
+    expect(postSpy).toHaveBeenCalledWith("os", "/search/main", {
+      body: expect.objectContaining({
+        includeDrafts: false,
+        query: expect.objectContaining({
+          bool: expect.objectContaining({
+            must_not: expect.arrayContaining([
+              expect.objectContaining({
+                term: {
+                  "seatoolStatus.keyword": "Draft",
+                },
+              }),
+            ]),
+          }),
+        }),
+      }),
+    });
   });
 
   it("should show modal when count is greater than 10000", async () => {
@@ -92,7 +118,7 @@ describe("Tooltip component within export button", () => {
   });
 
   it("should proceed with exporting when export button is clicked in the modal", async () => {
-    const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
+    const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
 
     const { user } = setup(false, 10001);
 
@@ -104,7 +130,7 @@ describe("Tooltip component within export button", () => {
 
     await user.click(exportButton);
 
-    await waitFor(() => expect(spy).toHaveBeenCalled());
+    await waitFor(() => expect(csvSpy).toHaveBeenCalled());
 
     expect(screen.queryByText("Export limit reached")).not.toBeInTheDocument();
   });

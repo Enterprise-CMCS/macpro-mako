@@ -1,8 +1,10 @@
 import { SQSHandler } from "aws-lambda";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 
+import { buildDraftAttachmentChangelog } from "../attachment-archive/draft-package";
+import type { AttachmentArchiveChangelogItem } from "../attachment-archive/package-activity";
 import { AttachmentArchiveRebuildMessage } from "../attachment-archive/types";
-import { getPackageChangelog } from "../libs/api/package";
+import { getDraftPackage, getPackageChangelog } from "../libs/api/package";
 import { rebuildPackageAttachmentArchives } from "./attachmentArchive-lib";
 
 function parseRecordBody(body: string): AttachmentArchiveRebuildMessage {
@@ -14,15 +16,39 @@ function parseRecordBody(body: string): AttachmentArchiveRebuildMessage {
   return parsed as AttachmentArchiveRebuildMessage;
 }
 
+async function getRebuildChangelog(
+  message: AttachmentArchiveRebuildMessage,
+): Promise<AttachmentArchiveChangelogItem[]> {
+  if (!message.preferDraft) {
+    return (await getPackageChangelog(message.packageId)).hits
+      .hits as opensearch.changelog.ItemResult[];
+  }
+
+  const draftResult = await getDraftPackage(message.packageId);
+  const hasActiveDraft =
+    draftResult?.found === true &&
+    draftResult._source?.deleted !== true &&
+    draftResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+
+  if (!hasActiveDraft) {
+    return [];
+  }
+
+  return buildDraftAttachmentChangelog({
+    packageId: message.packageId,
+    submission: draftResult._source,
+  });
+}
+
 export const handler: SQSHandler = async (event) => {
   for (const record of event.Records) {
     const message = parseRecordBody(record.body);
-    const changelog = (await getPackageChangelog(message.packageId)).hits
-      .hits as opensearch.changelog.ItemResult[];
+    const changelog = await getRebuildChangelog(message);
 
     const result = await rebuildPackageAttachmentArchives({
       packageId: message.packageId,
       changelog,
+      archiveNamespace: message.preferDraft ? "draft" : "main",
     });
 
     console.info(
@@ -30,6 +56,7 @@ export const handler: SQSHandler = async (event) => {
         event: "attachment_archive_rebuild_processed",
         packageId: message.packageId,
         latestTimestamp: message.latestTimestamp,
+        preferDraft: message.preferDraft,
         source: message.source,
         result,
       }),

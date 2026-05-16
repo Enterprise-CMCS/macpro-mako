@@ -29,5 +29,12 @@ coverage
 .vscode
 .history
 
+# local test and docs files
 test/local/*
 docs/local/*
+
+#graphify
+graphify-out/cache/
+graphify-out/manifest.json
+graphify-out/cost.json
+/graphify-out/.graphify_detect.json

@@ -1,13 +1,43 @@
 import { API } from "aws-amplify";
+import { SEATOOL_STATUS } from "shared-types";
 
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
-export const itemExists = async (id: string): Promise<boolean> => {
+type ItemExistsOptions = {
+  includeDrafts?: boolean;
+  allowDraftId?: string;
+};
+
+export const itemExists = async (id: string, options: ItemExistsOptions = {}): Promise<boolean> => {
   try {
-    const response = await API.post("os", "/itemExists", { body: { id } });
+    const normalizedId = id?.trim().toUpperCase();
+    if (!normalizedId) {
+      return false;
+    }
+
+    const draftIdFromUrl =
+      typeof window !== "undefined"
+        ? (new URLSearchParams(window.location.search).get("draftId") ?? undefined)
+        : undefined;
+    const allowDraftId = options.allowDraftId ?? draftIdFromUrl;
+    const includeDrafts = options.includeDrafts ?? false;
+
+    const response = await API.post("os", "/itemExists", {
+      body: { id: normalizedId, includeDrafts },
+    });
+
+    if (
+      includeDrafts &&
+      allowDraftId &&
+      allowDraftId.toUpperCase() === normalizedId &&
+      response?.status === SEATOOL_STATUS.DRAFT
+    ) {
+      return false;
+    }
+
     return response.exists;
   } catch (error) {
-    sendGAEvent("api_errror", {
+    sendGAEvent("api_error", {
       error: `failure /itemExists ${id}`,
     });
     console.error("Error checking if item exists:", error);

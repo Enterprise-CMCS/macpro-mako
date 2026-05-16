@@ -8,5 +8,6 @@ testcafe_results
 tsconfig.tsbuildinfo
 build_run
 **/*.test.{ts,tsx}
-docs/
 code.json
+.graphifyignore
+graphify-out/

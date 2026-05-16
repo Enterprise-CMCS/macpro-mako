@@ -2,10 +2,11 @@ import middy, { Request } from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import httpJsonBodyParser from "@middy/http-json-body-parser";
 import { APIGatewayEvent, APIGatewayProxyEventHeaders, Context } from "aws-lambda";
+import * as packageApi from "libs/api/package";
 import { GET_ERROR_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import items from "mocks/data/items";
 import { main } from "shared-types/opensearch";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { fetchPackage, FetchPackageOptions } from "./fetchPackage";
 import { ContextWithPackage, getPackageFromRequest } from "./utils";
@@ -143,5 +144,63 @@ describe("fetchPackage", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual("OK");
+  });
+
+  it("should treat malformed main shell docs as not found when allowNotFound is true", async () => {
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9100-P" }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+      found: true,
+      _id: "MD-26-9100-P",
+      _source: {
+        id: "MD-26-9100-P",
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as any);
+
+    const handler = setupHandler({ options: { allowNotFound: true } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual("OK");
+    getPackageSpy.mockRestore();
+  });
+
+  it("should store malformed main shell docs when active-main filtering is disabled", async () => {
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9100-P" }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+    const expectedPackage = {
+      found: true,
+      _id: "MD-26-9100-P",
+      _source: {
+        id: "MD-26-9100-P",
+        changedDate: "2026-04-27T19:56:38.000Z",
+      },
+    } as main.ItemResult;
+
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce(expectedPackage);
+
+    const handler = setupHandler({
+      expectedPackage,
+      options: { allowNotFound: true, requireActiveMainNonDraft: false },
+    });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual("OK");
+    getPackageSpy.mockRestore();
   });
 });

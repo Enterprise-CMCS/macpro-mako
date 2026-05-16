@@ -1,8 +1,16 @@
-import { GetObjectCommand, GetObjectTaggingCommand, HeadObjectCommand } from "@aws-sdk/client-s3";
+import {
+  GetObjectCommand,
+  GetObjectTaggingCommand,
+  HeadObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
+import { AssumeRoleCommand, STSClient } from "@aws-sdk/client-sts";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomain } from "libs/utils";
+import { SEATOOL_STATUS } from "shared-types";
+import { getDraftAttachments } from "shared-utils";
 
 import {
   getAttachmentErrorMessage,
@@ -11,7 +19,6 @@ import {
   isLegacyAttachmentUnavailableError,
 } from "../attachment-archive/attachment-errors";
 import {
-  createAttachmentBucketClientFactory,
   getAttachmentBucketMap,
   resolveTargetBucket as resolveMappedBucket,
 } from "../attachment-archive/bucket-routing";
@@ -19,16 +26,72 @@ import {
   isNonCleanVirusScanStatus,
   VIRUS_SCAN_STATUS_TAG_KEY,
 } from "../attachment-archive/file-scan-status";
-import { getStateFilter } from "../libs/api/auth/user";
-import { getPackage, getPackageChangelog } from "../libs/api/package";
+import { getSearchUserScope as getAttachmentSearchUserScope } from "../libs/api/auth/user";
+import { getDraftPackage, getPackage, getPackageChangelog } from "../libs/api/package";
+import {
+  isActiveDraftPackage,
+  isActiveMainNonDraftPackage,
+} from "../libs/api/package/packageStatus";
+import { buildResponseContentDisposition } from "./presignedAttachmentUrl";
 import { handleOpensearchError } from "./utils";
 
-function getClient(bucket: string) {
-  return createAttachmentBucketClientFactory({
-    region: process.env.region || process.env.AWS_REGION,
-    legacyS3AccessRoleArn: process.env.legacyS3AccessRoleArn,
-  })(bucket);
+const isLegacyUploadBucket = (bucket: string) => bucket.startsWith("uploads");
+
+function createAttachmentUrlClientFactory({
+  region,
+  legacyS3AccessRoleArn,
+}: {
+  region?: string;
+  legacyS3AccessRoleArn?: string;
+}) {
+  const clientCache = new Map<string, Promise<S3Client>>();
+  const stsClient = new STSClient({ region });
+
+  return async (bucket: string): Promise<S3Client> => {
+    const cachedClient = clientCache.get(bucket);
+    if (cachedClient) {
+      return cachedClient;
+    }
+
+    const clientPromise = (async () => {
+      if (!isLegacyUploadBucket(bucket) || !legacyS3AccessRoleArn) {
+        return new S3Client({ region });
+      }
+
+      const assumedRoleResponse = await stsClient.send(
+        new AssumeRoleCommand({
+          RoleArn: legacyS3AccessRoleArn,
+          RoleSessionName: "AttachmentUrlLegacyS3Access",
+        }),
+      );
+
+      const assumedCredentials = assumedRoleResponse.Credentials;
+      const accessKeyId = assumedCredentials?.AccessKeyId;
+      const secretAccessKey = assumedCredentials?.SecretAccessKey;
+
+      if (!accessKeyId || !secretAccessKey) {
+        throw new Error("No assumed credentials returned for legacy S3 access role");
+      }
+
+      return new S3Client({
+        region,
+        credentials: {
+          accessKeyId,
+          secretAccessKey,
+          sessionToken: assumedCredentials.SessionToken,
+        },
+      });
+    })();
+
+    clientCache.set(bucket, clientPromise);
+    return clientPromise;
+  };
 }
+
+const getClient = createAttachmentUrlClientFactory({
+  region: process.env.region || process.env.AWS_REGION,
+  legacyS3AccessRoleArn: process.env.legacyS3AccessRoleArn,
+});
 
 class AttachmentUnavailableError extends Error {
   statusCode = 410;
@@ -184,14 +247,13 @@ async function getAttachmentObjectTags(
   key: string,
 ): Promise<Record<string, string>> {
   const client = await getClient(bucket);
-  const response = await client.send(
-    new GetObjectTaggingCommand({
-      Bucket: bucket,
-      Key: key,
-    }),
-  );
+  const command = new GetObjectTaggingCommand({
+    Bucket: bucket,
+    Key: key,
+  });
+  const taggingResponse = await client.send(command);
 
-  return (response.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
+  return (taggingResponse.TagSet || []).reduce<Record<string, string>>((acc, tag) => {
     if (tag.Key && tag.Value) {
       acc[tag.Key] = tag.Value;
     }
@@ -312,19 +374,47 @@ export const handler = async (event: APIGatewayEvent) => {
 
   try {
     const body = JSON.parse(event.body);
+    const normalizedId = typeof body.id === "string" ? body.id.trim().toUpperCase() : "";
+    if (!normalizedId) {
+      return response({
+        statusCode: 400,
+        body: { message: "Valid id is required" },
+      });
+    }
 
-    const mainResult = await getPackage(body.id);
-    if (!mainResult || !mainResult.found) {
+    const { stateFilter, canViewDrafts } = await getAttachmentSearchUserScope(event);
+    if (stateFilter === false) {
+      return response({
+        statusCode: 403,
+        body: { message: "state access not permitted for the given id" },
+      });
+    }
+
+    const mainResult = await getPackage(normalizedId);
+    const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
+    const draftResult = await getDraftPackage(normalizedId);
+    const hasActiveDraft = isActiveDraftPackage(draftResult);
+
+    const canAccessDraft = hasActiveDraft && (stateFilter !== null || canViewDrafts);
+    const resolvedResult =
+      body.preferDraft === true && canAccessDraft
+        ? draftResult
+        : hasActiveMainNonDraft
+          ? mainResult
+          : canAccessDraft
+            ? draftResult
+            : undefined;
+
+    if (!resolvedResult || !resolvedResult.found) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
       });
     }
 
-    const stateFilter = await getStateFilter(event);
     if (stateFilter) {
-      const stateAccessAllowed = stateFilter?.terms.state.includes(
-        mainResult?._source?.state?.toLocaleLowerCase() || "",
+      const stateAccessAllowed = stateFilter.terms.state.includes(
+        resolvedResult._source?.state?.toLocaleLowerCase() || "",
       );
 
       if (!stateAccessAllowed) {
@@ -335,14 +425,17 @@ export const handler = async (event: APIGatewayEvent) => {
       }
     }
 
-    // add state
-    // Do we want to check
-    const changelogs = await getPackageChangelog(body.id);
-    const attachmentExists = changelogs.hits.hits.some((CL) => {
-      return CL._source.attachments?.some(
-        (ATT) => ATT.bucket === body.bucket && ATT.key === body.key,
-      );
-    });
+    const isDraftResult = resolvedResult._source?.seatoolStatus === SEATOOL_STATUS.DRAFT;
+    const attachmentExists = isDraftResult
+      ? getDraftAttachments(resolvedResult._source).some(
+          (attachment) => attachment.bucket === body.bucket && attachment.key === body.key,
+        )
+      : (await getPackageChangelog(normalizedId)).hits.hits.some((changelogItem) =>
+          changelogItem._source.attachments?.some(
+            (attachment) => attachment.bucket === body.bucket && attachment.key === body.key,
+          ),
+        );
+
     if (!attachmentExists) {
       return response({
         statusCode: 500,
@@ -352,9 +445,14 @@ export const handler = async (event: APIGatewayEvent) => {
       });
     }
 
-    const bucketResolution = resolveTargetBucket(body.id, body.bucket, body.key, body.filename);
+    const bucketResolution = resolveTargetBucket(
+      normalizedId,
+      body.bucket,
+      body.key,
+      body.filename,
+    );
     const bucketToSign = await resolveDownloadBucket({
-      packageId: body.id,
+      packageId: normalizedId,
       sourceBucket: bucketResolution.sourceBucket,
       destinationBucket: bucketResolution.destinationBucket,
       remapped: bucketResolution.remapped,
@@ -478,30 +576,6 @@ async function assertObjectAccessible(bucket: string, key: string) {
       Key: key,
     }),
   );
-}
-
-function getAsciiFilename(filename: string) {
-  const sanitized = filename
-    .normalize("NFKD")
-    .replace(/[^\x20-\x7E]+/g, "_")
-    .replace(/["\\]/g, "_")
-    .trim();
-
-  return sanitized || "download";
-}
-
-function encodeContentDispositionFilename(filename: string) {
-  return encodeURIComponent(filename).replace(
-    /['()*]/g,
-    (char) => `%${char.charCodeAt(0).toString(16).toUpperCase()}`,
-  );
-}
-
-function buildResponseContentDisposition(filename: string) {
-  const asciiFilename = getAsciiFilename(filename);
-  const encodedFilename = encodeContentDispositionFilename(filename);
-
-  return `attachment; filename="${asciiFilename}"; filename*=UTF-8''${encodedFilename}`;
 }
 
 async function generatePresignedUrl(

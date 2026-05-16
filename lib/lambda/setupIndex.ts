@@ -14,10 +14,21 @@ export const handler: Handler = async (event, __, callback) => {
       update: {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
+        deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
+      },
+    });
+    await manageIndexResource({
+      osDomain: event.osDomain,
+      index: `${event.indexNamespace}draftmain`,
+      update: {
+        changedDate: { type: "date" },
+        deleted: { type: "boolean" },
+        makoChangedDate: { type: "date" },
+        statusDate: { type: "date" },
       },
     });
     await manageIndexResource({

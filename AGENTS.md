@@ -29,6 +29,7 @@
 - Submission flows (`lib/lambda/submit/*`) generate payloads, handle missing attachments, and publish Kafka events; update flows live under `lib/lambda/update/*`.
 - Kafka sink processors (`sinkMain.ts`, `sinkChangelog.ts`, etc.) and maintenance jobs (`runReindex.ts`, `setupIndex.ts`) share middleware in `lib/lambda/middleware/` for auth, permissions, and normalization.
 - Unit tests for each handler sit beside the source (e.g., `getAttachmentUrl.test.ts`); run `./run test --run lib/lambda` or `bun run build && bun run lint` before deploying backend changes.
+- When adding a new Lambda function, also add its entry to `.github/skills/splunk/references/source-mapping.md` so Splunk log searches can locate it.
 
 ## Build, Test, and Development Commands
 

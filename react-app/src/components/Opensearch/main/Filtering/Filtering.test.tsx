@@ -1,7 +1,5 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { ExportToCsv } from "export-to-csv";
-import { getFilteredDocList } from "mocks";
 import { opensearch } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
@@ -13,6 +11,8 @@ import {
   HIDDEN_COLUMN,
   renderDashboard,
 } from "@/utils/test-helpers";
+
+import * as exportUtils from "./Export/export.utils";
 
 const defaultHits = getFilteredHits(["CHIP SPA", "Medicaid SPA"]);
 
@@ -135,17 +135,22 @@ describe("Visibility button", () => {
   });
 
   it("should handle clicking the Export button", async () => {
-    const spy = vi.spyOn(ExportToCsv.prototype, "generateCsv").mockImplementation(() => {});
-    const expected = getFilteredDocList(["CHIP SPA", "Medicaid SPA"]).map((doc) => ({
-      Authority: doc.authority,
-      "SPA ID": doc.id,
-      State: doc.state,
-    }));
+    const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
     const user = userEvent.setup();
     const onToggle = vi.fn();
     setup(DEFAULT_COLUMNS, onToggle, false);
 
     await user.click(screen.getByRole("button", { name: "Export" }));
-    expect(spy).toHaveBeenCalledWith(expected);
+    expect(csvSpy).toHaveBeenCalledTimes(1);
+    const [rowsArg, filenameArg] = csvSpy.mock.calls[0] ?? [[], ""];
+    expect(rowsArg).toHaveLength(12);
+    expect(rowsArg[0]).toEqual(
+      expect.objectContaining({
+        "SPA ID": expect.any(String),
+        State: expect.any(String),
+        Authority: expect.any(String),
+      }),
+    );
+    expect(filenameArg).toMatch(/-export-\d{2}_\d{2}_\d{4}$/);
   });
 });

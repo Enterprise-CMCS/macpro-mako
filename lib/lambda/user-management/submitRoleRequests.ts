@@ -1,6 +1,6 @@
 import { createError } from "@middy/util";
-import { APIGatewayEvent } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
+import { APIGatewayEvent } from "shared-types";
 import { baseRoleInformationSchema } from "shared-types/events/legacy-user";
 import { canRequestAccess, canSelfRevokeAccess, canUpdateAccess } from "shared-utils";
 import { z } from "zod";

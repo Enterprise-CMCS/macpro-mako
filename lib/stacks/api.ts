@@ -16,6 +16,13 @@ import {
   isSharedArchiveStage,
 } from "./archive-bucket-routing";
 import {
+  buildAttachmentArchiveIntegrityNotificationEnvironment,
+  buildAttachmentArchiveIntegrityRunEnvironment,
+  createAttachmentArchiveIntegrityDailySchedule,
+  createAttachmentArchiveIntegrityStateMachine,
+} from "./attachment-archive-integrity";
+import { createAttachmentArchiveStateMachine } from "./attachment-archive-state-machine";
+import {
   getLegacyAttachmentBucketMapParameterName,
   getLegacyAttachmentMirrorBuckets,
   getSharedAttachmentReadBucket,
@@ -39,6 +46,8 @@ interface ApiStackProps extends cdk.NestedStackProps {
   brokerString: DeploymentConfigProperties["brokerString"];
   dbInfoSecretName: DeploymentConfigProperties["dbInfoSecretName"];
   legacyS3AccessRoleArn: DeploymentConfigProperties["legacyS3AccessRoleArn"];
+  externalApiAuthSecretArn: DeploymentConfigProperties["externalApiAuthSecretArn"];
+  emailAddressLookupSecretName: DeploymentConfigProperties["emailAddressLookupSecretName"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
 }
@@ -64,6 +73,8 @@ export class Api extends cdk.NestedStack {
       privateSubnets,
       brokerString,
       legacyS3AccessRoleArn,
+      externalApiAuthSecretArn,
+      emailAddressLookupSecretName,
       lambdaSecurityGroup,
       topicNamespace,
       indexNamespace,
@@ -260,10 +271,108 @@ export class Api extends cdk.NestedStack {
                 `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${notificationSecretName}-*`,
               ],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+              resources: [externalApiAuthSecretArn],
+            }),
           ],
         }),
       },
     });
+
+    const externalAttachmentDownloadRole = new cdk.aws_iam.Role(
+      this,
+      "ExternalAttachmentDownloadRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          ExternalAttachmentDownloadPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "es:ESHttpHead",
+                  "es:ESHttpPost",
+                  "es:ESHttpGet",
+                  "es:ESHttpPatch",
+                  "es:ESHttpDelete",
+                  "es:ESHttpPut",
+                ],
+                resources: [`${openSearchDomainArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["sts:AssumeRole"],
+                resources: [legacyS3AccessRoleArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${attachmentsBucket.bucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${sharedAttachmentReadBucket.arn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveBaseReadBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveBaseReadBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["sqs:SendMessage"],
+                resources: [attachmentArchiveRebuildQueue.queueArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["states:DescribeExecution"],
+                resources: [
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive:*`,
+                  `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-attachment-archive-historical-backfill:*`,
+                ],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [externalApiAuthSecretArn],
+              }),
+            ],
+          }),
+        },
+      },
+    );
 
     const attachmentArchiveRequestRole = new cdk.aws_iam.Role(
       this,
@@ -379,6 +488,101 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const attachmentArchiveIntegrityRole = new cdk.aws_iam.Role(
+      this,
+      "AttachmentArchiveIntegrityRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          AttachmentArchiveIntegrityPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "es:ESHttpHead",
+                  "es:ESHttpPost",
+                  "es:ESHttpGet",
+                  "es:ESHttpPatch",
+                  "es:ESHttpDelete",
+                  "es:ESHttpPut",
+                ],
+                resources: [`${openSearchDomainArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject", "s3:PutObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject"],
+                resources: [`${archiveBaseReadBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveBaseReadBucketArn],
+              }),
+            ],
+          }),
+        },
+      },
+    );
+
+    const attachmentArchiveIntegrityNotificationRole = new cdk.aws_iam.Role(
+      this,
+      "AttachmentArchiveIntegrityNotificationRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          AttachmentArchiveIntegrityNotificationPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject", "s3:PutObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["ses:SendRawEmail"],
+                resources: ["*"],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [
+                  `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${emailAddressLookupSecretName}-*`,
+                ],
+              }),
+            ],
+          }),
+        },
+      },
+    );
+
     // Define Lambda functions
     const createNodeJsLambda = (
       id: string,
@@ -406,7 +610,7 @@ export class Api extends cdk.NestedStack {
       });
 
       const fn = new NodejsFunction(this, id, {
-        runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+        runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
         functionName: `${project}-${stage}-${stack}-${id}`,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
@@ -485,6 +689,35 @@ export class Api extends cdk.NestedStack {
         provisionedConcurrency: 2,
       },
       {
+        id: "externalToken",
+        entry: join(__dirname, "../lambda/externalToken.ts"),
+        environment: {
+          externalApiAuthSecretArn,
+        },
+      },
+      {
+        id: "externalAttachmentAuthorizer",
+        entry: join(__dirname, "../lambda/externalAttachmentAuthorizer.ts"),
+        environment: {
+          externalApiAuthSecretArn,
+        },
+      },
+      {
+        id: "getExternalAttachmentUrl",
+        entry: join(__dirname, "../lambda/getExternalAttachmentUrl.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          legacyS3AccessRoleArn,
+          indexNamespace,
+          externalApiAuthSecretArn,
+          ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
+          ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
+          ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
+          ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
+        },
+        role: externalAttachmentDownloadRole,
+      },
+      {
         id: "getAttachmentArchive",
         entry: join(__dirname, "../lambda/getAttachmentArchive.ts"),
         environment: {
@@ -513,6 +746,24 @@ export class Api extends cdk.NestedStack {
           dbInfoSecretName,
           topicName,
           brokerString,
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "saveDraft",
+        entry: join(__dirname, "../lambda/saveDraft.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+        provisionedConcurrency: 2,
+      },
+      {
+        id: "deleteDraft",
+        entry: join(__dirname, "../lambda/deleteDraft.ts"),
+        environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
         },
@@ -709,6 +960,14 @@ export class Api extends cdk.NestedStack {
         },
       },
       {
+        id: "checkIdentifierUsage",
+        entry: join(__dirname, "../lambda/checkIdentifierUsage.ts"),
+        environment: {
+          osDomain: `https://${openSearchDomainEndpoint}`,
+          indexNamespace,
+        },
+      },
+      {
         id: "markAttachmentArchiveFailed",
         entry: join(__dirname, "../lambda/markAttachmentArchiveFailed.ts"),
         environment: {
@@ -775,6 +1034,32 @@ export class Api extends cdk.NestedStack {
         timeoutSeconds: 900,
         memorySize: 2048,
       },
+      {
+        id: "runAttachmentArchiveIntegrityCheck",
+        entry: join(__dirname, "../lambda/runAttachmentArchiveIntegrityCheck.ts"),
+        environment: buildAttachmentArchiveIntegrityRunEnvironment({
+          stage,
+          openSearchDomainEndpoint,
+          indexNamespace,
+          archiveWriteBucketName,
+          archiveBaseReadBucketName,
+          archiveOverlayPrefix,
+        }),
+        role: attachmentArchiveIntegrityRole,
+        timeoutSeconds: 900,
+        memorySize: 2048,
+      },
+      {
+        id: "notifyAttachmentArchiveIntegrity",
+        entry: join(__dirname, "../lambda/notifyAttachmentArchiveIntegrity.ts"),
+        environment: buildAttachmentArchiveIntegrityNotificationEnvironment({
+          stage,
+          archiveWriteBucketName,
+          emailAddressLookupSecretName,
+        }),
+        role: attachmentArchiveIntegrityNotificationRole,
+        timeoutSeconds: 300,
+      },
     ];
 
     const lambdas = lambdaDefinitions.reduce(
@@ -796,14 +1081,7 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
-    const archiveWorkerLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "AttachmentArchiveWorkerLogGroup",
-      {
-        logGroupName: `/aws/ecs/${project}-${stage}-${stack}-attachment-archive-worker`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
+    const attachmentArchiveImageCacheBust = "2026-05-13-attachment-archive-security-refresh";
 
     const archiveWorkerImage = new cdk.aws_ecr_assets.DockerImageAsset(
       this,
@@ -811,198 +1089,29 @@ export class Api extends cdk.NestedStack {
       {
         directory: join(__dirname, "../attachment-archive"),
         platform: cdk.aws_ecr_assets.Platform.LINUX_AMD64,
+        buildArgs: {
+          CACHE_BUST: attachmentArchiveImageCacheBust,
+        },
       },
     );
 
-    const archiveWorkerCluster = new cdk.aws_ecs.Cluster(this, "AttachmentArchiveCluster", {
+    const archiveStateMachine = createAttachmentArchiveStateMachine(this, {
+      project,
+      stage,
+      stack,
       vpc,
-      clusterName: `${project}-${stage}-${stack}-attachment-archive`,
+      privateSubnets,
+      lambdaSecurityGroup,
+      attachmentsBucketArn: attachmentsBucket.bucketArn,
+      sharedAttachmentReadBucketArn: sharedAttachmentReadBucket.arn,
+      legacyMirrorBucketArns,
+      archiveWriteBucketArn,
+      legacyS3AccessRoleArn,
+      legacyAttachmentBucketMap,
+      archiveWorkerImage: cdk.aws_ecs.ContainerImage.fromDockerImageAsset(archiveWorkerImage),
+      markAttachmentArchiveFailedLambda: lambdas.markAttachmentArchiveFailed,
+      validateAttachmentArchiveLambda: lambdas.validateAttachmentArchive,
     });
-
-    const archiveWorkerTaskRole = new cdk.aws_iam.Role(this, "AttachmentArchiveWorkerTaskRole", {
-      assumedBy: new cdk.aws_iam.ServicePrincipal("ecs-tasks.amazonaws.com"),
-      inlinePolicies: {
-        AttachmentArchiveWorkerPolicy: new cdk.aws_iam.PolicyDocument({
-          statements: [
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["s3:GetObject", "s3:GetObjectTagging"],
-              resources: [`${attachmentsBucket.bucketArn}/*`],
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["s3:GetObject", "s3:GetObjectTagging"],
-              resources: [`${sharedAttachmentReadBucket.arn}/*`],
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["s3:GetObject", "s3:GetObjectTagging"],
-              resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["s3:ListBucket"],
-              resources: legacyMirrorBucketArns,
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["s3:GetObject", "s3:PutObject"],
-              resources: [`${archiveWriteBucketArn}/*`],
-            }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["sts:AssumeRole"],
-              resources: [legacyS3AccessRoleArn],
-            }),
-          ],
-        }),
-      },
-    });
-
-    const archiveWorkerTaskDefinition = new cdk.aws_ecs.FargateTaskDefinition(
-      this,
-      "AttachmentArchiveTaskDefinition",
-      {
-        cpu: 1024,
-        memoryLimitMiB: 4096,
-        taskRole: archiveWorkerTaskRole,
-      },
-    );
-
-    const archiveWorkerContainer = archiveWorkerTaskDefinition.addContainer(
-      "AttachmentArchiveWorkerContainer",
-      {
-        image: cdk.aws_ecs.ContainerImage.fromDockerImageAsset(archiveWorkerImage),
-        logging: new cdk.aws_ecs.AwsLogDriver({
-          streamPrefix: "attachment-archive",
-          logGroup: archiveWorkerLogGroup,
-        }),
-        environment: {
-          LEGACY_ATTACHMENT_BUCKET_MAP: legacyAttachmentBucketMap,
-          LEGACY_S3_ACCESS_ROLE_ARN: legacyS3AccessRoleArn,
-          TZ: "America/New_York",
-        },
-      },
-    );
-
-    const markAttachmentArchiveFailedTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-      this,
-      "MarkAttachmentArchiveFailedTask",
-      {
-        lambdaFunction: lambdas.markAttachmentArchiveFailed,
-        outputPath: "$.Payload",
-        payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-          "archiveBucketName.$": "$.archiveBucketName",
-          "artifactKey.$": "$.artifactKey",
-          "attachmentCount.$": "$.attachmentCount",
-          "currentKey.$": "$.currentKey",
-          "error.$": "$.error",
-          "hash.$": "$.hash",
-          "manifestKey.$": "$.manifestKey",
-        }),
-      },
-    );
-
-    const attachmentArchiveFailed = new cdk.aws_stepfunctions.Fail(
-      this,
-      "AttachmentArchiveFailure",
-      {
-        cause: "Attachment archive execution did not produce a valid ready artifact.",
-        error: "AttachmentArchiveValidationFailed",
-      },
-    );
-
-    markAttachmentArchiveFailedTask.next(attachmentArchiveFailed);
-
-    const runArchiveWorkerTask = new cdk.aws_stepfunctions_tasks.EcsRunTask(
-      this,
-      "RunAttachmentArchiveWorkerTask",
-      {
-        cluster: archiveWorkerCluster,
-        taskDefinition: archiveWorkerTaskDefinition,
-        integrationPattern: cdk.aws_stepfunctions.IntegrationPattern.RUN_JOB,
-        launchTarget: new cdk.aws_stepfunctions_tasks.EcsFargateLaunchTarget(),
-        assignPublicIp: false,
-        resultPath: cdk.aws_stepfunctions.JsonPath.DISCARD,
-        containerOverrides: [
-          {
-            containerDefinition: archiveWorkerContainer,
-            environment: [
-              {
-                name: "ARCHIVE_BUCKET_NAME",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.archiveBucketName"),
-              },
-              {
-                name: "ARCHIVE_CURRENT_KEY",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.currentKey"),
-              },
-              {
-                name: "ARCHIVE_MANIFEST_KEY",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.manifestKey"),
-              },
-              {
-                name: "ARCHIVE_ARTIFACT_KEY",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.artifactKey"),
-              },
-              {
-                name: "ATTACHMENT_ARCHIVE_HASH",
-                value: cdk.aws_stepfunctions.JsonPath.stringAt("$.hash"),
-              },
-            ],
-          },
-        ],
-        securityGroups: [lambdaSecurityGroup],
-        subnets: { subnets: privateSubnets },
-      },
-    ).addCatch(markAttachmentArchiveFailedTask, {
-      errors: ["States.ALL"],
-      resultPath: "$.error",
-    });
-
-    const validateAttachmentArchiveTask = new cdk.aws_stepfunctions_tasks.LambdaInvoke(
-      this,
-      "ValidateAttachmentArchiveTask",
-      {
-        lambdaFunction: lambdas.validateAttachmentArchive,
-        outputPath: "$.Payload",
-        payload: cdk.aws_stepfunctions.TaskInput.fromObject({
-          "archiveBucketName.$": "$.archiveBucketName",
-          "artifactKey.$": "$.artifactKey",
-          "currentKey.$": "$.currentKey",
-          "hash.$": "$.hash",
-        }),
-      },
-    ).addCatch(markAttachmentArchiveFailedTask, {
-      errors: ["States.ALL"],
-      resultPath: "$.error",
-    });
-
-    const archiveStateMachineLogGroup = new cdk.aws_logs.LogGroup(
-      this,
-      "AttachmentArchiveStateMachineLogGroup",
-      {
-        logGroupName: `/aws/vendedlogs/states/${project}-${stage}-${stack}-attachment-archive`,
-        removalPolicy: cdk.RemovalPolicy.DESTROY,
-      },
-    );
-
-    const archiveStateMachine = new cdk.aws_stepfunctions.StateMachine(
-      this,
-      "AttachmentArchiveStateMachine",
-      {
-        definitionBody: cdk.aws_stepfunctions.DefinitionBody.fromChainable(
-          runArchiveWorkerTask
-            .next(validateAttachmentArchiveTask)
-            .next(new cdk.aws_stepfunctions.Succeed(this, "AttachmentArchiveSuccess")),
-        ),
-        stateMachineName: `${project}-${stage}-${stack}-attachment-archive`,
-        logs: {
-          destination: archiveStateMachineLogGroup,
-          includeExecutionData: true,
-          level: cdk.aws_stepfunctions.LogLevel.ALL,
-        },
-      },
-    );
 
     archiveStateMachine.grantStartExecution(attachmentArchiveRequestRole);
     lambdas.getAttachmentArchive.addEnvironment(
@@ -1277,6 +1386,22 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const archiveIntegrityStateMachine = createAttachmentArchiveIntegrityStateMachine(this, {
+      project,
+      stage,
+      stack,
+      runAttachmentArchiveIntegrityCheckLambda: lambdas.runAttachmentArchiveIntegrityCheck,
+      notifyAttachmentArchiveIntegrityLambda: lambdas.notifyAttachmentArchiveIntegrity,
+    });
+
+    createAttachmentArchiveIntegrityDailySchedule(this, {
+      project,
+      stage,
+      stack,
+      isDev,
+      stateMachine: archiveIntegrityStateMachine,
+    });
+
     // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
@@ -1367,7 +1492,26 @@ export class Api extends cdk.NestedStack {
       },
     });
 
-    const apiResources = {
+    const externalTokenAuthorizer = new cdk.aws_apigateway.TokenAuthorizer(
+      this,
+      "ExternalTokenAuthorizer",
+      {
+        handler: lambdas.externalAttachmentAuthorizer,
+        identitySource: cdk.aws_apigateway.IdentitySource.header("Authorization"),
+        resultsCacheTtl: cdk.Duration.minutes(5),
+      },
+    );
+
+    type RouteAuthorization = "IAM" | "NONE" | "CUSTOM";
+    type ApiResourceDefinition = {
+      path: string;
+      lambda: NodejsFunction;
+      method: string;
+      authorizationType?: RouteAuthorization;
+      authorizer?: cdk.aws_apigateway.IAuthorizer;
+    };
+
+    const apiResources: Record<string, ApiResourceDefinition> = {
       search: {
         path: "search/{index}",
         lambda: lambdas.search,
@@ -1392,6 +1536,25 @@ export class Api extends cdk.NestedStack {
         path: "getUploadUrl",
         lambda: lambdas.getUploadUrl,
         method: "POST",
+      },
+      oauthToken: {
+        path: "oauth/token",
+        lambda: lambdas.externalToken,
+        method: "POST",
+        authorizationType: "NONE",
+      },
+      externalGetAttachmentUrl: {
+        path: "external/getAttachmentUrl",
+        lambda: lambdas.getExternalAttachmentUrl,
+        method: "POST",
+        authorizationType: "CUSTOM",
+        authorizer: externalTokenAuthorizer,
+      },
+      checkIdentifierUsage: {
+        path: "checkIdentifierUsage",
+        lambda: lambdas.checkIdentifierUsage,
+        method: "GET",
+        authorizationType: "IAM",
       },
       requestBaseCMSAccess: {
         path: "requestBaseCMSAccess",
@@ -1440,6 +1603,8 @@ export class Api extends cdk.NestedStack {
       },
       item: { path: "item", lambda: lambdas.item, method: "POST" },
       submit: { path: "submit", lambda: lambdas.submit, method: "POST" },
+      saveDraft: { path: "saveDraft", lambda: lambdas.saveDraft, method: "POST" },
+      deleteDraft: { path: "deleteDraft", lambda: lambdas.deleteDraft, method: "POST" },
       getTypes: {
         path: "getTypes",
         lambda: lambdas.getTypes,
@@ -1473,6 +1638,8 @@ export class Api extends cdk.NestedStack {
       path: string,
       lambdaFunction: cdk.aws_lambda.Function,
       method: string = "POST",
+      authorizationType: RouteAuthorization = "IAM",
+      authorizer?: cdk.aws_apigateway.IAuthorizer,
     ) => {
       const resource = api.root.resourceForPath(path);
 
@@ -1482,9 +1649,29 @@ export class Api extends cdk.NestedStack {
         credentialsRole: apiGatewayRole,
       });
 
-      // Add method for specified HTTP method
-      resource.addMethod(method, integration, {
-        authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
+      if (authorizationType === "CUSTOM" && !authorizer) {
+        throw new Error(`Route ${path} is configured for CUSTOM auth but has no authorizer.`);
+      }
+
+      const authOptions: Pick<
+        cdk.aws_apigateway.MethodOptions,
+        "authorizationType" | "authorizer"
+      > =
+        authorizationType === "NONE"
+          ? {
+              authorizationType: cdk.aws_apigateway.AuthorizationType.NONE,
+            }
+          : authorizationType === "CUSTOM"
+            ? {
+                authorizationType: cdk.aws_apigateway.AuthorizationType.CUSTOM,
+                authorizer,
+              }
+            : {
+                authorizationType: cdk.aws_apigateway.AuthorizationType.IAM,
+              };
+
+      const methodOptions: cdk.aws_apigateway.MethodOptions = {
+        ...authOptions,
         apiKeyRequired: false,
         methodResponses: [
           {
@@ -1496,11 +1683,20 @@ export class Api extends cdk.NestedStack {
             },
           },
         ],
-      });
+      };
+
+      // Add method for specified HTTP method
+      resource.addMethod(method, integration, methodOptions);
     };
 
     Object.values(apiResources).forEach((resource) => {
-      addApiResource(resource.path, resource.lambda, resource.method);
+      addApiResource(
+        resource.path,
+        resource.lambda,
+        resource.method,
+        resource.authorizationType,
+        resource.authorizer,
+      );
     });
 
     // Define CloudWatch Alarms

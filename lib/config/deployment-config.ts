@@ -1,5 +1,8 @@
 import { getExport, getSecret } from "shared-utils";
 
+const SHARED_STAGES = new Set(["main", "val", "production"]);
+const PROTECTED_STAGES = new Set([...SHARED_STAGES, "datasink"]);
+
 export interface InjectedConfigOptions {
   project: string;
   stage: string;
@@ -29,6 +32,7 @@ export type InjectedConfigProperties = {
   smartLinkUrl: string;
   macproLinkUrl: string;
   legacyS3AccessRoleArn: string;
+  externalApiAuthSecretArn: string;
   useSharedOpenSearch: boolean;
   vpcName: string;
 };
@@ -55,8 +59,8 @@ export class DeploymentConfig {
       ...injectedConfig,
       project: options.project,
       stage: options.stage,
-      isDev: !["main", "val", "production"].includes(options.stage),
-      terminationProtection: ["main", "val", "production"].includes(options.stage),
+      isDev: !SHARED_STAGES.has(options.stage),
+      terminationProtection: PROTECTED_STAGES.has(options.stage),
       sharedOpenSearchDomainArn: "",
       sharedOpenSearchDomainEndpoint: "",
     };
@@ -137,6 +141,7 @@ export class DeploymentConfig {
       typeof config.smartLinkUrl === "string" &&
       typeof config.macproLinkUrl === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
+      typeof config.externalApiAuthSecretArn === "string" && // pragma: allowlist secret
       typeof config.useSharedOpenSearch === "boolean" &&
       typeof config.vpcName === "string"
     );
