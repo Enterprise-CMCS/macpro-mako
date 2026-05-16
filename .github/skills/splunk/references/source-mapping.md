@@ -21,6 +21,8 @@ This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names us
 | mako-val-api-notifyAttachmentArchiveIntegrity | impl | /aws/lambda/mako-val-api-notifyAttachmentArchiveIntegrity |
 | mako-val-api-rebuildAttachmentArchives | impl | /aws/lambda/mako-val-api-rebuildAttachmentArchives |
 | mako-val-api-runAttachmentArchiveIntegrityCheck | impl | /aws/lambda/mako-val-api-runAttachmentArchiveIntegrityCheck |
+| mako-val-api-deleteDraft | impl | /aws/lambda/mako-val-api-deleteDraft |
+| mako-val-api-saveDraft | impl | /aws/lambda/mako-val-api-saveDraft |
 | mako-val-api-submitNOSO | impl | /aws/lambda/mako-val-api-submitNOSO |
 | mako-val-api-submitSplitSPA | impl | /aws/lambda/mako-val-api-submitSplitSPA |
 | mako-val-api-updatePackage | impl | /aws/lambda/mako-val-api-updatePackage |
@@ -32,6 +34,8 @@ This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names us
 | mako-val-data-sinkTypes | impl | /aws/lambda/mako-val-data-sinkTypes |
 | mako-val-email-processEmails | impl | /aws/lambda/mako-val-email-processEmails |
 | mako-production-api-submitNOSO | prod | /aws/lambda/mako-production-api-submitNOSO |
+| mako-production-api-deleteDraft | prod | /aws/lambda/mako-production-api-deleteDraft |
+| mako-production-api-saveDraft | prod | /aws/lambda/mako-production-api-saveDraft |
 | mako-production-api-submitSplitSPA | prod | /aws/lambda/mako-production-api-submitSplitSPA |
 | mako-production-api-updatePackage | prod | /aws/lambda/mako-production-api-updatePackage |
 | mako-production-data-sinkChangelog | prod | /aws/lambda/mako-production-data-sinkChangelog |
@@ -60,7 +64,9 @@ This table maps API Gateway endpoints to their backing Lambda handlers and Splun
 | POST | getUserProfile | `/getUserProfile` | `getUserProfile` | /aws/lambda/mako-datasink-api-getUserProfile | /aws/lambda/mako-val-api-getUserProfile | /aws/lambda/mako-production-api-getUserProfile |
 | POST | item | `/item` | `item` | /aws/lambda/mako-datasink-api-item<br>/aws/lambda/mako-main-api-item | /aws/lambda/mako-val-api-item | /aws/lambda/mako-production-api-item |
 | POST | itemExists | `/itemExists` | `itemExists` | /aws/lambda/mako-main-api-itemExists | /aws/lambda/mako-val-api-itemExists | /aws/lambda/mako-production-api-itemExists |
+| POST | deleteDraft | `/deleteDraft` | `deleteDraft` | /aws/lambda/mako-main-api-deleteDraft | /aws/lambda/mako-val-api-deleteDraft | /aws/lambda/mako-production-api-deleteDraft |
 | GET | requestBaseCMSAccess | `/requestBaseCMSAccess` | `requestBaseCMSAccess` | /aws/lambda/mako-datasink-api-requestBaseCMSAccess | /aws/lambda/mako-val-api-requestBaseCMSAccess | /aws/lambda/mako-production-api-requestBaseCMSAccess |
+| POST | saveDraft | `/saveDraft` | `saveDraft` | /aws/lambda/mako-main-api-saveDraft | /aws/lambda/mako-val-api-saveDraft | /aws/lambda/mako-production-api-saveDraft |
 | POST | search | `/search/{index}` | `search` | /aws/lambda/mako-datasink-api-search<br>/aws/lambda/mako-main-api-search | /aws/lambda/mako-val-api-search | /aws/lambda/mako-production-api-search |
 | POST | submit | `/submit` | `submit` | /aws/lambda/mako-main-api-submit | /aws/lambda/mako-val-api-submit | /aws/lambda/mako-production-api-submit |
 | POST | submitGroupDivision | `/submitGroupDivision` | `submitGroupDivision` |  | /aws/lambda/mako-val-api-submitGroupDivision | /aws/lambda/mako-production-api-submitGroupDivision |

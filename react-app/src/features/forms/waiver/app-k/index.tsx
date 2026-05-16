@@ -24,7 +24,7 @@ export const AppKAmendmentForm = () => (
     title="1915(c) Appendix K Amendment Details"
     breadcrumbText="Request a 1915(c) Appendix K Amendment"
     schema={formSchemas["app-k"]}
-    fields={(form) => (
+    fields={({ control }) => (
       <>
         <div>
           <p className="mt-4 font-bold">
@@ -33,7 +33,7 @@ export const AppKAmendmentForm = () => (
           </p>
         </div>
         <FormField
-          control={form.control}
+          control={control}
           name="title"
           render={({ field }) => (
             <FormItem className="w-[280px]">
@@ -68,7 +68,7 @@ export const AppKAmendmentForm = () => (
           </span>
         </div>
         <FormField
-          control={form.control}
+          control={control}
           name="id"
           render={({ field }) => (
             <FormItem>
@@ -101,7 +101,7 @@ export const AppKAmendmentForm = () => (
           )}
         />
         <FormField
-          control={form.control}
+          control={control}
           name="proposedEffectiveDate"
           render={({ field }) => (
             <FormItem className="max-w-sm">
@@ -135,5 +135,6 @@ export const AppKAmendmentForm = () => (
       body: "The 1915(c) Appendix K Amendment request has been submitted.",
       variant: "success",
     }}
+    draftOptions={{ enabled: true, event: "app-k" }}
   />
 );

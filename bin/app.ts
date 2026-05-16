@@ -5,7 +5,11 @@ import * as cdk from "aws-cdk-lib";
 import { getSecret, validateEnvVariable } from "shared-utils";
 
 import { DeploymentConfig } from "../lib/config/deployment-config";
-import { IamPathAspect, IamPermissionsBoundaryAspect } from "../lib/local-aspects";
+import {
+  IamPathAspect,
+  IamPermissionsBoundaryAspect,
+  LambdaRuntimeMinVersionAspect,
+} from "../lib/local-aspects";
 import { ParentStack } from "../lib/stacks/parent";
 
 async function main() {
@@ -38,6 +42,7 @@ async function main() {
       new IamPermissionsBoundaryAspect(deploymentConfig.config.iamPermissionsBoundary),
     );
     cdk.Aspects.of(app).add(new IamPathAspect(deploymentConfig.config.iamPath));
+    cdk.Aspects.of(app).add(new LambdaRuntimeMinVersionAspect());
   } catch (error) {
     console.error("Error:", error);
     process.exit(1);

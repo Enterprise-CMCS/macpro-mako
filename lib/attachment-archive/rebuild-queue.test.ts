@@ -17,4 +17,16 @@ describe("attachment archive rebuild queue", () => {
       buildAttachmentArchiveMessageGroupId("MD-2"),
     );
   });
+
+  it("builds distinct group ids for draft and main archive rebuilds of the same package", () => {
+    expect(buildAttachmentArchiveMessageGroupId("MD-1")).not.toBe(
+      buildAttachmentArchiveMessageGroupId("MD-1", { preferDraft: true }),
+    );
+  });
+
+  it("preserves the legacy group id for main archive rebuilds", () => {
+    expect(buildAttachmentArchiveMessageGroupId("MD-1", { preferDraft: false })).toBe(
+      buildAttachmentArchiveMessageGroupId("MD-1"),
+    );
+  });
 });

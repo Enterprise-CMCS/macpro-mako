@@ -5,8 +5,12 @@ import { AttachmentArchiveRebuildMessage } from "./types";
 
 const sqsClient = new SQSClient({ region: process.env.region || process.env.AWS_REGION });
 
-export function buildAttachmentArchiveMessageGroupId(packageId: string): string {
-  return `package-${createHash("sha256").update(packageId).digest("hex")}`;
+export function buildAttachmentArchiveMessageGroupId(
+  packageId: string,
+  options: { preferDraft?: boolean } = {},
+): string {
+  const hashInput = options.preferDraft ? `${packageId}:draft` : packageId;
+  return `package-${createHash("sha256").update(hashInput).digest("hex")}`;
 }
 
 export function hasAttachmentArchiveRebuildQueueConfigured(): boolean {
@@ -29,7 +33,9 @@ export async function sendAttachmentArchiveRebuildRequest(
     new SendMessageCommand({
       QueueUrl: getAttachmentArchiveRebuildQueueUrl(),
       MessageBody: JSON.stringify(message),
-      MessageGroupId: buildAttachmentArchiveMessageGroupId(message.packageId),
+      MessageGroupId: buildAttachmentArchiveMessageGroupId(message.packageId, {
+        preferDraft: message.preferDraft,
+      }),
     }),
   );
 }

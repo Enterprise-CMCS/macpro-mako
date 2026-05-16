@@ -3,6 +3,7 @@ export * as attachmentArchiveBackfillStatus from "./attachmentArchiveBackfillSta
 export * as auditAttachmentArchives from "./auditAttachmentArchives";
 export * as backfillAttachmentArchives from "./backfillAttachmentArchives";
 export * as deleteIndex from "./deleteIndex";
+export * as deleteDraft from "./deleteDraft";
 export * as externalAttachmentAuthorizer from "./externalAttachmentAuthorizer";
 export * as externalToken from "./externalToken";
 export * as getAttachmentUrl from "./getAttachmentUrl";
@@ -22,6 +23,7 @@ export * as validateAttachmentArchive from "./validateAttachmentArchive";
 export * as processEmails from "./processEmails";
 export * as runReindex from "./runReindex";
 export * as search from "./search";
+export * as saveDraft from "./saveDraft";
 export * as setupIndex from "./setupIndex";
 export * as sinkMain from "./sinkMain";
 export * as checkConsumerLag from "./checkConsumerLag";

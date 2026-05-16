@@ -13,7 +13,7 @@ function createInlineLambda(
   functionName: string,
 ): cdk.aws_lambda.Function {
   return new cdk.aws_lambda.Function(stack, id, {
-    runtime: cdk.aws_lambda.Runtime.NODEJS_20_X,
+    runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
     handler: "index.handler",
     code: cdk.aws_lambda.Code.fromInline("exports.handler = async () => ({ status: 'ok' });"),
     functionName,

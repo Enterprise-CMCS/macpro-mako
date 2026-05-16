@@ -49,4 +49,24 @@ describe("getAttachmentUrl tests", () => {
       }),
     );
   });
+
+  it("passes preferDraft through to the API body when requested", async () => {
+    const postSpy = vi.spyOn(API, "post").mockResolvedValue({
+      url: "https://example.com/draft-file.pdf",
+    });
+
+    await getAttachmentUrl(id, ATTACHMENT_BUCKET_NAME, key, filename, {
+      preferDraft: true,
+    });
+
+    expect(postSpy).toHaveBeenCalledWith("os", "/getAttachmentUrl", {
+      body: {
+        id,
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key,
+        filename,
+        preferDraft: true,
+      },
+    });
+  });
 });

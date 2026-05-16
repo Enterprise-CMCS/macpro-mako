@@ -6,6 +6,7 @@ export const getAttachmentUrl = async (
   bucket: string,
   key: string,
   filename: string,
+  options: { preferDraft?: boolean } = {},
 ) => {
   const response = await API.post("os", "/getAttachmentUrl", {
     body: {
@@ -13,6 +14,7 @@ export const getAttachmentUrl = async (
       bucket,
       key,
       filename,
+      preferDraft: options.preferDraft,
     },
   });
   if (!response.url) {

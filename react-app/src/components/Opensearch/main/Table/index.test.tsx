@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
 import { OsTable, OsTableColumn } from "@/components";
@@ -117,5 +117,31 @@ describe("", () => {
     const expectedQueryString = getDashboardQueryString().replaceAll("+", " ");
     const params = new URLSearchParams(router.state.location.search.substring(1));
     expect(params.get("os")).toEqual(expectedQueryString);
+  });
+
+  it("should italicize all non-system cells for draft rows", () => {
+    const onToggle = vi.fn();
+    const draftHits: opensearch.Hits<opensearch.main.Document> = {
+      ...defaultHits,
+      hits: defaultHits.hits.map((hit, idx) =>
+        idx === 0
+          ? {
+              ...hit,
+              _source: {
+                ...hit._source,
+                seatoolStatus: SEATOOL_STATUS.DRAFT,
+              },
+            }
+          : hit,
+      ),
+    };
+
+    setup(DEFAULT_COLUMNS, onToggle, draftHits);
+
+    const draftId = draftHits.hits[0]._source.id;
+    const row = screen.getByText(draftId).closest("tr");
+    expect(row).toBeTruthy();
+    const cells = row?.querySelectorAll("td") ?? [];
+    cells.forEach((cell) => expect(cell).toHaveClass("italic"));
   });
 });

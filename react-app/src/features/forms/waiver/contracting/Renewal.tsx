@@ -123,6 +123,7 @@ export const RenewalForm = () => {
         property: "id",
         documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
+      draftOptions={{ enabled: true, event: "contracting-renewal" }}
     />
   );
 };

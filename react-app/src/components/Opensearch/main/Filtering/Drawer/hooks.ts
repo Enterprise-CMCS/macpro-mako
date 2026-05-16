@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useState } from "react";
-import { opensearch } from "shared-types";
+import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import { useGetUser } from "@/api";
-import { checkMultiFilter, useOsAggregate, useOsUrl } from "@/components";
+import { checkMultiFilter, removeDraftStatusFilters, useOsAggregate, useOsUrl } from "@/components";
 import { useLabelMapping } from "@/hooks";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { useFilterDrawerContext } from "../FilterProvider";
@@ -94,6 +95,12 @@ export const useFilterDrawer = () => {
   const url = useOsUrl();
   const drawer = useFilterDrawerContext();
   const [filters, setFilters] = useFilterState();
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const activeUrlFilters = useMemo(
+    () =>
+      isSaveInProgressEnabled ? url.state.filters : removeDraftStatusFilters(url.state.filters),
+    [isSaveInProgressEnabled, url.state.filters],
+  );
 
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const labelMap = useLabelMapping();
@@ -148,7 +155,7 @@ export const useFilterDrawer = () => {
     }));
   };
 
-  const filtersApplied = checkMultiFilter(url.state.filters, 1);
+  const filtersApplied = checkMultiFilter(activeUrlFilters, 1);
 
   // update filter display based on url query
   useEffect(() => {
@@ -157,7 +164,7 @@ export const useFilterDrawer = () => {
     setFilters((currentFilters) => {
       // Set the new filters state based on the current filter data
       return Object.entries(currentFilters).reduce((STATE, [KEY, VAL]) => {
-        const updateFilter = url.state.filters.find((FIL) => FIL.field === KEY);
+        const updateFilter = activeUrlFilters.find((FIL) => FIL.field === KEY);
 
         // Determine the new value for the filter based on the URL state
         const value = (() => {
@@ -178,7 +185,7 @@ export const useFilterDrawer = () => {
     });
     setAccordionValues(updateAccordions);
     // accordionValues is intensionally left out of this dependency array because it could cause looping
-  }, [url.state.filters, drawer.drawerOpen, setFilters]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [activeUrlFilters, drawer.drawerOpen, setFilters]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const aggs = useMemo(() => {
     return Object.entries(_aggs || {}).reduce(
@@ -186,6 +193,7 @@ export const useFilterDrawer = () => {
         return {
           ...STATE,
           [KEY]: AGG.buckets
+            .filter((BUCK) => isSaveInProgressEnabled || BUCK.key !== SEATOOL_STATUS.DRAFT)
             .map((BUCK) => ({
               id: BUCK.key.replaceAll(" ", ""),
               label: `${labelMap[BUCK.key] || BUCK.key}`,
@@ -196,7 +204,7 @@ export const useFilterDrawer = () => {
       },
       {} as Record<opensearch.main.Field, { id: string; label: string; value: string }[]>,
     );
-  }, [_aggs, labelMap]);
+  }, [_aggs, isSaveInProgressEnabled, labelMap]);
 
   return {
     aggs,
