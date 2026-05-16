@@ -25,13 +25,17 @@ export interface AttachmentArchiveSectionDescriptor extends AttachmentArchiveSec
   attachments: AttachmentArchiveSourceAttachment[];
 }
 
+function isArchiveEligibleChangelogEntry(document: AttachmentArchiveChangelogDocument) {
+  return !document.isAdminChange || document.event === "NOSO";
+}
+
 export function getArchiveEligibleChangelogEntries(
   changelog: AttachmentArchiveChangelogItem[],
 ): AttachmentArchiveChangelogDocument[] {
   return changelog
     .map((item) => item._source)
     .filter((document): document is AttachmentArchiveChangelogDocument => Boolean(document))
-    .filter((document) => !document.isAdminChange);
+    .filter(isArchiveEligibleChangelogEntry);
 }
 
 function getArchiveEntryTimestamp(entry: AttachmentArchiveChangelogDocument) {

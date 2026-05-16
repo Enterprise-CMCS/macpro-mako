@@ -122,6 +122,106 @@ describe("syncing Changelog events", () => {
     expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
   });
 
+  it("flattens NOSO attachments and queues archive rebuilds for NOSO admin changes", async () => {
+    hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(true);
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = TOPIC;
+
+    const event = createKafkaEvent({
+      [`${TOPIC}-01`]: [
+        createKafkaRecord({
+          topic: `${TOPIC}-01`,
+          key: Buffer.from(TEST_ITEM_ID).toString("base64"),
+          value: convertObjToBase64({
+            id: TEST_ITEM_ID,
+            packageId: TEST_ITEM_ID,
+            authority: "Medicaid SPA",
+            status: "submitted",
+            origin: "SEATool",
+            state: "VA",
+            event: "NOSO",
+            mockEvent: "new-medicaid-submission",
+            isAdminChange: true,
+            adminChangeType: "NOSO",
+            changeMade: "create NOSO package",
+            changeReason: "missing from OneMAC",
+            submitterName: "George Harrison",
+            submitterEmail: "george@example.com",
+            stateStatus: "Submitted",
+            cmsStatus: "Submitted",
+            makoChangedDate: TIMESTAMP,
+            changedDate: TIMESTAMP,
+            statusDate: TIMESTAMP,
+            timestamp: TIMESTAMP,
+            submissionDate: TIMESTAMP,
+            proposedDate: TIMESTAMP,
+            attachments: {
+              cmsForm179: {
+                label: "CMS-179 Form",
+                files: [
+                  {
+                    filename: "cms-179.pdf",
+                    title: "cms-179",
+                    bucket: "uploads-test-attachment-bucket",
+                    key: "cms-179.pdf",
+                    uploadDate: TIMESTAMP,
+                  },
+                ],
+              },
+              spaPages: {
+                label: "SPA Pages",
+                files: [
+                  {
+                    filename: "spa-pages.pdf",
+                    title: "spa-pages",
+                    bucket: "uploads-test-attachment-bucket",
+                    key: "spa-pages.pdf",
+                    uploadDate: TIMESTAMP + 1,
+                  },
+                ],
+              },
+            },
+          }),
+          offset: 1,
+        }),
+      ],
+    });
+
+    await handler(event, {} as Context, vi.fn());
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      expect.objectContaining({
+        id: TEST_ITEM_ID,
+        packageId: TEST_ITEM_ID,
+        event: "NOSO",
+        adminChangeType: "NOSO",
+        isAdminChange: true,
+        attachments: [
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "cms-179.pdf",
+            key: "cms-179.pdf",
+            title: "CMS-179 Form",
+            uploadDate: TIMESTAMP,
+          },
+          {
+            bucket: "uploads-test-attachment-bucket",
+            filename: "spa-pages.pdf",
+            key: "spa-pages.pdf",
+            title: "SPA Pages",
+            uploadDate: TIMESTAMP + 1,
+          },
+        ],
+      }),
+    ]);
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: TEST_ITEM_ID,
+        latestTimestamp: TIMESTAMP,
+        source: "sink-changelog",
+      }),
+    );
+  });
+
   it.each([
     [
       "app-k",

@@ -294,7 +294,13 @@ const processAndIndex = async ({
   }
 
   const packagesToRebuild = docs.reduce<Map<string, number | undefined>>((acc, document) => {
-    if (!document.packageId || document.packageId.endsWith("-del") || document.isAdminChange) {
+    const isArchiveEligibleAdminChange = document.isAdminChange && document.event === "NOSO";
+
+    if (
+      !document.packageId ||
+      document.packageId.endsWith("-del") ||
+      (document.isAdminChange && !isArchiveEligibleAdminChange)
+    ) {
       return acc;
     }
 

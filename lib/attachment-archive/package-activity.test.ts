@@ -88,7 +88,7 @@ describe("buildAttachmentArchiveSections", () => {
     ).toBe("MD-26-9289-P-section-3-rai-response-submitted-attachments.zip");
   });
 
-  it("ignores admin changes and entries without attachments when assigning section numbers", () => {
+  it("ignores non-NOSO admin changes and entries without attachments when assigning section numbers", () => {
     const sections = buildAttachmentArchiveSections({
       packageId: "MD-26-9289-P",
       changelog: [
@@ -105,7 +105,14 @@ describe("buildAttachmentArchiveSections", () => {
         buildChangelogItem({
           id: "admin-change",
           isAdminChange: true,
+          event: "split-spa",
           timestamp: 150,
+        }),
+        buildChangelogItem({
+          id: "noso-admin-change",
+          isAdminChange: true,
+          event: "NOSO",
+          timestamp: 125,
         }),
         buildChangelogItem({
           id: "oldest",
@@ -115,8 +122,12 @@ describe("buildAttachmentArchiveSections", () => {
       ],
     });
 
-    expect(sections.map((section) => section.sectionId)).toEqual(["oldest", "newest"]);
-    expect(sections.map((section) => section.sectionNumber)).toEqual([1, 2]);
+    expect(sections.map((section) => section.sectionId)).toEqual([
+      "oldest",
+      "noso-admin-change",
+      "newest",
+    ]);
+    expect(sections.map((section) => section.sectionNumber)).toEqual([1, 2, 3]);
   });
 
   it("uses original changelog order as the tiebreaker when timestamps match or are missing", () => {
@@ -188,7 +199,7 @@ describe("buildAttachmentArchiveSections", () => {
 });
 
 describe("hasArchiveableAttachments", () => {
-  it("only reports true when a non-admin changelog entry has attachments", () => {
+  it("reports true when a non-admin or NOSO changelog entry has attachments", () => {
     expect(
       hasArchiveableAttachments([
         buildChangelogItem({
@@ -199,6 +210,7 @@ describe("hasArchiveableAttachments", () => {
         buildChangelogItem({
           id: "admin-only",
           isAdminChange: true,
+          event: "split-spa",
           timestamp: 200,
         }),
       ]),
@@ -209,6 +221,17 @@ describe("hasArchiveableAttachments", () => {
         buildChangelogItem({
           id: "with-attachments",
           timestamp: 300,
+        }),
+      ]),
+    ).toBe(true);
+
+    expect(
+      hasArchiveableAttachments([
+        buildChangelogItem({
+          id: "noso-attachments",
+          isAdminChange: true,
+          event: "NOSO",
+          timestamp: 400,
         }),
       ]),
     ).toBe(true);

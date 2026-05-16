@@ -11,6 +11,7 @@ export function getPackageActivityLabel(event: changelog.Document["event"]): str
     case "new-chip-submission":
     case "new-chip-details-submission":
     case "new-medicaid-submission":
+    case "NOSO":
     case "temporary-extension":
     case "app-k":
       return "Initial Package Submitted";
