@@ -28,6 +28,7 @@ export * as setupIndex from "./setupIndex";
 export * as sinkMain from "./sinkMain";
 export * as checkConsumerLag from "./checkConsumerLag";
 export * as cfnNotify from "./cfnNotify";
+export * as dataQualityExport from "./dataQualityExport";
 export * as deleteTriggers from "./deleteTriggers";
 export * as sinkChangelog from "./sinkChangelog";
 export * as item from "./item";

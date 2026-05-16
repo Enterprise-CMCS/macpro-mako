@@ -1,4 +1,6 @@
 import * as cdk from "aws-cdk-lib";
+import * as events from "aws-cdk-lib/aws-events";
+import * as targets from "aws-cdk-lib/aws-events-targets";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
@@ -23,6 +25,8 @@ interface DataStackProps extends cdk.NestedStackProps {
   sharedOpenSearchDomainEndpoint: string;
   sharedOpenSearchDomainArn: string;
   devPasswordArn: string;
+  attachmentsBucket: cdk.aws_s3.Bucket;
+  legacyS3AccessRoleArn: string;
 }
 
 export class Data extends cdk.NestedStack {
@@ -56,6 +60,8 @@ export class Data extends cdk.NestedStack {
       sharedOpenSearchDomainEndpoint,
       sharedOpenSearchDomainArn,
       devPasswordArn,
+      attachmentsBucket,
+      legacyS3AccessRoleArn,
     } = props;
     const consumerGroupPrefix = `--${project}--${stage}--`;
 
@@ -357,6 +363,27 @@ export class Data extends cdk.NestedStack {
       });
     }
 
+    const dataQualityBucket = new cdk.aws_s3.Bucket(this, "DataQualityBucket", {
+      bucketName: `${project}-${stage}-data-quality-${cdk.Aws.ACCOUNT_ID}`,
+      versioned: true,
+      encryption: cdk.aws_s3.BucketEncryption.S3_MANAGED,
+      removalPolicy: isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
+      autoDeleteObjects: isDev,
+      blockPublicAccess: cdk.aws_s3.BlockPublicAccess.BLOCK_ALL,
+    });
+
+    dataQualityBucket.addToResourcePolicy(
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.DENY,
+        principals: [new cdk.aws_iam.AnyPrincipal()],
+        actions: ["s3:*"],
+        resources: [dataQualityBucket.bucketArn, `${dataQualityBucket.bucketArn}/*`],
+        conditions: {
+          Bool: { "aws:SecureTransport": "false" },
+        },
+      }),
+    );
+
     const createLambda = ({
       id,
       entry = `${id}.ts`,
@@ -463,6 +490,66 @@ export class Data extends cdk.NestedStack {
       },
     });
 
+    const dataQualityLambdaRole = new cdk.aws_iam.Role(this, "DataQualityLambdaRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+      managedPolicies: [
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole",
+        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaVPCAccessExecutionRole",
+        ),
+      ],
+      inlinePolicies: {
+        DataQualityExportPolicy: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "es:ESHttpHead",
+                "es:ESHttpPost",
+                "es:ESHttpGet",
+                "es:ESHttpPatch",
+                "es:ESHttpDelete",
+                "es:ESHttpPut",
+              ],
+              resources: [`${openSearchDomainArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject", "s3:PutObject"],
+              resources: [`${dataQualityBucket.bucketArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:GetObject"],
+              resources: [`${attachmentsBucket.bucketArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["s3:ListBucket"],
+              resources: [attachmentsBucket.bucketArn],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["sts:AssumeRole"],
+              resources: [legacyS3AccessRoleArn],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["ses:SendEmail"],
+              resources: ["*"],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.DENY,
+              actions: ["logs:CreateLogGroup"],
+              resources: ["*"],
+            }),
+          ],
+        }),
+      },
+    });
+
     const functionConfigs = {
       sinkChangelog: { provisionedConcurrency: 2 },
       sinkCpocs: { provisionedConcurrency: 0 },
@@ -492,6 +579,28 @@ export class Data extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
+    const dataQualityExport = createLambda({
+      id: "dataQualityExport",
+      entry: "dataQualityExport.ts",
+      role: dataQualityLambdaRole,
+      useVpc: true,
+      timeout: cdk.Duration.minutes(15),
+      memorySize: 2048,
+      environment: {
+        osDomain: `https://${openSearchDomainEndpoint}`,
+        indexNamespace,
+        DATA_QUALITY_BUCKET_NAME: dataQualityBucket.bucketName,
+        DATA_QUALITY_DEFAULT_EMAILS: isDev ? "james.d@globalalliantinc.com" : "",
+        ATTACHMENTS_BUCKET_NAME: attachmentsBucket.bucketName,
+        LEGACY_S3_ACCESS_ROLE_ARN: legacyS3AccessRoleArn,
+      },
+    });
+
+    const dataQualitySchedule = new events.Rule(this, "DataQualityExportSchedule", {
+      schedule: events.Schedule.cron({ minute: "0", hour: "13", weekDay: "MON" }),
+    });
+
+    dataQualitySchedule.addTarget(new targets.LambdaFunction(dataQualityExport));
     attachmentArchiveRebuildQueue.grantSendMessages(sharedLambdaRole);
 
     const stateMachineRole = new cdk.aws_iam.Role(this, "StateMachineRole", {
