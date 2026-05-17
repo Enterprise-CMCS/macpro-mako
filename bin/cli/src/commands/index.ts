@@ -1,6 +1,5 @@
 export * from "./deploy";
 export * from "./destroy";
-export * from "./docs";
 export * from "./e2e";
 export * from "./emails";
 export * from "./get-cost";

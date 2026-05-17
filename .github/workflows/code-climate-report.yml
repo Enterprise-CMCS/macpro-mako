@@ -15,7 +15,7 @@ concurrency:
 
 permissions:
   actions: read
-  contents: write
+  contents: read
 
 jobs:
   coverage-report:
@@ -23,9 +23,6 @@ jobs:
     env:
       JSON_ARTIFACT_ID: main-coverage
       HTML_ARTIFACT_ID: html-main-coverage-report
-    outputs:
-      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
-      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -59,15 +56,3 @@ jobs:
           path: coverage/html-report/*
           overwrite: true
           retention-days: 90
-
-  publish:
-    needs: [coverage-report]
-    uses: ./.github/workflows/push-to-gh-pages.yml
-    with:
-      FILE_1_ARTIFACT_ID: ${{ needs.coverage-report.outputs.json_artifact_id }}
-      FILE_1_DEPLOY_TO: _data/coverage/
-      FILE_2_ARTIFACT_ID: ${{ needs.coverage-report.outputs.html_artifact_id }}
-      FILE_2_DEPLOY_TO: coverage/
-      COMMIT_MSG: update code coverage report for main
-      URL_PATH: coverage/
-    secrets: inherit # pragma: allowlist secret
