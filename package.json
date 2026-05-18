@@ -31,10 +31,12 @@
     "bun:dev": "cd react-app && bun run dev"
   },
   "repository": "https://github.com/Enterprise-CMCS/macpro-mako",
+  "workspacesDocumentation": "lib/attachment-archive is intentionally excluded from workspaces; it uses a separate bun.lockb and is installed via ./run install for the ECS worker Docker image.",
   "workspaces": [
     "lib/lambda",
     "lib/libs",
     "lib/local-constructs",
+    "lib/local-constructs/*",
     "lib/packages/*",
     "react-app",
     "bin/cli",
@@ -52,7 +54,6 @@
     "aws-cdk-lib": "^2.150.0",
     "cdk": "^2.156.0",
     "constructs": "^10.3.0",
-    "esbuild": "^0.27.1",
     "fuse.js": "^7.1.0",
     "react-email": "^5.0.5",
     "react-string-replace": "^1.1.1",

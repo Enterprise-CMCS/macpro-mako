@@ -37,4 +37,5 @@ docs/local/*
 graphify-out/cache/
 graphify-out/manifest.json
 graphify-out/cost.json
+.cursor/*
 /graphify-out/.graphify_detect.json

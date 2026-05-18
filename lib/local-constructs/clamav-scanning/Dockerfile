@@ -1,17 +1,17 @@
-FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24 AS builder
+FROM --platform=linux/amd64 oven/bun:1.1.20-alpine AS builder
 
 # Increment CACHE_BUST to force Docker to pull a fresh base image (e.g., for security patches)
 ARG CACHE_BUST=2026-05-13-clamav-al2023-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
-WORKDIR ${LAMBDA_TASK_ROOT}
+WORKDIR /app
 
-COPY package.json package-lock.json ./
-RUN npm ci
+COPY package.json bun.lockb ./
+RUN bun install --frozen-lockfile
 
 COPY . .
 
-RUN npm run build
+RUN bun run build
 
 FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24
 
@@ -35,7 +35,7 @@ RUN (dnf install -y clamav clamd || microdnf install -y clamav clamd || yum inst
     # RIE is only needed for local container emulation, not in Lambda.
     && rm -f /usr/local/bin/aws-lambda-rie
 
-COPY --from=builder ${LAMBDA_TASK_ROOT}/dist ./dist
+COPY --from=builder /app/dist ./dist
 COPY src/conf/clamd.conf /etc/clamd.d/scan.conf
 COPY src/conf/freshclam.conf /bin/freshclam.conf
 
