@@ -117,7 +117,7 @@ jobs:
       - deploy
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
+    if: github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val'
     env:
       JSON_ARTIFACT_ID: json-playwright-report
       HTML_ARTIFACT_ID: html-playwright-report
@@ -147,10 +147,12 @@ jobs:
         run: run e2e
       - name: Rename Reports
         if: ${{ !cancelled() }}
-        working-directory: test/playwright-reports/
         run: |
-          mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
-          mv html-report ${{ steps.variables.outputs.report_name }}
+          if [ -d "test/playwright-reports" ]; then
+            cd test/playwright-reports
+            mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
+            mv html-report ${{ steps.variables.outputs.report_name }}
+          fi
       - name: Upload JSON Report
         uses: actions/upload-artifact@v4
         id: upload-json

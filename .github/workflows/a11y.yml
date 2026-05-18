@@ -55,10 +55,12 @@ jobs:
 
       - name: Rename Reports
         if: ${{ !cancelled() }}
-        working-directory: accessibility/
         run: |
-          mv json-report.json ${{ steps.variables.outputs.report_name }}.json
-          mv html-report ${{ steps.variables.outputs.report_name }}
+          if [ -d "accessibility" ]; then
+            cd accessibility
+            mv json-report.json ${{ steps.variables.outputs.report_name }}.json
+            mv html-report ${{ steps.variables.outputs.report_name }}
+          fi
 
       - name: Upload JSON Report
         uses: actions/upload-artifact@v4
