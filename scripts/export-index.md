@@ -50,13 +50,13 @@ npx tsx scripts/export-index.ts \
 
 ## Script Parameters
 
-| Parameter      | Required | Description                    | Default                    |
-| -------------- | -------- | ------------------------------ | -------------------------- |
-| `--bucket`     | Yes      | S3 bucket name for export      | None                       |
-| `--domain`     | Yes      | OpenSearch domain URL          | None                       |
-| `--batch-size` | No       | Batch size for scrolling       | 1000 (main), 5000 (others) |
-| `--key-prefix` | No       | S3 key prefix for files        | `opensearch-exports/yyyy-mm-dd` |
-| `--help`       | No       | Show usage information         | -                          |
+| Parameter      | Required | Description               | Default                         |
+| -------------- | -------- | ------------------------- | ------------------------------- |
+| `--bucket`     | Yes      | S3 bucket name for export | None                            |
+| `--domain`     | Yes      | OpenSearch domain URL     | None                            |
+| `--batch-size` | No       | Batch size for scrolling  | 1000 (main), 5000 (others)      |
+| `--key-prefix` | No       | S3 key prefix for files   | `opensearch-exports/yyyy-mm-dd` |
+| `--help`       | No       | Show usage information    | -                               |
 
 ## Exported Indexes
 
