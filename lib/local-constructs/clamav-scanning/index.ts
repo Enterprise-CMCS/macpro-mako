@@ -14,6 +14,8 @@ import * as sqs from "aws-cdk-lib/aws-sqs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
 
+import { containerImageRefresh } from "../../config/container-image-refresh";
+
 interface ClamScanScannerProps {
   readonly fileBucket: s3.Bucket;
 }
@@ -153,7 +155,7 @@ export class ClamScanScanner extends Construct {
     const clamscanDefsLogGroup = new logs.LogGroup(this, `${id}ClamDefsLogGroup`, {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
-    const clamAvImageCacheBust = "2026-05-13-clamav-al2023-security-refresh";
+    const clamAvImageCacheBust = containerImageRefresh.clamAvScanning;
 
     const clamDefsLambda = new DockerImageFunction(this, "ServerlessClamDefs", {
       code: DockerImageCode.fromImageAsset(__dirname, {
