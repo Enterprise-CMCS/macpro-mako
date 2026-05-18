@@ -58,7 +58,6 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 ### Documentation and support tooling
 
-- `./run docs` — start the Jekyll documentation container on http://localhost:4000; append `--stop` to tear it down.
 - `./run open-app` / `./run open-kibana` — open the stage-specific application or Kibana URLs retrieved from SSM (requires MACPro AWS credentials).
 - `./run logs --functionName <name> [--stage <stage>]` — tail CloudWatch logs for a tagged Lambda; interactive when multiple functions match.
 - `./run get-cost [--stage <stage>]` — print the last 14 days of AWS costs for the tagged stack.

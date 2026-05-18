@@ -3,7 +3,6 @@ import yargs from "yargs";
 import {
   deploy,
   destroy,
-  docs,
   e2e,
   emails,
   getCost,
@@ -25,7 +24,6 @@ yargs
   })
   .command(deploy)
   .command(destroy)
-  .command(docs)
   .command(e2e)
   .command(emails)
   .command(getCost)

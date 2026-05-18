@@ -42,7 +42,7 @@ jobs:
           jira-ignore-statuses: Done, Closed, Canceled
           aws-severities: CRITICAL, HIGH, MEDIUM
           jira-custom-fields: '{ "customfield_10100": "OY2-37771","customfield_26713":[{"id":"51916"}]}'
-          include-all-products: 'true'
+          include-all-products: "true"
           jira-consolidate-tickets: true
           skip-products: Default
           jira-assignee: DSFV

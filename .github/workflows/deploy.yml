@@ -117,30 +117,18 @@ jobs:
       - deploy
     environment:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
-    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
+    if: github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val'
     env:
       JSON_ARTIFACT_ID: json-playwright-report
       HTML_ARTIFACT_ID: html-playwright-report
-    outputs:
-      json_artifact_id: ${{ env.JSON_ARTIFACT_ID }}
-      json_deploy_to: _data/${{ steps.variables.outputs.report_path }}
-      html_artifact_id: ${{ env.HTML_ARTIFACT_ID }}
-      html_deploy_to: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/
-      commit_msg: ${{ steps.variables.outputs.commit_msg }}
-      output_url: ${{ steps.variables.outputs.report_path }}${{ steps.variables.outputs.report_name }}/
-      actualResult: ${{ steps.e2e-test.conclusion }}
     steps:
-      - name: Set Report Path and Name
+      - name: Set report name
         id: variables
         run: |
           if [[ ${{ github.ref_name }} == 'main' ]]; then
-            echo "report_path=playwright-reports/" >> "$GITHUB_OUTPUT"
             echo "report_name=main" >> "$GITHUB_OUTPUT"
-            echo "commit_msg=update Playwright report for main" >> "$GITHUB_OUTPUT"
           else
-            echo "report_path=playwright-reports/branches/${{ github.ref_name }}/" >> "$GITHUB_OUTPUT"
             echo "report_name=${{ github.run_id }}" >> "$GITHUB_OUTPUT"
-            echo "commit_msg=add Playwright report for branch ${{ github.ref_name }}, run-id ${{ github.run_id }}" >> "$GITHUB_OUTPUT"
           fi
       - name: Checkout
         uses: actions/checkout@v4
@@ -159,10 +147,12 @@ jobs:
         run: run e2e
       - name: Rename Reports
         if: ${{ !cancelled() }}
-        working-directory: test/playwright-reports/
         run: |
-          mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
-          mv html-report ${{ steps.variables.outputs.report_name }}
+          if [ -d "test/playwright-reports" ]; then
+            cd test/playwright-reports
+            mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
+            mv html-report ${{ steps.variables.outputs.report_name }}
+          fi
       - name: Upload JSON Report
         uses: actions/upload-artifact@v4
         id: upload-json
@@ -180,19 +170,6 @@ jobs:
           path: test/playwright-reports/${{ steps.variables.outputs.report_name }}
           retention-days: 30
 
-  publish:
-    needs: [e2e, test]
-    uses: ./.github/workflows/push-to-gh-pages.yml
-    if: ${{ github.ref != 'refs/heads/production' }} && ${{ github.ref != 'refs/heads/val' }}
-    with:
-      FILE_1_ARTIFACT_ID: ${{ needs.e2e.outputs.json_artifact_id }}
-      FILE_1_DEPLOY_TO: ${{ needs.e2e.outputs.json_deploy_to }}
-      FILE_2_ARTIFACT_ID: ${{ needs.e2e.outputs.html_artifact_id }}
-      FILE_2_DEPLOY_TO: ${{ needs.e2e.outputs.html_deploy_to }}
-      COMMIT_MSG: ${{ needs.e2e.outputs.commit_msg }}
-      URL_PATH: ${{ needs.e2e.outputs.output_url }}
-    secrets: inherit # pragma: allowlist secret
-
   cfn-nag:
     runs-on: ubuntu-latest
     needs:
@@ -201,7 +178,7 @@ jobs:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup
 
@@ -233,7 +210,7 @@ jobs:
       name: ${{ startsWith(github.ref_name, 'snyk-') && 'snyk' || github.ref_name }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup
 
@@ -268,7 +245,7 @@ jobs:
       - cfn-nag
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - uses: ./.github/actions/setup
 
