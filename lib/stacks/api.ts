@@ -1082,6 +1082,8 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
+    const attachmentArchiveImageCacheBust = "2026-05-13-attachment-archive-security-refresh";
+
     const archiveWorkerImage = new cdk.aws_ecr_assets.DockerImageAsset(
       this,
       "AttachmentArchiveWorkerImage",
@@ -1091,6 +1093,9 @@ export class Api extends cdk.NestedStack {
         },
         directory: join(__dirname, "../attachment-archive"),
         platform: cdk.aws_ecr_assets.Platform.LINUX_AMD64,
+        buildArgs: {
+          CACHE_BUST: attachmentArchiveImageCacheBust,
+        },
       },
     );
 

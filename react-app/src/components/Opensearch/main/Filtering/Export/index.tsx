@@ -15,9 +15,14 @@ import {
   useOsUrl,
 } from "@/components";
 import { ConfirmationDialog } from "@/components/ConfirmationDialog";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
-import { DEFAULT_FILTERS } from "../../useOpensearch";
+import {
+  DEFAULT_FILTERS,
+  getSaveInProgressDashboardFilters,
+  removeDraftStatusFilters,
+} from "../../useOpensearch";
 import {
   buildCsvExportRows,
   exportCsvRows,
@@ -35,16 +40,22 @@ export const OsExportData: FC<{
   const [loading, setLoading] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
 
   const exportToCsv = async () => {
     setLoading(true);
     const filters = [
-      ...url.state.filters,
+      ...(isSaveInProgressEnabled
+        ? url.state.filters
+        : removeDraftStatusFilters(url.state.filters)),
       ...(DEFAULT_FILTERS[url.state.tab]?.filters || []),
       ...createSearchFilterable(url.state.search || ""),
+      ...getSaveInProgressDashboardFilters(isSaveInProgressEnabled),
     ];
 
-    const resolvedData = await getMainExportData(filters, url.state.sort);
+    const resolvedData = await getMainExportData(filters, url.state.sort, {
+      includeDrafts: isSaveInProgressEnabled,
+    });
     const visibleColumns = getVisibleExportColumns(columns);
     const filenameBase = getExportFilenameBase(url.state.tab);
     const exportRows = buildCsvExportRows(visibleColumns, resolvedData);
