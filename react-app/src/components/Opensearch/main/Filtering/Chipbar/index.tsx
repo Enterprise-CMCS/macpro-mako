@@ -1,10 +1,11 @@
 import { UTCDate } from "@date-fns/utc";
 import { format } from "date-fns";
-import { type FC, useCallback } from "react";
+import { type FC, useCallback, useMemo } from "react";
 import { opensearch } from "shared-types";
 
-import { checkMultiFilter, Chip, useOsUrl } from "@/components";
+import { checkMultiFilter, Chip, removeDraftStatusFilters, useOsUrl } from "@/components";
 import { useLabelMapping } from "@/hooks";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 import { useFilterDrawerContext } from "../FilterProvider";
 
@@ -78,9 +79,15 @@ export const ChipTerms: FC<RenderProp> = ({ filter, clearFilter, openDrawer }) =
 export const FilterChips: FC = () => {
   const url = useOsUrl();
   const { setDrawerState } = useFilterDrawerContext();
+  const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const visibleFilters = useMemo(
+    () =>
+      isSaveInProgressEnabled ? url.state.filters : removeDraftStatusFilters(url.state.filters),
+    [isSaveInProgressEnabled, url.state.filters],
+  );
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
-  const twoOrMoreFiltersApplied = checkMultiFilter(url.state.filters, 2);
+  const twoOrMoreFiltersApplied = checkMultiFilter(visibleFilters, 2);
   const clearFilter = (filter: opensearch.main.Filterable, valIndex?: number) => {
     url.onSet((s) => {
       let filters = s.filters;
@@ -116,7 +123,7 @@ export const FilterChips: FC = () => {
       className="justify-start items-center py-2 flex flex-wrap gap-y-2 gap-x-2"
       data-testid="chips"
     >
-      {url.state.filters.map((filter, index) => {
+      {visibleFilters.map((filter, index) => {
         const props: RenderProp = { clearFilter, openDrawer, filter, index };
         const key = `${filter.field}-${index}`;
 
