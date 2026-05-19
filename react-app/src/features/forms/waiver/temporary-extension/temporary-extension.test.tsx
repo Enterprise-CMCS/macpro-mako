@@ -117,6 +117,27 @@ describe("Temporary Extension", () => {
     ).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
   });
 
+  test("enables submit when creating from an approved existing waiver", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      EXISTING_ITEM_APPROVED_NEW_ID,
+      "1915(b)",
+    );
+
+    expect(screen.getByText("1915(b)")).toBeInTheDocument();
+    expect(screen.getAllByText(EXISTING_ITEM_APPROVED_NEW_ID)[1]).toBeInTheDocument();
+
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      VALID_ITEM_TEMPORARY_EXTENSION_ID,
+    );
+    await upload("waiverExtensionRequest");
+
+    await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
+  });
+
   describe("New Temporary Extension", () => {
     const user = userEvent.setup();
     beforeAll(async () => {

@@ -76,7 +76,7 @@ export const PostSubmissionWrapper = () => {
 
 export const postSubmissionLoader: LoaderFunction = async ({ params }) => {
   return await queryClient.fetchQuery({
-    queryKey: ["record", params.id],
+    queryKey: ["record", params.id, "mainOnly"],
     queryFn: async () => getItem(params.id),
   });
 };

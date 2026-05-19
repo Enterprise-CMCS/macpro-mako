@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  LoadingSpinner,
   RequiredIndicator,
   Select,
   SelectContent,
@@ -30,9 +31,15 @@ const actionTypeMap = {
 
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(waiverId, {
+    enabled: waiverId !== undefined,
+  });
 
   const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("");
+
+  if (waiverId && isSubmissionLoading) {
+    return <LoadingSpinner />;
+  }
 
   const actionType = submission?._source?.actionType;
   const actionTypeLabel =
