@@ -96,12 +96,6 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
-   * Toggle CS31 CHIP SPA template asset between environments
-   */
-  CS31_ALT: {
-    flag: "cs31-alt",
-    defaultValue: false,
-  },
   /*
    *  Toggle visibility between the enhanced experience and mmdl banner
    */
