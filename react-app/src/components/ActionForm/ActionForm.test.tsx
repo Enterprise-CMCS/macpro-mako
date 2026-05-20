@@ -1684,6 +1684,8 @@ describe("ActionForm", () => {
       error: null,
     } as any);
     const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: `${draftId}-NEW`,
       seqNo: 11,
       primaryTerm: 3,
     });
