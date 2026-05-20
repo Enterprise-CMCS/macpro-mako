@@ -114,6 +114,7 @@ type ActionFormProps<Schema extends SchemaWithEnforcableProps> = {
   conditionsDeterminingUserAccess?: ((user: UserDetails | null) => boolean)[];
   breadcrumbText: string;
   formDescription?: string | React.ReactNode;
+  formDescriptionProgressLossReminder?: React.ReactNode;
   preSubmissionMessage?: string;
   showPreSubmissionMessage?: boolean;
   areFieldsRequired?: boolean;
@@ -236,6 +237,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       CMS will use this content to review your package, and you will not be able
       to edit this form. If CMS needs any additional information, they will
       follow up by email.`,
+  formDescriptionProgressLossReminder,
   preSubmissionMessage,
   additionalInformation = {
     required: false,
@@ -1210,7 +1212,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             <SectionCard testId="detail-section" title={title}>
               <div>
                 {areFieldsRequired && <RequiredFieldDescription />}
-                <ActionFormDescription boldReminder={areFieldsRequired}>
+                <ActionFormDescription
+                  boldReminder={areFieldsRequired}
+                  progressLossReminder={formDescriptionProgressLossReminder}
+                >
                   {formDescription}
                 </ActionFormDescription>
               </div>
