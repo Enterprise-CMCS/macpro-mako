@@ -36,15 +36,13 @@ export const Welcome = () => {
               submissions. This allows states to begin working on their new submissions, save their
               progress, and come back to them later to complete and submit the SPA or Waiver to CMS.
               Full details are available in the{" "}
-              <a
-                href="/onboarding/OneMACStateUserGuide.pdf"
-                download
-                rel="noopener noreferrer"
-                target="_blank"
+              <Link
+                to="/faq/onboarding-materials"
+                target={FAQ_TAB}
                 className="underline text-[#0071bc]"
               >
                 OneMAC State User Guide
-              </a>
+              </Link>
               .
             </p>
           </CardWithTopBorder>

@@ -48,7 +48,7 @@ describe("Default Welcome", () => {
     ).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "OneMAC State User Guide" })).toHaveAttribute(
       "href",
-      "/onboarding/OneMACStateUserGuide.pdf",
+      "/faq/onboarding-materials",
     );
   });
 });
