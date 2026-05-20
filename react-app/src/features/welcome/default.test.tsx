@@ -28,7 +28,6 @@ describe("Default Welcome", () => {
     setup();
 
     expect(screen.getByText(/Welcome to the official submission system/)).toBeInTheDocument();
-    screen.debug(screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement);
     expect(
       screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
     ).toHaveClass("hidden");
@@ -43,5 +42,13 @@ describe("Default Welcome", () => {
     expect(
       screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement.hidden,
     ).toBeFalsy();
+    expect(screen.getByText("Save in progress")).toBeInTheDocument();
+    expect(
+      screen.getByText(/New functionality has been added to OneMAC allowing state users/),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "OneMAC State User Guide" })).toHaveAttribute(
+      "href",
+      "/onboarding/OneMACStateUserGuide.pdf",
+    );
   });
 });

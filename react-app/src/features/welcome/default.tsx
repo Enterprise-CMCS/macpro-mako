@@ -31,18 +31,21 @@ export const Welcome = () => {
           <h2 className="text-2xl font-bold">New and Notable</h2>
           <CardWithTopBorder className="">
             <p className="py-5 pl-6 pr-20">
-              <span className="font-bold text-[#0071bc]">MMDL SPA forms available in OneMAC:</span>{" "}
-              Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA
-              templates and implementation guides are now available in OneMAC. New submissions for
-              these SPA types are submitted through the OneMAC system effective July 28, 2025.
-              <br />
-              <br />
-              The CS 31 CHIP eligibility SPA template and implementation guide have been updated in
-              OneMAC to include policies for targeted low-income pregnant women. These updates will
-              be effective starting March 19, 2026.{" "}
-              <Link to="/faq/spa-amendments" target={FAQ_TAB} className="underline text-[#0071bc]">
-                Learn more
-              </Link>
+              <span className="font-bold text-[#0071bc]">Save in progress</span> New functionality
+              has been added to OneMAC allowing state users to save their progress on new
+              submissions. This allows states to begin working on their new submissions, save their
+              progress, and come back to them later to complete and submit the SPA or Waiver to CMS.
+              Full details are available in the{" "}
+              <a
+                href="/onboarding/OneMACStateUserGuide.pdf"
+                download
+                rel="noopener noreferrer"
+                target="_blank"
+                className="underline text-[#0071bc]"
+              >
+                OneMAC State User Guide
+              </a>
+              .
             </p>
           </CardWithTopBorder>
         </div>
