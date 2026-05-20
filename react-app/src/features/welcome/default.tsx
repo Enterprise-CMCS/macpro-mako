@@ -101,7 +101,7 @@ export const Welcome = () => {
           <section className={cn("min-w-0", isSectionHidden ? "hidden" : "block")}>
             <h2 className="text-2xl font-bold">New and Notable</h2>
             <CardWithTopBorder className="">
-              <div className="space-y-8 p-6">
+              <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">
                 <article className="space-y-2">
                   <h3 className="font-bold text-[#0071bc]">Save in progress</h3>
                   <p>
@@ -141,7 +141,7 @@ export const Welcome = () => {
           <section className="min-w-0">
             <h2 className="text-2xl font-bold">Resources</h2>
             <CardWithTopBorder className="">
-              <div className="space-y-6 p-6">
+              <div className="space-y-6 py-5 pl-6 pr-6 md:pr-20">
                 {resourceSections.map(({ id, title, links }) => (
                   <section key={title} aria-labelledby={`${id}-heading`}>
                     <h3 id={`${id}-heading`} className="font-bold">
