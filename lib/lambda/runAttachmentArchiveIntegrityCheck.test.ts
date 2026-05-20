@@ -14,9 +14,13 @@ import { buildAttachmentArchiveSections } from "../attachment-archive/package-ac
 import { getPackage, getPackageChangelog } from "../libs/api/package";
 import { buildCsvAttachment, handler } from "./runAttachmentArchiveIntegrityCheck";
 
-vi.mock("../attachment-archive/backfill", () => ({
-  listAllAttachmentArchivePackageIds: vi.fn(),
-}));
+vi.mock("../attachment-archive/backfill", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("../attachment-archive/backfill")>();
+  return {
+    ...actual,
+    listAllAttachmentArchivePackageIds: vi.fn(),
+  };
+});
 
 vi.mock("../libs/api/package", () => ({
   getPackage: vi.fn(),
@@ -368,6 +372,30 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     );
   }, 120000);
 
+  it("excludes soft-deleted package ids from integrity scans", async () => {
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue(["MD-1", "MD-2-del", "MD-3"]);
+    createPackageMocks([buildValidPackageFixture("MD-1"), buildValidPackageFixture("MD-3")]);
+
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores([
+      buildValidPackageFixture("MD-1"),
+      buildValidPackageFixture("MD-3"),
+    ]);
+    const putStore: S3ObjectStore = new Map();
+    mockS3({
+      objectStore,
+      listedKeys,
+      existingObjects,
+      putStore,
+    });
+
+    const result = await handler();
+    expect(result.status).toBe("COMPLETE");
+    expect(result.packagesTotal).toBe(2);
+    expect(findStoredJson(objectStore, "/package-ids.json")).toEqual(["MD-1", "MD-3"]);
+    expect(findStoredJson(objectStore, "/summary.json").skippedDeletedPackageCount).toBe(1);
+    expect(getPackageChangelogMock).toHaveBeenCalledTimes(2);
+  });
+
   it("creates checkpoint files on the first invocation and resumes to completion", async () => {
     const fixtures = [buildValidPackageFixture("MD-1"), buildValidPackageFixture("MD-2")];
     listAllAttachmentArchivePackageIdsMock.mockResolvedValue(
@@ -466,6 +494,39 @@ describe("runAttachmentArchiveIntegrityCheck", () => {
     const csvEntry = Array.from(objectStore.entries()).find(([key]) => key.endsWith(".csv"));
     expect(csvEntry?.[1]).toContain(
       "authority,packageId,sectionId,cmsStatus,submissionDate,issueScope,discrepancyType,expectedValue,actualValue",
+    );
+  });
+
+  it("suppresses dependent package discrepancies when package archive is not ready", async () => {
+    const fixture = buildFailedTerminalFixture("MD-7");
+    listAllAttachmentArchivePackageIdsMock.mockResolvedValue([fixture.packageId]);
+    createPackageMocks([fixture]);
+
+    const { objectStore, listedKeys, existingObjects } = buildArchiveStores([fixture]);
+    const putStore: S3ObjectStore = new Map();
+    mockS3({
+      objectStore,
+      listedKeys,
+      existingObjects,
+      putStore,
+    });
+
+    const result = await handler();
+    expect(result.status).toBe("COMPLETE");
+    const discrepancies = findStoredJson(objectStore, "/discrepancies.json");
+    expect(discrepancies).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          discrepancyType: "PACKAGE_NOT_READY",
+        }),
+      ]),
+    );
+    expect(discrepancies).not.toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          discrepancyType: "PACKAGE_ZIP_MISSING",
+        }),
+      ]),
     );
   });
 
