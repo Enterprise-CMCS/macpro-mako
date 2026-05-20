@@ -8,6 +8,7 @@ import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderFo
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
+import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
 import { InitialForm } from "./Initial";
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-initial"]>();
@@ -18,6 +19,12 @@ describe("Capitated Initial", () => {
     mockApiRefinements();
 
     await renderFormWithPackageSectionAsync(<InitialForm />);
+  });
+
+  test("renders the new submission progress reminder in the intro", () => {
+    expect(screen.getByTestId("detail-section")).toHaveTextContent(
+      NEW_SUBMISSION_PROGRESS_LOSS_REMINDER,
+    );
   });
 
   test("1915(B) WAIVER NUMBER", async () => {
