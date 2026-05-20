@@ -50,5 +50,13 @@ describe("Default Welcome", () => {
       "href",
       "/faq/onboarding-materials",
     );
+    expect(screen.getByText(/MMDL SPA forms available in OneMAC/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/The CS 31 CHIP eligibility SPA template and implementation guide/),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Learn more" })).toHaveAttribute(
+      "href",
+      "/faq/spa-amendments",
+    );
   });
 });
