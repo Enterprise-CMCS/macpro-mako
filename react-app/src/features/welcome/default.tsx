@@ -46,14 +46,7 @@ export const Welcome = () => {
                 </Link>
                 .
               </p>
-              <p>
-                <span className="font-bold text-[#0071bc]">
-                  MMDL SPA forms available in OneMAC:
-                </span>{" "}
-                Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility
-                SPA templates and implementation guides are now available in OneMAC. New submissions
-                for these SPA types are submitted through the OneMAC system effective July 28, 2025.
-              </p>
+              <span className="font-bold text-[#0071bc]">Updated CS31 SPA form</span>{" "}
               <p>
                 The CS 31 CHIP eligibility SPA template and implementation guide have been updated
                 in OneMAC to include policies for targeted low-income pregnant women. These updates
