@@ -58,6 +58,19 @@ describe("banner", () => {
     expect(getByText("Test body")).toBeInTheDocument();
   });
 
+  test("Renders warning icon for warning banners", () => {
+    const { getByTestId } = render(<Banner />, { wrapper });
+
+    act(() => {
+      banner({
+        ...testBanner("/dashboard"),
+        variant: "warning",
+      });
+    });
+
+    expect(getByTestId("banner-icon")).toBeInTheDocument();
+  });
+
   test("Check if banner is closed when clicking the Close button", async () => {
     const { getByTestId, queryByTestId } = render(<Banner />, {
       wrapper,

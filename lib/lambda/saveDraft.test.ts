@@ -343,7 +343,8 @@ describe("saveDraft handler", () => {
     expect(res.statusCode).toBe(409);
     expect(res.body).toEqual(
       JSON.stringify({
-        message: "This package ID is already in use. Update the ID before saving or submitting.",
+        message:
+          "A matching submission ID was submitted to CMS outside of OneMAC after this draft was last saved. You must update the ID before saving or submitting. Alternatively, you can delete this draft if no longer needed.",
       }),
     );
     expect(os.updateData).not.toHaveBeenCalled();

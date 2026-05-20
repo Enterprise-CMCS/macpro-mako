@@ -7,6 +7,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as rootApi from "@/api";
 import * as api from "@/api/useGetUser";
 import { OneMacUser } from "@/api/useGetUser";
+import { DRAFT_ID_CONFLICT_BANNER_TITLE, DRAFT_ID_CONFLICT_MESSAGE } from "@/utils/drafts";
 import { renderWithQueryClient, renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
 
 import { DetailsContent, packageDetailsLoader } from ".";
@@ -92,13 +93,10 @@ describe("package details", () => {
     renderWithQueryClient(<DetailsContent id="MD-25-2000-JJJJ" preferDraft />);
 
     expect(
-      await screen.findByRole("heading", { name: "This package ID is already in use" }),
+      await screen.findByRole("heading", { name: DRAFT_ID_CONFLICT_BANNER_TITLE }),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "This package ID is already in use. Update the ID before saving or submitting.",
-      ),
-    ).toBeInTheDocument();
+    expect(screen.getByText(DRAFT_ID_CONFLICT_MESSAGE)).toBeInTheDocument();
+    expect(screen.getByTestId("draft-id-conflict-icon")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Continue Package" })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Delete Package" })).toBeInTheDocument();
     expect(itemExistsSpy).toHaveBeenCalledWith("MD-25-2000-JJJJ", {

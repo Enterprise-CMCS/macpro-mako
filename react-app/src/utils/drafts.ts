@@ -7,8 +7,9 @@ export const DRAFT_DELETE_ACTION_LABEL = "Delete Package";
 export const DRAFT_DELETE_MODAL_HEADER = "Confirm delete";
 export const DRAFT_DELETE_MODAL_BODY =
   "This action cannot be undone. Are you sure you want to delete this draft package?";
+export const DRAFT_ID_CONFLICT_BANNER_TITLE = "ID Update Required";
 export const DRAFT_ID_CONFLICT_MESSAGE =
-  "This package ID is already in use. Update the ID before saving or submitting.";
+  "A matching submission ID was submitted to CMS outside of OneMAC after this draft was last saved. You must update the ID before saving or submitting. Alternatively, you can delete this draft if no longer needed.";
 const DRAFT_ID_CONFLICT_FIELD_MESSAGES: Record<string, string> = {
   "new-medicaid-submission":
     "According to our records, this SPA ID already exists. Please check the SPA ID and try entering it again.",

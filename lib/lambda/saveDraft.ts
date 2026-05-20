@@ -75,7 +75,7 @@ const saveDraftEventSchema = z
 export type SaveDraftEvent = APIGatewayEvent & z.infer<typeof saveDraftEventSchema>;
 
 const DRAFT_ID_CONFLICT_MESSAGE =
-  "This package ID is already in use. Update the ID before saving or submitting.";
+  "A matching submission ID was submitted to CMS outside of OneMAC after this draft was last saved. You must update the ID before saving or submitting. Alternatively, you can delete this draft if no longer needed.";
 
 const DRAFT_CONCURRENCY_MESSAGE =
   "Draft was updated by another user. Refresh this page and try saving again.";

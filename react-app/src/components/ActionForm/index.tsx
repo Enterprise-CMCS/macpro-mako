@@ -34,6 +34,7 @@ import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
 import {
   consumeDraftContinueConfirmed,
+  DRAFT_ID_CONFLICT_BANNER_TITLE,
   DRAFT_ID_CONFLICT_MESSAGE,
   getDraftIdConflictFieldMessage,
   getNonOwnerDraftWarningModalBody,
@@ -416,7 +417,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       };
 
       return (
-        parsedBanner.header === "Unable to save package" &&
+        parsedBanner.header === DRAFT_ID_CONFLICT_BANNER_TITLE &&
         parsedBanner.body === DRAFT_ID_CONFLICT_MESSAGE &&
         parsedBanner.pathnameToDisplayOn === window.location.pathname
       );
@@ -756,9 +757,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         message: draftIdConflictFieldMessage,
       });
       banner({
-        header: "Unable to save package",
+        header: DRAFT_ID_CONFLICT_BANNER_TITLE,
         body: DRAFT_ID_CONFLICT_MESSAGE,
-        variant: "destructive",
+        variant: "warning",
         pathnameToDisplayOn: window.location.pathname,
       });
       setDraftSaveStatus({
