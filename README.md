@@ -1,8 +1,5 @@
 # OneMAC Upgrade
 
-<a href="https://enterprise-cmcs.github.io/macpro-mako/">
-  <img alt="Docs" src="https://img.shields.io/badge/Docs-site-blue.svg">
-</a>
 <a href="https://qmacbis.atlassian.net/jira/software/c/projects/OY2/boards/257">
   <img alt="Jira" src="https://img.shields.io/badge/Jira-board-0052CC.svg">
 </a>
