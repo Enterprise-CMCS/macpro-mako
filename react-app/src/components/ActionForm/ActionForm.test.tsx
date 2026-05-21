@@ -45,6 +45,7 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
+const SAVE_PROGRESS_REMINDER = "You will lose progress if you leave this page without saving.";
 const MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE =
   getDraftIdConflictFieldMessage("new-medicaid-submission");
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
@@ -724,6 +725,25 @@ describe("ActionForm", () => {
     );
 
     expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
+  });
+
+  test("uses custom ProgressReminder in the form header and footer", async () => {
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({})}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        breadcrumbText="Example Breadcrumb"
+        formDescriptionProgressLossReminder={SAVE_PROGRESS_REMINDER}
+      />,
+    );
+
+    expect(screen.queryAllByText(SAVE_PROGRESS_REMINDER).length).toBe(2);
+    expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
   });
 
   test("doesn't render ProgressReminder if `areFieldsRequired` is false", async () => {

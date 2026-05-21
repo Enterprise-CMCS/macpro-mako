@@ -1,5 +1,5 @@
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
-import { AlertTriangle } from "lucide-react";
 import { PropsWithChildren, useMemo } from "react";
 import { LoaderFunctionArgs, Navigate, redirect, useLoaderData } from "react-router";
 import { Authority, opensearch, SEATOOL_STATUS } from "shared-types";
@@ -124,9 +124,13 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
       {isSaveInProgressEnabled && isDraft && hasDraftIdConflict && (
-        <Alert variant="warning" className="my-2 sm:my-3">
-          <AlertTriangle aria-hidden="true" data-testid="draft-id-conflict-icon" />
-          <AlertTitle>{DRAFT_ID_CONFLICT_BANNER_TITLE}</AlertTitle>
+        <Alert variant="warning" className="my-2 sm:my-3 [&>svg]:text-[#1b1b1b]">
+          <ExclamationTriangleIcon
+            aria-hidden="true"
+            className="size-6 text-[#1b1b1b]"
+            data-testid="draft-id-conflict-icon"
+          />
+          <AlertTitle className="font-bold">{DRAFT_ID_CONFLICT_BANNER_TITLE}</AlertTitle>
           <AlertDescription>{DRAFT_ID_CONFLICT_MESSAGE}</AlertDescription>
         </Alert>
       )}

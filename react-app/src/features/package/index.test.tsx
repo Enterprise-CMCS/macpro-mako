@@ -92,9 +92,12 @@ describe("package details", () => {
 
     renderWithQueryClient(<DetailsContent id="MD-25-2000-JJJJ" preferDraft />);
 
-    expect(
-      await screen.findByRole("heading", { name: DRAFT_ID_CONFLICT_BANNER_TITLE }),
-    ).toBeInTheDocument();
+    const conflictTitle = await screen.findByRole("heading", {
+      name: DRAFT_ID_CONFLICT_BANNER_TITLE,
+    });
+    expect(conflictTitle).toBeInTheDocument();
+    expect(conflictTitle).toHaveClass("font-bold");
+    expect(screen.getByTestId("draft-id-conflict-icon")).toHaveClass("text-[#1b1b1b]");
     expect(screen.getByText(DRAFT_ID_CONFLICT_MESSAGE)).toBeInTheDocument();
     expect(screen.getByTestId("draft-id-conflict-icon")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Continue Package" })).toBeInTheDocument();

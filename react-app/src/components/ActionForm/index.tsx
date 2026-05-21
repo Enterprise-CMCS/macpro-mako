@@ -1256,6 +1256,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
               <PreSubmissionMessage
                 hasProgressLossReminder={areFieldsRequired}
                 preSubmissionMessage={preSubmissionMessage}
+                progressLossReminder={formDescriptionProgressLossReminder}
               />
             )}
           </fieldset>
