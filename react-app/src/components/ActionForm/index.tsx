@@ -453,6 +453,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       }
 
       setDraftIdConflict(null);
+      if (hasActiveDraftConflictBanner()) {
+        dismissBanner();
+      }
       draftVersionRef.current = {};
       setCurrentSessionDraftActor(null);
       previousDraftIdRef.current = draftId;
@@ -474,7 +477,13 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
 
     previousDraftIdRef.current = draftId;
-  }, [draftEnabled, draftId, isDraftMode, isDraftSaveRouteTransition]);
+  }, [
+    draftEnabled,
+    draftId,
+    hasActiveDraftConflictBanner,
+    isDraftMode,
+    isDraftSaveRouteTransition,
+  ]);
 
   useEffect(() => {
     const activeTransition = draftRouteTransition ?? draftRouteTransitionRef.current;
@@ -614,7 +623,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     }
 
     setDraftSaveStatus((currentStatus) => {
-      if (currentStatus?.message !== DRAFT_ID_CONFLICT_MESSAGE) {
+      if (
+        currentStatus?.message !== DRAFT_ID_CONFLICT_MESSAGE &&
+        currentStatus?.message !== draftIdConflictFieldMessage
+      ) {
         return currentStatus;
       }
 
@@ -747,30 +759,33 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   });
 
   const showDraftIdConflict = useCallback(
-    (conflictingId: string) => {
+    (conflictingId: string, { showBanner = isDraftMode }: { showBanner?: boolean } = {}) => {
       const normalizedConflictId = conflictingId.trim().toUpperCase();
       const draftIdFieldPath = idPath as FieldPath<z.TypeOf<Schema>>;
+      const statusMessage = showBanner ? DRAFT_ID_CONFLICT_MESSAGE : draftIdConflictFieldMessage;
 
       setDraftIdConflict(normalizedConflictId);
       form.setError(draftIdFieldPath, {
         type: "manual",
         message: draftIdConflictFieldMessage,
       });
-      banner({
-        header: DRAFT_ID_CONFLICT_BANNER_TITLE,
-        body: DRAFT_ID_CONFLICT_MESSAGE,
-        variant: "warning",
-        pathnameToDisplayOn: window.location.pathname,
-      });
+      if (showBanner) {
+        banner({
+          header: DRAFT_ID_CONFLICT_BANNER_TITLE,
+          body: DRAFT_ID_CONFLICT_MESSAGE,
+          variant: "warning",
+          pathnameToDisplayOn: window.location.pathname,
+        });
+      }
       setDraftSaveStatus({
         variant: "error",
-        message: DRAFT_ID_CONFLICT_MESSAGE,
+        message: statusMessage,
       });
       if (typeof window.scrollTo === "function") {
         window.scrollTo(0, 0);
       }
     },
-    [draftIdConflictFieldMessage, form, idPath],
+    [draftIdConflictFieldMessage, form, idPath, isDraftMode],
   );
 
   const validateDraftIdAvailability = useCallback(
@@ -1082,11 +1097,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           variant: "destructive",
           pathnameToDisplayOn: window.location.pathname,
         });
+        setDraftSaveStatus({
+          variant: "error",
+          message: errorMessage,
+        });
       }
-      setDraftSaveStatus({
-        variant: "error",
-        message: errorMessage,
-      });
     } finally {
       saveDraftInFlightRef.current = false;
     }

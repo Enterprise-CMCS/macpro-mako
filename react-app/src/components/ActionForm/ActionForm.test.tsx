@@ -1789,6 +1789,63 @@ describe("ActionForm", () => {
     saveDraftSpy.mockRestore();
   });
 
+  test("does not show the draft ID update banner for a duplicate ID before first draft save", async () => {
+    const user = userEvent.setup();
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: "MD-26-0511-P",
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+    vi.mocked(api.itemExists).mockResolvedValue(true);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft conflict test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => (
+          <>
+            <input aria-label="Package ID" {...form.register("id")} />
+            {form.formState.errors.id?.message && (
+              <p role="alert" data-testid="draft-id-error">
+                {String(form.formState.errors.id.message)}
+              </p>
+            )}
+          </>
+        )}
+        defaultValues={{ id: "MD-26-0511-P" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+    expect(bannerSpy).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        header: DRAFT_ID_CONFLICT_BANNER_TITLE,
+        body: DRAFT_ID_CONFLICT_MESSAGE,
+        variant: "warning",
+      }),
+    );
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
+    expect(screen.getByTestId("draft-save-status")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
+
+    saveDraftSpy.mockRestore();
+  });
+
   test("sets inline ID error when backend detects duplicate draft ID during save", async () => {
     const user = userEvent.setup();
     const draftId = "MD-26-7685-P";

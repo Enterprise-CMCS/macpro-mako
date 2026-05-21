@@ -69,6 +69,7 @@ describe("banner", () => {
     });
 
     expect(getByTestId("banner-icon")).toBeInTheDocument();
+    expect(getByTestId("banner-icon")).toHaveClass("text-[#1b1b1b]");
   });
 
   test("Check if banner is closed when clicking the Close button", async () => {
