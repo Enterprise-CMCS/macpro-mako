@@ -80,6 +80,29 @@ export async function getAttachmentArchiveBackfillPage({ afterKey }: { afterKey?
   };
 }
 
+export function isDeletedAttachmentArchivePackageId(packageId: string) {
+  return packageId.endsWith("-del");
+}
+
+export function filterActiveAttachmentArchivePackageIds(packageIds: string[]) {
+  const activePackageIds: string[] = [];
+  let skippedDeletedPackageCount = 0;
+
+  for (const packageId of packageIds) {
+    if (isDeletedAttachmentArchivePackageId(packageId)) {
+      skippedDeletedPackageCount += 1;
+      continue;
+    }
+
+    activePackageIds.push(packageId);
+  }
+
+  return {
+    packageIds: activePackageIds,
+    skippedDeletedPackageCount,
+  };
+}
+
 export async function listAllAttachmentArchivePackageIds() {
   const packageIds = new Set<string>();
   let after: Record<string, string> | undefined;
