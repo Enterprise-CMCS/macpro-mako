@@ -46,7 +46,7 @@ describe("Default Welcome", () => {
     expect(
       screen.getByText(/New functionality has been added to OneMAC allowing state users/),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Access state user guide" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Access State user guide" })).toHaveAttribute(
       "href",
       "/faq/onboarding-materials",
     );

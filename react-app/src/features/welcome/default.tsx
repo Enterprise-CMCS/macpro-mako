@@ -103,7 +103,7 @@ export const Welcome = () => {
             <CardWithTopBorder className="">
               <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">
                 <article className="space-y-2">
-                  <h3 className="font-bold text-[#0071bc]">Save in progress</h3>
+                  <h3 className="font-bold">Save in progress</h3>
                   <p>
                     New functionality has been added to OneMAC allowing state users to save their
                     progress on new submissions. This allows states to begin working on their new
@@ -117,11 +117,11 @@ export const Welcome = () => {
                     className="inline-block underline text-[#0071bc]"
                     onClick={() => downloadFile(USER_GUIDE_DOWNLOADS.state)}
                   >
-                    Access state user guide
+                    Access State user guide
                   </Link>
                 </article>
                 <article className="space-y-2">
-                  <h3 className="font-bold text-[#0071bc]">Updated CS31 SPA form</h3>
+                  <h3 className="font-bold">Updated CS31 SPA form</h3>
                   <p>
                     The CS 31 CHIP eligibility SPA template and implementation guide have been
                     updated in OneMAC to include policies for targeted low-income pregnant women.
