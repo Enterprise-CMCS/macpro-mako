@@ -344,7 +344,7 @@ describe("saveDraft handler", () => {
     expect(res.body).toEqual(
       JSON.stringify({
         message:
-          "A matching submission ID was submitted to CMS outside of OneMAC after this draft was last saved. You must update the ID before saving or submitting. Alternatively, you can delete this draft if no longer needed.",
+          "This submission ID can no longer be used for this draft. A package with this submission ID was submitted to CMS outside of OneMAC after this draft was saved. Update the ID before saving or submitting.",
       }),
     );
     expect(os.updateData).not.toHaveBeenCalled();

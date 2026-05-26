@@ -45,7 +45,7 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
-const SAVE_PROGRESS_REMINDER = "You will lose progress if you leave this page without saving.";
+const SAVE_PROGRESS_REMINDER = "Your changes will be lost if you leave this page without saving.";
 const MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE =
   getDraftIdConflictFieldMessage("new-medicaid-submission");
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
