@@ -46,14 +46,10 @@ describe("Default Welcome", () => {
     expect(
       screen.getByText(/New functionality has been added to OneMAC allowing state users/),
     ).toBeInTheDocument();
-    const newAndNotableStateGuideLink = screen.getByRole("link", {
-      name: "Access State user guide",
-    });
-    expect(newAndNotableStateGuideLink).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Access State user guide" })).toHaveAttribute(
       "href",
-      "/onboarding/OneMACStateUserGuide.pdf",
+      "/faq/onboarding-materials",
     );
-    expect(newAndNotableStateGuideLink).toHaveAttribute("target", "_blank");
     expect(screen.getByText("Updated CS31 SPA form")).toBeInTheDocument();
     expect(
       screen.getByText(/The CS 31 CHIP eligibility SPA template and implementation guide/),
@@ -111,15 +107,11 @@ describe("Default Welcome", () => {
       .getByRole("heading", { name: "User guides" })
       .closest("section");
     expect(userGuidesSection).not.toBeNull();
-    const stateGuideLink = within(userGuidesSection as HTMLElement).getByRole("link", {
-      name: "State user guide",
-    });
-    const cmsGuideLink = within(userGuidesSection as HTMLElement).getByRole("link", {
-      name: "CMS user guide",
-    });
-    expect(stateGuideLink).toHaveAttribute("href", "/onboarding/OneMACStateUserGuide.pdf");
-    expect(stateGuideLink).toHaveAttribute("target", "_blank");
-    expect(cmsGuideLink).toHaveAttribute("href", "/onboarding/OneMACCMSUserGuide.pdf");
-    expect(cmsGuideLink).toHaveAttribute("target", "_blank");
+    expect(
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "State user guide" }),
+    ).toHaveAttribute("href", "/faq/onboarding-materials");
+    expect(
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "CMS user guide" }),
+    ).toHaveAttribute("href", "/faq/onboarding-materials");
   });
 });

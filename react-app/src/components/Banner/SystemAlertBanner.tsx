@@ -12,9 +12,6 @@ const SystemAlertBanner = () => {
   if (!selectedBanner) return null;
 
   const { header, body, buttonText, buttonLink, disabled, notifId } = selectedBanner;
-  const buttonClassName =
-    "border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap pt-1 text-black";
-  const isPdfLink = buttonLink.toLowerCase().endsWith(".pdf");
 
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     if (disabled) e.preventDefault();
@@ -33,24 +30,13 @@ const SystemAlertBanner = () => {
         </div>
       </div>
       <div className="flex space-x-4 col-start-2 md:col-start-auto">
-        {buttonText && isPdfLink && (
-          <a
-            href={buttonLink}
-            onClick={handleClick}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={buttonClassName}
-          >
-            {buttonText}
-          </a>
-        )}
-        {buttonText && !isPdfLink && (
+        {buttonText && (
           <Link
             to={buttonLink}
             onClick={handleClick}
             target={FAQ_TAB}
             rel="noopener noreferrer"
-            className={buttonClassName}
+            className="border-2 border-black rounded h-[38px] px-4 text font-bold text-center whitespace-nowrap pt-1 text-black"
           >
             {buttonText}
           </Link>
