@@ -15,7 +15,10 @@ import {
   getArchiveManifestKey,
   parseAttachmentArchiveCurrent,
 } from "../attachment-archive/archive-manifest";
-import { listAllAttachmentArchivePackageIds } from "../attachment-archive/backfill";
+import {
+  filterActiveAttachmentArchivePackageIds,
+  listAllAttachmentArchivePackageIds,
+} from "../attachment-archive/backfill";
 import {
   getAttachmentArchiveFailureMessage,
   isTerminalAttachmentArchiveFailure,
@@ -855,6 +858,7 @@ function buildSummaryFromCheckpoint({
     status,
     packagesScanned: checkpoint.packagesScanned,
     packagesTotal: checkpoint.packagesTotal,
+    skippedDeletedPackageCount: checkpoint.skippedDeletedPackageCount,
     sectionsScanned: checkpoint.sectionsScanned,
     discrepancyCount: checkpoint.discrepancyCount,
     discrepancyTypeCounts: checkpoint.discrepancyTypeCounts,
@@ -1042,6 +1046,9 @@ async function evaluatePackageDiscrepancies({
       );
     }
 
+    const sectionReadyForDetailChecks =
+      matchedSectionException || currentState.current.status === "READY";
+
     if (!matchedSectionException && currentState.current.status !== "READY") {
       discrepancies.push(
         buildDiscrepancy({
@@ -1053,6 +1060,10 @@ async function evaluatePackageDiscrepancies({
           actualValue: currentState.current.status,
         }),
       );
+    }
+
+    if (!sectionReadyForDetailChecks) {
+      continue;
     }
 
     if (currentState.current.hash !== expectedManifest.hash) {
@@ -1250,6 +1261,9 @@ async function evaluatePackageDiscrepancies({
     );
   }
 
+  const packageReadyForDetailChecks =
+    matchedPackageException || packageCurrent.current.status === "READY";
+
   if (!matchedPackageException && packageCurrent.current.status !== "READY") {
     discrepancies.push(
       buildDiscrepancy({
@@ -1262,7 +1276,7 @@ async function evaluatePackageDiscrepancies({
     );
   }
 
-  if (packageCurrent.current.hash !== expectedPackageManifest.hash) {
+  if (packageReadyForDetailChecks && packageCurrent.current.hash !== expectedPackageManifest.hash) {
     discrepancies.push(
       buildDiscrepancy({
         packageContext,
@@ -1275,6 +1289,7 @@ async function evaluatePackageDiscrepancies({
   }
 
   if (
+    packageReadyForDetailChecks &&
     !matchedPackageException &&
     !(await objectExistsWithFallback({
       storage,
@@ -1291,6 +1306,14 @@ async function evaluatePackageDiscrepancies({
         actualValue: "ZIP artifact not found",
       }),
     );
+  }
+
+  if (!packageReadyForDetailChecks) {
+    return {
+      discrepancies,
+      exceptions,
+      sectionsScanned: expectedSectionIds.size,
+    };
   }
 
   const packageManifestResult = await getManifestObject<AttachmentArchivePackageManifest>({
@@ -1504,7 +1527,9 @@ async function createInitialRunState(storage: ArchiveStorageConfig): Promise<Int
     runId,
     stage: storage.stage,
   });
-  const packageIds = await listAllAttachmentArchivePackageIds();
+  const allPackageIds = await listAllAttachmentArchivePackageIds();
+  const { packageIds, skippedDeletedPackageCount } =
+    filterActiveAttachmentArchivePackageIds(allPackageIds);
   const checkpoint: AttachmentArchiveIntegrityCheckpoint = {
     runId,
     runTimestamp,
@@ -1513,6 +1538,7 @@ async function createInitialRunState(storage: ArchiveStorageConfig): Promise<Int
     nextPackageIndex: 0,
     packagesScanned: 0,
     packagesTotal: packageIds.length,
+    skippedDeletedPackageCount,
     sectionsScanned: 0,
     discrepancyCount: 0,
     discrepancyTypeCounts: {},
