@@ -4,6 +4,7 @@ import { MemoryRouter } from "react-router";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { useGetSystemNotifs } from "@/api";
+import { FAQ_TAB } from "@/consts";
 
 import SystemAlertBanner from "./SystemAlertBanner";
 
@@ -60,6 +61,34 @@ describe("SystemAlertBanner", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("Latest active banner body")).toBeInTheDocument();
     expect(screen.queryByText("Older active banner body")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Go to FAQs" })).toHaveAttribute("target", FAQ_TAB);
+  });
+
+  it("opens the State User Guide notification link directly in a new window", () => {
+    vi.mocked(useGetSystemNotifs).mockReturnValue({
+      notifications: [
+        {
+          notifId: "state-user-guide-banner",
+          header: "Save in progress functionality now available in OneMAC",
+          body: "State users can now save their progress on new submissions in OneMAC.",
+          buttonText: "More details",
+          buttonLink: "/onboarding/OneMACStateUserGuide.pdf",
+          pubDate: "2026-05-19T12:20:56.160Z",
+          expDate: "2027-08-07T11:21:50.210Z",
+          disabled: false,
+        },
+      ],
+      allNotifications: [],
+      dismissed: [],
+      clearNotif: vi.fn(),
+      resetNotifs: vi.fn(),
+    });
+
+    renderBanner();
+
+    const link = screen.getByRole("link", { name: "More details" });
+    expect(link).toHaveAttribute("href", "/onboarding/OneMACStateUserGuide.pdf");
+    expect(link).toHaveAttribute("target", "_blank");
   });
 
   it("dismisses the selected notification", async () => {

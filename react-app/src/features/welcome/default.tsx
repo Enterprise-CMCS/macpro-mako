@@ -56,27 +56,15 @@ const resourceSections = [
     links: [
       {
         text: "State user guide",
-        to: "/faq/onboarding-materials",
-        downloadHref: USER_GUIDE_DOWNLOADS.state,
+        href: USER_GUIDE_DOWNLOADS.state,
       },
       {
         text: "CMS user guide",
-        to: "/faq/onboarding-materials",
-        downloadHref: USER_GUIDE_DOWNLOADS.cms,
+        href: USER_GUIDE_DOWNLOADS.cms,
       },
     ],
   },
 ];
-
-const downloadFile = (href: string) => {
-  const link = document.createElement("a");
-  link.href = href;
-  link.download = "";
-  link.rel = "noopener noreferrer";
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
 
 export const Welcome = () => {
   const isSectionHidden = useHideBanner();
@@ -111,14 +99,14 @@ export const Welcome = () => {
                     submit the SPA or Waiver to CMS. Full details are available in the OneMAC State
                     User Guide.
                   </p>
-                  <Link
-                    to="/faq/onboarding-materials"
-                    target={FAQ_TAB}
+                  <a
+                    href={USER_GUIDE_DOWNLOADS.state}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="inline-block underline text-[#0071bc]"
-                    onClick={() => downloadFile(USER_GUIDE_DOWNLOADS.state)}
                   >
                     Access State user guide
-                  </Link>
+                  </a>
                 </article>
                 <article className="space-y-2">
                   <h3 className="font-bold">Updated CS31 SPA form</h3>
@@ -148,16 +136,22 @@ export const Welcome = () => {
                       {title}
                     </h3>
                     <ul className="list-disc pl-6 mt-2 space-y-1 text-[#0071bc]" role="list">
-                      {links.map(({ text, to, downloadHref }) => (
+                      {links.map(({ text, to, href }) => (
                         <li key={`${title}-${text}`}>
-                          <Link
-                            to={to}
-                            target={FAQ_TAB}
-                            className="underline"
-                            onClick={downloadHref ? () => downloadFile(downloadHref) : undefined}
-                          >
-                            {text}
-                          </Link>
+                          {href ? (
+                            <a
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="underline"
+                            >
+                              {text}
+                            </a>
+                          ) : (
+                            <Link to={to} target={FAQ_TAB} className="underline">
+                              {text}
+                            </Link>
+                          )}
                         </li>
                       ))}
                     </ul>
