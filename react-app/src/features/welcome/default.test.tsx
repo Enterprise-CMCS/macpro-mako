@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import * as hooks from "@/hooks/useHideBanner";
@@ -28,20 +28,90 @@ describe("Default Welcome", () => {
     setup();
 
     expect(screen.getByText(/Welcome to the official submission system/)).toBeInTheDocument();
-    screen.debug(screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement);
     expect(
       screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
     ).toHaveClass("hidden");
   });
 
   it("renders the page without banner hidden", () => {
-    hookSpy.mockRejectedValueOnce(false);
+    hookSpy.mockReturnValueOnce(false);
 
     setup();
 
     expect(screen.getByText(/Welcome to the official submission system/)).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement.hidden,
-    ).toBeFalsy();
+      screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
+    ).not.toHaveClass("hidden");
+    expect(screen.getByText("Save in progress")).toBeInTheDocument();
+    expect(
+      screen.getByText(/New functionality has been added to OneMAC allowing state users/),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Access State user guide" })).toHaveAttribute(
+      "href",
+      "/faq/onboarding-materials",
+    );
+    expect(screen.getByText("Updated CS31 SPA form")).toBeInTheDocument();
+    expect(
+      screen.getByText(/The CS 31 CHIP eligibility SPA template and implementation guide/),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Access templates and guides" })).toHaveAttribute(
+      "href",
+      "/faq/chip-spa-templates",
+    );
+
+    const resourcesSection = screen.getByRole("heading", {
+      name: "Resources",
+      level: 2,
+    }).parentElement;
+    expect(resourcesSection).not.toBeNull();
+
+    const spaTemplatesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "SPA Templates" })
+      .closest("section");
+    expect(spaTemplatesSection).not.toBeNull();
+    expect(
+      within(spaTemplatesSection as HTMLElement).getByRole("link", {
+        name: "Medicaid Alternative Benefit Plan (ABP)",
+      }),
+    ).toHaveAttribute("href", "/faq/abp-spa-templates");
+    expect(
+      within(spaTemplatesSection as HTMLElement).getByRole("link", {
+        name: "Medicaid Premiums and Cost Sharing",
+      }),
+    ).toHaveAttribute("href", "/faq/mpc-spa-templates");
+    expect(
+      within(spaTemplatesSection as HTMLElement).getByRole("link", { name: "CHIP eligibility" }),
+    ).toHaveAttribute("href", "/faq/chip-spa-templates");
+
+    const implementationGuidesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "SPA Implementation Guides" })
+      .closest("section");
+    expect(implementationGuidesSection).not.toBeNull();
+    expect(
+      within(implementationGuidesSection as HTMLElement).getByRole("link", {
+        name: "Medicaid Alternative Benefit Plan (ABP)",
+      }),
+    ).toHaveAttribute("href", "/faq/abp-implementation-guides-spa");
+    expect(
+      within(implementationGuidesSection as HTMLElement).getByRole("link", {
+        name: "Medicaid Premiums and Cost Sharing",
+      }),
+    ).toHaveAttribute("href", "/faq/mpc-spa-implementation-guides");
+    expect(
+      within(implementationGuidesSection as HTMLElement).getByRole("link", {
+        name: "CHIP eligibility",
+      }),
+    ).toHaveAttribute("href", "/faq/chip-spa-implementation-guides");
+
+    const userGuidesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "User guides" })
+      .closest("section");
+    expect(userGuidesSection).not.toBeNull();
+    expect(
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "State user guide" }),
+    ).toHaveAttribute("href", "/faq/onboarding-materials");
+    expect(
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "CMS user guide" }),
+    ).toHaveAttribute("href", "/faq/onboarding-materials");
   });
 });

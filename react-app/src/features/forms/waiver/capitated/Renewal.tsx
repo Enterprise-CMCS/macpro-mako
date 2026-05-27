@@ -16,12 +16,14 @@ import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
 
 export const Renewal = () => (
   <ActionForm
     schema={formSchemas["capitated-renewal"]}
     title="1915(b) Comprehensive (Capitated) Renewal Waiver Details"
     breadcrumbText="1915(b) Comprehensive (Capitated) Renewal Waiver"
+    formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
     fields={({ control }) => (
       <>
         <div className="flex flex-col">
