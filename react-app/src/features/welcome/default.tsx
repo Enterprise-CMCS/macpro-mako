@@ -121,7 +121,7 @@ export const Welcome = () => {
                   </Link>
                 </article>
                 <article className="space-y-2">
-                  <h3 className="font-bold">Updated CS31 SPA form</h3>
+                  <h3 className="font-bold">Updated CS 31 SPA form</h3>
                   <p>
                     The CS 31 CHIP eligibility SPA template and implementation guide have been
                     updated in OneMAC to include policies for targeted low-income pregnant women.

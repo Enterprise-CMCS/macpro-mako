@@ -52,7 +52,7 @@ describe("Default Welcome", () => {
       "href",
       "/faq/onboarding-materials",
     );
-    expect(screen.getByText("Updated CS31 SPA form")).toBeInTheDocument();
+    expect(screen.getByText("Updated CS 31 SPA form")).toBeInTheDocument();
     expect(
       screen.getByText(/The CS 31 CHIP eligibility SPA template and implementation guide/),
     ).toBeInTheDocument();
