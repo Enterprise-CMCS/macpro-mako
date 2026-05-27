@@ -55,12 +55,12 @@ const resourceSections = [
     title: "User guides",
     links: [
       {
-        text: "State user guide",
+        text: "State User Guide",
         to: "/faq/onboarding-materials",
         downloadHref: USER_GUIDE_DOWNLOADS.state,
       },
       {
-        text: "CMS user guide",
+        text: "CMS User Guide",
         to: "/faq/onboarding-materials",
         downloadHref: USER_GUIDE_DOWNLOADS.cms,
       },
@@ -103,13 +103,13 @@ export const Welcome = () => {
             <CardWithTopBorder className="">
               <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">
                 <article className="space-y-2">
-                  <h3 className="font-bold">Save in progress</h3>
+                  <h3 className="font-bold">Saving Draft Packages</h3>
                   <p>
-                    New functionality has been added to OneMAC allowing state users to save their
-                    progress on new submissions. This allows states to begin working on their new
-                    submissions, save their progress, and come back to them later to complete and
-                    submit the SPA or Waiver to CMS. Full details are available in the OneMAC State
-                    User Guide.
+                    New functionality has been added to OneMAC allowing state users to save a draft
+                    version of new submission packages. This allows states to begin working on their
+                    new packages, save their work, and come back to them later to complete and
+                    submit the SPA or Waiver action to CMS. Full details are available in the OneMAC
+                    State User Guide.
                   </p>
                   <Link
                     to="/faq/onboarding-materials"
@@ -117,11 +117,11 @@ export const Welcome = () => {
                     className="inline-block underline text-[#0071bc]"
                     onClick={() => downloadFile(USER_GUIDE_DOWNLOADS.state)}
                   >
-                    Access State user guide
+                    Access State User Guide
                   </Link>
                 </article>
                 <article className="space-y-2">
-                  <h3 className="font-bold">Updated CS31 SPA form</h3>
+                  <h3 className="font-bold">Updated CS 31 SPA form</h3>
                   <p>
                     The CS 31 CHIP eligibility SPA template and implementation guide have been
                     updated in OneMAC to include policies for targeted low-income pregnant women.
