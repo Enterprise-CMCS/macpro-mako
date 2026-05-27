@@ -22,6 +22,7 @@ import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
 
 const actionTypeMap = {
   New: "Initial Waiver",
@@ -52,6 +53,7 @@ export const TemporaryExtensionForm = () => {
       breadcrumbText={`Request ${
         submission ? submission._source.authority : "1915(b) or 1915(c)"
       } Temporary Extension`}
+      formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
       fields={(form) => (
         <>
           {waiverId && submission ? (

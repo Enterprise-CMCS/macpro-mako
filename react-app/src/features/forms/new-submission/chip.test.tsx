@@ -9,6 +9,7 @@ import { skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { ChipForm } from "./Chip";
+import { NEW_SUBMISSION_FORM_DESCRIPTION, NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "./content";
 
 const upload = uploadFiles<(typeof formSchemas)["new-chip-submission"]>();
 
@@ -17,6 +18,13 @@ describe("CHIP SPA", () => {
     skipCleanup();
 
     await renderFormWithPackageSectionAsync(<ChipForm />);
+  });
+
+  test("renders the new submission intro text", () => {
+    const detailsSection = screen.getByTestId("detail-section");
+
+    expect(detailsSection).toHaveTextContent(NEW_SUBMISSION_FORM_DESCRIPTION);
+    expect(detailsSection).toHaveTextContent(NEW_SUBMISSION_PROGRESS_LOSS_REMINDER);
   });
 
   test("SPA ID", async () => {

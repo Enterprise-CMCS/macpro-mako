@@ -16,12 +16,15 @@ import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
 import { getFAQLinkForAttachments } from "../faqLinks";
+import { NEW_SUBMISSION_FORM_DESCRIPTION, NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "./content";
 
 export const ChipForm = () => (
   <ActionForm
     title="CHIP SPA Details"
     schema={formSchemas["new-chip-submission"]}
     breadcrumbText="Submit new CHIP SPA"
+    formDescription={NEW_SUBMISSION_FORM_DESCRIPTION}
+    formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
     fields={({ control }) => (
       <>
         <FormField
