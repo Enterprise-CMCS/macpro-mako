@@ -42,11 +42,13 @@ describe("Default Welcome", () => {
     expect(
       screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
     ).not.toHaveClass("hidden");
-    expect(screen.getByText("Save in progress")).toBeInTheDocument();
+    expect(screen.getByText("Saving Draft Packages")).toBeInTheDocument();
     expect(
-      screen.getByText(/New functionality has been added to OneMAC allowing state users/),
+      screen.getByText(
+        /New functionality has been added to OneMAC allowing state users to save a draft version/,
+      ),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Access State user guide" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Access State User Guide" })).toHaveAttribute(
       "href",
       "/faq/onboarding-materials",
     );
@@ -108,10 +110,10 @@ describe("Default Welcome", () => {
       .closest("section");
     expect(userGuidesSection).not.toBeNull();
     expect(
-      within(userGuidesSection as HTMLElement).getByRole("link", { name: "State user guide" }),
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "State User Guide" }),
     ).toHaveAttribute("href", "/faq/onboarding-materials");
     expect(
-      within(userGuidesSection as HTMLElement).getByRole("link", { name: "CMS user guide" }),
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "CMS User Guide" }),
     ).toHaveAttribute("href", "/faq/onboarding-materials");
   });
 });
