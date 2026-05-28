@@ -1,14 +1,20 @@
 import { screen, within } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import * as featureFlagHooks from "@/hooks/useFeatureFlag";
 import * as hooks from "@/hooks/useHideBanner";
 import { renderWithMemoryRouter } from "@/utils/test-helpers";
 
 import { Welcome } from "./default";
 
 const hookSpy = vi.spyOn(hooks, "useHideBanner");
+const featureFlagSpy = vi.spyOn(featureFlagHooks, "useFeatureFlag");
 
 describe("Default Welcome", () => {
+  beforeEach(() => {
+    featureFlagSpy.mockReturnValue(true);
+  });
+
   const setup = () =>
     renderWithMemoryRouter(
       <Welcome />,
@@ -115,5 +121,16 @@ describe("Default Welcome", () => {
     expect(
       within(userGuidesSection as HTMLElement).getByRole("link", { name: "CMS User Guide" }),
     ).toHaveAttribute("href", "/faq/onboarding-materials");
+  });
+
+  it("hides the resources section when the homepage resources flag is off", () => {
+    hookSpy.mockReturnValueOnce(false);
+    featureFlagSpy.mockImplementation((flag) => flag !== "HOMEPAGE_RESOURCES");
+
+    setup();
+
+    expect(screen.getByText("Saving Draft Packages")).toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "Resources", level: 2 })).not.toBeInTheDocument();
+    expect(screen.queryByRole("heading", { name: "SPA Templates" })).not.toBeInTheDocument();
   });
 });

@@ -5,6 +5,7 @@ import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { FAQ_TAB } from "@/consts";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { useHideBanner } from "@/hooks/useHideBanner";
 import { cn } from "@/utils";
 
@@ -80,6 +81,7 @@ const downloadFile = (href: string) => {
 
 export const Welcome = () => {
   const isSectionHidden = useHideBanner();
+  const showResources = useFeatureFlag("HOMEPAGE_RESOURCES");
 
   return (
     <>
@@ -97,7 +99,12 @@ export const Welcome = () => {
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
       <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
-        <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1.7fr)_minmax(280px,1fr)]">
+        <div
+          className={cn(
+            "grid items-start gap-8",
+            showResources ? "lg:grid-cols-[minmax(0,1.7fr)_minmax(280px,1fr)]" : "lg:grid-cols-1",
+          )}
+        >
           <section className={cn("min-w-0", isSectionHidden ? "hidden" : "block")}>
             <h2 className="text-2xl font-bold">New and Notable</h2>
             <CardWithTopBorder className="">
@@ -138,34 +145,36 @@ export const Welcome = () => {
               </div>
             </CardWithTopBorder>
           </section>
-          <section className="min-w-0">
-            <h2 className="text-2xl font-bold">Resources</h2>
-            <CardWithTopBorder className="">
-              <div className="space-y-6 py-5 pl-6 pr-6 md:pr-20">
-                {resourceSections.map(({ id, title, links }) => (
-                  <section key={title} aria-labelledby={`${id}-heading`}>
-                    <h3 id={`${id}-heading`} className="font-bold">
-                      {title}
-                    </h3>
-                    <ul className="list-disc pl-6 mt-2 space-y-1 text-[#0071bc]" role="list">
-                      {links.map(({ text, to, downloadHref }) => (
-                        <li key={`${title}-${text}`}>
-                          <Link
-                            to={to}
-                            target={FAQ_TAB}
-                            className="underline"
-                            onClick={downloadHref ? () => downloadFile(downloadHref) : undefined}
-                          >
-                            {text}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                ))}
-              </div>
-            </CardWithTopBorder>
-          </section>
+          {showResources && (
+            <section className="min-w-0">
+              <h2 className="text-2xl font-bold">Resources</h2>
+              <CardWithTopBorder className="">
+                <div className="space-y-6 py-5 pl-6 pr-6 md:pr-20">
+                  {resourceSections.map(({ id, title, links }) => (
+                    <section key={title} aria-labelledby={`${id}-heading`}>
+                      <h3 id={`${id}-heading`} className="font-bold">
+                        {title}
+                      </h3>
+                      <ul className="list-disc pl-6 mt-2 space-y-1 text-[#0071bc]" role="list">
+                        {links.map(({ text, to, downloadHref }) => (
+                          <li key={`${title}-${text}`}>
+                            <Link
+                              to={to}
+                              target={FAQ_TAB}
+                              className="underline"
+                              onClick={downloadHref ? () => downloadFile(downloadHref) : undefined}
+                            >
+                              {text}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              </CardWithTopBorder>
+            </section>
+          )}
         </div>
         <div className="flex flex-col justify-center gap-8">
           <div>
