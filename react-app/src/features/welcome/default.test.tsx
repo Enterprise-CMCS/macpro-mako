@@ -63,8 +63,9 @@ describe("Default Welcome", () => {
       screen.getByText(/The CS 31 CHIP eligibility SPA template and implementation guide/),
     ).toBeInTheDocument();
     expect(
-      ,
-    screen..toHaveAttribute("href", "
+      screen.getByRole("link", { name: "Access SPA templates and implementation guides" }),
+    ).toHaveAttribute("href", "/faq/chip-spa-templates");
+
     const resourcesSection = screen.getByRole("heading", {
       name: "Resources",
       level: 2,
