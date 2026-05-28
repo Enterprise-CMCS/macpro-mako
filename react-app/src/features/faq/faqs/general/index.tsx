@@ -41,6 +41,8 @@ export const generalContent = [
   },
   {
     anchorText: "onboarding-materials",
+    label: "Updated",
+    labelColor: "green",
     question: "Onboarding Materials",
     answerJSX: <OnboardingMaterials />,
   },

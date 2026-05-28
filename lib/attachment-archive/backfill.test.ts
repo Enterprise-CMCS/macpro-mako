@@ -18,11 +18,25 @@ vi.mock("../libs/utils", () => ({
 
 import {
   ATTACHMENT_ARCHIVE_BACKFILL_PAGE_SIZE,
+  filterActiveAttachmentArchivePackageIds,
   getAttachmentArchiveBackfillPage,
+  isDeletedAttachmentArchivePackageId,
   listAllAttachmentArchiveSections,
 } from "./backfill";
 
 describe("attachment archive backfill helpers", () => {
+  it("identifies and filters soft-deleted package ids", () => {
+    expect(isDeletedAttachmentArchivePackageId("MD-22-0029-del")).toBe(true);
+    expect(isDeletedAttachmentArchivePackageId("MD-22-0029")).toBe(false);
+
+    expect(
+      filterActiveAttachmentArchivePackageIds(["MD-1", "MD-2-del", "MD-3-del", "MD-4"]),
+    ).toEqual({
+      packageIds: ["MD-1", "MD-4"],
+      skippedDeletedPackageCount: 2,
+    });
+  });
+
   afterEach(() => {
     search.mockReset();
     getDomainAndNamespace.mockClear();

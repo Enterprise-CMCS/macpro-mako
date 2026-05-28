@@ -18,12 +18,14 @@ import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
 
 export const AppKAmendmentForm = () => (
   <ActionForm
     title="1915(c) Appendix K Amendment Details"
     breadcrumbText="Request a 1915(c) Appendix K Amendment"
     schema={formSchemas["app-k"]}
+    formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
     fields={({ control }) => (
       <>
         <div>

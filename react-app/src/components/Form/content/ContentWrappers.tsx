@@ -39,23 +39,30 @@ export const RequiredFieldDescription = () => (
   </>
 );
 
-export const ProgressLossReminder = ({ className = "" }: { className?: string }) => (
-  <p className={clsx("font-bold", className)}>
-    If you leave this page, you will lose your progress on this form.
-  </p>
-);
+export const DEFAULT_PROGRESS_LOSS_REMINDER =
+  "If you leave this page, you will lose your progress on this form.";
+
+export const ProgressLossReminder = ({
+  className = "",
+  children = DEFAULT_PROGRESS_LOSS_REMINDER,
+}: {
+  className?: string;
+  children?: ReactNode;
+}) => <p className={clsx("font-bold", className)}>{children}</p>;
 
 export const ActionFormDescription = ({
   children,
   boldReminder,
+  progressLossReminder,
 }: {
   children: ReactNode;
   boldReminder?: boolean;
+  progressLossReminder?: ReactNode;
 }) => {
   return (
     <div className="mt-4">
       {children}
-      {boldReminder && <ProgressLossReminder />}
+      {boldReminder && <ProgressLossReminder>{progressLossReminder}</ProgressLossReminder>}
     </div>
   );
 };

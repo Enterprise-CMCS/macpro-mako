@@ -17,6 +17,7 @@ import * as api from "@/api";
 import * as components from "@/components";
 import { queryClient } from "@/utils";
 import {
+  DRAFT_ID_CONFLICT_BANNER_TITLE,
   DRAFT_ID_CONFLICT_MESSAGE,
   getDraftIdConflictFieldMessage,
   getNonOwnerDraftWarningModalBody,
@@ -44,6 +45,7 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 
 import { ActionForm } from "./index";
 const PROGRESS_REMINDER = /If you leave this page, you will lose your progress on this form./;
+const SAVE_PROGRESS_REMINDER = "Your changes will be lost if you leave this page without saving.";
 const MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE =
   getDraftIdConflictFieldMessage("new-medicaid-submission");
 const sendGAEventSpy = vi.spyOn(await import("@/utils/ReactGA/SendGAEvent"), "sendGAEvent");
@@ -723,6 +725,25 @@ describe("ActionForm", () => {
     );
 
     expect(screen.queryAllByText(PROGRESS_REMINDER).length).toBe(2);
+  });
+
+  test("uses custom ProgressReminder in the form header and footer", async () => {
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Action Form Title"
+        schema={z.object({})}
+        fields={() => null}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        breadcrumbText="Example Breadcrumb"
+        formDescriptionProgressLossReminder={SAVE_PROGRESS_REMINDER}
+      />,
+    );
+
+    expect(screen.queryAllByText(SAVE_PROGRESS_REMINDER).length).toBe(2);
+    expect(screen.queryByText(PROGRESS_REMINDER)).not.toBeInTheDocument();
   });
 
   test("doesn't render ProgressReminder if `areFieldsRequired` is false", async () => {
@@ -1660,7 +1681,7 @@ describe("ActionForm", () => {
     saveDraftSpy.mockRestore();
   });
 
-  test("shows duplicate ID conflict on draft save and re-enables actions after the ID changes", async () => {
+  test("shows duplicate ID conflict on draft save and replaces the warning after saving an updated ID", async () => {
     const user = userEvent.setup();
     const draftId = "MD-26-7685-P";
     const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
@@ -1682,7 +1703,12 @@ describe("ActionForm", () => {
       isLoading: false,
       error: null,
     } as any);
-    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: `${draftId}-NEW`,
+      seqNo: 11,
+      primaryTerm: 3,
+    });
     vi.mocked(api.itemExists).mockResolvedValue(true);
 
     await renderFormWithPackageSectionAsync(
@@ -1719,9 +1745,9 @@ describe("ActionForm", () => {
     await waitFor(() =>
       expect(bannerSpy).toHaveBeenCalledWith(
         expect.objectContaining({
-          header: "Unable to save package",
+          header: DRAFT_ID_CONFLICT_BANNER_TITLE,
           body: DRAFT_ID_CONFLICT_MESSAGE,
-          variant: "destructive",
+          variant: "warning",
         }),
       ),
     );
@@ -1738,7 +1764,86 @@ describe("ActionForm", () => {
     await waitFor(() => expect(screen.queryByTestId("draft-id-error")).not.toBeInTheDocument());
     await waitFor(() => expect(screen.getByTestId("save-draft-form")).not.toBeDisabled());
 
+    vi.mocked(api.itemExists).mockResolvedValue(false);
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(saveDraftSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          id: `${draftId}-NEW`,
+          originalDraftId: draftId,
+        }),
+      ),
+    );
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          header: "Progress saved",
+          body: `Changes made to ${draftId}-NEW have been saved.`,
+          variant: "success",
+        }),
+      ),
+    );
+
     useGetItemSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("does not show the draft ID update banner for a duplicate ID before first draft save", async () => {
+    const user = userEvent.setup();
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: "MD-26-0511-P",
+      seqNo: 1,
+      primaryTerm: 1,
+    });
+    vi.mocked(api.itemExists).mockResolvedValue(true);
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft conflict test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => (
+          <>
+            <input aria-label="Package ID" {...form.register("id")} />
+            {form.formState.errors.id?.message && (
+              <p role="alert" data-testid="draft-id-error">
+                {String(form.formState.errors.id.message)}
+              </p>
+            )}
+          </>
+        )}
+        defaultValues={{ id: "MD-26-0511-P" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+    expect(bannerSpy).not.toHaveBeenCalledWith(
+      expect.objectContaining({
+        header: DRAFT_ID_CONFLICT_BANNER_TITLE,
+        body: DRAFT_ID_CONFLICT_MESSAGE,
+        variant: "warning",
+      }),
+    );
+    expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
+    expect(screen.getByTestId("draft-save-status")).toHaveTextContent(
+      MEDICAID_DRAFT_ID_CONFLICT_FIELD_MESSAGE,
+    );
+
+    saveDraftSpy.mockRestore();
   });
 
   test("sets inline ID error when backend detects duplicate draft ID during save", async () => {
@@ -1803,9 +1908,9 @@ describe("ActionForm", () => {
     await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
     expect(bannerSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        header: "Unable to save package",
+        header: DRAFT_ID_CONFLICT_BANNER_TITLE,
         body: DRAFT_ID_CONFLICT_MESSAGE,
-        variant: "destructive",
+        variant: "warning",
       }),
     );
     expect(screen.getByTestId("draft-id-error")).toHaveTextContent(
@@ -1888,8 +1993,9 @@ describe("ActionForm", () => {
     );
     expect(bannerSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        header: "Unable to save package",
+        header: DRAFT_ID_CONFLICT_BANNER_TITLE,
         body: DRAFT_ID_CONFLICT_MESSAGE,
+        variant: "warning",
       }),
     );
 

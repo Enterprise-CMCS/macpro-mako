@@ -5,11 +5,83 @@ import * as C from "@/components";
 import { Button } from "@/components";
 import { CardWithTopBorder } from "@/components";
 import { FAQ_TAB } from "@/consts";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { useHideBanner } from "@/hooks/useHideBanner";
 import { cn } from "@/utils";
 
+const USER_GUIDE_DOWNLOADS = {
+  cms: "/onboarding/OneMACCMSUserGuide.pdf",
+  state: "/onboarding/OneMACStateUserGuide.pdf",
+} as const;
+
+const resourceSections = [
+  {
+    id: "spa-templates",
+    title: "SPA Templates",
+    links: [
+      {
+        text: "Medicaid Alternative Benefit Plan (ABP)",
+        to: "/faq/abp-spa-templates",
+      },
+      {
+        text: "Medicaid Premiums and Cost Sharing",
+        to: "/faq/mpc-spa-templates",
+      },
+      {
+        text: "CHIP eligibility",
+        to: "/faq/chip-spa-templates",
+      },
+    ],
+  },
+  {
+    id: "spa-implementation-guides",
+    title: "SPA Implementation Guides",
+    links: [
+      {
+        text: "Medicaid Alternative Benefit Plan (ABP)",
+        to: "/faq/abp-implementation-guides-spa",
+      },
+      {
+        text: "Medicaid Premiums and Cost Sharing",
+        to: "/faq/mpc-spa-implementation-guides",
+      },
+      {
+        text: "CHIP eligibility",
+        to: "/faq/chip-spa-implementation-guides",
+      },
+    ],
+  },
+  {
+    id: "user-guides",
+    title: "User guides",
+    links: [
+      {
+        text: "State User Guide",
+        to: "/faq/onboarding-materials",
+        downloadHref: USER_GUIDE_DOWNLOADS.state,
+      },
+      {
+        text: "CMS User Guide",
+        to: "/faq/onboarding-materials",
+        downloadHref: USER_GUIDE_DOWNLOADS.cms,
+      },
+    ],
+  },
+];
+
+const downloadFile = (href: string) => {
+  const link = document.createElement("a");
+  link.href = href;
+  link.download = "";
+  link.rel = "noopener noreferrer";
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+};
+
 export const Welcome = () => {
   const isSectionHidden = useHideBanner();
+  const showResources = useFeatureFlag("HOMEPAGE_RESOURCES");
 
   return (
     <>
@@ -27,24 +99,87 @@ export const Welcome = () => {
       {/* End Hero Section */}
       {/* Two Column Main Layout */}
       <div className="max-w-screen-xl mx-auto p-4 lg:px-8">
-        <div className={cn("m-auto max-w-[767px]", isSectionHidden ? "hidden" : "block")}>
-          <h2 className="text-2xl font-bold">New and Notable</h2>
-          <CardWithTopBorder className="">
-            <p className="py-5 pl-6 pr-20">
-              <span className="font-bold text-[#0071bc]">MMDL SPA forms available in OneMAC:</span>{" "}
-              Medicaid Alternative Benefit Plan, Premiums and Cost Sharing, and CHIP Eligibility SPA
-              templates and implementation guides are now available in OneMAC. New submissions for
-              these SPA types are submitted through the OneMAC system effective July 28, 2025.
-              <br />
-              <br />
-              The CS 31 CHIP eligibility SPA template and implementation guide have been updated in
-              OneMAC to include policies for targeted low-income pregnant women. These updates will
-              be effective starting March 19, 2026.{" "}
-              <Link to="/faq/spa-amendments" target={FAQ_TAB} className="underline text-[#0071bc]">
-                Learn more
-              </Link>
-            </p>
-          </CardWithTopBorder>
+        <div
+          className={cn(
+            "grid items-start gap-8",
+            showResources ? "lg:grid-cols-[minmax(0,1.7fr)_minmax(280px,1fr)]" : "lg:grid-cols-1",
+          )}
+        >
+          <section
+            className={cn(
+              isSectionHidden ? "hidden" : "block",
+              showResources ? "min-w-0" : "m-auto w-full max-w-[767px]",
+            )}
+          >
+            <h2 className="text-2xl font-bold">New and Notable</h2>
+            <CardWithTopBorder className="">
+              <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">
+                <article className="space-y-2">
+                  <h3 className="font-bold">Saving Draft Packages</h3>
+                  <p>
+                    New functionality has been added to OneMAC allowing state users to save a draft
+                    version of new submission packages. This allows states to begin working on their
+                    new packages, save their work, and come back to them later to complete and
+                    submit the SPA or Waiver action to CMS. Full details are available in the OneMAC
+                    State User Guide.
+                  </p>
+                  <Link
+                    to="/faq/onboarding-materials"
+                    target={FAQ_TAB}
+                    className="inline-block underline text-[#0071bc]"
+                    onClick={() => downloadFile(USER_GUIDE_DOWNLOADS.state)}
+                  >
+                    Access State User Guide
+                  </Link>
+                </article>
+                <article className="space-y-2">
+                  <h3 className="font-bold">Updated CS 31 SPA form</h3>
+                  <p>
+                    The CS 31 CHIP eligibility SPA template and implementation guide have been
+                    updated in OneMAC to include policies for targeted low-income pregnant women.
+                    These updates will be effective starting March 19, 2026.
+                  </p>
+                  <Link
+                    to="/faq/chip-spa-templates"
+                    target={FAQ_TAB}
+                    className="inline-block underline text-[#0071bc]"
+                  >
+                    Access SPA templates and implementation guides
+                  </Link>
+                </article>
+              </div>
+            </CardWithTopBorder>
+          </section>
+          {showResources && (
+            <section className="min-w-0">
+              <h2 className="text-2xl font-bold">Resources</h2>
+              <CardWithTopBorder className="">
+                <div className="space-y-6 py-5 pl-6 pr-6 md:pr-20">
+                  {resourceSections.map(({ id, title, links }) => (
+                    <section key={title} aria-labelledby={`${id}-heading`}>
+                      <h3 id={`${id}-heading`} className="font-bold">
+                        {title}
+                      </h3>
+                      <ul className="list-disc pl-6 mt-2 space-y-1 text-[#0071bc]" role="list">
+                        {links.map(({ text, to, downloadHref }) => (
+                          <li key={`${title}-${text}`}>
+                            <Link
+                              to={to}
+                              target={FAQ_TAB}
+                              className="underline"
+                              onClick={downloadHref ? () => downloadFile(downloadHref) : undefined}
+                            >
+                              {text}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
+                </div>
+              </CardWithTopBorder>
+            </section>
+          )}
         </div>
         <div className="flex flex-col justify-center gap-8">
           <div>

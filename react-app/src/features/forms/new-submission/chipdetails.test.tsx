@@ -7,6 +7,7 @@ import * as api from "@/api";
 import { mockApiRefinements, renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
 
 import { ChipDetailsForm } from "./ChipDetails";
+import { NEW_SUBMISSION_FORM_DESCRIPTION, NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "./content";
 
 describe("ChipDetailsForm", () => {
   beforeEach(() => {
@@ -25,6 +26,10 @@ describe("ChipDetailsForm", () => {
     expect(screen.getByText("CHIP Submission Type")).toBeInTheDocument();
     expect(screen.getByTestId("proposedEffectiveDate-datepicker")).toBeInTheDocument();
     expect(screen.getAllByTestId("chip-attachments-instructions").length).toBeGreaterThan(0);
+    expect(screen.getByTestId("detail-section")).toHaveTextContent(NEW_SUBMISSION_FORM_DESCRIPTION);
+    expect(screen.getByTestId("detail-section")).toHaveTextContent(
+      NEW_SUBMISSION_PROGRESS_LOSS_REMINDER,
+    );
   });
 
   it("shows checkbox options when clicking submission type trigger", async () => {
