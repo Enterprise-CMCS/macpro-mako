@@ -144,7 +144,7 @@ export const Welcome = () => {
                     target={FAQ_TAB}
                     className="inline-block underline text-[#0071bc]"
                   >
-                    Access templates and guides
+                    Access SPA templates and implementation guides
                   </Link>
                 </article>
               </div>
