@@ -105,7 +105,12 @@ export const Welcome = () => {
             showResources ? "lg:grid-cols-[minmax(0,1.7fr)_minmax(280px,1fr)]" : "lg:grid-cols-1",
           )}
         >
-          <section className={cn("min-w-0", isSectionHidden ? "hidden" : "block")}>
+          <section
+            className={cn(
+              isSectionHidden ? "hidden" : "block",
+              showResources ? "min-w-0" : "m-auto w-full max-w-[767px]",
+            )}
+          >
             <h2 className="text-2xl font-bold">New and Notable</h2>
             <CardWithTopBorder className="">
               <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">

@@ -130,6 +130,9 @@ describe("Default Welcome", () => {
     setup();
 
     expect(screen.getByText("Saving Draft Packages")).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
+    ).toHaveClass("m-auto", "max-w-[767px]");
     expect(screen.queryByRole("heading", { name: "Resources", level: 2 })).not.toBeInTheDocument();
     expect(screen.queryByRole("heading", { name: "SPA Templates" })).not.toBeInTheDocument();
   });
