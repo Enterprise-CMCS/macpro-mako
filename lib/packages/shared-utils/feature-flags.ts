@@ -89,6 +89,13 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   * Toggle visibility of the homepage resources section
+   */
+  HOMEPAGE_RESOURCES: {
+    flag: "homepage-resources",
+    defaultValue: true,
+  },
+  /*
    *  Toggle visibility of details page of the chip spa eligibility submission
    */
   CHIP_SPA_DETAILS: {

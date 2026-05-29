@@ -49,6 +49,7 @@ export interface AttachmentArchiveIntegrityRunSummary {
   status: AttachmentArchiveIntegrityRunSummaryStatus;
   packagesScanned: number;
   packagesTotal: number;
+  skippedDeletedPackageCount?: number;
   sectionsScanned: number;
   discrepancyCount: number;
   discrepancyTypeCounts: Record<string, number>;
@@ -101,6 +102,7 @@ interface AttachmentArchiveIntegrityRunBaseResult {
   summaryKey: string;
   checkpointKey: string;
   packagesTotal: number;
+  skippedDeletedPackageCount?: number;
   lastProcessedPackageId?: string;
   discrepancyCount: number;
   discrepancyTypeCounts: Record<string, number>;

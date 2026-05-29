@@ -1,3 +1,4 @@
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { Check, X } from "lucide-react";
 import { useEffect, useRef } from "react";
 import { useLocation } from "react-router";
@@ -80,10 +81,16 @@ export const Banner = () => {
   }, [pathname, activeBanner]); // eslint-disable-line react-hooks/exhaustive-deps
 
   if (activeBanner && activeBanner.pathnameToDisplayOn === pathname) {
+    const BannerIcon = activeBanner.variant === "warning" ? ExclamationTriangleIcon : Check;
+
     return (
       <Alert variant={activeBanner.variant} className="mt-4 mb-8 flex-row text-sm">
         <div className="flex items-start justify-between">
-          <Check />
+          <BannerIcon
+            aria-hidden="true"
+            className="size-6 text-[#1b1b1b]"
+            data-testid="banner-icon"
+          />
           <div className="ml-2 w-full">
             <h3 className="text-lg font-bold" data-testid="banner-header">
               {activeBanner.header}

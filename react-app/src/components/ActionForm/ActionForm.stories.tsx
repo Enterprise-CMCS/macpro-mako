@@ -1,5 +1,12 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { API_ENDPOINT, defaultApiHandlers, http, HttpResponse } from "mocks";
+import {
+  API_ENDPOINT,
+  defaultApiHandlers,
+  http,
+  HttpResponse,
+  TEST_STATE_SUBMITTER_EMAIL,
+} from "mocks";
+import { SEATOOL_STATUS } from "shared-types";
 import { expect, userEvent, waitFor, within } from "storybook/test";
 import { reactRouterParameters, withRouter } from "storybook-addon-remix-react-router";
 import { z } from "zod";
@@ -41,6 +48,8 @@ const meta = {
 
 export default meta;
 type Story = StoryObj<typeof meta>;
+
+const DRAFT_ID_CONFLICT_STORY_ID = "MD-26-0001-P";
 
 const schema = z.object({
   id: z.string(),
@@ -131,9 +140,32 @@ export const DraftIdConflict: Story = {
     ...DraftEnabled.args,
   },
   parameters: {
+    reactRouter: reactRouterParameters({
+      location: {
+        pathParams: { id: "NY-23-0007", authority: "Medicaid SPA" },
+        searchParams: { draftId: DRAFT_ID_CONFLICT_STORY_ID },
+      },
+    }),
     msw: {
       handlers: {
         api: [
+          http.post(`${API_ENDPOINT}/item`, async () =>
+            HttpResponse.json({
+              _id: DRAFT_ID_CONFLICT_STORY_ID,
+              found: true,
+              _source: {
+                id: DRAFT_ID_CONFLICT_STORY_ID,
+                authority: "Medicaid SPA",
+                seatoolStatus: SEATOOL_STATUS.DRAFT,
+                draft: {
+                  savedAt: "2026-03-12T00:00:00.000Z",
+                  createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+                  updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+                  data: { id: DRAFT_ID_CONFLICT_STORY_ID },
+                },
+              },
+            }),
+          ),
           http.post(`${API_ENDPOINT}/itemExists`, async () => HttpResponse.json({ exists: true })),
           ...defaultApiHandlers,
         ],

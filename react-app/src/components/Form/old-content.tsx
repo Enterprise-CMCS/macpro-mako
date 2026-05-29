@@ -1,4 +1,5 @@
 import { Info } from "lucide-react";
+import { ReactNode } from "react";
 
 import {
   ActionFormDescription,
@@ -47,6 +48,7 @@ export const SpaIdFormattingDesc = () => (
 type PreSubmissionMessageProps = {
   hasProgressLossReminder?: boolean;
   preSubmissionMessage?: string;
+  progressLossReminder?: ReactNode;
 };
 export const PreSubmissionMessage = ({
   hasProgressLossReminder = true,
@@ -54,12 +56,15 @@ export const PreSubmissionMessage = ({
       CMS will use this content to review your package, and you will not be able
       to edit this form. If CMS needs any additional information, they will
       follow up by email.`,
+  progressLossReminder,
 }: PreSubmissionMessageProps) => (
   <section>
     <Alert variant="infoBlock" className="flex-row text-sm">
       <Info />
       <p className="ml-2">{preSubmissionMessage}</p>
-      {hasProgressLossReminder && <ProgressLossReminder className="ml-2" />}
+      {hasProgressLossReminder && (
+        <ProgressLossReminder className="ml-2">{progressLossReminder}</ProgressLossReminder>
+      )}
     </Alert>
   </section>
 );

@@ -1,3 +1,4 @@
+import { ExclamationTriangleIcon } from "@heroicons/react/24/solid";
 import { useQuery } from "@tanstack/react-query";
 import { PropsWithChildren, useMemo } from "react";
 import { LoaderFunctionArgs, Navigate, redirect, useLoaderData } from "react-router";
@@ -16,7 +17,7 @@ import {
 import { BreadCrumbs } from "@/components/BreadCrumb";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { detailsAndActionsCrumbs, sendGAEvent } from "@/utils";
-import { DRAFT_ID_CONFLICT_MESSAGE } from "@/utils/drafts";
+import { DRAFT_ID_CONFLICT_BANNER_TITLE, DRAFT_ID_CONFLICT_MESSAGE } from "@/utils/drafts";
 
 import { AdminPackageActivities } from "./admin-changes";
 import { useDetailsSidebarLinks } from "./hooks";
@@ -123,8 +124,13 @@ export const DetailsContent = ({ id, preferDraft = false }: DetailsContentProps)
   return (
     <div className="w-full py-1 px-4 lg:px-8 grid grid-cols-1 gap-y-6 sm:gap-y-6">
       {isSaveInProgressEnabled && isDraft && hasDraftIdConflict && (
-        <Alert variant="warning" className="my-2 sm:my-3">
-          <AlertTitle>This package ID is already in use</AlertTitle>
+        <Alert variant="warning" className="my-2 sm:my-3 [&>svg]:text-[#1b1b1b]">
+          <ExclamationTriangleIcon
+            aria-hidden="true"
+            className="size-6 text-[#1b1b1b]"
+            data-testid="draft-id-conflict-icon"
+          />
+          <AlertTitle className="font-bold">{DRAFT_ID_CONFLICT_BANNER_TITLE}</AlertTitle>
           <AlertDescription>{DRAFT_ID_CONFLICT_MESSAGE}</AlertDescription>
         </Alert>
       )}

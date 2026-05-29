@@ -16,6 +16,7 @@ import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
 
 export const InitialForm = () => {
   return (
@@ -23,6 +24,7 @@ export const InitialForm = () => {
       schema={formSchemas["contracting-initial"]}
       title="1915(b)(4) FFS Selective Contracting Initial Waiver Details"
       breadcrumbText="1915(b)(4) FFS Selective Contracting Initial Waiver"
+      formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
       fields={({ control }) => (
         <>
           <div className="flex flex-col">
