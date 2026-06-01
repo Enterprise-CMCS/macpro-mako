@@ -20,6 +20,8 @@ import {
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
+import { NEW_SUBMISSION_FORM_DESCRIPTION, NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "./content";
+
 export const ChipDetailsForm = () => {
   const chipSubmissionType = [
     "MAGI Eligibility and Methods",
@@ -33,6 +35,8 @@ export const ChipDetailsForm = () => {
       title="CHIP Eligibility SPA Details"
       schema={formSchemas["new-chip-details-submission"]}
       breadcrumbText="Submit new CHIP Eligibility SPA"
+      formDescription={NEW_SUBMISSION_FORM_DESCRIPTION}
+      formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
       fields={({ control }) => (
         <>
           <FormField

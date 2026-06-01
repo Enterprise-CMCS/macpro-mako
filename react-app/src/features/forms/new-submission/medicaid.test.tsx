@@ -8,6 +8,7 @@ import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
 import { mockApiRefinements, skipCleanup } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
+import { NEW_SUBMISSION_FORM_DESCRIPTION, NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "./content";
 import { MedicaidForm } from "./Medicaid";
 
 let intersectionObserverCb:
@@ -41,6 +42,13 @@ describe("Medicaid SPA", () => {
     mockApiRefinements();
 
     await renderFormWithPackageSectionAsync(<MedicaidForm />);
+  });
+
+  test("renders the new submission intro text", () => {
+    const detailsSection = screen.getByTestId("detail-section");
+
+    expect(detailsSection).toHaveTextContent(NEW_SUBMISSION_FORM_DESCRIPTION);
+    expect(detailsSection).toHaveTextContent(NEW_SUBMISSION_PROGRESS_LOSS_REMINDER);
   });
 
   test("SPA ID", async () => {
