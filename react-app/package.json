@@ -102,7 +102,7 @@
     "vite": "^8.0.13",
     "vite-plugin-checker": "^0.8.0",
     "vite-plugin-radar": "^0.9.2",
-    "vitest": "^3.2.4",
+    "vitest": "^4.1.8",
     "vitest-axe": "^0.1.0",
     "vitest-browser-react": "^1.0.1"
   },
