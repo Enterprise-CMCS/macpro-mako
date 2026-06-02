@@ -798,22 +798,16 @@ describe("ActionForm", () => {
     await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Draft Save Test"
-        schema={z
-          .object({
-            ids: z.object({ id: z.string().min(1) }),
-          })
-          .transform(({ ids }) => ({ id: ids.id }))}
-        fields={(form) => <input aria-label="Package ID" {...form.register("ids.id")} />}
-        defaultValues={{ ids: { id: "" } }}
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "" }}
         documentPollerArgs={{
           property: () => "id",
           documentChecker: () => true,
         }}
-        draftOptions={{
-          enabled: true,
-          event: "temporary-extension",
-          idPath: "ids.id",
-        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
