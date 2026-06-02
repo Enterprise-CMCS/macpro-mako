@@ -138,6 +138,32 @@ describe("Temporary Extension", () => {
     await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
   });
 
+  test("enables Save & Submit from the card choice path without saving a draft first", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      undefined,
+      "1915(b)",
+      "origin=waivers",
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      VALID_ITEM_TEMPORARY_EXTENSION_ID,
+    );
+    await upload("waiverExtensionRequest");
+
+    await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
+    expect(screen.getByTestId("submit-action-form")).toHaveTextContent("Save & Submit");
+  });
+
   describe("New Temporary Extension", () => {
     const user = userEvent.setup();
     beforeAll(async () => {

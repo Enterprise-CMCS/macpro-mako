@@ -111,12 +111,7 @@ export const TemporaryExtensionForm = () => {
               control={form.control}
               render={({ field }) => {
                 return (
-                  <FormItem
-                    className="max-w-md"
-                    onChange={async () => {
-                      await form.trigger("ids.validAuthority.authority");
-                    }}
-                  >
+                  <FormItem className="max-w-md">
                     <FormLabel data-testid="waiverNumber-label">
                       <strong className="font-bold">
                         Approved Initial or Renewal Waiver Number
@@ -145,11 +140,7 @@ export const TemporaryExtensionForm = () => {
             control={form.control}
             name="ids.id"
             render={({ field }) => (
-              <FormItem
-                onChange={async () => {
-                  await form.trigger("ids.validAuthority.authority");
-                }}
-              >
+              <FormItem>
                 <FormLabel data-testid="requestNumber-label">
                   <strong className="font-bold">
                     Temporary Extension Request Number

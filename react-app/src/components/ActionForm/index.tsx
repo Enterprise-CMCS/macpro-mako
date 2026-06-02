@@ -911,6 +911,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       if (!isMountedRef.current) return;
+      skipNavigationPromptRef.current = true;
       navigate(formOrigins);
     } catch (error) {
       if (!isMountedRef.current) return;

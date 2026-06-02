@@ -1,3 +1,9 @@
+import {
+  approvedInitialOrRenewalWaiverIdFormatMessage,
+  approvedInitialOrRenewalWaiverIdRegex,
+  temporaryExtensionIdFormatMessage,
+  temporaryExtensionIdRegex,
+} from "shared-types/events/temporary-extension";
 import { z } from "zod";
 
 import { canBeRenewedOrAmended, idIsApproved, itemExists } from "@/api";
@@ -181,12 +187,7 @@ export const zExtensionWaiverNumberSchema = z
     message:
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
-  .superRefine(
-    validId(
-      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.TE\d{2}$/,
-      "The Temporary Extension Request Number must be in the format of SS-####.R##.TE## or SS-#####.R##.TE##",
-    ),
-  )
+  .superRefine(validId(temporaryExtensionIdRegex, temporaryExtensionIdFormatMessage))
   .refine(async (value) => !(await itemExists(value)), {
     message:
       "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
@@ -200,10 +201,7 @@ export const zExtensionOriginalWaiverNumberSchema = z
       "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
   })
   .superRefine(
-    validId(
-      /^[A-Z]{2}-\d{4,5}\.R\d{2}\.00$/,
-      "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
-    ),
+    validId(approvedInitialOrRenewalWaiverIdRegex, approvedInitialOrRenewalWaiverIdFormatMessage),
   )
   // This should already exist
   .refine(async (value) => itemExists(value), {

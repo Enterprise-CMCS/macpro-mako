@@ -1364,6 +1364,49 @@ describe("ActionForm", () => {
     saveDraftSpy.mockRestore();
   });
 
+  test("submits a draft-enabled form without saving first", async () => {
+    const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData").mockResolvedValue({
+      correctDataStateFound: true,
+      maxAttemptsReached: false,
+    });
+    const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
+    const documentChecker: documentPoller.CheckDocumentFunction = () => true;
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Direct Submit Test"
+        schema={z.object({
+          id: z.string().min(1),
+          event: z.literal("temporary-extension").default("temporary-extension"),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "MD-25-2525-DIRECT" }}
+        documentPollerArgs={{
+          property: "id",
+          documentChecker,
+        }}
+        draftOptions={{ enabled: true, event: "temporary-extension" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    expect(screen.getByTestId("submit-action-form")).toHaveTextContent("Save & Submit");
+
+    fireEvent.submit(await screen.findByTestId("submit-action-form"));
+
+    await waitFor(() =>
+      expect(documentPollerSpy).toHaveBeenCalledWith("MD-25-2525-DIRECT", documentChecker, {
+        includeDraft: false,
+      }),
+    );
+    await waitFor(() => expect(mockNavigate).toHaveBeenCalled());
+    expect(invalidateQueriesSpy).toHaveBeenCalledWith({ queryKey: ["record"] });
+
+    invalidateQueriesSpy.mockRestore();
+    dataPollerSpy.mockRestore();
+  });
+
   test("polls with includeDraft enabled while submitting an existing draft", async () => {
     const draftId = "MD-25-2525-SAVE";
     const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
