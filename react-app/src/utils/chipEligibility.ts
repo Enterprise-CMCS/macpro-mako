@@ -21,10 +21,7 @@ export const getEffectiveInitialSubmissionEvent = (
   submission: opensearch.main.Document,
   originalSubmissionEvent: string | null,
 ) => {
-  if (
-    originalSubmissionEvent === CHIP_SPA_SUBMISSION_EVENT &&
-    isChipEligibilityPackage(submission)
-  ) {
+  if (isChipEligibilityPackage(submission)) {
     return CHIP_ELIGIBILITY_SUBMISSION_EVENT;
   }
 

@@ -24,7 +24,20 @@ describe("Upload Subsequent Documents for backend-converted CHIP Eligibility pac
         ...TEST_CHIP_SPA_ITEM,
         _source: {
           ...TEST_CHIP_SPA_ITEM._source,
+          event: "new-chip-details-submission",
           chipSubmissionType: ["Non-Financial Eligibility"],
+          changelog: [
+            ...(TEST_CHIP_SPA_ITEM._source.changelog ?? []),
+            {
+              _id: `${NEW_CHIP_ITEM_ID}-0002`,
+              _source: {
+                id: `${NEW_CHIP_ITEM_ID}-0002`,
+                packageId: NEW_CHIP_ITEM_ID,
+                event: "update-values",
+                isAdminChange: true,
+              },
+            },
+          ],
         },
       } as opensearch.main.ItemResult),
     );
