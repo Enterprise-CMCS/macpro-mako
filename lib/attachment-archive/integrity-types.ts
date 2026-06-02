@@ -85,6 +85,7 @@ export interface AttachmentArchiveIntegrityCheckpoint {
   nextPackageIndex: number;
   packagesScanned: number;
   packagesTotal: number;
+  skippedDeletedPackageCount?: number;
   sectionsScanned: number;
   discrepancyCount: number;
   discrepancyTypeCounts: Record<string, number>;

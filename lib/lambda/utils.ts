@@ -6,7 +6,7 @@ import { ItemResult } from "shared-types/opensearch/main";
 export type ErrorResponse = {
   statusCode: number;
   body: {
-    message?: string;
+    message?: unknown;
   };
 };
 
