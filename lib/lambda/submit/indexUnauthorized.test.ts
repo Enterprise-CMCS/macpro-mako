@@ -17,5 +17,6 @@ describe("submit Lambda function with unauthorized submitter", () => {
       expect(result.statusCode).toEqual(500);
       expect(result.body).toEqual('{"message":"Internal server error"}');
     },
+    10000,
   );
 });

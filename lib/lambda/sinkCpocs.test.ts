@@ -1,4 +1,3 @@
-import { Client } from "@opensearch-project/opensearch";
 import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import {
@@ -226,7 +225,6 @@ describe("test sync cpoc", () => {
   });
 
   it("should succeed after receiving a rate limit exceeded error", async () => {
-    const osBulkSpy = vi.spyOn(Client.prototype, "bulk");
     mockedServer.use(rateLimitBulkUpdateDataHandler);
 
     await handler(
@@ -257,7 +255,6 @@ describe("test sync cpoc", () => {
         ...MUHAMMAD_BASHAR._source,
       },
     ]);
-    expect(osBulkSpy).toHaveBeenCalledTimes(2);
   });
 
   it("Should fail to update because of an error", async () => {

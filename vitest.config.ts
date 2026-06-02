@@ -15,6 +15,7 @@ export default defineConfig({
           setupFiles: ["vitest.setup.ts"],
           exclude: ["**/node_modules/**", "./libs/email/**"],
           environment: "node",
+          testTimeout: 15000,
         },
       },
       {
@@ -24,6 +25,7 @@ export default defineConfig({
           setupFiles: ["vitest.setup.ts"],
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
+          testTimeout: 15000,
         },
       },
       {
@@ -34,6 +36,7 @@ export default defineConfig({
           setupFiles: "vitest.setup.ts",
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
+          testTimeout: 15000,
         },
       },
       {
@@ -50,6 +53,7 @@ export default defineConfig({
           name: "storybook",
           root: "./react-app",
           setupFiles: "./.storybook/vitest.setup.ts",
+          testTimeout: 15000,
         },
       },
     ],

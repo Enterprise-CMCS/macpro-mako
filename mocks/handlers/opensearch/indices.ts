@@ -20,7 +20,14 @@ const defaultUpdateFieldMappingHandler = http.put(
   },
 );
 
-export const errorUpdateFieldMappingHandler = http.put(
+const defaultUpdateFieldMappingPostHandler = http.post(
+  "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index/_mapping",
+  async () => {
+    return new HttpResponse(null, { status: 200 });
+  },
+);
+
+export const errorUpdateFieldMappingHandler = http.post(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index/_mapping",
   () => new HttpResponse("Internal server error", { status: 500 }),
 );
@@ -58,6 +65,7 @@ export const errorDeleteIndexHandler = () =>
 export const indexHandlers = [
   defaultCreateIndexHandler,
   defaultUpdateFieldMappingHandler,
+  defaultUpdateFieldMappingPostHandler,
   defaultBulkUpdateDataHandler,
   defaultDeleteIndexHandler,
 ];
