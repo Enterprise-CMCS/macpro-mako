@@ -167,6 +167,9 @@ const sendUpdateValuesMessage = async ({
   const invalidFields = Object.keys(updatedFields).filter(
     (field) => !(field in currentPackage._source) && !allowedNewFields.has(field),
   );
+
+  console.log(invalidFields, updatedFields);
+  console.log(allowedNewFields);
   if (invalidFields.length > 0) {
     return response({
       statusCode: 400,
