@@ -168,6 +168,7 @@ const sendUpdateValuesMessage = async ({
     (field) => !(field in currentPackage._source) && !allowedNewFields.has(field),
   );
 
+  console.log(currentPackage._source);
   console.log(invalidFields, updatedFields);
   console.log(allowedNewFields);
   if (invalidFields.length > 0) {
