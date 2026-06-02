@@ -100,14 +100,10 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 ## Learned User Preferences
 
 - Make code changes on `main`; avoid committing directly to the `production` branch.
-- Use the `onemac-prod` AWS CLI profile for production environment operations.
 - When executing an attached plan, do not edit the plan file itself.
-- Use `onemac-prod-readonly` for read-only production verification.
-- Enterprise JIRA (OY2/OMO): use https://jiraent.cms.gov with Bearer auth via `JIRA_PERSONAL_TOKEN` or `JIRA_TOKEN`.
+- Enterprise JIRA (OY2/OMO): use https://jiraent.cms.gov
 - Show draft JIRA comments for approval before posting or transitioning tickets.
 - JIRA or CSV review-only requests: assess and report only; do not implement fixes unless explicitly asked.
-- Do not mention AWS CLI profile names in JIRA ticket comments.
-- For JIRA/AWS verification reviews: BigMAC resources use `bigmac-dev`, `bigmac-val`, and `bigmac-prod-readonly`; OneMAC uses `onemac-dev`, `onemac-val`, and `onemac-prod-readonly`.
 
 ## Learned Workspace Facts
 
@@ -115,7 +111,3 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 - Date consumers should read `proposedDate` first, then `draft.data.proposedEffectiveDate`; format in UTC and treat numeric values below `1e12` as seconds when normalizing.
 - SEATool reference tables and TypeScript types live under `lib/packages/shared-types/seatool-tables/`.
 - Environment promotion typically follows `main` → `val` → `production` (for example attachment archive rollouts).
-- Production Archive Integrity Discrepancies tracks archive issues such as missing packages, sections, zips, or files.
-- Anypoint/MSK truststore assets live under `msk-infrastructure/anypoint`, with per-environment layouts for val and production.
-- AWS CLI profiles for Mako/OneMAC in `us-east-1`: `onemac-dev`, `onemac-val`, `onemac-prod-readonly` (read-only prod). MSK broker logs are in bigmac accounts; use Mako Lambda CloudWatch/Splunk or `bigmac-*` profiles for broker-level Kafka logs.
-- OneMAC↔SMART integration uses a MuleSoft Kafka appliance (GovCloud→CMS cloud→BigMAC MSK via VPC/VPN), topic `aws.onemac.migration.cdc`, and `POST /external/getAttachmentUrl` for SMART presigned attachment URLs. Bidirectional REST `/dataSink` canonical envelope and MSK PrivateLink for SMART were not adopted.
