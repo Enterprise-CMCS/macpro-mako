@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useBlocker } from "react-router";
+import { type MutableRefObject, useCallback, useEffect } from "react";
+import { type BlockerFunction, useBlocker } from "react-router";
 
 import { UserPrompt, userPrompt } from "@/components";
 
@@ -10,9 +10,17 @@ export function useNavigationPrompt({
 }: {
   shouldBlock: boolean;
   prompt: Omit<UserPrompt, "onAccept">;
-  shouldSkipBlockingRef?: React.MutableRefObject<boolean>;
+  shouldSkipBlockingRef?: MutableRefObject<boolean>;
 }) {
-  const blocker = useBlocker(shouldBlock);
+  const shouldBlockNavigation = useCallback<BlockerFunction>(() => {
+    if (shouldSkipBlockingRef?.current) {
+      shouldSkipBlockingRef.current = false;
+      return false;
+    }
+
+    return shouldBlock;
+  }, [shouldBlock, shouldSkipBlockingRef]);
+  const blocker = useBlocker(shouldBlockNavigation);
 
   useEffect(() => {
     if (blocker?.state === "blocked") {

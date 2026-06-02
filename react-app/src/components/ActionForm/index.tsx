@@ -817,8 +817,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     (formValues: Record<string, unknown>) => {
       const idValue = getValueByPath(formValues, idPath);
       const idFromForm = typeof idValue === "string" ? idValue.trim() : "";
+      const transformedIdValue = idPath === "id" ? undefined : getValueByPath(formValues, "id");
+      const idFromTransformedForm =
+        typeof transformedIdValue === "string" ? transformedIdValue.trim() : "";
       const fallbackDraftId = isDraftMode ? draftId : undefined;
-      return idFromForm || fallbackDraftId || "";
+      return idFromForm || idFromTransformedForm || fallbackDraftId || "";
     },
     [draftId, idPath, isDraftMode],
   );

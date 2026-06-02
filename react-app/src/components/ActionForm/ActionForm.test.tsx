@@ -798,16 +798,22 @@ describe("ActionForm", () => {
     await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Draft Save Test"
-        schema={z.object({
-          id: z.string().min(1),
-        })}
-        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
-        defaultValues={{ id: "" }}
+        schema={z
+          .object({
+            ids: z.object({ id: z.string().min(1) }),
+          })
+          .transform(({ ids }) => ({ id: ids.id }))}
+        fields={(form) => <input aria-label="Package ID" {...form.register("ids.id")} />}
+        defaultValues={{ ids: { id: "" } }}
         documentPollerArgs={{
           property: () => "id",
           documentChecker: () => true,
         }}
-        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        draftOptions={{
+          enabled: true,
+          event: "temporary-extension",
+          idPath: "ids.id",
+        }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
@@ -1365,6 +1371,7 @@ describe("ActionForm", () => {
   });
 
   test("submits a draft-enabled form without saving first", async () => {
+    const user = userEvent.setup();
     const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");
     const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData").mockResolvedValue({
       correctDataStateFound: true,
@@ -1376,23 +1383,26 @@ describe("ActionForm", () => {
     await renderFormWithPackageSectionAsync(
       <ActionForm
         title="Draft Direct Submit Test"
-        schema={z.object({
-          id: z.string().min(1),
-          event: z.literal("temporary-extension").default("temporary-extension"),
-        })}
-        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
-        defaultValues={{ id: "MD-25-2525-DIRECT" }}
+        schema={z
+          .object({
+            ids: z.object({ id: z.string().min(1) }),
+            event: z.literal("temporary-extension").default("temporary-extension"),
+          })
+          .transform(({ ids, ...formData }) => ({ ...formData, id: ids.id }))}
+        fields={(form) => <input aria-label="Package ID" {...form.register("ids.id")} />}
         documentPollerArgs={{
           property: "id",
           documentChecker,
         }}
-        draftOptions={{ enabled: true, event: "temporary-extension" }}
+        draftOptions={{ enabled: true, event: "temporary-extension", idPath: "ids.id" }}
         breadcrumbText="Example Breadcrumb"
       />,
     );
 
     expect(screen.getByTestId("submit-action-form")).toHaveTextContent("Save & Submit");
 
+    await user.type(screen.getByLabelText("Package ID"), "MD-25-2525-DIRECT");
+    expect(screen.getByLabelText("Package ID")).toHaveValue("MD-25-2525-DIRECT");
     fireEvent.submit(await screen.findByTestId("submit-action-form"));
 
     await waitFor(() =>

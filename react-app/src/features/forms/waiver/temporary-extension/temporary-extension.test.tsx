@@ -1,4 +1,4 @@
-import { screen, waitFor } from "@testing-library/react";
+import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   EXISTING_ITEM_APPROVED_NEW_ID,
@@ -12,6 +12,8 @@ import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 import * as api from "@/api";
 import * as components from "@/components";
 import { formSchemas } from "@/formSchemas";
+import { DataPoller } from "@/utils/Poller/DataPoller";
+import * as documentPoller from "@/utils/Poller/documentPoller";
 import { skipCleanup } from "@/utils/test-helpers";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
@@ -140,6 +142,11 @@ describe("Temporary Extension", () => {
 
   test("enables Save & Submit from the card choice path without saving a draft first", async () => {
     const user = userEvent.setup();
+    const dataPollerSpy = vi.spyOn(DataPoller.prototype, "startPollingData").mockResolvedValue({
+      correctDataStateFound: true,
+      maxAttemptsReached: false,
+    });
+    const documentPollerSpy = vi.spyOn(documentPoller, "documentPoller");
 
     await renderFormWithPackageSectionAsync(
       <TemporaryExtensionForm />,
@@ -162,6 +169,18 @@ describe("Temporary Extension", () => {
 
     await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
     expect(screen.getByTestId("submit-action-form")).toHaveTextContent("Save & Submit");
+
+    fireEvent.submit(screen.getByTestId("submit-action-form"));
+
+    await waitFor(() =>
+      expect(documentPollerSpy).toHaveBeenCalledWith(
+        VALID_ITEM_TEMPORARY_EXTENSION_ID,
+        expect.any(Function),
+        { includeDraft: false },
+      ),
+    );
+
+    dataPollerSpy.mockRestore();
   });
 
   describe("New Temporary Extension", () => {
