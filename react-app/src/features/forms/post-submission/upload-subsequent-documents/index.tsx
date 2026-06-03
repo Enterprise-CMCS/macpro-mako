@@ -13,6 +13,7 @@ import {
   AttachmentFileFormatInstructions,
 } from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
+import { getEffectiveInitialSubmissionEvent } from "@/utils/chipEligibility";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
 
@@ -79,7 +80,7 @@ const getTitle = (originalSubmissionEvent: string) => {
     case originalSubmissionEvent === "new-chip-submission":
       return "CHIP SPA";
     case originalSubmissionEvent === "new-chip-details-submission":
-      return "CHIP Eligibility SPA Details";
+      return "CHIP Eligibility SPA";
     case originalSubmissionEvent === "app-k":
       return "1915(c) Appendix K Waiver Amendment";
     case originalSubmissionEvent.includes("amendment"):
@@ -118,18 +119,23 @@ export const UploadSubsequentDocuments = () => {
     originalSubmissionEvent = submission._source.mockEvent;
   }
 
-  const schema: SchemaWithEnforcableProps | undefined = formSchemas[originalSubmissionEvent];
+  const effectiveSubmissionEvent = getEffectiveInitialSubmissionEvent(
+    submission._source,
+    originalSubmissionEvent,
+  );
+
+  const schema: SchemaWithEnforcableProps | undefined = formSchemas[effectiveSubmissionEvent];
 
   if (schema === undefined) {
     return <Navigate to="/dashboard" />;
   }
 
   const pickedSchema = pickAttachmentsAndAdditionalInfo(schema, submission._id);
-  const faqLink = getFAQLinkForAttachments(originalSubmissionEvent);
+  const faqLink = getFAQLinkForAttachments(effectiveSubmissionEvent);
 
   return (
     <ActionForm
-      title={`${getTitle(originalSubmissionEvent)} Subsequent Documents Details`}
+      title={`${getTitle(effectiveSubmissionEvent)} Subsequent Documents Details`}
       schema={pickedSchema}
       breadcrumbText="New Subsequent Documentation"
       formDescription={`
@@ -150,7 +156,7 @@ export const UploadSubsequentDocuments = () => {
         variant: "success",
       }}
       attachments={{
-        title: `Subsequent ${getTitle(originalSubmissionEvent)} Documents`,
+        title: `Subsequent ${getTitle(effectiveSubmissionEvent)} Documents`,
         requiredIndicatorForTitle: true,
         instructions: [
           <AttachmentFAQInstructions faqLink={faqLink} />,
