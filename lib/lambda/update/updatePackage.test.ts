@@ -1,4 +1,6 @@
+import { produceMessage } from "libs/api/kafka";
 import {
+  ADMIN_ITEM_ID,
   CAPITATED_INITIAL_ITEM_ID,
   CAPITATED_INITIAL_NEW_ITEM_ID,
   DELETED_ITEM_ID,
@@ -7,17 +9,22 @@ import {
   NEW_CHIP_ITEM_ID,
   SIMPLE_ID,
 } from "mocks";
-import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { APIGatewayEvent } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./updatePackage";
 
+vi.mock("libs/api/kafka", () => ({
+  produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
+}));
+
+const mockedProduceMessage = vi.mocked(produceMessage);
+
 describe("handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     process.env.topicName = "test-topic";
-    mockedProducer.send.mockResolvedValue([{ partition: 0, offset: "1" }]);
+    mockedProduceMessage.mockResolvedValue([{ partition: 0, offset: "1" }]);
   });
 
   it("should return 400 if event body is missing", async () => {
@@ -320,7 +327,7 @@ describe("handler", () => {
         }),
       );
 
-      expect(mockedProducer.send).toHaveBeenCalledTimes(3);
+      expect(mockedProduceMessage).toHaveBeenCalledTimes(3);
     });
   });
 
@@ -401,7 +408,7 @@ describe("handler", () => {
         }),
       );
 
-      expect(mockedProducer.send).toHaveBeenCalledTimes(1);
+      expect(mockedProduceMessage).toHaveBeenCalledTimes(1);
     });
 
     it("should update chipSubmissionType even if missing on the record", async () => {
@@ -424,7 +431,89 @@ describe("handler", () => {
         }),
       );
 
-      expect(mockedProducer.send).toHaveBeenCalledTimes(1);
+      expect(mockedProduceMessage).toHaveBeenCalledTimes(1);
+    });
+
+    it("should update event and chipSubmissionType even if both are missing on a regular record", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: NEW_CHIP_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: {
+            event: "new-chip-details-submission",
+            chipSubmissionType: ["Eligibility Process"],
+          },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+      const sentMessage = JSON.parse(mockedProduceMessage.mock.calls[0][2]);
+
+      expect(result?.statusCode).toBe(200);
+      expect(result?.body).toEqual(
+        JSON.stringify({
+          message: `event, chipSubmissionType have been updated in package ${NEW_CHIP_ITEM_ID}.`,
+        }),
+      );
+      expect(sentMessage).toEqual(
+        expect.objectContaining({
+          id: NEW_CHIP_ITEM_ID,
+          adminChangeType: "update-values",
+          event: "new-chip-details-submission",
+          chipSubmissionType: ["Eligibility Process"],
+        }),
+      );
+      expect(mockedProduceMessage).toHaveBeenCalledTimes(1);
+    });
+
+    it("should update mockEvent even if missing on a mocked package record", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: ADMIN_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: {
+            mockEvent: "new-chip-details-submission",
+          },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+      const sentMessage = JSON.parse(mockedProduceMessage.mock.calls[0][2]);
+
+      expect(result?.statusCode).toBe(200);
+      expect(sentMessage).toEqual(
+        expect.objectContaining({
+          id: ADMIN_ITEM_ID,
+          adminChangeType: "update-values",
+          mockEvent: "new-chip-details-submission",
+        }),
+      );
+      expect(mockedProduceMessage).toHaveBeenCalledTimes(1);
+    });
+
+    it("should reject invalid event field values", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: NEW_CHIP_ITEM_ID,
+          action: "update-values",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedFields: {
+            event: "bad-event",
+          },
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(400);
+      expect(result?.body).toEqual(
+        JSON.stringify({ message: "Invalid package event field(s): event" }),
+      );
     });
 
     it("should reject chipSubmissionType updates for non-CHIP SPA packages", async () => {
