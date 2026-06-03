@@ -139,6 +139,7 @@ const getValueByPath = (values: Record<string, unknown>, path: string) => {
 
 const DRAFT_SAVE_ROUTE_TRANSITION_KEY = "onemac:draft-save-route-transition";
 const DRAFT_SAVE_ROUTE_TRANSITION_TTL_MS = 30_000;
+const DRAFT_SAVE_AUTHORIZATION_MESSAGE = "You can only save drafts for states you have access to.";
 
 type DraftSaveRouteTransition = {
   id: string;
@@ -964,11 +965,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         return;
       }
 
-      if (!(await validateDraftIdAvailability(resolvedId))) {
-        return;
-      }
-      if (!isMountedRef.current) return;
-
       const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
       if (!isMountedRef.current) return;
 
@@ -976,6 +972,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         failDraftSave("Please enter a valid ID before saving.");
         return;
       }
+
+      if (!(await validateDraftIdAvailability(resolvedId))) {
+        return;
+      }
+      if (!isMountedRef.current) return;
 
       for (const requiredSaveField of draftOptions.requiredSaveFields ?? []) {
         const requiredValue = getValueByPath(
@@ -1084,6 +1085,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
         if (/already exists/i.test(message)) {
           return DRAFT_ID_CONFLICT_MESSAGE;
+        }
+
+        if (error?.response?.status === 403 || /not authorized/i.test(message)) {
+          return DRAFT_SAVE_AUTHORIZATION_MESSAGE;
         }
 
         return error instanceof Error ? error.message : "Unable to save. Try again.";

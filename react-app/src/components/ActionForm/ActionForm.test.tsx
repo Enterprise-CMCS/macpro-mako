@@ -1364,6 +1364,50 @@ describe("ActionForm", () => {
     saveDraftSpy.mockRestore();
   });
 
+  test("shows a readable draft save authorization error for 403 responses", async () => {
+    const user = userEvent.setup();
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockRejectedValue(
+      Object.assign(new Error("Request failed with status code 403"), {
+        response: {
+          status: 403,
+          data: { message: "Not authorized to view this resource" },
+        },
+      }),
+    );
+
+    await renderFormWithPackageSectionAsync(
+      <ActionForm
+        title="Draft Save Authorization Test"
+        schema={z.object({
+          id: z.string().min(1),
+        })}
+        fields={(form) => <input aria-label="Package ID" {...form.register("id")} />}
+        defaultValues={{ id: "" }}
+        documentPollerArgs={{
+          property: () => "id",
+          documentChecker: () => true,
+        }}
+        draftOptions={{ enabled: true, event: "new-medicaid-submission" }}
+        breadcrumbText="Example Breadcrumb"
+      />,
+    );
+
+    await user.type(screen.getByLabelText("Package ID"), "MD-00-0403");
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(bannerSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        header: "Unable to save package",
+        body: "You can only save drafts for states you have access to.",
+        variant: "destructive",
+      }),
+    );
+
+    saveDraftSpy.mockRestore();
+  });
+
   test("submits a draft-enabled form without saving first", async () => {
     const user = userEvent.setup();
     const invalidateQueriesSpy = vi.spyOn(queryClient, "invalidateQueries");

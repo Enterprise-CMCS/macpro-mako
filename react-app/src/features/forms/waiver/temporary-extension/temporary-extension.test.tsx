@@ -183,6 +183,43 @@ describe("Temporary Extension", () => {
     dataPollerSpy.mockRestore();
   });
 
+  test("shows a state-prefix validation error before saving a draft", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+    const itemExistsSpy = vi.spyOn(api, "itemExists");
+
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      undefined,
+      "1915(b)",
+      "origin=waivers",
+    );
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "OH-4878.R00.TE02",
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(
+      await screen.findByText(
+        "The Temporary Extension Request Number must start with MD to match the Approved Initial or Renewal Waiver Number.",
+      ),
+    ).toBeInTheDocument();
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+    expect(itemExistsSpy).not.toHaveBeenCalledWith("OH-4878.R00.TE02", { includeDrafts: true });
+
+    itemExistsSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
   describe("New Temporary Extension", () => {
     const user = userEvent.setup();
     beforeAll(async () => {
