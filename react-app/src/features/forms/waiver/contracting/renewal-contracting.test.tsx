@@ -7,13 +7,17 @@ import {
   NOT_FOUND_ITEM_ID,
   TEST_ITEM_ID,
 } from "mocks";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { RenewalForm } from "./Renewal";
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+}));
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-renewal"]>();
 const setup = async () => renderFormWithPackageSectionAsync(<RenewalForm />);
@@ -85,6 +89,22 @@ describe("RENEWAL CONTRACTING WAIVER", () => {
     await userEvent.type(waiverIdInput, "MD-0006.R01.00");
 
     await waitFor(() => expect(waiverIdLabel).not.toHaveClass("text-destructive"));
+  });
+
+  test("shows a state-prefix validation error when renewal number does not match the existing waiver", async () => {
+    await setup();
+    const waiverIdExistingInput = await screen.findByLabelText(/existing waiver number to renew/i);
+    const waiverIdRenewalInput = screen.getByLabelText(/1915\(b\) Waiver Renewal Number/i);
+
+    await userEvent.type(waiverIdExistingInput, EXISTING_ITEM_APPROVED_NEW_ID);
+    await userEvent.type(waiverIdRenewalInput, "VA-0006.R01.00");
+    await userEvent.click(screen.getByTestId("save-draft-form"));
+
+    expect(
+      await screen.findByText(
+        "The 1915(b) Waiver Renewal Number must start with MD to match the Existing Waiver Number to Renew.",
+      ),
+    ).toBeInTheDocument();
   });
 
   test("PROPOSED EFFECTIVE DATE OF RENEWAL CONTRACTING WAIVER", async () => {

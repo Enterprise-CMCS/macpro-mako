@@ -29,6 +29,7 @@ import {
   UserPrompt,
   userPrompt,
 } from "@/components";
+import { getRelatedWaiverIdStatePrefixMismatchMessage } from "@/formSchemas/waiver-state-validation";
 import { useNavigationPrompt } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
@@ -83,6 +84,12 @@ type DraftOptions = {
   requiredSaveFields?: Array<{
     path: string;
     message: string;
+  }>;
+  relatedIdValidations?: Array<{
+    sourcePath: string;
+    sourceLabel: string;
+    targetPath: string;
+    targetLabel: string;
   }>;
 };
 
@@ -971,6 +978,66 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       if (!isIdValid) {
         failDraftSave("Please enter a valid ID before saving.");
         return;
+      }
+
+      for (const relatedIdValidation of draftOptions.relatedIdValidations ?? []) {
+        const sourceValue = getValueByPath(
+          formValues as Record<string, unknown>,
+          relatedIdValidation.sourcePath,
+        );
+        const targetValue = getValueByPath(
+          formValues as Record<string, unknown>,
+          relatedIdValidation.targetPath,
+        );
+
+        if (typeof sourceValue === "string" && sourceValue.trim()) {
+          const isSourceValid = await form.trigger(
+            relatedIdValidation.sourcePath as FieldPath<z.TypeOf<Schema>>,
+          );
+          if (!isMountedRef.current) return;
+
+          if (!isSourceValid) {
+            failDraftSave("Please enter a valid ID before saving.");
+            return;
+          }
+        }
+
+        if (
+          relatedIdValidation.targetPath !== idPath &&
+          typeof targetValue === "string" &&
+          targetValue.trim()
+        ) {
+          const isTargetValid = await form.trigger(
+            relatedIdValidation.targetPath as FieldPath<z.TypeOf<Schema>>,
+          );
+          if (!isMountedRef.current) return;
+
+          if (!isTargetValid) {
+            failDraftSave("Please enter a valid ID before saving.");
+            return;
+          }
+        }
+
+        if (typeof sourceValue !== "string" || typeof targetValue !== "string") {
+          continue;
+        }
+
+        const statePrefixMismatchMessage = await getRelatedWaiverIdStatePrefixMismatchMessage({
+          sourceId: sourceValue,
+          sourceLabel: relatedIdValidation.sourceLabel,
+          targetId: targetValue,
+          targetLabel: relatedIdValidation.targetLabel,
+        });
+        if (!isMountedRef.current) return;
+
+        if (statePrefixMismatchMessage) {
+          form.setError(relatedIdValidation.targetPath as FieldPath<z.TypeOf<Schema>>, {
+            type: "manual",
+            message: statePrefixMismatchMessage,
+          });
+          failDraftSave("Please enter a valid ID before saving.");
+          return;
+        }
       }
 
       if (!(await validateDraftIdAvailability(resolvedId))) {

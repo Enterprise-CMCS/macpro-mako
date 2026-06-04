@@ -211,6 +211,14 @@ export const TemporaryExtensionForm = () => {
             message: "Please select a Temporary Extension Type before saving.",
           },
         ],
+        relatedIdValidations: [
+          {
+            sourcePath: "ids.validAuthority.waiverNumber",
+            sourceLabel: "Approved Initial or Renewal Waiver Number",
+            targetPath: "ids.id",
+            targetLabel: "The Temporary Extension Request Number",
+          },
+        ],
       }}
     />
   );

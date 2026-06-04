@@ -91,6 +91,110 @@ describe("Temporary Extension", () => {
     expect(saveDraftSpy).not.toHaveBeenCalled();
   });
 
+  test("saves a draft when the approved waiver ID exists in SEA Tool without the local waiver format", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: "MD-6578.R00.TE01",
+    });
+    const itemExistsSpy = vi.spyOn(api, "itemExists").mockImplementation(async (id) => {
+      return id === "MD.20230";
+    });
+    const idIsApprovedSpy = vi.spyOn(api, "idIsApproved").mockResolvedValue(true);
+    const getItemSpy = vi.spyOn(api, "getItem").mockResolvedValue({
+      _id: "MD.20230",
+      found: true,
+      _source: {
+        id: "MD.20230",
+        authority: "1915(b)",
+      },
+    } as any);
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(screen.getByLabelText(/Approved Initial or Renewal Waiver Number/), "MD.20230");
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE01",
+    );
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() => expect(saveDraftSpy).toHaveBeenCalledTimes(1));
+    expect(
+      screen.queryByText(
+        "The Approved Initial or Renewal Waiver Number must be in the format of SS-####.R##.00 or SS-#####.R##.00.",
+      ),
+    ).not.toBeInTheDocument();
+
+    getItemSpy.mockRestore();
+    idIsApprovedSpy.mockRestore();
+    itemExistsSpy.mockRestore();
+    saveDraftSpy.mockRestore();
+  });
+
+  test("shows a state-prefix validation error before saving a temporary extension draft", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "VA-6578.R00.TE02",
+    );
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(
+      await screen.findByText(
+        "The Temporary Extension Request Number must start with MD to match the Approved Initial or Renewal Waiver Number.",
+      ),
+    ).toBeInTheDocument();
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+
+    saveDraftSpy.mockRestore();
+  });
+
+  test("shows state access validation for the approved waiver number before existence validation", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      "AK-1234.R00.00",
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE02",
+    );
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(
+      await screen.findByText(
+        "You can only submit for a state you have access to. If you need to add another state, visit your IDM user profile to request access.",
+      ),
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(
+        "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
+      ),
+    ).not.toBeInTheDocument();
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+
+    saveDraftSpy.mockRestore();
+  });
+
   test("EXISTING WAIVER ID", async () => {
     // set the Item Id to TEST_ITEM_ID
     await renderFormWithPackageSectionAsync(
