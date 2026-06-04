@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
+import { DefaultValues, FieldPath, Resolver, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
 import { isStateUser } from "shared-utils";
@@ -142,6 +142,25 @@ const getValueByPath = (values: Record<string, unknown>, path: string) => {
     if (!acc || typeof acc !== "object") return undefined;
     return (acc as Record<string, unknown>)[key];
   }, values);
+};
+
+const setErrorByPath = (
+  errors: Record<string, unknown>,
+  path: string,
+  error: { type: string; message: string },
+) => {
+  const pathParts = path.split(".");
+  const fieldName = pathParts.pop();
+  if (!fieldName) return;
+
+  const parent = pathParts.reduce<Record<string, unknown>>((acc, key) => {
+    if (!acc[key] || typeof acc[key] !== "object") {
+      acc[key] = {};
+    }
+    return acc[key] as Record<string, unknown>;
+  }, errors);
+
+  parent[fieldName] = error;
 };
 
 const DRAFT_SAVE_ROUTE_TRANSITION_KEY = "onemac:draft-save-route-transition";
@@ -390,8 +409,55 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     };
   }, []);
 
+  const formResolver = useMemo<Resolver<z.TypeOf<Schema>>>(() => {
+    const resolver = zodResolver(schema) as Resolver<z.TypeOf<Schema>>;
+    const relatedIdValidations = draftOptions?.relatedIdValidations ?? [];
+
+    if (!relatedIdValidations.length) {
+      return resolver;
+    }
+
+    return async (
+      ...args: Parameters<typeof resolver>
+    ): Promise<Awaited<ReturnType<typeof resolver>>> => {
+      const result = await resolver(...args);
+      const [values] = args;
+
+      for (const relatedIdValidation of relatedIdValidations) {
+        const sourceValue = getValueByPath(
+          values as Record<string, unknown>,
+          relatedIdValidation.sourcePath,
+        );
+        const targetValue = getValueByPath(
+          values as Record<string, unknown>,
+          relatedIdValidation.targetPath,
+        );
+
+        if (typeof sourceValue !== "string" || typeof targetValue !== "string") {
+          continue;
+        }
+
+        const statePrefixMismatchMessage = await getRelatedWaiverIdStatePrefixMismatchMessage({
+          sourceId: sourceValue,
+          sourceLabel: relatedIdValidation.sourceLabel,
+          targetId: targetValue,
+          targetLabel: relatedIdValidation.targetLabel,
+        });
+
+        if (statePrefixMismatchMessage) {
+          setErrorByPath(result.errors as Record<string, unknown>, relatedIdValidation.targetPath, {
+            type: "manual",
+            message: statePrefixMismatchMessage,
+          });
+        }
+      }
+
+      return result;
+    };
+  }, [draftOptions?.relatedIdValidations, schema]);
+
   const form = useForm<z.TypeOf<Schema>>({
-    resolver: zodResolver(schema),
+    resolver: formResolver,
     mode: "onChange",
     defaultValues: {
       ...defaultValues,
@@ -972,14 +1038,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         return;
       }
 
-      const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
-      if (!isMountedRef.current) return;
-
-      if (!isIdValid) {
-        failDraftSave("Please enter a valid ID before saving.");
-        return;
-      }
-
       for (const relatedIdValidation of draftOptions.relatedIdValidations ?? []) {
         const sourceValue = getValueByPath(
           formValues as Record<string, unknown>,
@@ -1038,6 +1096,14 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           failDraftSave("Please enter a valid ID before saving.");
           return;
         }
+      }
+
+      const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
+      if (!isMountedRef.current) return;
+
+      if (!isIdValid) {
+        failDraftSave("Please enter a valid ID before saving.");
+        return;
       }
 
       if (!(await validateDraftIdAvailability(resolvedId))) {

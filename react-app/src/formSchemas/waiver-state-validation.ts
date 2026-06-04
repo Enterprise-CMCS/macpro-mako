@@ -31,15 +31,19 @@ export const getRelatedWaiverIdStatePrefixMismatchMessage = async ({
   targetId: string;
   targetLabel: string;
 }) => {
-  if (!sourceId?.trim() || !targetId?.trim() || !(await isAuthorizedState(sourceId))) {
+  if (!sourceId?.trim() || !targetId?.trim()) {
     return null;
   }
 
-  if (
-    hasStatePrefix(sourceId) &&
-    hasStatePrefix(targetId) &&
-    getStatePrefixFromId(sourceId) !== getStatePrefixFromId(targetId)
-  ) {
+  if (!hasStatePrefix(sourceId) || !hasStatePrefix(targetId)) {
+    return null;
+  }
+
+  if (!(await isAuthorizedState(sourceId))) {
+    return null;
+  }
+
+  if (getStatePrefixFromId(sourceId) !== getStatePrefixFromId(targetId)) {
     return getStatePrefixMismatchMessage({ sourceId, sourceLabel, targetLabel });
   }
 
