@@ -5,6 +5,7 @@ import { getPackage, getPackageChangelog } from "libs/api/package";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
 import {
+  getStatus,
   KafkaRecord,
   opensearch,
   SEATOOL_SPW_STATUS,
@@ -78,6 +79,77 @@ type ParsedLegacyRecordFromKafka = Partial<{
   sk: string;
   GSI1pk: string;
 }>;
+
+const toIsoStringOrNull = (value: number | null | undefined): string | null => {
+  if (value === null || value === undefined) return null;
+
+  return new Date(value).toISOString();
+};
+
+const getNosoActionType = (mockEvent: string): string | undefined => {
+  switch (mockEvent) {
+    case "capitated-initial":
+    case "contracting-initial":
+    case "new-medicaid-submission":
+      return "New";
+    case "capitated-renewal":
+    case "contracting-renewal":
+      return "Renew";
+    case "temporary-extension":
+      return "Extend";
+    case "app-k":
+    case "capitated-amendment":
+    case "contracting-amendment":
+    case "new-chip-details-submission":
+    case "new-chip-submission":
+      return "Amend";
+    default:
+      return undefined;
+  }
+};
+
+const transformNosoAdminRecordForMain = (
+  record: OneMacRecord & {
+    adminChangeType: "NOSO";
+    changedDate: number;
+    cmsStatus: string;
+    isAdminChange: boolean;
+    makoChangedDate: number;
+    mockEvent: string;
+    proposedDate?: number;
+    state: string;
+    stateStatus: string;
+    status: string;
+    statusDate: number;
+    submissionDate?: number;
+    timestamp: number;
+  },
+): OneMacRecord => {
+  const statusDisplay = getStatus(record.status);
+  const actionType = getNosoActionType(record.mockEvent);
+
+  return {
+    ...record,
+    ...(actionType ? { actionType } : {}),
+    changedDate: toIsoStringOrNull(record.changedDate),
+    cmsStatus: record.cmsStatus || statusDisplay.cmsStatus,
+    deleted: false,
+    description: null,
+    event: "NOSO",
+    initialIntakeNeeded: record.status === SEATOOL_STATUS.SUBMITTED,
+    makoChangedDate: toIsoStringOrNull(record.makoChangedDate),
+    origin: "SEATool",
+    packageId: record.id,
+    proposedDate: toIsoStringOrNull(record.proposedDate),
+    raiWithdrawEnabled: false,
+    seatoolStatus: record.status,
+    state: record.state || record.id.slice(0, 2),
+    stateStatus: record.stateStatus || statusDisplay.stateStatus,
+    statusDate: toIsoStringOrNull(record.statusDate),
+    subject: null,
+    submissionDate: toIsoStringOrNull(record.submissionDate),
+  };
+};
 // Used for updating access for legacy user role events and request state access on mako
 export const isRecordAUserRoleRequest = (
   record: OneMacRecord,
@@ -184,6 +256,10 @@ const getOneMacRecordWithAllProperties = (
     }
 
     const { data: oneMacAdminRecord } = safeRecord;
+
+    if (oneMacAdminRecord.adminChangeType === "NOSO") {
+      return { record: transformNosoAdminRecordForMain(oneMacAdminRecord) };
+    }
 
     return { record: oneMacAdminRecord };
   }
