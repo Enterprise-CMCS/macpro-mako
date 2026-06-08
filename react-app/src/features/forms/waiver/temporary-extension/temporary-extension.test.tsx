@@ -4,6 +4,7 @@ import {
   EXISTING_ITEM_APPROVED_NEW_ID,
   EXISTING_ITEM_PENDING_ID,
   NOT_FOUND_ITEM_ID,
+  TEST_ITEM_ID,
   TEST_SPA_ITEM_ID,
   VALID_ITEM_TEMPORARY_EXTENSION_ID,
 } from "mocks";
@@ -25,6 +26,8 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 }));
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
+const temporaryExtensionTypeMismatchMessage =
+  "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.";
 
 describe("Temporary Extension", () => {
   afterEach(() => {
@@ -157,6 +160,30 @@ describe("Temporary Extension", () => {
         "The Temporary Extension Request Number must start with MD to match the Approved Initial or Renewal Waiver Number.",
       ),
     ).toBeInTheDocument();
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+
+    saveDraftSpy.mockRestore();
+  });
+
+  test("shows a type mismatch validation error before saving a temporary extension draft", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE04",
+    );
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
     expect(saveDraftSpy).not.toHaveBeenCalled();
 
     saveDraftSpy.mockRestore();

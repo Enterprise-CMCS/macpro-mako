@@ -211,6 +211,7 @@ export const TemporaryExtensionForm = () => {
             message: "Please select a Temporary Extension Type before saving.",
           },
         ],
+        validationPaths: ["ids.validAuthority.authority"],
         relatedIdValidations: [
           {
             sourcePath: "ids.validAuthority.waiverNumber",

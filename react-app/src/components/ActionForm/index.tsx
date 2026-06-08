@@ -85,6 +85,7 @@ type DraftOptions = {
     path: string;
     message: string;
   }>;
+  validationPaths?: string[];
   relatedIdValidations?: Array<{
     sourcePath: string;
     sourceLabel: string;
@@ -1127,6 +1128,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         if (!isMountedRef.current) return;
         failDraftSave(requiredSaveField.message);
         return;
+      }
+
+      for (const validationPath of draftOptions.validationPaths ?? []) {
+        const isPathValid = await form.trigger(validationPath as FieldPath<z.TypeOf<Schema>>);
+        if (!isMountedRef.current) return;
+
+        if (!isPathValid) {
+          failDraftSave("Please resolve the validation errors before saving.");
+          return;
+        }
       }
 
       const normalizedId = resolvedId.toUpperCase();
