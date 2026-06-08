@@ -26,7 +26,6 @@ coverage
 .vitest
 
 .idea
-.vscode
 .history
 
 # local test and docs files
