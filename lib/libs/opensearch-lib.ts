@@ -274,7 +274,7 @@ export async function getItems(ids: string[]): Promise<OSDocument[]> {
 
     client = client || (await getClient(domain));
 
-    const response = await client.mget<{ docs: ItemResult[] }>({
+    const response = await client.mget({
       index,
       body: {
         ids,
@@ -282,10 +282,11 @@ export async function getItems(ids: string[]): Promise<OSDocument[]> {
     });
 
     return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
-      if (doc && doc.found && doc._source) {
-        return acc.concat(doc._source);
+      if (doc && "found" in doc && doc.found && "_source" in doc && doc._source) {
+        return acc.concat(doc._source as OSDocument);
       }
-      console.error(`Document with ID ${doc._id} not found.`);
+      const docId = "_id" in doc ? doc._id : "unknown";
+      console.error(`Document with ID ${docId} not found.`);
       return acc;
     }, []);
   } catch (e) {
@@ -317,9 +318,7 @@ export async function updateFieldMapping(
   try {
     const response = await client.indices.putMapping({
       index: index,
-      body: {
-        properties,
-      },
+      body: { properties } as any,
     });
 
     console.log("Field mapping updated:", response);

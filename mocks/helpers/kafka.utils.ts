@@ -89,10 +89,16 @@ export const mockedAdmin = {
   disconnect: vi.fn(),
 };
 
-export const mockedKafka = vi.fn(() => ({
-  producer: vi.fn(() => mockedProducer),
-  admin: vi.fn(() => mockedAdmin),
-}));
+export const mockedKafka = vi.fn(function MockKafka() {
+  return {
+    producer: vi.fn(function producer() {
+      return mockedProducer;
+    }),
+    admin: vi.fn(function admin() {
+      return mockedAdmin;
+    }),
+  };
+});
 
 export const convertObjToBase64 = (obj: object) =>
   Buffer.from(JSON.stringify(obj)).toString("base64");

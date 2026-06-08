@@ -10,7 +10,6 @@ import { describe, expect, it, vi } from "vitest";
 import { getAllStateUsers } from "./getAllStateUsers";
 
 describe("getAllStateUsers", () => {
-  vi.setConfig({ testTimeout: 15000 });
   it("should fetch users successfully", async () => {
     const result = await getAllStateUsers({ userPoolId: USER_POOL_ID, state: "CA" });
     expect(result).toEqual([

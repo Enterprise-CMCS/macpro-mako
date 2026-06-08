@@ -2,6 +2,8 @@ import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
 import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
+const projectTestTimeout = 15000;
+
 export default defineConfig({
   test: {
     globals: true,
@@ -15,6 +17,7 @@ export default defineConfig({
           setupFiles: ["vitest.setup.ts"],
           exclude: ["**/node_modules/**", "./libs/email/**"],
           environment: "node",
+          testTimeout: projectTestTimeout,
         },
       },
       {
@@ -24,6 +27,7 @@ export default defineConfig({
           setupFiles: ["vitest.setup.ts"],
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
+          testTimeout: projectTestTimeout,
         },
       },
       {
@@ -34,6 +38,7 @@ export default defineConfig({
           setupFiles: "vitest.setup.ts",
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
+          testTimeout: projectTestTimeout,
         },
       },
       {
@@ -50,6 +55,7 @@ export default defineConfig({
           name: "storybook",
           root: "./react-app",
           setupFiles: "./.storybook/vitest.setup.ts",
+          testTimeout: projectTestTimeout,
         },
       },
     ],
@@ -58,7 +64,7 @@ export default defineConfig({
         cacheDir: ".vitest/cache",
       },
     },
-    testTimeout: 10000,
+    testTimeout: projectTestTimeout,
     coverage: {
       provider: "istanbul",
       reportsDirectory: join(__dirname, "coverage"),

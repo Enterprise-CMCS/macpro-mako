@@ -19,6 +19,35 @@ const normalizeStatusCode = (value: unknown) => {
   return typeof statusCode === "number" && Number.isFinite(statusCode) ? statusCode : undefined;
 };
 
+const getErrorTextValue = (value: unknown): string => {
+  if (typeof value === "string") {
+    return value;
+  }
+
+  if (
+    typeof value === "number" ||
+    typeof value === "boolean" ||
+    typeof value === "bigint" ||
+    typeof value === "symbol"
+  ) {
+    return String(value);
+  }
+
+  if (value instanceof Error) {
+    return `${value.name}: ${value.message}`;
+  }
+
+  if (value && typeof value === "object") {
+    try {
+      return JSON.stringify(value);
+    } catch {
+      return Object.prototype.toString.call(value);
+    }
+  }
+
+  return "";
+};
+
 const collectErrorValues = (
   value: unknown,
   values: unknown[] = [],
@@ -75,7 +104,7 @@ const isNotFoundItemPayload = (value: unknown): boolean => {
     candidate?.$metadata?.httpStatusCode;
   const directStatus = candidate?.status ?? candidate?.statusCode;
   const errorValues = collectErrorValues(value);
-  const errorText = errorValues.map((errorValue) => String(errorValue ?? "")).join(" ");
+  const errorText = errorValues.map(getErrorTextValue).join(" ");
 
   return (
     candidate?.found === false ||

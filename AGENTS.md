@@ -96,3 +96,18 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 - Store secrets outside the repo; export `AGENT_MODE`, `STAGE_NAME`, and AWS credentials through your shell profile.
 - Validate infrastructure with `bun run cdk synth` prior to review and ensure IAM boundaries remain intact.
+
+## Learned User Preferences
+
+- Make code changes on `main`; avoid committing directly to the `production` branch.
+- When executing an attached plan, do not edit the plan file itself.
+- Enterprise JIRA (OY2/OMO): use https://jiraent.cms.gov
+- Show draft JIRA comments for approval before posting or transitioning tickets.
+- JIRA or CSV review-only requests: assess and report only; do not implement fixes unless explicitly asked.
+
+## Learned Workspace Facts
+
+- `proposedEffectiveDate` in Mako/Kafka events is epoch milliseconds; legacy OneMAC records use ISO strings. OpenSearch and the UI use `proposedDate`, which may still be either format depending on source.
+- Date consumers should read `proposedDate` first, then `draft.data.proposedEffectiveDate`; format in UTC and treat numeric values below `1e12` as seconds when normalizing.
+- SEATool reference tables and TypeScript types live under `lib/packages/shared-types/seatool-tables/`.
+- Environment promotion typically follows `main` → `val` → `production` (for example attachment archive rollouts).
