@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { API } from "aws-amplify";
 import { ReactNode, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { DefaultValues, FieldPath, useForm, UseFormReturn } from "react-hook-form";
+import { DefaultValues, FieldPath, Resolver, useForm, UseFormReturn } from "react-hook-form";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router";
 import { Authority, SEATOOL_STATUS, UserDetails } from "shared-types";
 import { isStateUser } from "shared-utils";
@@ -29,6 +29,7 @@ import {
   UserPrompt,
   userPrompt,
 } from "@/components";
+import { getRelatedWaiverIdStatePrefixMismatchMessage } from "@/formSchemas/waiver-state-validation";
 import { useNavigationPrompt } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { getFormOrigin, queryClient } from "@/utils";
@@ -84,6 +85,12 @@ type DraftOptions = {
     path: string;
     message: string;
   }>;
+  relatedIdValidations?: Array<{
+    sourcePath: string;
+    sourceLabel: string;
+    targetPath: string;
+    targetLabel: string;
+  }>;
 };
 
 type DraftSaveStatus = {
@@ -137,8 +144,28 @@ const getValueByPath = (values: Record<string, unknown>, path: string) => {
   }, values);
 };
 
+const setErrorByPath = (
+  errors: Record<string, unknown>,
+  path: string,
+  error: { type: string; message: string },
+) => {
+  const pathParts = path.split(".");
+  const fieldName = pathParts.pop();
+  if (!fieldName) return;
+
+  const parent = pathParts.reduce<Record<string, unknown>>((acc, key) => {
+    if (!acc[key] || typeof acc[key] !== "object") {
+      acc[key] = {};
+    }
+    return acc[key] as Record<string, unknown>;
+  }, errors);
+
+  parent[fieldName] = error;
+};
+
 const DRAFT_SAVE_ROUTE_TRANSITION_KEY = "onemac:draft-save-route-transition";
 const DRAFT_SAVE_ROUTE_TRANSITION_TTL_MS = 30_000;
+const DRAFT_SAVE_AUTHORIZATION_MESSAGE = "You can only save drafts for states you have access to.";
 
 type DraftSaveRouteTransition = {
   id: string;
@@ -382,8 +409,55 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     };
   }, []);
 
+  const formResolver = useMemo<Resolver<z.TypeOf<Schema>>>(() => {
+    const resolver = zodResolver(schema) as Resolver<z.TypeOf<Schema>>;
+    const relatedIdValidations = draftOptions?.relatedIdValidations ?? [];
+
+    if (!relatedIdValidations.length) {
+      return resolver;
+    }
+
+    return async (
+      ...args: Parameters<typeof resolver>
+    ): Promise<Awaited<ReturnType<typeof resolver>>> => {
+      const result = await resolver(...args);
+      const [values] = args;
+
+      for (const relatedIdValidation of relatedIdValidations) {
+        const sourceValue = getValueByPath(
+          values as Record<string, unknown>,
+          relatedIdValidation.sourcePath,
+        );
+        const targetValue = getValueByPath(
+          values as Record<string, unknown>,
+          relatedIdValidation.targetPath,
+        );
+
+        if (typeof sourceValue !== "string" || typeof targetValue !== "string") {
+          continue;
+        }
+
+        const statePrefixMismatchMessage = await getRelatedWaiverIdStatePrefixMismatchMessage({
+          sourceId: sourceValue,
+          sourceLabel: relatedIdValidation.sourceLabel,
+          targetId: targetValue,
+          targetLabel: relatedIdValidation.targetLabel,
+        });
+
+        if (statePrefixMismatchMessage) {
+          setErrorByPath(result.errors as Record<string, unknown>, relatedIdValidation.targetPath, {
+            type: "manual",
+            message: statePrefixMismatchMessage,
+          });
+        }
+      }
+
+      return result;
+    };
+  }, [draftOptions?.relatedIdValidations, schema]);
+
   const form = useForm<z.TypeOf<Schema>>({
-    resolver: zodResolver(schema),
+    resolver: formResolver,
     mode: "onChange",
     defaultValues: {
       ...defaultValues,
@@ -817,8 +891,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     (formValues: Record<string, unknown>) => {
       const idValue = getValueByPath(formValues, idPath);
       const idFromForm = typeof idValue === "string" ? idValue.trim() : "";
+      const transformedIdValue = idPath === "id" ? undefined : getValueByPath(formValues, "id");
+      const idFromTransformedForm =
+        typeof transformedIdValue === "string" ? transformedIdValue.trim() : "";
       const fallbackDraftId = isDraftMode ? draftId : undefined;
-      return idFromForm || fallbackDraftId || "";
+      return idFromForm || idFromTransformedForm || fallbackDraftId || "";
     },
     [draftId, idPath, isDraftMode],
   );
@@ -911,6 +988,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       await queryClient.invalidateQueries({ queryKey: ["record"] });
       if (!isMountedRef.current) return;
+      skipNavigationPromptRef.current = true;
       navigate(formOrigins);
     } catch (error) {
       if (!isMountedRef.current) return;
@@ -960,10 +1038,65 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         return;
       }
 
-      if (!(await validateDraftIdAvailability(resolvedId))) {
-        return;
+      for (const relatedIdValidation of draftOptions.relatedIdValidations ?? []) {
+        const sourceValue = getValueByPath(
+          formValues as Record<string, unknown>,
+          relatedIdValidation.sourcePath,
+        );
+        const targetValue = getValueByPath(
+          formValues as Record<string, unknown>,
+          relatedIdValidation.targetPath,
+        );
+
+        if (typeof sourceValue === "string" && sourceValue.trim()) {
+          const isSourceValid = await form.trigger(
+            relatedIdValidation.sourcePath as FieldPath<z.TypeOf<Schema>>,
+          );
+          if (!isMountedRef.current) return;
+
+          if (!isSourceValid) {
+            failDraftSave("Please enter a valid ID before saving.");
+            return;
+          }
+        }
+
+        if (
+          relatedIdValidation.targetPath !== idPath &&
+          typeof targetValue === "string" &&
+          targetValue.trim()
+        ) {
+          const isTargetValid = await form.trigger(
+            relatedIdValidation.targetPath as FieldPath<z.TypeOf<Schema>>,
+          );
+          if (!isMountedRef.current) return;
+
+          if (!isTargetValid) {
+            failDraftSave("Please enter a valid ID before saving.");
+            return;
+          }
+        }
+
+        if (typeof sourceValue !== "string" || typeof targetValue !== "string") {
+          continue;
+        }
+
+        const statePrefixMismatchMessage = await getRelatedWaiverIdStatePrefixMismatchMessage({
+          sourceId: sourceValue,
+          sourceLabel: relatedIdValidation.sourceLabel,
+          targetId: targetValue,
+          targetLabel: relatedIdValidation.targetLabel,
+        });
+        if (!isMountedRef.current) return;
+
+        if (statePrefixMismatchMessage) {
+          form.setError(relatedIdValidation.targetPath as FieldPath<z.TypeOf<Schema>>, {
+            type: "manual",
+            message: statePrefixMismatchMessage,
+          });
+          failDraftSave("Please enter a valid ID before saving.");
+          return;
+        }
       }
-      if (!isMountedRef.current) return;
 
       const isIdValid = await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
       if (!isMountedRef.current) return;
@@ -972,6 +1105,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         failDraftSave("Please enter a valid ID before saving.");
         return;
       }
+
+      if (!(await validateDraftIdAvailability(resolvedId))) {
+        return;
+      }
+      if (!isMountedRef.current) return;
 
       for (const requiredSaveField of draftOptions.requiredSaveFields ?? []) {
         const requiredValue = getValueByPath(
@@ -1080,6 +1218,10 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
         if (/already exists/i.test(message)) {
           return DRAFT_ID_CONFLICT_MESSAGE;
+        }
+
+        if (error?.response?.status === 403 || /not authorized/i.test(message)) {
+          return DRAFT_SAVE_AUTHORIZATION_MESSAGE;
         }
 
         return error instanceof Error ? error.message : "Unable to save. Try again.";

@@ -7,13 +7,17 @@ import {
   EXISTING_ITEM_PENDING_ID,
   NOT_FOUND_ITEM_ID,
 } from "mocks";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { AmendmentForm } from "./Amendment";
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+}));
 
 const upload = uploadFiles<(typeof formSchemas)["contracting-amendment"]>();
 const setup = async (waiverId?: string) =>
@@ -79,6 +83,39 @@ describe("AMENDMENT CONTRACTING WAIVER", () => {
     await userEvent.type(waiverIdInput, "MD-0005.R00.01");
 
     await waitFor(() => expect(waiverIdLabel).not.toHaveClass("text-destructive"));
+  });
+
+  test("shows a state-prefix validation error when amendment number does not match the existing waiver", async () => {
+    await setup();
+    const waiverIdExistingInput = await screen.findByLabelText(/existing waiver number to amend/i);
+    const waiverIdAmendmentInput = screen.getByLabelText(/1915\(b\) Waiver Amendment Number/i);
+
+    await userEvent.type(waiverIdExistingInput, EXISTING_ITEM_APPROVED_NEW_ID);
+    await userEvent.type(waiverIdAmendmentInput, "VA-0005.R00.01");
+    await userEvent.click(screen.getByTestId("save-draft-form"));
+
+    expect(
+      await screen.findByText(
+        "The 1915(b) Waiver Amendment Number must start with MD to match the Existing Waiver Number to Amend.",
+      ),
+    ).toBeInTheDocument();
+  });
+
+  test("shows a state-prefix validation error while editing before the form is complete", async () => {
+    const user = userEvent.setup();
+
+    await setup();
+    const waiverIdExistingInput = await screen.findByLabelText(/existing waiver number to amend/i);
+    const waiverIdAmendmentInput = screen.getByLabelText(/1915\(b\) Waiver Amendment Number/i);
+
+    await user.type(waiverIdExistingInput, EXISTING_ITEM_APPROVED_NEW_ID);
+    await user.type(waiverIdAmendmentInput, "CA-5647.R01.03");
+
+    expect(
+      await screen.findByText(
+        "The 1915(b) Waiver Amendment Number must start with MD to match the Existing Waiver Number to Amend.",
+      ),
+    ).toBeInTheDocument();
   });
 
   test("PROPOSED EFFECTIVE DATE OF AMENDMENT CONTRACTING WAIVER", async () => {

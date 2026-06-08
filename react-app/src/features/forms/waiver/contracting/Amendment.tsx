@@ -133,7 +133,18 @@ export const AmendmentForm = ({ waiverId }: AmendmentFormProps) => {
         property: "id",
         documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
       }}
-      draftOptions={{ enabled: true, event: "contracting-amendment" }}
+      draftOptions={{
+        enabled: true,
+        event: "contracting-amendment",
+        relatedIdValidations: [
+          {
+            sourcePath: "waiverNumber",
+            sourceLabel: "Existing Waiver Number to Amend",
+            targetPath: "id",
+            targetLabel: "The 1915(b) Waiver Amendment Number",
+          },
+        ],
+      }}
     />
   );
 };
