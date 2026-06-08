@@ -13,6 +13,7 @@
     "build:ui": "(cd react-app && bun run build)",
     "repair:attachment-scan-status": "tsx scripts/repair-attachment-scan-status.ts",
     "export:opensearch": "tsx scripts/export-opensearch-to-s3.ts",
+    "report:draft-conversions": "tsx scripts/draft-conversion-report.ts",
     "watch": "tsc -w",
     "cdk": "cdk",
     "build:cli": "turbo build:cli",
