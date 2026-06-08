@@ -17,7 +17,9 @@ describe("Admin Features test", () => {
   });
 
   it("finds no admin changes", () => {
-    renderWithQueryClient(<AdminPackageActivities changelog={WITHDRAW_APPK_ITEM._source.changelog} />);
+    renderWithQueryClient(
+      <AdminPackageActivities changelog={WITHDRAW_APPK_ITEM._source.changelog} />,
+    );
 
     expect(screen.queryByText(/Administrative Package Changes/)).not.toBeInTheDocument();
   });
