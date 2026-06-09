@@ -32,7 +32,7 @@ jobs:
           if [[ "$REF_NAME" == snyk-* && ${#REF_NAME} -gt 26 ]]; then
               REF_HASH=$(printf '%s' "$REF_NAME" | sha1sum | cut -c1-8)
               REF_PREFIX="${REF_NAME#snyk-}"
-              STAGE_NAME="snyk-${REF_PREFIX:0:11}-${REF_HASH}"
+              STAGE_NAME="snyk-${REF_PREFIX:0:2}-${REF_HASH}"
           fi
 
           if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then

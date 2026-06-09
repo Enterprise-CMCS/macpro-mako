@@ -43,7 +43,7 @@ jobs:
           if [[ "${stage}" == snyk-* && ${#stage} -gt 26 ]]; then
             stage_hash=$(printf '%s' "${stage}" | sha1sum | cut -c1-8)
             stage_prefix="${stage#snyk-}"
-            stage="snyk-${stage_prefix:0:11}-${stage_hash}"
+            stage="snyk-${stage_prefix:0:2}-${stage_hash}"
           fi
 
           echo "stage=${stage}" >> "$GITHUB_OUTPUT"
