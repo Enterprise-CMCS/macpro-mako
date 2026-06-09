@@ -1,0 +1,13 @@
+diff --git a/package.json b/package.json
+index b2be2f9bfc592fe5dd2832fa5047203ba965c522..9d19c7759b167253c3793540a8bb4e2a029c1b62 100644
+--- a/package.json
++++ b/package.json
+@@ -47,7 +47,7 @@
+   ],
+   "dependencies": {
+     "@aws-amplify/core": "5.8.16",
+-    "axios": "1.13.6",
++    "axios": "1.16.1",
+     "tslib": "^1.8.0",
+     "url": "0.11.0"
+   },
