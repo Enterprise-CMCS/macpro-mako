@@ -25,7 +25,7 @@ jobs:
       HTML_ARTIFACT_ID: html-main-coverage-report
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: main
       - uses: ./.github/actions/setup

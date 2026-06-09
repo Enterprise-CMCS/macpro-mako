@@ -45,6 +45,7 @@ it("should fire GA event when help desk phone is clicked", () => {
   render(<Faq />);
 
   const phoneLink = screen.getByText("(833) 228-2540");
+  phoneLink.addEventListener("click", (event) => event.preventDefault());
 
   fireEvent.click(phoneLink);
 
@@ -55,6 +56,7 @@ it("should fire GA event when help desk email is clicked", () => {
   render(<Faq />);
 
   const emailLink = screen.getByText("OneMAC_Helpdesk@cms.hhs.gov");
+  emailLink.addEventListener("click", (event) => event.preventDefault());
 
   fireEvent.click(emailLink);
 
@@ -80,8 +82,25 @@ describe("Faq", () => {
     const scrollToMock = vi.fn();
     global.scrollTo = scrollToMock;
 
-    const { asFragment } = render(<Faq />);
+    render(<Faq />);
 
-    expect(asFragment()).toMatchSnapshot();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Frequently Asked Questions" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Expand all to search with CTRL + F" }),
+    ).toHaveAttribute("aria-expanded", "false");
+    expect(screen.getByText("What is FAQ 1?")).toBeInTheDocument();
+    expect(screen.getByText("What is FAQ 2?")).toBeInTheDocument();
+    expect(screen.getByText("Answer 1")).toBeVisible();
+    expect(screen.queryByText("Answer 2")).not.toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "Call the OneMAC Helpdesk" })).toHaveAttribute(
+      "href",
+      "tel:(833) 228-2540",
+    );
+    expect(screen.getByRole("link", { name: "Email the OneMAC Helpdesk" })).toHaveAttribute(
+      "href",
+      "mailto:OneMAC_Helpdesk@cms.hhs.gov",
+    );
   });
 });

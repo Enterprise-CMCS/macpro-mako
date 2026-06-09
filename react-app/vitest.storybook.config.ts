@@ -1,6 +1,7 @@
 import path from "node:path";
 
 import { storybookTest } from "@storybook/addon-vitest/vitest-plugin";
+import { playwright } from "@vitest/browser-playwright";
 import { defineConfig, mergeConfig } from "vitest/config";
 
 import viteConfig from "./.storybook/vite.config";
@@ -18,6 +19,12 @@ export default (async () =>
         }),
       ],
       test: {
+        browser: {
+          enabled: true,
+          headless: true,
+          provider: playwright({}),
+          instances: [{ browser: "chromium", name: "storybook-chromium" }],
+        },
         setupFiles: "./.storybook/vitest.setup.ts",
         reporters: process.env.GITHUB_ACTIONS
           ? ["default", "html", "json", "github-actions"]

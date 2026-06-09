@@ -1,9 +1,20 @@
 import { SESClient } from "@aws-sdk/client-ses";
+import { SQSClient } from "@aws-sdk/client-sqs";
 import { Context } from "aws-lambda";
 import { KafkaEvent, KafkaRecord } from "shared-types";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, MockInstance, vi } from "vitest";
 
 import { handler, sendEmail, validateEmailTemplate } from "./processEmails";
+
+let sesSendSpy: MockInstance;
+let sqsSendSpy: MockInstance;
+
+beforeEach(() => {
+  sesSendSpy = vi.spyOn(SESClient.prototype, "send").mockResolvedValue({
+    $metadata: { httpStatusCode: 200 },
+  } as never);
+  sqsSendSpy = vi.spyOn(SQSClient.prototype, "send").mockResolvedValue({} as never);
+});
 
 describe("process emails Handler", () => {
   it("should return 200 with a proper email", async () => {
@@ -21,6 +32,8 @@ describe("process emails Handler", () => {
   });
 
   it("should throw an error", async () => {
+    sesSendSpy.mockRejectedValueOnce(new Error("send failed"));
+
     const params = {
       Source: "sender@example.com",
       Destination: { ToAddresses: ["recipient@example.com"] },
@@ -57,7 +70,6 @@ describe("process emails Handler", () => {
 
   it("should make a handler", async () => {
     const callback = vi.fn();
-    const secSPY = vi.spyOn(SESClient.prototype, "send");
     const mockEvent: KafkaEvent = {
       records: {
         "mock-topic": [
@@ -84,7 +96,7 @@ describe("process emails Handler", () => {
     };
 
     await handler(mockEvent, {} as Context, callback);
-    expect(secSPY).toHaveBeenCalledTimes(2);
+    expect(sesSendSpy).toHaveBeenCalledTimes(2);
   });
 
   it("should not be mako therefore not do an event", async () => {
@@ -112,10 +124,8 @@ describe("process emails Handler", () => {
       eventSource: "",
       bootstrapServers: "",
     };
-    const secSPY = vi.spyOn(SESClient.prototype, "send");
-
     await handler(mockEvent, {} as Context, callback);
-    expect(secSPY).toHaveBeenCalledTimes(0);
+    expect(sesSendSpy).toHaveBeenCalledTimes(0);
   });
 
   it("should be missing a value, so nothing sent", async () => {
@@ -136,10 +146,8 @@ describe("process emails Handler", () => {
       eventSource: "",
       bootstrapServers: "",
     };
-    const secSPY = vi.spyOn(SESClient.prototype, "send");
-
     await handler(mockEvent, {} as Context, callback);
-    expect(secSPY).toHaveBeenCalledTimes(0);
+    expect(sesSendSpy).toHaveBeenCalledTimes(0);
   });
 
   it("should be missing an environment variable", async () => {
@@ -175,7 +183,6 @@ describe("process emails Handler", () => {
 
   it("should send user-role emails when eventType is user-role", async () => {
     const callback = vi.fn();
-    const secSPY = vi.spyOn(SESClient.prototype, "send");
 
     const mockEvent: KafkaEvent = {
       records: {
@@ -208,7 +215,7 @@ describe("process emails Handler", () => {
 
     await handler(mockEvent, {} as Context, callback);
 
-    expect(secSPY).toHaveBeenCalledTimes(2);
+    expect(sesSendSpy).toHaveBeenCalledTimes(2);
   });
   it("should throw and log an error if sendUserRoleEmails fails", async () => {
     const callback = vi.fn();
@@ -246,12 +253,12 @@ describe("process emails Handler", () => {
       bootstrapServers: "",
     };
 
-    const sendSpy = vi.spyOn(SESClient.prototype, "send");
     const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     await expect(handler(mockEvent, {} as Context, callback)).rejects.toThrowError();
     expect(consoleErrorSpy).toHaveBeenCalledWith("Error sending user email", error);
-    expect(sendSpy).not.toHaveBeenCalled();
+    expect(sesSendSpy).not.toHaveBeenCalled();
+    expect(sqsSendSpy).toHaveBeenCalledTimes(1);
 
     consoleErrorSpy.mockRestore();
   });

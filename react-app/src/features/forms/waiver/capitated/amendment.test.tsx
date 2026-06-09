@@ -7,7 +7,7 @@ import {
   EXISTING_ITEM_PENDING_ID,
   NOT_FOUND_ITEM_ID,
 } from "mocks";
-import { beforeAll, describe, expect, test } from "vitest";
+import { beforeAll, describe, expect, test, vi } from "vitest";
 
 import { formSchemas } from "@/formSchemas";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
@@ -15,6 +15,10 @@ import { mockApiRefinements } from "@/utils/test-helpers/skipCleanup";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
 import { AmendmentForm } from "./Amendment";
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+}));
 
 const upload = uploadFiles<(typeof formSchemas)["capitated-amendment"]>();
 const setup = async (waiverId?: string) =>
@@ -88,6 +92,22 @@ describe("Capitated Amendment", () => {
     await userEvent.type(waiverAmendmentInput, "MD-0005.R00.01");
 
     await waitFor(() => expect(waiverAmendmentLabel).not.toHaveClass("text-destructive"));
+  });
+
+  test("shows a state-prefix validation error when amendment number does not match the existing waiver", async () => {
+    await setup();
+    const existingWaiverInput = await screen.findByLabelText(/Existing Waiver Number to Amend/);
+    const waiverAmendmentInput = screen.getByLabelText(/Waiver Amendment Number/);
+
+    await userEvent.type(existingWaiverInput, EXISTING_ITEM_APPROVED_NEW_ID);
+    await userEvent.type(waiverAmendmentInput, "VA-0005.R00.01");
+    await userEvent.click(screen.getByTestId("save-draft-form"));
+
+    expect(
+      await screen.findByText(
+        "The 1915(b) Waiver Amendment Number must start with MD to match the Existing Waiver Number to Amend.",
+      ),
+    ).toBeInTheDocument();
   });
 
   test("PROPOSED EFFECTIVE DATE OF 1915(B) WAIVER AMENDMENT", async () => {

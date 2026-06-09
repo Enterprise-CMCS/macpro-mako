@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  LoadingSpinner,
   RequiredIndicator,
   Select,
   SelectContent,
@@ -31,9 +32,15 @@ const actionTypeMap = {
 
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(waiverId, {
+    enabled: waiverId !== undefined,
+  });
 
   const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("");
+
+  if (waiverId && isSubmissionLoading) {
+    return <LoadingSpinner />;
+  }
 
   const actionType = submission?._source?.actionType;
   const actionTypeLabel =
@@ -104,12 +111,7 @@ export const TemporaryExtensionForm = () => {
               control={form.control}
               render={({ field }) => {
                 return (
-                  <FormItem
-                    className="max-w-md"
-                    onChange={async () => {
-                      await form.trigger("ids.validAuthority.authority");
-                    }}
-                  >
+                  <FormItem className="max-w-md">
                     <FormLabel data-testid="waiverNumber-label">
                       <strong className="font-bold">
                         Approved Initial or Renewal Waiver Number
@@ -138,11 +140,7 @@ export const TemporaryExtensionForm = () => {
             control={form.control}
             name="ids.id"
             render={({ field }) => (
-              <FormItem
-                onChange={async () => {
-                  await form.trigger("ids.validAuthority.authority");
-                }}
-              >
+              <FormItem>
                 <FormLabel data-testid="requestNumber-label">
                   <strong className="font-bold">
                     Temporary Extension Request Number
@@ -211,6 +209,14 @@ export const TemporaryExtensionForm = () => {
           {
             path: "ids.validAuthority.authority",
             message: "Please select a Temporary Extension Type before saving.",
+          },
+        ],
+        relatedIdValidations: [
+          {
+            sourcePath: "ids.validAuthority.waiverNumber",
+            sourceLabel: "Approved Initial or Renewal Waiver Number",
+            targetPath: "ids.id",
+            targetLabel: "The Temporary Extension Request Number",
           },
         ],
       }}

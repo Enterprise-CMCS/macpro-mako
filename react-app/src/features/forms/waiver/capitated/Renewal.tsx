@@ -121,6 +121,17 @@ export const Renewal = () => (
       property: "id",
       documentChecker: (check) => check.recordExists && check.hasStatus(SEATOOL_STATUS.SUBMITTED),
     }}
-    draftOptions={{ enabled: true, event: "capitated-renewal" }}
+    draftOptions={{
+      enabled: true,
+      event: "capitated-renewal",
+      relatedIdValidations: [
+        {
+          sourcePath: "waiverNumber",
+          sourceLabel: "Existing Waiver Number to Renew",
+          targetPath: "id",
+          targetLabel: "The 1915(b) Waiver Renewal Number",
+        },
+      ],
+    }}
   />
 );
