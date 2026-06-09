@@ -65,6 +65,10 @@ export const formSchema = events["temporary-extension"].baseSchema
               try {
                 const originalWaiverData = await getItem(data.waiverNumber);
 
+                if (!originalWaiverData?._source?.authority) {
+                  return true;
+                }
+
                 return originalWaiverData?._source?.authority === data.authority;
               } catch {
                 return true;

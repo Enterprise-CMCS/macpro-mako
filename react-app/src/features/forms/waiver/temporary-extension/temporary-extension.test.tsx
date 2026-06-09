@@ -189,6 +189,51 @@ describe("Temporary Extension", () => {
     saveDraftSpy.mockRestore();
   });
 
+  test("shows a type mismatch validation error while editing a temporary extension", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE04",
+    );
+    await upload("waiverExtensionRequest");
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
+  test("does not show a type mismatch validation error when the approved waiver number is invalid", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      NOT_FOUND_ITEM_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE04",
+    );
+
+    expect(
+      await screen.findByText(
+        "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(temporaryExtensionTypeMismatchMessage)).not.toBeInTheDocument();
+  });
+
   test("shows state access validation for the approved waiver number before existence validation", async () => {
     const user = userEvent.setup();
     const saveDraftSpy = vi.spyOn(api, "saveDraft");
