@@ -9,9 +9,6 @@ on:
 concurrency:
   group: ${{ github.ref_name }}-group
 
-env:
-  STAGE_NAME: ${{ github.ref_name }}
-
 permissions:
   id-token: write
   contents: write
@@ -22,19 +19,35 @@ permissions:
 jobs:
   init:
     runs-on: ubuntu-latest
+    outputs:
+      stage_name: ${{ steps.resolve-stage.outputs.stage_name }}
     steps:
-      - name: Validate stage name
+      - name: Resolve and validate stage name
+        id: resolve-stage
+        env:
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
-              echo "ERROR:  Your branch name, $STAGE_NAME, is not a valid Serverless Framework stage name." && exit 1
+          STAGE_NAME="$REF_NAME"
+
+          if [[ "$REF_NAME" == snyk-* && ${#REF_NAME} -gt 26 ]]; then
+              REF_HASH=$(printf '%s' "$REF_NAME" | sha1sum | cut -c1-8)
+              REF_PREFIX="${REF_NAME#snyk-}"
+              STAGE_NAME="snyk-${REF_PREFIX:0:11}-${REF_HASH}"
           fi
+
+          if [[ ! $STAGE_NAME =~ ^[a-z][a-z0-9-]*$ ]]; then
+              echo "ERROR:  Your branch name resolves to $STAGE_NAME, which is not a valid Serverless Framework stage name." && exit 1
+          fi
+
+          echo "Resolved stage: $STAGE_NAME"
+          echo "stage_name=$STAGE_NAME" >> "$GITHUB_OUTPUT"
 
   test:
     runs-on: ubuntu-latest
     needs:
       - init
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ needs.init.outputs.stage_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -47,7 +60,9 @@ jobs:
     needs:
       - init
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ needs.init.outputs.stage_name }}
+    env:
+      STAGE_NAME: ${{ needs.init.outputs.stage_name }}
     outputs:
       app-url: ${{ steps.deployment-data.outputs.APPURL }}
       kibana-url: ${{ steps.deployment-data.outputs.KIBANAURL }}
@@ -89,9 +104,10 @@ jobs:
   application-url:
     runs-on: ubuntu-latest
     needs:
+      - init
       - deploy
     environment:
-      name: ${{ github.ref_name }}-app
+      name: ${{ needs.init.outputs.stage_name }}-app
       url: ${{ needs.deploy.outputs.app-url }}
     steps:
       - name: Display App URL
@@ -101,9 +117,10 @@ jobs:
   kibana-url:
     runs-on: ubuntu-latest
     needs:
+      - init
       - deploy
     environment:
-      name: ${{ github.ref_name }}-kibana
+      name: ${{ needs.init.outputs.stage_name }}-kibana
       url: ${{ needs.deploy.outputs.kibana-url }}
     steps:
       - name: Display Kibana URL
@@ -114,13 +131,15 @@ jobs:
     runs-on: ubuntu-latest
     continue-on-error: true
     needs:
+      - init
       - deploy
     environment:
-      name: ${{ github.ref_name }}
-    if: github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val'
+      name: ${{ needs.init.outputs.stage_name }}
     env:
+      STAGE_NAME: ${{ needs.init.outputs.stage_name }}
       JSON_ARTIFACT_ID: json-playwright-report
       HTML_ARTIFACT_ID: html-playwright-report
+    if: github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val'
     steps:
       - name: Set report name
         id: variables
@@ -173,9 +192,12 @@ jobs:
   cfn-nag:
     runs-on: ubuntu-latest
     needs:
+      - init
       - deploy
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ needs.init.outputs.stage_name }}
+    env:
+      STAGE_NAME: ${{ needs.init.outputs.stage_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -205,9 +227,12 @@ jobs:
   resources:
     runs-on: ubuntu-latest
     needs:
+      - init
       - deploy
     environment:
-      name: ${{ github.ref_name }}
+      name: ${{ needs.init.outputs.stage_name }}
+    env:
+      STAGE_NAME: ${{ needs.init.outputs.stage_name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -236,7 +261,7 @@ jobs:
       - name: Archive stage resources
         uses: actions/upload-artifact@v4
         with:
-          name: aws-resources-${{ github.ref_name }}
+          name: aws-resources-${{ needs.init.outputs.stage_name }}
           path: resources/aws-resources.json
 
   release:
