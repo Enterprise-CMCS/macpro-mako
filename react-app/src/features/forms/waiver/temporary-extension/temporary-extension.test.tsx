@@ -1,6 +1,7 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
+  EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_APPROVED_NEW_ID,
   EXISTING_ITEM_PENDING_ID,
   NOT_FOUND_ITEM_ID,
@@ -296,6 +297,68 @@ describe("Temporary Extension", () => {
     expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
 
+    useGetItemSpy.mockRestore();
+  });
+
+  test("blocks saving a loaded temporary extension draft with a mismatched approved waiver type", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-6578.R00.TE01";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockImplementation((id) => {
+      if (id !== draftId) {
+        return {
+          data: undefined,
+          isFetched: true,
+          isLoading: false,
+          error: null,
+        } as any;
+      }
+
+      return {
+        data: {
+          _id: draftId,
+          found: true,
+          _source: {
+            id: draftId,
+            seatoolStatus: SEATOOL_STATUS.DRAFT,
+            draft: {
+              savedAt: "2026-06-09T00:00:00.000Z",
+              createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              data: {
+                ids: {
+                  validAuthority: {
+                    authority: "1915(b)",
+                    waiverNumber: EXISTING_ITEM_APPROVED_AMEND_ID,
+                  },
+                  id: draftId,
+                },
+              },
+            },
+          },
+        },
+        isFetched: true,
+        isLoading: false,
+        error: null,
+      } as any;
+    });
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      undefined,
+      "1915(b)",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+
+    saveDraftSpy.mockRestore();
     useGetItemSpy.mockRestore();
   });
 

@@ -40,6 +40,30 @@ const actionTypeMap = {
   Renew: "Waiver Renewal",
 };
 
+const getTemporaryExtensionAuthorityValues = (formValues: Record<string, unknown>) => {
+  const ids = formValues.ids as
+    | {
+        validAuthority?: {
+          authority?: unknown;
+          waiverNumber?: unknown;
+        };
+      }
+    | undefined;
+
+  const authority = ids?.validAuthority?.authority;
+  const waiverNumber = ids?.validAuthority?.waiverNumber;
+
+  return {
+    authority: typeof authority === "string" ? authority : undefined,
+    waiverNumber: typeof waiverNumber === "string" ? waiverNumber : undefined,
+  };
+};
+
+const getTemporaryExtensionAuthorityMismatchFromFormValues = (
+  formValues: Record<string, unknown>,
+) =>
+  getTemporaryExtensionAuthorityMismatchMessage(getTemporaryExtensionAuthorityValues(formValues));
+
 const TemporaryExtensionTypeValidator = ({ form }: { form: TemporaryExtensionFormFields }) => {
   const authorityPath = "ids.validAuthority.authority" as const;
   const authority = useWatch({
@@ -292,6 +316,12 @@ export const TemporaryExtensionForm = () => {
           },
         ],
         validationPaths: ["ids.validAuthority"],
+        customSaveValidations: [
+          {
+            path: "ids.validAuthority.authority",
+            validate: getTemporaryExtensionAuthorityMismatchFromFormValues,
+          },
+        ],
         relatedIdValidations: [
           {
             sourcePath: "ids.validAuthority.waiverNumber",
