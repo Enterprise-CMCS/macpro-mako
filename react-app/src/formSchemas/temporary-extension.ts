@@ -15,6 +15,36 @@ import { isAuthorizedState } from "@/utils";
 const duplicateTemporaryExtensionIdMessage =
   "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.";
 
+export const temporaryExtensionAuthorityMismatchMessage =
+  "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.";
+
+export const getTemporaryExtensionAuthorityMismatchMessage = async ({
+  authority,
+  waiverNumber,
+}: {
+  authority?: string;
+  waiverNumber?: string;
+}) => {
+  if (!waiverNumber?.trim() || !authority?.trim()) {
+    return undefined;
+  }
+
+  try {
+    const originalWaiverData = await getItem(waiverNumber);
+    const originalAuthority = originalWaiverData?._source?.authority;
+
+    if (typeof originalAuthority !== "string" || !originalAuthority.trim()) {
+      return undefined;
+    }
+
+    return originalAuthority.trim() === authority.trim()
+      ? undefined
+      : temporaryExtensionAuthorityMismatchMessage;
+  } catch {
+    return undefined;
+  }
+};
+
 export const formSchema = events["temporary-extension"].baseSchema
   .omit({
     id: true,
@@ -56,30 +86,10 @@ export const formSchema = events["temporary-extension"].baseSchema
             ),
             authority: events["temporary-extension"].baseSchema.shape.authority,
           })
-          .refine(
-            async (data) => {
-              if (!data.waiverNumber?.trim() || !data.authority?.trim()) {
-                return true;
-              }
-
-              try {
-                const originalWaiverData = await getItem(data.waiverNumber);
-
-                if (!originalWaiverData?._source?.authority) {
-                  return true;
-                }
-
-                return originalWaiverData?._source?.authority === data.authority;
-              } catch {
-                return true;
-              }
-            },
-            {
-              message:
-                "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.",
-              path: ["authority"],
-            },
-          ),
+          .refine(async (data) => !(await getTemporaryExtensionAuthorityMismatchMessage(data)), {
+            message: temporaryExtensionAuthorityMismatchMessage,
+            path: ["authority"],
+          }),
         id: events["temporary-extension"].baseSchema.shape.id,
       })
       .superRefine(async ({ id, validAuthority }, ctx) => {

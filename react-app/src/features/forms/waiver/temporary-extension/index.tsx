@@ -23,6 +23,10 @@ import {
 } from "@/components";
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
+import {
+  getTemporaryExtensionAuthorityMismatchMessage,
+  temporaryExtensionAuthorityMismatchMessage,
+} from "@/formSchemas/temporary-extension";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
 import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
@@ -37,9 +41,10 @@ const actionTypeMap = {
 };
 
 const TemporaryExtensionTypeValidator = ({ form }: { form: TemporaryExtensionFormFields }) => {
+  const authorityPath = "ids.validAuthority.authority" as const;
   const authority = useWatch({
     control: form.control,
-    name: "ids.validAuthority.authority",
+    name: authorityPath,
   });
   const waiverNumber = useWatch({
     control: form.control,
@@ -47,13 +52,47 @@ const TemporaryExtensionTypeValidator = ({ form }: { form: TemporaryExtensionFor
   });
 
   useEffect(() => {
-    if (!authority?.trim() || !waiverNumber?.trim()) return;
+    if (!authority?.trim() || !waiverNumber?.trim()) {
+      if (
+        form.getFieldState(authorityPath).error?.message ===
+        temporaryExtensionAuthorityMismatchMessage
+      ) {
+        form.clearErrors(authorityPath);
+      }
+      return;
+    }
 
-    const validationTimeout = window.setTimeout(() => {
+    let isCurrentValidation = true;
+
+    const validationTimeout = window.setTimeout(async () => {
+      const mismatchMessage = await getTemporaryExtensionAuthorityMismatchMessage({
+        authority,
+        waiverNumber,
+      });
+      if (!isCurrentValidation) return;
+
+      if (mismatchMessage) {
+        form.setError(authorityPath, {
+          type: "manual",
+          message: mismatchMessage,
+        });
+        return;
+      }
+
+      if (
+        form.getFieldState(authorityPath).error?.message ===
+        temporaryExtensionAuthorityMismatchMessage
+      ) {
+        form.clearErrors(authorityPath);
+      }
+
       void form.trigger("ids.validAuthority");
     }, 300);
 
-    return () => window.clearTimeout(validationTimeout);
+    return () => {
+      isCurrentValidation = false;
+      window.clearTimeout(validationTimeout);
+    };
   }, [authority, form, waiverNumber]);
 
   return null;
