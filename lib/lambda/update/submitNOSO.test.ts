@@ -1,5 +1,6 @@
-import { NOT_EXISTING_ITEM_ID, TEST_ITEM_ID } from "mocks";
-import { APIGatewayEvent } from "shared-types";
+import { EXISTING_ITEM_ID, NOT_EXISTING_ITEM_ID, TEST_ITEM_ID } from "mocks";
+import { produceMessage } from "libs/api/kafka";
+import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./submitNOSO";
@@ -94,6 +95,37 @@ describe("handler", () => {
       body: { message: `${NOT_EXISTING_ITEM_ID} has been submitted.` },
     };
     expect(result).toStrictEqual(expectedResult);
+  });
+
+  it("should use the existing SEATool package status when submitting a NOSO shell", async () => {
+    const validItem = {
+      body: JSON.stringify({
+        id: EXISTING_ITEM_ID,
+        authority: "Medicaid SPA",
+        status: SEATOOL_STATUS.SUBMITTED,
+        submitterEmail: "test@email.com",
+        submitterName: "Name",
+        adminChangeType: "NOSO",
+        changeMade: "change",
+        mockEvent: "mock-event",
+        changeReason: "reason",
+        submissionDate: "1/1/2025",
+        proposedDate: "12/1/2025",
+      }),
+    } as APIGatewayEvent;
+
+    const result = await handler(validItem);
+
+    const expectedResult = {
+      statusCode: 200,
+      body: { message: `${EXISTING_ITEM_ID} has been submitted.` },
+    };
+    expect(result).toStrictEqual(expectedResult);
+
+    const producedPayload = JSON.parse(vi.mocked(produceMessage).mock.calls[0][2] as string);
+    expect(producedPayload.status).toBe(SEATOOL_STATUS.APPROVED);
+    expect(producedPayload.stateStatus).toBe("Approved");
+    expect(producedPayload.cmsStatus).toBe("Approved");
   });
 
   it("should submit a new item with blank submitter info", async () => {
