@@ -212,6 +212,22 @@ describe("Temporary Extension", () => {
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
   });
 
+  test("shows a type mismatch validation error after entering the approved waiver number", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
   test("shows a type mismatch validation error when the approved waiver number loses focus", async () => {
     const user = userEvent.setup();
 

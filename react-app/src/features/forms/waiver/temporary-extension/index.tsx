@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useWatch } from "react-hook-form";
 import { Link, useParams } from "react-router";
 
 import { useGetItem } from "@/api";
 import {
   ActionForm,
+  ActionFormFieldsArg,
   FormControl,
   FormDescription,
   FormField,
@@ -25,9 +27,36 @@ import { formSchemas } from "@/formSchemas";
 import { getFAQLinkForAttachments } from "../../faqLinks";
 import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
 
+type TemporaryExtensionFormFields = ActionFormFieldsArg<
+  (typeof formSchemas)["temporary-extension"]
+>;
+
 const actionTypeMap = {
   New: "Initial Waiver",
   Renew: "Waiver Renewal",
+};
+
+const TemporaryExtensionTypeValidator = ({ form }: { form: TemporaryExtensionFormFields }) => {
+  const authority = useWatch({
+    control: form.control,
+    name: "ids.validAuthority.authority",
+  });
+  const waiverNumber = useWatch({
+    control: form.control,
+    name: "ids.validAuthority.waiverNumber",
+  });
+
+  useEffect(() => {
+    if (!authority?.trim() || !waiverNumber?.trim()) return;
+
+    const validationTimeout = window.setTimeout(() => {
+      void form.trigger("ids.validAuthority");
+    }, 300);
+
+    return () => window.clearTimeout(validationTimeout);
+  }, [authority, form, waiverNumber]);
+
+  return null;
 };
 
 export const TemporaryExtensionForm = () => {
@@ -68,6 +97,7 @@ export const TemporaryExtensionForm = () => {
 
         return (
           <>
+            <TemporaryExtensionTypeValidator form={form} />
             {waiverId && submission ? (
               <div>
                 <p>Temporary Extension Type</p>

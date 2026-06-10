@@ -1239,7 +1239,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           return DRAFT_SAVE_AUTHORIZATION_MESSAGE;
         }
 
-        return error instanceof Error ? error.message : "Unable to save. Try again.";
+        return message || "Unable to save. Try again.";
       })();
       const isDraftConflictError = errorMessage === DRAFT_ID_CONFLICT_MESSAGE;
 
