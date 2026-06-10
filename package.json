@@ -113,10 +113,14 @@
   "overrides": {
     "@vitest/browser": "4.1.8",
     "axios": "1.16.1",
+    "shell-quote": "1.8.4",
     "tar": "7.5.13",
     "vite": "8.0.14",
     "vitest": "4.1.8",
     "ws": "8.20.1"
   },
-  "packageManager": "bun@1.1.20"
+  "packageManager": "bun@1.1.20",
+  "patchedDependencies": {
+    "@aws-amplify/api-rest@3.5.18": "patches/@aws-amplify%2Fapi-rest@3.5.18.patch"
+  }
 }
