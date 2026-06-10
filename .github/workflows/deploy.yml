@@ -139,7 +139,7 @@ jobs:
       STAGE_NAME: ${{ needs.init.outputs.stage_name }}
       JSON_ARTIFACT_ID: json-playwright-report
       HTML_ARTIFACT_ID: html-playwright-report
-    if: github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val'
+    if: github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val' && !startsWith(github.ref, 'refs/heads/snyk-')
     steps:
       - name: Set report name
         id: variables
