@@ -68,6 +68,10 @@ const isNotFoundItemPayload = (value: unknown): boolean => {
     statusCode?: number;
   };
 
+  if (candidate?.found === true && candidate?._source) {
+    return false;
+  }
+
   const responseStatus =
     candidate?.response?.status ??
     candidate?.response?.statusCode ??
