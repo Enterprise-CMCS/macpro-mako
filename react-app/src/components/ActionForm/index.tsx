@@ -657,7 +657,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
     form.reset({ ...latestDefaultValuesRef.current, ...draftData });
     hasAppliedDraftRef.current = true;
-  }, [draftRecord, form]);
+
+    for (const validationPath of draftOptions?.validationPaths ?? []) {
+      void form.trigger(validationPath as FieldPath<z.TypeOf<Schema>>);
+    }
+  }, [draftOptions?.validationPaths, draftRecord, form]);
 
   const hasRealChanges = Object.keys(form.formState.dirtyFields).length > 0;
 

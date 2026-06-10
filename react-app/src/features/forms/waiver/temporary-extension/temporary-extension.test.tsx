@@ -6,8 +6,10 @@ import {
   NOT_FOUND_ITEM_ID,
   TEST_ITEM_ID,
   TEST_SPA_ITEM_ID,
+  TEST_STATE_SUBMITTER_EMAIL,
   VALID_ITEM_TEMPORARY_EXTENSION_ID,
 } from "mocks";
+import { SEATOOL_STATUS } from "shared-types";
 import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 
 import * as api from "@/api";
@@ -208,6 +210,77 @@ describe("Temporary Extension", () => {
 
     expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
+  test("shows a type mismatch validation error when the approved waiver number loses focus", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+    await user.tab();
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
+  test("shows a type mismatch validation error when loading a mismatched temporary extension draft", async () => {
+    const draftId = "MD-6578.R00.TE01";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockImplementation((id) => {
+      if (id !== draftId) {
+        return {
+          data: undefined,
+          isFetched: true,
+          isLoading: false,
+          error: null,
+        } as any;
+      }
+
+      return {
+        data: {
+          _id: draftId,
+          found: true,
+          _source: {
+            id: draftId,
+            seatoolStatus: SEATOOL_STATUS.DRAFT,
+            draft: {
+              savedAt: "2026-06-09T00:00:00.000Z",
+              createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              data: {
+                ids: {
+                  validAuthority: {
+                    authority: "1915(b)",
+                    waiverNumber: TEST_ITEM_ID,
+                  },
+                  id: draftId,
+                },
+              },
+            },
+          },
+        },
+        isFetched: true,
+        isLoading: false,
+        error: null,
+      } as any;
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      undefined,
+      "1915(b)",
+      `draftId=${draftId}`,
+    );
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+
+    useGetItemSpy.mockRestore();
   });
 
   test("does not show a type mismatch validation error when the approved waiver number is invalid", async () => {

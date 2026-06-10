@@ -63,7 +63,7 @@ export const TemporaryExtensionForm = () => {
       formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
       fields={(form) => {
         const triggerTemporaryExtensionTypeValidation = () => {
-          void form.trigger("ids.validAuthority.authority");
+          void Promise.resolve().then(() => form.trigger("ids.validAuthority"));
         };
 
         return (
@@ -222,7 +222,7 @@ export const TemporaryExtensionForm = () => {
             message: "Please select a Temporary Extension Type before saving.",
           },
         ],
-        validationPaths: ["ids.validAuthority.authority"],
+        validationPaths: ["ids.validAuthority"],
         relatedIdValidations: [
           {
             sourcePath: "ids.validAuthority.waiverNumber",
