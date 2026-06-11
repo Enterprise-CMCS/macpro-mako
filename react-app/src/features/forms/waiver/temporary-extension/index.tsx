@@ -215,6 +215,7 @@ export const TemporaryExtensionForm = () => {
         enabled: true,
         event: "temporary-extension",
         idPath: "ids.id",
+        idLabel: "Temporary Extension Request Number",
         authorityPath: "ids.validAuthority.authority",
         requiredSaveFields: [
           {

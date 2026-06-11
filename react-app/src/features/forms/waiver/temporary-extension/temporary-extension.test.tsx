@@ -97,6 +97,34 @@ describe("Temporary Extension", () => {
     expect(saveDraftSpy).not.toHaveBeenCalled();
   });
 
+  test("save draft identifies a missing temporary extension request number", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Unable to save package",
+          body: "Please enter the Temporary Extension Request Number before saving.",
+          variant: "destructive",
+        }),
+      ),
+    );
+
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+  });
+
   test("saves a draft when the approved waiver ID exists in SEA Tool without the local waiver format", async () => {
     const user = userEvent.setup();
     const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
