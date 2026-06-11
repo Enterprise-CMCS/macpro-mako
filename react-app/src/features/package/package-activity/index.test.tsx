@@ -98,6 +98,55 @@ describe("Package Activity", () => {
     expect(screen.getByText("Download section attachments")).toBeInTheDocument();
   });
 
+  it("wraps long package activity headers and attachment filenames within the section", async () => {
+    const longFilename =
+      "IG_Consolidated_STATES_MSP_Eligibility_Income_Resource_Methodologies_Final_20170714_v.1.0.pdf";
+    const draftSubmission = {
+      id: "OH-25-0888-P",
+      seatoolStatus: "Draft",
+      submitterName: "StateAdmin_Micro_With_A_Long_Name",
+      makoChangedDate: "2026-04-24T16:05:23.000Z",
+      draft: {
+        savedAt: "2026-04-24T16:05:23.000Z",
+        data: {
+          attachments: {
+            chipEligibility: {
+              label: "CHIP Eligibility Template",
+              files: [
+                {
+                  filename: longFilename,
+                  key: "long-filename-key",
+                  bucket: ATTACHMENT_BUCKET_NAME,
+                  uploadDate: 1777046723000,
+                  title: "CHIP Eligibility Template",
+                },
+              ],
+            },
+          },
+        },
+      },
+      changelog: [],
+    } as unknown as opensearch.main.Document;
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id={draftSubmission.id} changelog={[]} submission={draftSubmission} />,
+      draftSubmission.id,
+    );
+
+    expect(screen.getByRole("table")).toHaveClass("table-fixed");
+    expect(screen.getByText("CHIP Eligibility Template").closest("td")).toHaveClass("break-words");
+
+    const attachmentButton = screen.getByRole("button", { name: longFilename });
+    expect(attachmentButton).toHaveClass("max-w-full");
+    expect(attachmentButton).toHaveClass("whitespace-normal");
+    expect(attachmentButton).toHaveClass("break-words");
+
+    const activityTrigger = screen.getByRole("button", {
+      name: /Created By StateAdmin_Micro_With_A_Long_Name/,
+    });
+    expect(activityTrigger).toHaveClass("min-w-0");
+  });
+
   it("orders draft attachment sections to match the form schema order", async () => {
     const draftSubmission = {
       id: "MD-25-0003-JJJ",
