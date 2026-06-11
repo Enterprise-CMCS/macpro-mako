@@ -1049,6 +1049,8 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const resolvedId = getResolvedDraftId(formValues as Record<string, unknown>);
 
       if (!resolvedId) {
+        await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
+        if (!isMountedRef.current) return;
         failDraftSave(getDraftSaveRequiredMessage(idLabel));
         return;
       }

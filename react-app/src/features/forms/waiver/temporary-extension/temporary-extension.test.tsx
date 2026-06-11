@@ -123,6 +123,8 @@ describe("Temporary Extension", () => {
     );
 
     expect(saveDraftSpy).not.toHaveBeenCalled();
+    expect(screen.getByTestId("requestNumber-label")).toHaveClass("text-destructive");
+    expect(screen.getByText("Required")).toBeInTheDocument();
   });
 
   test("saves a draft when the approved waiver ID exists in SEA Tool without the local waiver format", async () => {
