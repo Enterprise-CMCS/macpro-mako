@@ -1,5 +1,5 @@
-import { EXISTING_ITEM_ID, NOT_EXISTING_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import { produceMessage } from "libs/api/kafka";
+import { EXISTING_ITEM_ID, NOT_EXISTING_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import { APIGatewayEvent, SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
