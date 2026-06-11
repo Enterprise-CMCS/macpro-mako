@@ -92,12 +92,6 @@ type DraftOptions = {
     targetPath: string;
     targetLabel: string;
   }>;
-  customSaveValidations?: Array<{
-    path: string;
-    validate: (
-      formValues: Record<string, unknown>,
-    ) => string | undefined | Promise<string | undefined>;
-  }>;
 };
 
 type DraftSaveStatus = {
@@ -1145,22 +1139,6 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         if (!isMountedRef.current) return;
 
         if (!isPathValid) {
-          failDraftSave("Please resolve the validation errors before saving.");
-          return;
-        }
-      }
-
-      for (const customSaveValidation of draftOptions.customSaveValidations ?? []) {
-        const customValidationMessage = await customSaveValidation.validate(
-          form.getValues() as Record<string, unknown>,
-        );
-        if (!isMountedRef.current) return;
-
-        if (customValidationMessage) {
-          form.setError(customSaveValidation.path as FieldPath<z.TypeOf<Schema>>, {
-            type: "manual",
-            message: customValidationMessage,
-          });
           failDraftSave("Please resolve the validation errors before saving.");
           return;
         }

@@ -1,11 +1,9 @@
-import { useEffect, useState } from "react";
-import { useWatch } from "react-hook-form";
+import { useState } from "react";
 import { Link, useParams } from "react-router";
 
 import { useGetItem } from "@/api";
 import {
   ActionForm,
-  ActionFormFieldsArg,
   FormControl,
   FormDescription,
   FormField,
@@ -23,103 +21,13 @@ import {
 } from "@/components";
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
-import {
-  getTemporaryExtensionAuthorityMismatchMessage,
-  temporaryExtensionAuthorityMismatchMessage,
-} from "@/formSchemas/temporary-extension";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
 import { NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "../../new-submission/content";
 
-type TemporaryExtensionFormFields = ActionFormFieldsArg<
-  (typeof formSchemas)["temporary-extension"]
->;
-
 const actionTypeMap = {
   New: "Initial Waiver",
   Renew: "Waiver Renewal",
-};
-
-const getTemporaryExtensionAuthorityValues = (formValues: Record<string, unknown>) => {
-  const ids = formValues.ids as
-    | {
-        validAuthority?: {
-          authority?: unknown;
-          waiverNumber?: unknown;
-        };
-      }
-    | undefined;
-
-  const authority = ids?.validAuthority?.authority;
-  const waiverNumber = ids?.validAuthority?.waiverNumber;
-
-  return {
-    authority: typeof authority === "string" ? authority : undefined,
-    waiverNumber: typeof waiverNumber === "string" ? waiverNumber : undefined,
-  };
-};
-
-const getTemporaryExtensionAuthorityMismatchFromFormValues = (
-  formValues: Record<string, unknown>,
-) =>
-  getTemporaryExtensionAuthorityMismatchMessage(getTemporaryExtensionAuthorityValues(formValues));
-
-const TemporaryExtensionTypeValidator = ({ form }: { form: TemporaryExtensionFormFields }) => {
-  const authorityPath = "ids.validAuthority.authority" as const;
-  const authority = useWatch({
-    control: form.control,
-    name: authorityPath,
-  });
-  const waiverNumber = useWatch({
-    control: form.control,
-    name: "ids.validAuthority.waiverNumber",
-  });
-
-  useEffect(() => {
-    if (!authority?.trim() || !waiverNumber?.trim()) {
-      if (
-        form.getFieldState(authorityPath).error?.message ===
-        temporaryExtensionAuthorityMismatchMessage
-      ) {
-        form.clearErrors(authorityPath);
-      }
-      return;
-    }
-
-    let isCurrentValidation = true;
-
-    const validationTimeout = window.setTimeout(async () => {
-      const mismatchMessage = await getTemporaryExtensionAuthorityMismatchMessage({
-        authority,
-        waiverNumber,
-      });
-      if (!isCurrentValidation) return;
-
-      if (mismatchMessage) {
-        form.setError(authorityPath, {
-          type: "manual",
-          message: mismatchMessage,
-        });
-        return;
-      }
-
-      if (
-        form.getFieldState(authorityPath).error?.message ===
-        temporaryExtensionAuthorityMismatchMessage
-      ) {
-        form.clearErrors(authorityPath);
-      }
-
-      void form.trigger("ids.validAuthority");
-    }, 300);
-
-    return () => {
-      isCurrentValidation = false;
-      window.clearTimeout(validationTimeout);
-    };
-  }, [authority, form, waiverNumber]);
-
-  return null;
 };
 
 export const TemporaryExtensionForm = () => {
@@ -160,7 +68,6 @@ export const TemporaryExtensionForm = () => {
 
         return (
           <>
-            <TemporaryExtensionTypeValidator form={form} />
             {waiverId && submission ? (
               <div>
                 <p>Temporary Extension Type</p>
@@ -316,12 +223,6 @@ export const TemporaryExtensionForm = () => {
           },
         ],
         validationPaths: ["ids.validAuthority"],
-        customSaveValidations: [
-          {
-            path: "ids.validAuthority.authority",
-            validate: getTemporaryExtensionAuthorityMismatchFromFormValues,
-          },
-        ],
         relatedIdValidations: [
           {
             sourcePath: "ids.validAuthority.waiverNumber",
