@@ -42,7 +42,7 @@ jobs:
             --jq '[.[] | select(.conclusion == "success")][0].databaseId')
           echo "Detected latest run id of ${RUN_ID} for workflow ${WF_NAME}"
           echo "run-id=${RUN_ID}" >> "$GITHUB_OUTPUT"
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@v7
         if: steps.get-run-id.conclusion == 'success'
         id: get-main-coverage
         continue-on-error: true

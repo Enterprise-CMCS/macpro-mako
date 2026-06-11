@@ -63,7 +63,7 @@ jobs:
           fi
 
       - name: Upload JSON Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         id: upload-json
         if: ${{ !cancelled() }}
         with:
@@ -72,7 +72,7 @@ jobs:
           retention-days: 30
 
       - name: Upload HTML Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         id: upload-html
         if: ${{ !cancelled() }}
         with:
