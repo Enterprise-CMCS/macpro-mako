@@ -8,7 +8,7 @@ import {
 import { SendRawEmailCommand, SESClient } from "@aws-sdk/client-ses";
 import { randomUUID } from "crypto";
 import { Consumer, Kafka } from "kafkajs";
-import { SEATOOL_SPW_STATUS } from "shared-types";
+import { getStatus, SEATOOL_SPW_STATUS, SEATOOL_STATUS } from "shared-types";
 import { getSecret } from "shared-utils";
 
 import { getClient } from "../libs/opensearch-lib";
@@ -20,7 +20,22 @@ const DEFAULT_INPUT_SOURCE = "KAFKA";
 const DEFAULT_KAFKA_CONSUME_TIMEOUT_MS = 10 * 60 * 1000;
 const DEFAULT_REPORT_PREFIX = "seatool-status-mismatch";
 const DEFAULT_SEATOOL_STATUS_TOPIC = "aws.seatool.ksql.onemac.three.agg.State_Plan";
-const MISMATCH_CSV_COLUMNS = ["ID_Number", "status", "cmsStatus", "seatoolStatus", "id"] as const;
+const RAW_SEATOOL_STATUS_DISPLAY_FALLBACKS: Record<string, string> = {
+  "Pending-Finance": SEATOOL_STATUS.UNKNOWN,
+};
+const MISMATCH_CSV_COLUMNS = [
+  "ID_Number",
+  "status",
+  "cmsStatus",
+  "stateStatus",
+  "seatoolStatus",
+  "expectedCmsStatus",
+  "expectedStateStatus",
+  "classification",
+  "actionType",
+  "authority",
+  "id",
+] as const;
 
 const awsRegion = process.env.region || process.env.AWS_REGION;
 const s3Client = new S3Client({ region: awsRegion });
@@ -36,15 +51,24 @@ export type SeatoolStatusRow = {
 
 export type OneMacStatusRecord = {
   id: string;
+  actionType?: unknown;
+  authority?: unknown;
   cmsStatus?: unknown;
   seatoolStatus?: unknown;
+  stateStatus?: unknown;
 };
 
 export type StatusMismatchRow = {
   ID_Number: string;
   status: string;
   cmsStatus: string;
+  stateStatus: string;
   seatoolStatus: string;
+  expectedCmsStatus: string;
+  expectedStateStatus: string;
+  classification: string;
+  actionType: string;
+  authority: string;
   id: string;
 };
 
@@ -130,6 +154,7 @@ export type SeatoolStatusMismatchReportResult = {
   comparableRows: number;
   skippedRows: number;
   mismatchCount: number;
+  mismatchCountsByClassification: Record<string, number>;
   notificationStatus: "DISABLED" | "FAILED" | "SENT" | "SKIPPED";
   notificationRecipients: string[];
   notificationSentAt?: string;
@@ -246,6 +271,112 @@ export function normalizeStatus(value: unknown): string {
   }
 
   return status;
+}
+
+export function normalizeStatusComparisonKey(value: unknown): string {
+  return normalizeStatus(value).toLocaleLowerCase("en-US");
+}
+
+function canonicalSeatoolStatus(value: unknown) {
+  const statusKey = normalizeStatusComparisonKey(value);
+  const knownStatuses = [
+    ...Object.values(SEATOOL_STATUS),
+    ...Object.keys(RAW_SEATOOL_STATUS_DISPLAY_FALLBACKS),
+  ];
+  return (
+    knownStatuses.find((status) => normalizeStatusComparisonKey(status) === statusKey) ||
+    normalizeStatus(value)
+  );
+}
+
+function getDisplayStatusForSeatoolStatus(value: unknown) {
+  const canonicalStatus = canonicalSeatoolStatus(value);
+  if (!canonicalStatus) {
+    return {
+      cmsStatus: "",
+      stateStatus: "",
+    };
+  }
+
+  const displayStatus = RAW_SEATOOL_STATUS_DISPLAY_FALLBACKS[canonicalStatus] || canonicalStatus;
+  const { cmsStatus, stateStatus } = getStatus(displayStatus);
+  return {
+    cmsStatus: cmsStatus || SEATOOL_STATUS.UNKNOWN,
+    stateStatus: stateStatus || SEATOOL_STATUS.UNKNOWN,
+  };
+}
+
+function toReportString(value: unknown) {
+  return value === undefined || value === null ? "" : String(value);
+}
+
+function getExpectedSeatoolStatus(seatoolStatus: unknown, oneMacRecord: OneMacStatusRecord) {
+  const canonicalStatus = canonicalSeatoolStatus(seatoolStatus);
+  const oneMacSeatoolStatus = canonicalSeatoolStatus(oneMacRecord.seatoolStatus);
+
+  if (!canonicalStatus) {
+    return "";
+  }
+
+  if (oneMacSeatoolStatus === SEATOOL_STATUS.WITHDRAW_REQUESTED) {
+    return canonicalStatus === SEATOOL_STATUS.WITHDRAWN
+      ? canonicalStatus
+      : SEATOOL_STATUS.WITHDRAW_REQUESTED;
+  }
+
+  if (oneMacSeatoolStatus === SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED) {
+    if (
+      canonicalStatus === SEATOOL_STATUS.PENDING_RAI ||
+      [SEATOOL_STATUS.WITHDRAWN, SEATOOL_STATUS.TERMINATED, SEATOOL_STATUS.DISAPPROVED].includes(
+        canonicalStatus,
+      )
+    ) {
+      return canonicalStatus;
+    }
+
+    return SEATOOL_STATUS.RAI_RESPONSE_WITHDRAW_REQUESTED;
+  }
+
+  return canonicalStatus;
+}
+
+function getStatusComparison({
+  seatoolStatus,
+  oneMacRecord,
+}: {
+  seatoolStatus: unknown;
+  oneMacRecord: OneMacStatusRecord;
+}) {
+  const canonicalStatus = canonicalSeatoolStatus(seatoolStatus);
+  const oneMacSeatoolStatus = canonicalSeatoolStatus(oneMacRecord.seatoolStatus);
+
+  if (
+    canonicalStatus === SEATOOL_STATUS.PENDING &&
+    oneMacSeatoolStatus === SEATOOL_STATUS.PENDING &&
+    normalizeStatusComparisonKey(oneMacRecord.cmsStatus) === "requested" &&
+    normalizeStatusComparisonKey(oneMacRecord.stateStatus) === "submitted" &&
+    normalizeStatusComparisonKey(oneMacRecord.actionType) === "extend"
+  ) {
+    return {
+      expectedCmsStatus: "Requested",
+      expectedStateStatus: "Submitted",
+      classification: "TEMPORARY_EXTENSION_REQUESTED_DISPLAY",
+    };
+  }
+
+  const expectedSeatoolStatus = getExpectedSeatoolStatus(seatoolStatus, oneMacRecord);
+  const expectedDisplay = getDisplayStatusForSeatoolStatus(expectedSeatoolStatus);
+  const classification =
+    canonicalStatus === SEATOOL_STATUS.PENDING_RAI &&
+    oneMacSeatoolStatus === SEATOOL_STATUS.SUBMITTED
+      ? "NEEDS_RAI_CHANGELOG_REVIEW"
+      : "STALE_ONEMAC_STATUS";
+
+  return {
+    expectedCmsStatus: expectedDisplay.cmsStatus,
+    expectedStateStatus: expectedDisplay.stateStatus,
+    classification,
+  };
 }
 
 export function parseCsvRows(csv: string): string[][] {
@@ -569,12 +700,20 @@ export function buildCsv<TRecord extends Record<string, unknown>>(
   ].join("\n");
 }
 
+function countMismatchRowsByClassification(rows: StatusMismatchRow[]) {
+  return rows.reduce<Record<string, number>>((acc, row) => {
+    acc[row.classification] = (acc[row.classification] || 0) + 1;
+    return acc;
+  }, {});
+}
+
 export function compareSeatoolToOneMac(
   seatoolRows: SeatoolStatusRow[],
   oneMacRecordsById: Map<string, OneMacStatusRecord>,
 ): CompareResult {
   const mismatchRows: StatusMismatchRow[] = [];
   const seenMismatchRows = new Set<string>();
+  const casStatusKey = normalizeStatusComparisonKey(CAS_VALUE);
   let comparableRows = 0;
   let missingOneMacCount = 0;
   let skippedRows = 0;
@@ -587,24 +726,44 @@ export function compareSeatoolToOneMac(
       continue;
     }
 
-    const seatoolStatus = normalizeStatus(seatoolRow.status);
-    const cmsStatus = normalizeStatus(oneMacRecord.cmsStatus);
-    if (!seatoolStatus || !cmsStatus || seatoolStatus === CAS_VALUE || cmsStatus === CAS_VALUE) {
+    const rawSeatoolStatusKey = normalizeStatusComparisonKey(seatoolRow.status);
+    const cmsStatusKey = normalizeStatusComparisonKey(oneMacRecord.cmsStatus);
+    if (
+      !rawSeatoolStatusKey ||
+      !cmsStatusKey ||
+      rawSeatoolStatusKey === casStatusKey ||
+      cmsStatusKey === casStatusKey
+    ) {
+      skippedRows += 1;
+      continue;
+    }
+
+    const statusComparison = getStatusComparison({
+      seatoolStatus: seatoolRow.status,
+      oneMacRecord,
+    });
+    const seatoolStatusKey = normalizeStatusComparisonKey(statusComparison.expectedCmsStatus);
+    if (!seatoolStatusKey) {
       skippedRows += 1;
       continue;
     }
 
     comparableRows += 1;
-    if (seatoolStatus === cmsStatus) {
+    if (seatoolStatusKey === cmsStatusKey) {
       continue;
     }
 
     const mismatchRow: StatusMismatchRow = {
       ID_Number: seatoolRow.id,
       status: seatoolRow.status,
-      cmsStatus: oneMacRecord.cmsStatus === undefined ? "" : String(oneMacRecord.cmsStatus),
-      seatoolStatus:
-        oneMacRecord.seatoolStatus === undefined ? "" : String(oneMacRecord.seatoolStatus),
+      cmsStatus: toReportString(oneMacRecord.cmsStatus),
+      stateStatus: toReportString(oneMacRecord.stateStatus),
+      seatoolStatus: toReportString(oneMacRecord.seatoolStatus),
+      expectedCmsStatus: statusComparison.expectedCmsStatus,
+      expectedStateStatus: statusComparison.expectedStateStatus,
+      classification: statusComparison.classification,
+      actionType: toReportString(oneMacRecord.actionType),
+      authority: toReportString(oneMacRecord.authority),
       id: oneMacRecord.id || lookupId,
     };
     const dedupeKey = JSON.stringify(mismatchRow);
@@ -1002,9 +1161,12 @@ async function fetchOneMacStatusRecords(
       _id?: string;
       found?: boolean;
       _source?: {
+        actionType?: unknown;
+        authority?: unknown;
         id?: unknown;
         cmsStatus?: unknown;
         seatoolStatus?: unknown;
+        stateStatus?: unknown;
       };
     }[];
 
@@ -1019,8 +1181,11 @@ async function fetchOneMacStatusRecords(
 
       recordsById.set(toLookupId(id), {
         id,
+        actionType: doc._source.actionType,
+        authority: doc._source.authority,
         cmsStatus: doc._source.cmsStatus,
         seatoolStatus: doc._source.seatoolStatus,
+        stateStatus: doc._source.stateStatus,
       });
     }
   }
@@ -1088,6 +1253,7 @@ export const handler = async (
     comparableRows: compareResult.comparableRows,
     skippedRows: compareResult.skippedRows,
     mismatchCount: compareResult.mismatchRows.length,
+    mismatchCountsByClassification: countMismatchRowsByClassification(compareResult.mismatchRows),
     notificationStatus: compareResult.mismatchRows.length > 0 ? "DISABLED" : "SKIPPED",
     notificationRecipients: [],
   };

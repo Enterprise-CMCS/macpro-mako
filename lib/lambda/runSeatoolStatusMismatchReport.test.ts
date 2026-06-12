@@ -9,6 +9,7 @@ import {
   compareSeatoolToOneMac,
   handler,
   normalizeStatus,
+  normalizeStatusComparisonKey,
   parseCsvRows,
   parseSeatoolKafkaStatusRow,
   parseSeatoolStatusRows,
@@ -210,6 +211,8 @@ describe("runSeatoolStatusMismatchReport", () => {
     expect(normalizeStatus("Pending – RAI")).toBe("Pending-RAI");
     expect(normalizeStatus("Package Withdrawn")).toBe("Withdrawn");
     expect(normalizeStatus("  Submitted   -   Intake Needed  ")).toBe("Submitted-Intake Needed");
+    expect(normalizeStatusComparisonKey("pending - rai")).toBe("pending-rai");
+    expect(normalizeStatusComparisonKey("date sent to cas")).toBe("date sent to cas");
   });
 
   it("parses SEATool CSV rows with quoted commas and separator rows", () => {
@@ -254,7 +257,8 @@ describe("runSeatoolStatusMismatchReport", () => {
         "CA-25-0022,Pending-RAI,",
         "CO-25-0044,Approved,",
         "TX-25-0001,Package Withdrawn,",
-        "CAS-25-0001,Date Sent to CAS,",
+        "CASE-25-0001,pending - rai,",
+        "CAS-25-0001,date sent to cas,",
         "MISSING-25-0001,Approved,",
       ].join("\n"),
     );
@@ -266,17 +270,22 @@ describe("runSeatoolStatusMismatchReport", () => {
           {
             id: "CA-25-0022",
             cmsStatus: "Submitted - Intake Needed",
+            stateStatus: "Submitted",
             seatoolStatus: "Submitted",
           },
         ],
         ["CO-25-0044", { id: "CO-25-0044", cmsStatus: "Approved", seatoolStatus: "Approved" }],
         ["TX-25-0001", { id: "TX-25-0001", cmsStatus: "Withdrawn", seatoolStatus: "Withdrawn" }],
+        [
+          "CASE-25-0001",
+          { id: "CASE-25-0001", cmsStatus: "Pending-RAI", seatoolStatus: "Pending-RAI" },
+        ],
         ["CAS-25-0001", { id: "CAS-25-0001", cmsStatus: "Approved", seatoolStatus: "Approved" }],
       ]),
     );
 
     expect(result).toEqual({
-      comparableRows: 3,
+      comparableRows: 4,
       missingOneMacCount: 1,
       skippedRows: 1,
       mismatchRows: [
@@ -284,8 +293,167 @@ describe("runSeatoolStatusMismatchReport", () => {
           ID_Number: "CA-25-0022",
           status: "Pending-RAI",
           cmsStatus: "Submitted - Intake Needed",
+          stateStatus: "Submitted",
           seatoolStatus: "Submitted",
+          expectedCmsStatus: "Pending - RAI",
+          expectedStateStatus: "RAI Issued",
+          classification: "NEEDS_RAI_CHANGELOG_REVIEW",
+          actionType: "",
+          authority: "",
           id: "CA-25-0022",
+        },
+      ],
+    });
+  });
+
+  it("uses OneMAC status display and deterministic sink priority rules before reporting mismatches", () => {
+    const seatoolRows = parseSeatoolStatusRows(
+      [
+        "ID_Number,status,",
+        "FINANCE-25-0001,Pending-Finance,",
+        "WITHDRAW-25-0001,Pending,",
+        "WITHDRAW-25-0002,Pending-RAI,",
+        "WITHDRAW-25-0003,Approved,",
+        "RAI-WITHDRAW-25-0001,Pending,",
+        "RAI-WITHDRAW-25-0002,Pending-RAI,",
+        "SUBMITTED-RAI-25-0001,Pending-RAI,",
+        "SUBMITTED-PENDING-25-0001,Pending,",
+        "TEMP-EXT-25-0001,Pending,",
+      ].join("\n"),
+    );
+
+    const result = compareSeatoolToOneMac(
+      seatoolRows,
+      new Map([
+        [
+          "FINANCE-25-0001",
+          {
+            id: "FINANCE-25-0001",
+            cmsStatus: "Unknown",
+            stateStatus: "Unknown",
+            seatoolStatus: "Pending-Finance",
+          },
+        ],
+        [
+          "WITHDRAW-25-0001",
+          {
+            id: "WITHDRAW-25-0001",
+            cmsStatus: "Submitted - Intake Needed",
+            stateStatus: "Withdrawal Requested",
+            seatoolStatus: "Withdrawal Requested",
+          },
+        ],
+        [
+          "WITHDRAW-25-0002",
+          {
+            id: "WITHDRAW-25-0002",
+            cmsStatus: "Submitted - Intake Needed",
+            stateStatus: "Withdrawal Requested",
+            seatoolStatus: "Withdrawal Requested",
+          },
+        ],
+        [
+          "WITHDRAW-25-0003",
+          {
+            id: "WITHDRAW-25-0003",
+            cmsStatus: "Submitted - Intake Needed",
+            stateStatus: "Withdrawal Requested",
+            seatoolStatus: "Withdrawal Requested",
+          },
+        ],
+        [
+          "RAI-WITHDRAW-25-0001",
+          {
+            id: "RAI-WITHDRAW-25-0001",
+            cmsStatus: "Formal RAI Response - Withdrawal Requested",
+            stateStatus: "Formal RAI Response - Withdrawal Requested",
+            seatoolStatus: "Formal RAI Response - Withdrawal Requested",
+          },
+        ],
+        [
+          "RAI-WITHDRAW-25-0002",
+          {
+            id: "RAI-WITHDRAW-25-0002",
+            cmsStatus: "Formal RAI Response - Withdrawal Requested",
+            stateStatus: "Formal RAI Response - Withdrawal Requested",
+            seatoolStatus: "Formal RAI Response - Withdrawal Requested",
+          },
+        ],
+        [
+          "SUBMITTED-RAI-25-0001",
+          {
+            id: "SUBMITTED-RAI-25-0001",
+            cmsStatus: "Submitted - Intake Needed",
+            stateStatus: "Submitted",
+            seatoolStatus: "Submitted",
+          },
+        ],
+        [
+          "SUBMITTED-PENDING-25-0001",
+          {
+            id: "SUBMITTED-PENDING-25-0001",
+            cmsStatus: "Submitted - Intake Needed",
+            stateStatus: "Submitted",
+            seatoolStatus: "Submitted",
+          },
+        ],
+        [
+          "TEMP-EXT-25-0001",
+          {
+            id: "TEMP-EXT-25-0001",
+            actionType: "Extend",
+            authority: "1915(c)",
+            cmsStatus: "Requested",
+            stateStatus: "Submitted",
+            seatoolStatus: "Pending",
+          },
+        ],
+      ]),
+    );
+
+    expect(result).toEqual({
+      comparableRows: 9,
+      missingOneMacCount: 0,
+      skippedRows: 0,
+      mismatchRows: [
+        {
+          ID_Number: "RAI-WITHDRAW-25-0002",
+          status: "Pending-RAI",
+          cmsStatus: "Formal RAI Response - Withdrawal Requested",
+          stateStatus: "Formal RAI Response - Withdrawal Requested",
+          seatoolStatus: "Formal RAI Response - Withdrawal Requested",
+          expectedCmsStatus: "Pending - RAI",
+          expectedStateStatus: "RAI Issued",
+          classification: "STALE_ONEMAC_STATUS",
+          actionType: "",
+          authority: "",
+          id: "RAI-WITHDRAW-25-0002",
+        },
+        {
+          ID_Number: "SUBMITTED-RAI-25-0001",
+          status: "Pending-RAI",
+          cmsStatus: "Submitted - Intake Needed",
+          stateStatus: "Submitted",
+          seatoolStatus: "Submitted",
+          expectedCmsStatus: "Pending - RAI",
+          expectedStateStatus: "RAI Issued",
+          classification: "NEEDS_RAI_CHANGELOG_REVIEW",
+          actionType: "",
+          authority: "",
+          id: "SUBMITTED-RAI-25-0001",
+        },
+        {
+          ID_Number: "SUBMITTED-PENDING-25-0001",
+          status: "Pending",
+          cmsStatus: "Submitted - Intake Needed",
+          stateStatus: "Submitted",
+          seatoolStatus: "Submitted",
+          expectedCmsStatus: "Pending",
+          expectedStateStatus: "Under Review",
+          classification: "STALE_ONEMAC_STATUS",
+          actionType: "",
+          authority: "",
+          id: "SUBMITTED-PENDING-25-0001",
         },
       ],
     });
@@ -320,21 +488,25 @@ describe("runSeatoolStatusMismatchReport", () => {
             "CA-25-0022": {
               id,
               cmsStatus: "Submitted - Intake Needed",
+              stateStatus: "Submitted",
               seatoolStatus: "Submitted",
             },
             "CO-25-0044": {
               id,
               cmsStatus: "Approved",
+              stateStatus: "Approved",
               seatoolStatus: "Approved",
             },
             "TX-25-0001": {
               id,
               cmsStatus: "Withdrawn",
+              stateStatus: "Package Withdrawn",
               seatoolStatus: "Withdrawn",
             },
             "CAS-25-0001": {
               id,
               cmsStatus: "Approved",
+              stateStatus: "Approved",
               seatoolStatus: "Approved",
             },
           };
@@ -386,8 +558,8 @@ describe("runSeatoolStatusMismatchReport", () => {
     );
     expect(csvEntry?.[1]).toBe(
       [
-        "ID_Number,status,cmsStatus,seatoolStatus,id",
-        "CA-25-0022,Pending-RAI,Submitted - Intake Needed,Submitted,CA-25-0022",
+        "ID_Number,status,cmsStatus,stateStatus,seatoolStatus,expectedCmsStatus,expectedStateStatus,classification,actionType,authority,id",
+        "CA-25-0022,Pending-RAI,Submitted - Intake Needed,Submitted,Submitted,Pending - RAI,RAI Issued,NEEDS_RAI_CHANGELOG_REVIEW,,,CA-25-0022",
       ].join("\n"),
     );
 
@@ -398,6 +570,9 @@ describe("runSeatoolStatusMismatchReport", () => {
       expect.objectContaining({
         mismatchCsvFilename: "true_status_mismatches.csv",
         mismatchCount: 1,
+        mismatchCountsByClassification: {
+          NEEDS_RAI_CHANGELOG_REVIEW: 1,
+        },
         notificationStatus: "SENT",
       }),
     );
@@ -493,16 +668,19 @@ describe("runSeatoolStatusMismatchReport", () => {
             "CA-25-0022": {
               id,
               cmsStatus: "Submitted - Intake Needed",
-              seatoolStatus: "Submitted - Intake Needed",
+              stateStatus: "Submitted",
+              seatoolStatus: "Submitted",
             },
             "CO-25-0044": {
               id,
               cmsStatus: "Approved",
+              stateStatus: "Approved",
               seatoolStatus: "Approved",
             },
             "TX-25-0001": {
               id,
               cmsStatus: "Withdrawn",
+              stateStatus: "Package Withdrawn",
               seatoolStatus: "Withdrawn",
             },
           };
@@ -541,8 +719,8 @@ describe("runSeatoolStatusMismatchReport", () => {
     );
     expect(csvEntry?.[1]).toBe(
       [
-        "ID_Number,status,cmsStatus,seatoolStatus,id",
-        "CA-25-0022,Pending-RAI,Submitted - Intake Needed,Submitted - Intake Needed,CA-25-0022",
+        "ID_Number,status,cmsStatus,stateStatus,seatoolStatus,expectedCmsStatus,expectedStateStatus,classification,actionType,authority,id",
+        "CA-25-0022,Pending-RAI,Submitted - Intake Needed,Submitted,Submitted,Pending - RAI,RAI Issued,NEEDS_RAI_CHANGELOG_REVIEW,,,CA-25-0022",
       ].join("\n"),
     );
   });
