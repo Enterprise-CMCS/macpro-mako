@@ -140,6 +140,33 @@ describe("Upload", () => {
       ).toBeInTheDocument();
     });
   });
+
+  it("allows long uploaded filenames to wrap inside the file chip", () => {
+    const longFilename =
+      "IG_Consolidated_STATES_MSP_Eligibility_Income_Resource_Methodologies_Final_20170714_v.1.0.pdf";
+
+    renderWithQueryClient(
+      <Upload
+        {...defaultProps}
+        files={[
+          {
+            key: "long-file-key",
+            title: longFilename,
+            filename: longFilename,
+            bucket: "bucket-1",
+            uploadDate: Date.now(),
+          },
+        ]}
+      />,
+    );
+
+    expect(screen.getByTestId(`${longFilename}-chip`)).toHaveClass("max-w-full");
+    expect(screen.getByText(longFilename)).toHaveClass("break-words");
+    expect(
+      screen.getByTestId(`${defaultProps.dataTestId}-remove-file-${longFilename}`),
+    ).toHaveClass("shrink-0");
+  });
+
   it("displays an error because the file failed to upload", async () => {
     const mockSetFiles = vi.fn();
     renderWithQueryClient(<Upload {...defaultProps} files={files} setFiles={mockSetFiles} />);
