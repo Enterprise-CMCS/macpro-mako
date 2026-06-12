@@ -159,10 +159,10 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
           {files.map((file) => (
             <div
               data-testid={`${file.filename}-chip`}
-              className="flex border-2 rounded-md py-1 pl-2.5 pr-1 border-sky-500 items-center"
+              className="flex max-w-full min-w-0 items-center rounded-md border-2 border-sky-500 py-1 pl-2.5 pr-1"
               key={file.filename}
             >
-              <span className="text-sky-700">{file.filename}</span>
+              <span className="min-w-0 break-words text-sky-700">{file.filename}</span>
               <I.Button
                 type="button"
                 onClick={() =>
@@ -177,7 +177,7 @@ export const Upload = ({ maxFiles, files, setFiles, dataTestId, type }: UploadPr
                   })
                 }
                 variant="ghost"
-                className="p-0 h-0"
+                className="h-auto shrink-0 p-0"
                 data-testid={`${dataTestId}-remove-file-${file.filename}`}
               >
                 <X className="ml-2 text-sky-700 w-5" />
