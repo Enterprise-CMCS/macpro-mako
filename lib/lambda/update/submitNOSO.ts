@@ -110,7 +110,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     const { stateStatus, cmsStatus } = getStatus(status);
-    return await sendSubmitMessage({ ...item, stateStatus, cmsStatus });
+    return await sendSubmitMessage({ ...item, status, stateStatus, cmsStatus });
   } catch (err) {
     console.error("Error has occured submitting package:", err);
     if (err instanceof z.ZodError) {

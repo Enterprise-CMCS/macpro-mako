@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+
+# Git and local agent metadata
+.git/
+.codex/
+.claude/
+.cursor/
+.history/
+.idea/
+.vscode/
+.agents.md
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.envrc
+env.json
+
+# Build and package output
+.turbo/
+.yarn_install/
+build_run/
+.build_run/
+dist/
+build/
+storybook-static/
+
+# CDK and serverless artifacts
+.cdk.staging/
+cdk.out/
+cdk.context.json
+.serverless/
+
+# Test output and local reports
+coverage/
+.vitest/
+playwright-report/
+test-results/
+accessibility/
+
+# Playwright and other spec files
+**/*.spec.ts
+**/*.spec.tsx
+**/*.spec.js
+**/*.spec.jsx
+
+# Local-only docs and fixtures
+docs/local/
+test/local/
+
+# OS noise
+DS_Store
+.DS_Store
+**/.DS_Store
+
+# Existing repo-specific generated output
+graphify-out/
