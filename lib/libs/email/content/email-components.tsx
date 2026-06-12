@@ -1,5 +1,5 @@
 import { Column, Heading, Hr, Link, Row, Section, Text } from "@react-email/components";
-import { Fragment, ReactNode } from "react";
+import { CSSProperties, Fragment, ReactNode } from "react";
 import { Attachment, CommonEmailVariables, EmailAddresses, Events } from "shared-types";
 import * as os from "shared-types/opensearch";
 
@@ -24,6 +24,43 @@ const areAllAttachmentsEmpty = (
   attachments: Partial<Record<string, { label: string; files?: any[] }>>,
 ): boolean => {
   return Object.values(attachments).every((att) => !att || !att.files || att.files.length === 0);
+};
+
+const attachmentTextWrapStyle: CSSProperties = {
+  overflowWrap: "anywhere",
+  wordBreak: "break-word",
+  wordWrap: "break-word",
+  whiteSpace: "normal",
+};
+
+const attachmentLabelColumnStyle: CSSProperties = {
+  ...attachmentTextWrapStyle,
+  paddingRight: "12px",
+  verticalAlign: "top",
+  width: "35%",
+};
+
+const attachmentFilenameColumnStyle: CSSProperties = {
+  ...attachmentTextWrapStyle,
+  verticalAlign: "top",
+  width: "65%",
+};
+
+const attachmentLabelTextStyle: CSSProperties = {
+  ...styles.text.title,
+  ...attachmentTextWrapStyle,
+};
+
+const attachmentFilenameTextStyle: CSSProperties = {
+  ...styles.text.description,
+  ...attachmentTextWrapStyle,
+};
+
+const attachmentRowStyle: CSSProperties = {
+  marginBottom: "2px",
+  marginTop: "2px",
+  tableLayout: "fixed",
+  width: "100%",
 };
 
 const Divider = () => <Hr style={styles.divider} />;
@@ -155,23 +192,12 @@ const Attachments = ({
         if (!group?.files?.length) return null;
 
         return group.files.map((file, index) => (
-          <Row key={key} style={{ marginBottom: "2px", marginTop: "2px" }}>
-            <Column
-              align="left"
-              style={{
-                width: "50%",
-                verticalAlign: "top",
-              }}
-            >
-              {" "}
-              <span key={group.label + index}>
-                <Text style={{ ...styles.text.title }}>{group.label}:</Text>{" "}
-              </span>
+          <Row key={`${key}-${file.key || file.filename}-${index}`} style={attachmentRowStyle}>
+            <Column align="left" style={attachmentLabelColumnStyle}>
+              <Text style={attachmentLabelTextStyle}>{group.label}:</Text>
             </Column>
-            <Column style={{ verticalAlign: "top" }}>
-              <Text style={styles.text.description}>
-                <span key={file.filename + index}>{file.filename}</span>
-              </Text>
+            <Column style={attachmentFilenameColumnStyle}>
+              <Text style={attachmentFilenameTextStyle}>{file.filename}</Text>
             </Column>
           </Row>
         ));
