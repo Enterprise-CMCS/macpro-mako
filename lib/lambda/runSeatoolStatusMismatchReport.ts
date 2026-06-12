@@ -352,7 +352,6 @@ function getStatusComparison({
 
   if (
     canonicalStatus === SEATOOL_STATUS.PENDING &&
-    oneMacSeatoolStatus === SEATOOL_STATUS.PENDING &&
     normalizeStatusComparisonKey(oneMacRecord.cmsStatus) === "requested" &&
     normalizeStatusComparisonKey(oneMacRecord.stateStatus) === "submitted" &&
     normalizeStatusComparisonKey(oneMacRecord.actionType) === "extend"

@@ -319,6 +319,7 @@ describe("runSeatoolStatusMismatchReport", () => {
         "SUBMITTED-RAI-25-0001,Pending-RAI,",
         "SUBMITTED-PENDING-25-0001,Pending,",
         "TEMP-EXT-25-0001,Pending,",
+        "TEMP-EXT-25-0002,Pending,",
       ].join("\n"),
     );
 
@@ -408,11 +409,22 @@ describe("runSeatoolStatusMismatchReport", () => {
             seatoolStatus: "Pending",
           },
         ],
+        [
+          "TEMP-EXT-25-0002",
+          {
+            id: "TEMP-EXT-25-0002",
+            actionType: "Extend",
+            authority: "1915(b)",
+            cmsStatus: "Requested",
+            stateStatus: "Submitted",
+            seatoolStatus: "Submitted",
+          },
+        ],
       ]),
     );
 
     expect(result).toEqual({
-      comparableRows: 9,
+      comparableRows: 10,
       missingOneMacCount: 0,
       skippedRows: 0,
       mismatchRows: [
