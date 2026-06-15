@@ -112,7 +112,9 @@ describe("externalAttachmentAuthorizer handler", () => {
     const tokenResult = await issueClientCredentialsAccessToken("partner-app", "correct-secret");
     expect(tokenResult).toBeTruthy();
 
-    const invalidToken = `${tokenResult!.accessToken.slice(0, -1)}x`;
+    const finalCharacter = tokenResult!.accessToken.at(-1);
+    const replacementCharacter = finalCharacter === "x" ? "y" : "x";
+    const invalidToken = `${tokenResult!.accessToken.slice(0, -1)}${replacementCharacter}`;
     const rawResult = await handler(createEvent(`Bearer ${invalidToken}`), {} as any, vi.fn());
     expect(rawResult).toBeTruthy();
     const result = rawResult as Exclude<typeof rawResult, void>;
