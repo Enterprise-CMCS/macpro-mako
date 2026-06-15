@@ -60,7 +60,11 @@ export class Uploads extends cdk.NestedStack {
     );
 
     const scanner = new LC.ClamScanScanner(this, "ClamScan", {
+      batchSize: 1,
       fileBucket: attachmentsBucket,
+      reservedConcurrentExecutions: 5,
+      timeout: cdk.Duration.minutes(3),
+      visibilityTimeout: cdk.Duration.minutes(4),
     });
 
     attachmentsBucket.addToResourcePolicy(

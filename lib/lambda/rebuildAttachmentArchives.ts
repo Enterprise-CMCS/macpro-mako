@@ -3,9 +3,13 @@ import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import { buildDraftAttachmentChangelog } from "../attachment-archive/draft-package";
 import type { AttachmentArchiveChangelogItem } from "../attachment-archive/package-activity";
+import { sendAttachmentArchiveRebuildRequest } from "../attachment-archive/rebuild-queue";
 import { AttachmentArchiveRebuildMessage } from "../attachment-archive/types";
 import { getDraftPackage, getPackageChangelog } from "../libs/api/package";
 import { rebuildPackageAttachmentArchives } from "./attachmentArchive-lib";
+
+const MAX_SOURCE_SCAN_RETRY_COUNT = 20;
+const SOURCE_SCAN_RETRY_DELAY_SECONDS = 30;
 
 function parseRecordBody(body: string): AttachmentArchiveRebuildMessage {
   const parsed = JSON.parse(body) as Partial<AttachmentArchiveRebuildMessage>;
@@ -44,12 +48,28 @@ export const handler: SQSHandler = async (event) => {
   for (const record of event.Records) {
     const message = parseRecordBody(record.body);
     const changelog = await getRebuildChangelog(message);
+    const sourceScanRetryCount = message.sourceScanRetryCount || 0;
+    const sourceScanRetriesExceeded = sourceScanRetryCount >= MAX_SOURCE_SCAN_RETRY_COUNT;
 
     const result = await rebuildPackageAttachmentArchives({
       packageId: message.packageId,
       changelog,
       archiveNamespace: message.preferDraft ? "draft" : "main",
+      failSourceScanPending: sourceScanRetriesExceeded,
+      sourceScanPendingAt: message.sourceScanPendingAt,
+      sourceScanRetryCount,
     });
+
+    if (result.sourceScanPending && !sourceScanRetriesExceeded) {
+      await sendAttachmentArchiveRebuildRequest(
+        {
+          ...message,
+          sourceScanPendingAt: message.sourceScanPendingAt || new Date().toISOString(),
+          sourceScanRetryCount: sourceScanRetryCount + 1,
+        },
+        { delaySeconds: SOURCE_SCAN_RETRY_DELAY_SECONDS },
+      );
+    }
 
     console.info(
       JSON.stringify({
@@ -58,6 +78,7 @@ export const handler: SQSHandler = async (event) => {
         latestTimestamp: message.latestTimestamp,
         preferDraft: message.preferDraft,
         source: message.source,
+        sourceScanRetryCount,
         result,
       }),
     );

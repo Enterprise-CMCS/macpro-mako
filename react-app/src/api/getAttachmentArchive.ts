@@ -13,6 +13,8 @@ export type AttachmentArchiveResponse =
     }
   | {
       status: "PENDING";
+      reason?: "SOURCE_SCAN_PENDING" | "ARCHIVE_BUILD_PENDING";
+      message?: string;
       pollAfterSeconds?: number;
     }
   | {
