@@ -30,9 +30,9 @@ export class ClamScanScanner extends Construct {
     const {
       batchSize = 1,
       fileBucket,
-      reservedConcurrentExecutions = 1,
-      timeout = cdk.Duration.minutes(1),
-      visibilityTimeout = cdk.Duration.seconds(90),
+      reservedConcurrentExecutions = 5,
+      timeout = cdk.Duration.minutes(3),
+      visibilityTimeout = cdk.Duration.minutes(4),
     } = props;
 
     // S3 Bucket
