@@ -107,7 +107,7 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 ## Learned Workspace Facts
 
-- `proposedEffectiveDate` in Mako/Kafka events is epoch milliseconds; legacy OneMAC records use ISO strings. OpenSearch and the UI use `proposedDate`, which may still be either format depending on source.
-- Date consumers should read `proposedDate` first, then `draft.data.proposedEffectiveDate`; format in UTC and treat numeric values below `1e12` as seconds when normalizing.
+- `proposedEffectiveDate` in Mako/Kafka events is epoch milliseconds with no timezone metadata; the UI encodes midnight on the selected date in the submitter's browser local timezone via `date.getTime()`, and the submit Lambda publishes it unchanged. Legacy OneMAC records use ISO strings. OpenSearch and the UI use `proposedDate`, which may still be either format depending on source.
+- Date consumers should read `proposedDate` first, then `draft.data.proposedEffectiveDate`; format epoch values in UTC to match Mako UI display, and treat numeric values below `1e12` as seconds when normalizing.
 - SEATool reference tables and TypeScript types live under `lib/packages/shared-types/seatool-tables/`.
 - Environment promotion typically follows `main` → `val` → `production` (for example attachment archive rollouts).
