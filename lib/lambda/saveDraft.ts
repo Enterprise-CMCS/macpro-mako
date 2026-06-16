@@ -81,9 +81,13 @@ const DRAFT_CONCURRENCY_MESSAGE =
   "Draft was updated by another user. Refresh this page and try saving again.";
 
 type TemporaryExtensionDraftData = {
+  authority?: unknown;
+  waiverNumber?: unknown;
   ids?: {
+    id?: unknown;
     validAuthority?: {
       authority?: unknown;
+      waiverNumber?: unknown;
     };
   };
 };
@@ -111,8 +115,23 @@ const unwrapUpdateVersionResponse = (updateResponse: unknown): OsUpdateVersionRe
 };
 
 const getTemporaryExtensionAuthority = (draftData: Record<string, unknown>) => {
-  return (draftData as TemporaryExtensionDraftData).ids?.validAuthority?.authority;
+  const temporaryExtensionDraftData = draftData as TemporaryExtensionDraftData;
+  return (
+    temporaryExtensionDraftData.ids?.validAuthority?.authority ??
+    temporaryExtensionDraftData.authority
+  );
 };
+
+const getTemporaryExtensionWaiverNumber = (draftData: Record<string, unknown>) => {
+  const temporaryExtensionDraftData = draftData as TemporaryExtensionDraftData;
+  return (
+    temporaryExtensionDraftData.ids?.validAuthority?.waiverNumber ??
+    temporaryExtensionDraftData.waiverNumber
+  );
+};
+
+const temporaryExtensionAuthorityMismatchMessage =
+  "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.";
 
 const resolveAuthority = (
   eventName: DraftableEvent,
@@ -161,6 +180,28 @@ const isVersionConflictError = (error: unknown) => {
   }
 
   return false;
+};
+
+const getTemporaryExtensionAuthorityMismatchMessage = async (
+  authority: string,
+  draftData: Record<string, unknown>,
+) => {
+  const waiverNumber = getTemporaryExtensionWaiverNumber(draftData);
+  const normalizedWaiverNumber =
+    typeof waiverNumber === "string" ? waiverNumber.trim().toUpperCase() : "";
+
+  if (!normalizedWaiverNumber) return undefined;
+
+  const sourcePackage = await getPackage(normalizedWaiverNumber);
+  const sourceAuthority = sourcePackage?._source?.authority;
+
+  if (typeof sourceAuthority !== "string" || !sourceAuthority.trim()) {
+    return undefined;
+  }
+
+  return sourceAuthority.trim() === authority
+    ? undefined
+    : temporaryExtensionAuthorityMismatchMessage;
 };
 
 const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
@@ -317,6 +358,20 @@ export const handler = authenticatedMiddy({
             : "Authority is required before saving.",
       },
     });
+  }
+
+  if (draftEventName === "temporary-extension") {
+    const authorityMismatchMessage = await getTemporaryExtensionAuthorityMismatchMessage(
+      resolvedAuthority,
+      draftData,
+    );
+
+    if (authorityMismatchMessage) {
+      return response({
+        statusCode: 400,
+        body: { message: authorityMismatchMessage },
+      });
+    }
   }
 
   const hasActiveSourceDraft = isActiveDraftPackage(sourceDraftPackage);
