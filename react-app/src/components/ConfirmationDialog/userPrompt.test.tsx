@@ -99,8 +99,8 @@ describe("userPrompt", () => {
     expect(getByTestId("dialog-body")).toHaveClass("break-words");
     expect(bodyText).toHaveClass("min-w-0");
     expect(bodyText).toHaveClass("max-w-full");
-    expect(bodyText.style.overflowWrap).toBe("anywhere");
-    expect(bodyText.style.wordBreak).toBe("break-word");
+    expect(bodyText).toHaveClass("[overflow-wrap:anywhere]");
+    expect(bodyText).toHaveClass("[word-break:break-word]");
 
     userPrompt.dismiss();
 
