@@ -52,7 +52,7 @@ export function ConfirmationDialog({
         {body && (
           <div className="grid min-w-0 max-w-full gap-4 break-words py-4" data-testid="dialog-body">
             {isPlainTextBody ? (
-              <div className="min-w-0 max-w-full break-words [overflow-wrap:anywhere] [word-break:break-word]">
+              <div className="min-w-0 max-w-full [overflow-wrap:anywhere] [word-break:break-word]">
                 {body}
               </div>
             ) : (
