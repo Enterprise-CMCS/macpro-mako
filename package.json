@@ -111,12 +111,7 @@
     ]
   },
   "overrides": {
-    "@aws-amplify/core": "6.16.4",
     "@aws-sdk/client-cloudwatch-logs": "^3.687.0",
-    "@aws-amplify/geo": "3.0.94",
-    "@aws-amplify/interactions": "6.1.36",
-    "@aws-amplify/predictions": "6.1.73",
-    "@aws-amplify/pubsub": "6.1.70",
     "axios": "1.16.1",
     "@vitest/browser": "4.1.8",
     "postcss-selector-parser": "6.1.4",
