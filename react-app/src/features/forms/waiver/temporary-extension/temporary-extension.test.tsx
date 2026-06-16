@@ -1,12 +1,16 @@
 import { fireEvent, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
+  EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_APPROVED_NEW_ID,
   EXISTING_ITEM_PENDING_ID,
   NOT_FOUND_ITEM_ID,
+  TEST_ITEM_ID,
   TEST_SPA_ITEM_ID,
+  TEST_STATE_SUBMITTER_EMAIL,
   VALID_ITEM_TEMPORARY_EXTENSION_ID,
 } from "mocks";
+import { SEATOOL_STATUS } from "shared-types";
 import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
 
 import * as api from "@/api";
@@ -25,6 +29,8 @@ vi.mock("@/hooks/useFeatureFlag", () => ({
 }));
 
 const upload = uploadFiles<(typeof formSchemas)["temporary-extension"]>();
+const temporaryExtensionTypeMismatchMessage =
+  "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.";
 
 describe("Temporary Extension", () => {
   afterEach(() => {
@@ -89,6 +95,36 @@ describe("Temporary Extension", () => {
     );
 
     expect(saveDraftSpy).not.toHaveBeenCalled();
+  });
+
+  test("save draft identifies a missing temporary extension request number", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+    const bannerSpy = vi.spyOn(components, "banner").mockImplementation(() => undefined);
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      EXISTING_ITEM_APPROVED_NEW_ID,
+    );
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    await waitFor(() =>
+      expect(bannerSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          header: "Unable to save package",
+          body: "Please enter the Temporary Extension Request Number before saving.",
+          variant: "destructive",
+        }),
+      ),
+    );
+
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+    expect(screen.getByTestId("requestNumber-label")).toHaveClass("text-destructive");
+    expect(screen.getByText("Required")).toBeInTheDocument();
   });
 
   test("saves a draft when the approved waiver ID exists in SEA Tool without the local waiver format", async () => {
@@ -160,6 +196,223 @@ describe("Temporary Extension", () => {
     expect(saveDraftSpy).not.toHaveBeenCalled();
 
     saveDraftSpy.mockRestore();
+  });
+
+  test("shows a type mismatch validation error before saving a temporary extension draft", async () => {
+    const user = userEvent.setup();
+    const saveDraftSpy = vi.spyOn(api, "saveDraft");
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE04",
+    );
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+
+    saveDraftSpy.mockRestore();
+  });
+
+  test("shows a type mismatch validation error while editing a temporary extension", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE04",
+    );
+    await upload("waiverExtensionRequest");
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
+  test("does not show a type mismatch validation error while the approved waiver number is still focused", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+
+    expect(screen.queryByText(temporaryExtensionTypeMismatchMessage)).not.toBeInTheDocument();
+  });
+
+  test("shows a type mismatch validation error when the approved waiver number loses focus", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      TEST_ITEM_ID,
+    );
+    await user.tab();
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+  });
+
+  test("shows a type mismatch validation error when loading a mismatched temporary extension draft", async () => {
+    const draftId = "MD-6578.R00.TE01";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockImplementation((id) => {
+      if (id !== draftId) {
+        return {
+          data: undefined,
+          isFetched: true,
+          isLoading: false,
+          error: null,
+        } as any;
+      }
+
+      return {
+        data: {
+          _id: draftId,
+          found: true,
+          _source: {
+            id: draftId,
+            seatoolStatus: SEATOOL_STATUS.DRAFT,
+            draft: {
+              savedAt: "2026-06-09T00:00:00.000Z",
+              createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              data: {
+                ids: {
+                  validAuthority: {
+                    authority: "1915(b)",
+                    waiverNumber: TEST_ITEM_ID,
+                  },
+                  id: draftId,
+                },
+              },
+            },
+          },
+        },
+        isFetched: true,
+        isLoading: false,
+        error: null,
+      } as any;
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      undefined,
+      "1915(b)",
+      `draftId=${draftId}`,
+    );
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+
+    useGetItemSpy.mockRestore();
+  });
+
+  test("blocks saving a loaded temporary extension draft with a mismatched approved waiver type", async () => {
+    const user = userEvent.setup();
+    const draftId = "MD-6578.R00.TE01";
+    const useGetItemSpy = vi.spyOn(api, "useGetItem").mockImplementation((id) => {
+      if (id !== draftId) {
+        return {
+          data: undefined,
+          isFetched: true,
+          isLoading: false,
+          error: null,
+        } as any;
+      }
+
+      return {
+        data: {
+          _id: draftId,
+          found: true,
+          _source: {
+            id: draftId,
+            seatoolStatus: SEATOOL_STATUS.DRAFT,
+            draft: {
+              savedAt: "2026-06-09T00:00:00.000Z",
+              createdByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              updatedByEmail: TEST_STATE_SUBMITTER_EMAIL,
+              data: {
+                ids: {
+                  validAuthority: {
+                    authority: "1915(b)",
+                    waiverNumber: EXISTING_ITEM_APPROVED_AMEND_ID,
+                  },
+                  id: draftId,
+                },
+              },
+            },
+          },
+        },
+        isFetched: true,
+        isLoading: false,
+        error: null,
+      } as any;
+    });
+    const saveDraftSpy = vi.spyOn(api, "saveDraft").mockResolvedValue({
+      message: "Draft saved",
+      id: draftId,
+    });
+
+    await renderFormWithPackageSectionAsync(
+      <TemporaryExtensionForm />,
+      undefined,
+      "1915(b)",
+      `draftId=${draftId}`,
+    );
+
+    await user.click(screen.getByTestId("save-draft-form"));
+
+    expect(await screen.findByText(temporaryExtensionTypeMismatchMessage)).toBeInTheDocument();
+    expect(saveDraftSpy).not.toHaveBeenCalled();
+
+    saveDraftSpy.mockRestore();
+    useGetItemSpy.mockRestore();
+  });
+
+  test("does not show a type mismatch validation error when the approved waiver number is invalid", async () => {
+    const user = userEvent.setup();
+
+    await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+
+    await user.click(screen.getByRole("combobox"));
+    await user.click(screen.getByRole("option", { name: "1915(b)" }));
+    await user.type(
+      screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+      NOT_FOUND_ITEM_ID,
+    );
+    await user.type(
+      screen.getByLabelText(/Temporary Extension Request Number/),
+      "MD-6578.R00.TE04",
+    );
+
+    expect(
+      await screen.findByText(
+        "According to our records, this Approved Initial or Renewal Waiver Number does not yet exist. Please check the Approved Initial or Renewal Waiver Number and try entering it again.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText(temporaryExtensionTypeMismatchMessage)).not.toBeInTheDocument();
   });
 
   test("shows state access validation for the approved waiver number before existence validation", async () => {

@@ -80,11 +80,13 @@ type DraftOptions = {
   enabled: boolean;
   event: string;
   idPath?: string;
+  idLabel?: string;
   authorityPath?: string;
   requiredSaveFields?: Array<{
     path: string;
     message: string;
   }>;
+  validationPaths?: string[];
   relatedIdValidations?: Array<{
     sourcePath: string;
     sourceLabel: string;
@@ -162,6 +164,14 @@ const setErrorByPath = (
 
   parent[fieldName] = error;
 };
+
+const getDraftSaveFieldLabel = (label: string) => label.replace(/^the\s+/i, "").trim();
+
+const getDraftSaveRequiredMessage = (label: string) =>
+  `Please enter the ${getDraftSaveFieldLabel(label)} before saving.`;
+
+const getDraftSaveInvalidMessage = (label: string) =>
+  `Please enter a valid ${getDraftSaveFieldLabel(label)} before saving.`;
 
 const DRAFT_SAVE_ROUTE_TRANSITION_KEY = "onemac:draft-save-route-transition";
 const DRAFT_SAVE_ROUTE_TRANSITION_TTL_MS = 30_000;
@@ -464,6 +474,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
     },
   });
   const idPath = draftOptions?.idPath ?? "id";
+  const idLabel = draftOptions?.idLabel ?? "ID";
   const draftIdConflictFieldMessage = useMemo(
     () => getDraftIdConflictFieldMessage(draftOptions?.event),
     [draftOptions?.event],
@@ -656,7 +667,11 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
     form.reset({ ...latestDefaultValuesRef.current, ...draftData });
     hasAppliedDraftRef.current = true;
-  }, [draftRecord, form]);
+
+    for (const validationPath of draftOptions?.validationPaths ?? []) {
+      void form.trigger(validationPath as FieldPath<z.TypeOf<Schema>>);
+    }
+  }, [draftOptions?.validationPaths, draftRecord, form]);
 
   const hasRealChanges = Object.keys(form.formState.dirtyFields).length > 0;
 
@@ -1034,7 +1049,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       const resolvedId = getResolvedDraftId(formValues as Record<string, unknown>);
 
       if (!resolvedId) {
-        failDraftSave("Please enter a valid ID before saving.");
+        await form.trigger(idPath as FieldPath<z.TypeOf<Schema>>);
+        if (!isMountedRef.current) return;
+        failDraftSave(getDraftSaveRequiredMessage(idLabel));
         return;
       }
 
@@ -1055,7 +1072,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           if (!isMountedRef.current) return;
 
           if (!isSourceValid) {
-            failDraftSave("Please enter a valid ID before saving.");
+            failDraftSave(getDraftSaveInvalidMessage(relatedIdValidation.sourceLabel));
             return;
           }
         }
@@ -1071,7 +1088,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           if (!isMountedRef.current) return;
 
           if (!isTargetValid) {
-            failDraftSave("Please enter a valid ID before saving.");
+            failDraftSave(getDraftSaveInvalidMessage(relatedIdValidation.targetLabel));
             return;
           }
         }
@@ -1093,7 +1110,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
             type: "manual",
             message: statePrefixMismatchMessage,
           });
-          failDraftSave("Please enter a valid ID before saving.");
+          failDraftSave("Please resolve the validation errors before saving.");
           return;
         }
       }
@@ -1102,7 +1119,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
       if (!isMountedRef.current) return;
 
       if (!isIdValid) {
-        failDraftSave("Please enter a valid ID before saving.");
+        failDraftSave(getDraftSaveInvalidMessage(idLabel));
         return;
       }
 
@@ -1127,6 +1144,16 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         if (!isMountedRef.current) return;
         failDraftSave(requiredSaveField.message);
         return;
+      }
+
+      for (const validationPath of draftOptions.validationPaths ?? []) {
+        const isPathValid = await form.trigger(validationPath as FieldPath<z.TypeOf<Schema>>);
+        if (!isMountedRef.current) return;
+
+        if (!isPathValid) {
+          failDraftSave("Please resolve the validation errors before saving.");
+          return;
+        }
       }
 
       const normalizedId = resolvedId.toUpperCase();
@@ -1224,7 +1251,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
           return DRAFT_SAVE_AUTHORIZATION_MESSAGE;
         }
 
-        return error instanceof Error ? error.message : "Unable to save. Try again.";
+        return message || "Unable to save. Try again.";
       })();
       const isDraftConflictError = errorMessage === DRAFT_ID_CONFLICT_MESSAGE;
 
