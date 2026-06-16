@@ -27,8 +27,11 @@
     "test:ui": "vitest --ui"
   },
   "devDependencies": {
-    "eslint": "^8.38.0",
+    "eslint": "^9.10.0",
     "eslint-config-custom-server": "*"
+  },
+  "peerDependencies": {
+    "eslint": "^9.10.0"
   },
   "dependencies": {
     "base-64": "^1.0.0",

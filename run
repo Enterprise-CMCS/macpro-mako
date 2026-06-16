@@ -33,10 +33,10 @@ if ! which bun > /dev/null ; then
 fi
 
 install_all_dependencies() {
-	bun install
+	bun install --omit=peer
 	(
 		cd lib/attachment-archive
-		bun install
+		bun install --omit=peer
 	)
 }
 

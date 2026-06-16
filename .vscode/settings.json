@@ -16,5 +16,6 @@
     "**/Thumbs.db": true,
     ".mule": true
   },
-  "snyk.advanced.autoSelectOrganization": true
+  "snyk.advanced.autoSelectOrganization": true,
+  "snyk.scanning.excludePaths": "node_modules/**"
 }

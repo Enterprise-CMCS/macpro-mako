@@ -18,8 +18,8 @@ export const ATTACHMENT_BUCKET_NAME = "uploads-test-attachment-bucket";
 export const ATTACHMENT_BUCKET_REGION = REGION;
 export const KAFKA_BROKERS = "kafka1:9092,kafka2:9092";
 
-export const ACCESS_KEY_ID = "ASIAZHXA3XOU7XZ53M36"; // pragma: allowlist secret
-export const SECRET_KEY = "UWKCFxhrgbPnixgLnL1JKwFEwiK9ZKvTAtpk8cGa"; // pragma: allowlist secret
+export const ACCESS_KEY_ID = `${PROJECT}-mock-access-key-id`;
+export const SECRET_KEY = `${PROJECT}-mock-secret-access-key`;
 
 export const ALGORITHM = "RS256"; // pragma: allowlist secret
 const KTY = "RSA"; // pragma: allowlist secret

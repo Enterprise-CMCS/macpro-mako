@@ -53,10 +53,15 @@
               console.warn("No GA_ID found in env.json");
               return;
             }
+            if (!/^[A-Z]{1,3}-[A-Z0-9-]{4,20}$/.test(GA_ID)) {
+              console.warn("Invalid GA_ID format in env.json");
+              return;
+            }
+            const SAFE_GA_ID = encodeURIComponent(GA_ID);
 
             // Inject the gtag.js script dynamically
             const script = document.createElement("script");
-            script.src = `https://www.googletagmanager.com/gtag/js?id=${GA_ID}`;
+            script.src = `https://www.googletagmanager.com/gtag/js?id=${SAFE_GA_ID}`;
             script.async = true;
             document.head.appendChild(script);
 
