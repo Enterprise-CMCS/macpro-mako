@@ -48,8 +48,13 @@ export function ConfirmationDialog({
           {description && <DialogDescription className="sr-only">{description}</DialogDescription>}
         </DialogHeader>
         {body && (
-          <div className="grid min-w-0 gap-4 break-words py-4" data-testid="dialog-body">
-            {body}
+          <div className="grid min-w-0 max-w-full gap-4 break-words py-4" data-testid="dialog-body">
+            <div
+              className="min-w-0 max-w-full break-words"
+              style={{ overflowWrap: "anywhere", wordBreak: "break-word" }}
+            >
+              {body}
+            </div>
           </div>
         )}
         <DialogFooter
