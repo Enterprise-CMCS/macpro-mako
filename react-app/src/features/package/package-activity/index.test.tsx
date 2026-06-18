@@ -448,6 +448,42 @@ describe("Package Activity", () => {
     expect(screen.getByText("Contract Amendment"));
   });
 
+  it("renders a legacy package activity when attachments are null", async () => {
+    const changelogWithNullAttachments = [
+      {
+        _id: "MA-24-0013-legacy-1728481070295",
+        _index: "productionchangelog",
+        found: true,
+        _source: {
+          id: "MA-24-0013-legacy-1728481070295",
+          packageId: "MA-24-0013",
+          timestamp: 1728481070295,
+          event: "legacy-withdraw-rai-request",
+          attachments: null,
+          additionalInformation:
+            "Massachusetts is withdrawing the 24-0013 RAI Response submitted on 8/12/24 in order to allow for more time to discuss with CMS.",
+          submitterEmail: "kaela.konefal@state.ma.us",
+          submitterName: "Kaela Konefal",
+          origin: "OneMACLegacy",
+        },
+      },
+    ] as unknown as opensearch.changelog.ItemResult[];
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id="MA-24-0013" changelog={changelogWithNullAttachments} />,
+      "MA-24-0013",
+    );
+
+    expect(screen.getByText("Package Activity (1)")).toBeInTheDocument();
+    expect(screen.getByText("No information submitted")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Massachusetts is withdrawing the 24-0013 RAI Response submitted on 8/12/24 in order to allow for more time to discuss with CMS.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
+  });
+
   it("requests the all-attachments archive and opens the returned url", async () => {
     const onArchive = vi.fn(() => Promise.resolve("http://example.com/all.zip"));
     const openSpy = vi.spyOn(window, "open").mockImplementation(vi.fn());
