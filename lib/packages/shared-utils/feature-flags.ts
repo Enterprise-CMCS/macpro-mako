@@ -103,6 +103,13 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   * Toggle between old and updated CS18 FAQ documents
+   */
+  CHIP_CS18_FAQ_DOCUMENTS: {
+    flag: "chip-cs18-faq-documents",
+    defaultValue: false,
+  },
+  /*
   /*
    *  Toggle visibility between the enhanced experience and mmdl banner
    */
