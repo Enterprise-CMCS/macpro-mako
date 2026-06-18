@@ -28,7 +28,7 @@ type PackageActivityRecord = {
   label: string;
   submitterName?: string;
   timestamp?: string | number;
-  attachments: opensearch.changelog.Document["attachments"];
+  attachments: Attachments;
   additionalInformation?: string | null;
   detailMessage?: string;
   isAdminChange?: boolean;
@@ -97,7 +97,7 @@ const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
 type AttachmentDetailsProps = {
   id: string;
   packageId: string;
-  attachments: opensearch.changelog.Document["attachments"];
+  attachments: Attachments;
   onClick: (attachment: Attachments[number]) => Promise<string | undefined>;
 };
 
@@ -141,7 +141,7 @@ type SubmissionProps = {
 };
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
-  const { attachments = [], id, packageId, additionalInformation, detailMessage } = packageActivity;
+  const { attachments, id, packageId, additionalInformation, detailMessage } = packageActivity;
   const {
     archiveErrorMessage,
     archiveWarningMessage,
@@ -327,7 +327,7 @@ const mapChangelogItemToPackageActivity = ({
     label,
     submitterName: packageActivity.submitterName,
     timestamp: packageActivity.timestamp,
-    attachments: packageActivity.attachments,
+    attachments: packageActivity.attachments ?? [],
     additionalInformation: packageActivity.additionalInformation,
     isAdminChange: packageActivity.isAdminChange,
   };
