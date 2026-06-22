@@ -2,13 +2,27 @@ import { UserStatusType } from "@aws-sdk/client-cognito-identity-provider";
 
 import { UserRole } from "./events/legacy-user";
 
-export { CognitoUser } from "amazon-cognito-identity-js";
-export type { UserData } from "amazon-cognito-identity-js";
 export type {
   APIGatewayEvent,
   APIGatewayEventIdentity,
   APIGatewayEventRequestContext,
 } from "aws-lambda";
+
+export type CognitoUserAttributeData = {
+  Name: string;
+  Value: string;
+};
+
+export type UserData = {
+  MFAOptions: {
+    DeliveryMedium: "SMS" | "EMAIL";
+    AttributeName: string;
+  }[];
+  PreferredMfaSetting: string;
+  UserAttributes: CognitoUserAttributeData[];
+  UserMFASettingList: string[];
+  Username: string;
+};
 
 export enum UserRoles {
   DEFAULT_CMS_USER = "defaultcmsuser",

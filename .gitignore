@@ -26,7 +26,6 @@ coverage
 .vitest
 
 .idea
-.vscode
 .history
 
 # local test and docs files
@@ -39,3 +38,5 @@ graphify-out/manifest.json
 graphify-out/cost.json
 .cursor/*
 /graphify-out/.graphify_detect.json
+.codex/
+.agents.md

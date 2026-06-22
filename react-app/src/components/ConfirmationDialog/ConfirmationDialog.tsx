@@ -40,6 +40,8 @@ export function ConfirmationDialog({
   cancelButtonVisible = true,
   cancelVariant = "outline",
 }: ConfirmationModalProps) {
+  const isPlainTextBody = typeof body === "string" || typeof body === "number";
+
   return (
     <Dialog open={open} onOpenChange={onCancel}>
       <DialogContent className="sm:max-w-[425px]" data-testid="dialog-content">
@@ -48,8 +50,14 @@ export function ConfirmationDialog({
           {description && <DialogDescription className="sr-only">{description}</DialogDescription>}
         </DialogHeader>
         {body && (
-          <div className="grid gap-4 py-4" data-testid="dialog-body">
-            {body}
+          <div className="grid min-w-0 max-w-full gap-4 break-words py-4" data-testid="dialog-body">
+            {isPlainTextBody ? (
+              <div className="min-w-0 max-w-full [overflow-wrap:anywhere] [word-break:break-word]">
+                {body}
+              </div>
+            ) : (
+              body
+            )}
           </div>
         )}
         <DialogFooter

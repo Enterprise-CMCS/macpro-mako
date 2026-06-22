@@ -11,24 +11,26 @@ vi.mock("./boldSearchResults", () => ({
 }));
 vi.mock("fuse.js", () => {
   return {
-    default: vi.fn().mockImplementation(() => ({
-      search: vi.fn((s) => {
-        if (s === "browser")
-          return [
-            {
-              item: {
-                question: "Support Browsers",
-                answer: "Chrome, Firefox, and Edge.",
-                anchorText: "supported-browsers",
+    default: vi.fn(function MockFuse() {
+      return {
+        search: vi.fn((s) => {
+          if (s === "browser")
+            return [
+              {
+                item: {
+                  question: "Support Browsers",
+                  answer: "Chrome, Firefox, and Edge.",
+                  anchorText: "supported-browsers",
+                },
+                matches: [],
+                refIndex: 7,
               },
-              matches: [],
-              refIndex: 7,
-            },
-          ];
+            ];
 
-        return [];
-      }),
-    })),
+          return [];
+        }),
+      };
+    }),
   };
 });
 

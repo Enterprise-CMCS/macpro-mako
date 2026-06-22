@@ -20,21 +20,23 @@ jobs:
       fail-fast: false
     environment:
       name: ${{ matrix.environment }}
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
     steps:
       - name: Check out repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           token: ${{secrets.GITHUB_TOKEN}}
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v2
+        uses: aws-actions/configure-aws-credentials@v6
         with:
           aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
 
       - name: Sync Security Hub and Jira
         id: sync_step
-        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.2
+        uses: Enterprise-CMCS/mac-fc-security-hub-visibility@v2.2.2
         with:
           jira-token: ${{ secrets.NEW_JIRA_TOKEN }}
           jira-username: macpro_jira_service_account

@@ -1,14 +1,12 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": "always"
-  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "tailwindCSS.experimental.classRegex": [
-    [
-      "cva\\(([^)]*)\\)",
-      "[\"'`]([^\"'`]*).*?[\"'`]"
-    ]
-  ],
+  "editor.formatOnSaveMode": "modificationsIfAvailable",
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "never"
+  },
+  "prettier.requireConfig": true,
+  "tailwindCSS.experimental.classRegex": [["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]],
   "typescript.tsdk": "node_modules/typescript/lib",
   "files.exclude": {
     "**/.git": true,
@@ -17,5 +15,6 @@
     "**/.DS_Store": true,
     "**/Thumbs.db": true,
     ".mule": true
-  }
+  },
+  "snyk.advanced.autoSelectOrganization": true
 }

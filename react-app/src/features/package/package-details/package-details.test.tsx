@@ -141,6 +141,36 @@ describe("package details", () => {
     expect(screen.getByText("Original Draft Creator")).toBeInTheDocument();
   });
 
+  it("renders CMS Subject and Description as full-width formatted text", async () => {
+    setMockUsername(TEST_REVIEWER_USERNAME);
+    sendGAEventSpy.mockClear();
+    window.gtag = vi.fn();
+
+    const submission = {
+      ...TEST_1915B_ITEM._source,
+      subject: "Subject line one\r\nSubject line two",
+      description: "Description paragraph one\r\nDescription paragraph two",
+    } as opensearch.main.Document;
+
+    await setup(submission);
+
+    const subjectField = screen.getByText("Subject").closest("dl");
+    const descriptionField = screen.getByText("Description").closest("dl");
+
+    expect(subjectField).toHaveClass("sm:col-span-2");
+    expect(descriptionField).toHaveClass("sm:col-span-2");
+
+    const subjectValue = subjectField?.querySelector("dd p");
+    const descriptionValue = descriptionField?.querySelector("dd p");
+
+    expect(subjectValue).toHaveClass("whitespace-pre-line", "break-words");
+    expect(descriptionValue).toHaveClass("whitespace-pre-line", "break-words");
+    expect(subjectValue?.textContent).toMatch(/Subject line one\r?\nSubject line two/);
+    expect(descriptionValue?.textContent).toMatch(
+      /Description paragraph one\r?\nDescription paragraph two/,
+    );
+  });
+
   it("shows Proposed Effective Date from draft data for draft packages", async () => {
     setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
 

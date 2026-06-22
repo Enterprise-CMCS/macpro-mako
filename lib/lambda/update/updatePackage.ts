@@ -157,13 +157,15 @@ const sendUpdateValuesMessage = async ({
   if (!topicName) {
     throw new Error("Topic name is not defined");
   }
-  const allowedNewFields = new Set(["chipSubmissionType"]);
+  const allowedNewFields = new Set(["chipSubmissionType", "event", "mockEvent"]);
   const allowedChipSubmissionTypes = new Set([
     "MAGI Eligibility and Methods",
     "Non-Financial Eligibility",
     "XXI Medicaid Expansion",
     "Eligibility Process",
   ]);
+  const isKnownEvent = (eventName: unknown): eventName is keyof typeof events =>
+    typeof eventName === "string" && eventName in events;
   const invalidFields = Object.keys(updatedFields).filter(
     (field) => !(field in currentPackage._source) && !allowedNewFields.has(field),
   );
@@ -171,6 +173,20 @@ const sendUpdateValuesMessage = async ({
     return response({
       statusCode: 400,
       body: { message: `Cannot update invalid field(s): ${invalidFields.join(", ")}` },
+    });
+  }
+
+  const invalidEventFields = ["event", "mockEvent"].filter((field) => {
+    if (!(field in updatedFields)) {
+      return false;
+    }
+
+    return !isKnownEvent((updatedFields as Record<string, unknown>)[field]);
+  });
+  if (invalidEventFields.length > 0) {
+    return response({
+      statusCode: 400,
+      body: { message: `Invalid package event field(s): ${invalidEventFields.join(", ")}` },
     });
   }
 

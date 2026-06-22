@@ -1,4 +1,5 @@
 import { screen } from "@testing-library/react";
+import { type MutableRefObject } from "react";
 import { useBlocker } from "react-router";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -34,10 +35,17 @@ describe("useNavigationPrompt", () => {
     vi.clearAllMocks();
   });
 
-  function TestComponent({ shouldBlock }: { shouldBlock: boolean }) {
+  function TestComponent({
+    shouldBlock,
+    shouldSkipBlockingRef,
+  }: {
+    shouldBlock: boolean;
+    shouldSkipBlockingRef?: MutableRefObject<boolean>;
+  }) {
     useNavigationPrompt({
       shouldBlock,
       prompt: promptProps,
+      shouldSkipBlockingRef,
     });
     return null;
   }
@@ -50,6 +58,36 @@ describe("useNavigationPrompt", () => {
     ]);
     screen.debug();
 
+    expect(userPrompt).not.toHaveBeenCalled();
+  });
+
+  it("skips blocking once when requested before navigation", () => {
+    const shouldSkipBlockingRef = { current: true };
+    (useBlocker as any).mockImplementation((shouldBlockNavigation) => {
+      expect(
+        shouldBlockNavigation({
+          currentLocation: { pathname: "/form" },
+          nextLocation: { pathname: "/form", search: "?draftId=MD-00-0001" },
+          historyAction: "REPLACE",
+        }),
+      ).toBe(false);
+
+      return { state: "unblocked" };
+    });
+
+    renderWithQueryClientAndMemoryRouter(
+      <TestComponent shouldBlock={true} shouldSkipBlockingRef={shouldSkipBlockingRef} />,
+      [
+        {
+          path: "/",
+          element: (
+            <TestComponent shouldBlock={true} shouldSkipBlockingRef={shouldSkipBlockingRef} />
+          ),
+        },
+      ],
+    );
+
+    expect(shouldSkipBlockingRef.current).toBe(false);
     expect(userPrompt).not.toHaveBeenCalled();
   });
 

@@ -1,4 +1,4 @@
-import { CognitoUserAttribute } from "amazon-cognito-identity-js";
+import type { CognitoUserAttributeData } from "shared-types";
 import { isCmsUser } from "shared-utils";
 
 import type { TestUserDataWithRole } from "../../index";
@@ -14,17 +14,17 @@ export const mockCurrentAuthenticatedUser = (): TestUserDataWithRole | any => {
 };
 
 // using any here because the function that this is mocking uses any
-export const mockUserAttributes = async (user: any): Promise<CognitoUserAttribute[]> => {
+export const mockUserAttributes = async (user: any): Promise<CognitoUserAttributeData[]> => {
   if (user && (user as TestUserDataWithRole).UserAttributes !== undefined) {
-    return (user as TestUserDataWithRole).UserAttributes as CognitoUserAttribute[];
+    return (user as TestUserDataWithRole).UserAttributes as CognitoUserAttributeData[];
   }
 
   const username = getMockUsername();
   if (username) {
     const defaultUser = findUserByUsername(username);
-    return defaultUser?.UserAttributes as CognitoUserAttribute[];
+    return defaultUser?.UserAttributes as CognitoUserAttributeData[];
   }
-  return {} as CognitoUserAttribute[];
+  return [] as CognitoUserAttributeData[];
 };
 
 export const mockUseGetUser = () => {

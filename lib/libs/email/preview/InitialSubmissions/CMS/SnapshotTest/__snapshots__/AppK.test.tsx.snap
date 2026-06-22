@@ -439,7 +439,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Pre
                       cellpadding="0"
                       cellspacing="0"
                       role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
+                      style="margin-bottom: 2px; margin-top: 2px; table-layout: fixed; width: 100%;"
                       width="100%"
                     >
                       <tbody
@@ -451,28 +451,22 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Pre
                           <td
                             align="left"
                             data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; padding-right: 12px; vertical-align: top; width: 35%;"
                           >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px;"
-                              >
-                                1915(c) Appendix K Amendment Waiver Template:
-                              </p>
-                               
-                            </span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
+                            >
+                              1915(c) Appendix K Amendment Waiver Template:
+                            </p>
                           </td>
                           <td
                             data-id="__react-email-column"
-                            style="vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; vertical-align: top; width: 65%;"
                           >
                             <p
-                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px;"
+                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
                             >
-                              <span>
-                                appendix-k-amendment.docx
-                              </span>
+                              appendix-k-amendment.docx
                             </p>
                           </td>
                         </tr>
@@ -484,7 +478,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Pre
                       cellpadding="0"
                       cellspacing="0"
                       role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
+                      style="margin-bottom: 2px; margin-top: 2px; table-layout: fixed; width: 100%;"
                       width="100%"
                     >
                       <tbody
@@ -496,28 +490,22 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a AppkCMSEmail Pre
                           <td
                             align="left"
                             data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; padding-right: 12px; vertical-align: top; width: 35%;"
                           >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px;"
-                              >
-                                Other:
-                              </p>
-                               
-                            </span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
+                            >
+                              Other:
+                            </p>
                           </td>
                           <td
                             data-id="__react-email-column"
-                            style="vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; vertical-align: top; width: 65%;"
                           >
                             <p
-                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px;"
+                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
                             >
-                              <span>
-                                misc-documents.pdf
-                              </span>
+                              misc-documents.pdf
                             </p>
                           </td>
                         </tr>

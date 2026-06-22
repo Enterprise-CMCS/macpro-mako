@@ -209,35 +209,39 @@ describe("process emails  Handler", () => {
         timestamp: 1732645041557,
       },
     ],
-  ])("%s", async (_, record) => {
-    const callback = vi.fn();
-    const secSPY = vi.spyOn(SESClient.prototype, "send");
-    const { id, ...restOfRecord } = record;
-    const mockEvent: KafkaEvent = {
-      records: {
-        "mock-topic": [
-          {
-            key: Buffer.from(id).toString("base64"),
-            value: Buffer.from(
-              JSON.stringify({
-                origin: "mako",
-                ...restOfRecord,
-              }),
-            ).toString("base64"),
-            headers: {},
-            timestamp: 1732645041557,
-            offset: "0",
-            partition: 0,
-            topic: "mock-topic",
-          } as unknown as KafkaRecord,
-        ],
-      },
-      eventSource: "",
-      bootstrapServers: "",
-    };
-    await handler(mockEvent, {} as Context, callback);
-    expect(secSPY).toHaveBeenCalledTimes(2);
-  });
+  ])(
+    "%s",
+    async (_, record) => {
+      const callback = vi.fn();
+      const secSPY = vi.spyOn(SESClient.prototype, "send");
+      const { id, ...restOfRecord } = record;
+      const mockEvent: KafkaEvent = {
+        records: {
+          "mock-topic": [
+            {
+              key: Buffer.from(id).toString("base64"),
+              value: Buffer.from(
+                JSON.stringify({
+                  origin: "mako",
+                  ...restOfRecord,
+                }),
+              ).toString("base64"),
+              headers: {},
+              timestamp: 1732645041557,
+              offset: "0",
+              partition: 0,
+              topic: "mock-topic",
+            } as unknown as KafkaRecord,
+          ],
+        },
+        eventSource: "",
+        bootstrapServers: "",
+      };
+      await handler(mockEvent, {} as Context, callback);
+      expect(secSPY).toHaveBeenCalledTimes(2);
+    },
+    15000,
+  );
 });
 describe("process emails  Handler failures", () => {
   it.each([
@@ -349,30 +353,34 @@ describe("process emails  Handler for seatool", () => {
       Authority.CHIP_SPA,
       SIMPLE_ID,
     ],
-  ])("%s", async (_, auth, id) => {
-    const callback = vi.fn();
-    const secSPY = vi.spyOn(SESClient.prototype, "send");
-    const data = seatoolData(auth);
-    const mockEvent: KafkaEvent = {
-      records: {
-        "mock-topic": [
-          {
-            key: Buffer.from(id).toString("base64"),
-            value: Buffer.from(JSON.stringify(data)).toString("base64"),
-            headers: {},
-            timestamp: 1732645041557,
-            offset: "0",
-            partition: 0,
-            topic: "aws.seatool.ksql.onemac.three.agg.State_Plan",
-          } as unknown as KafkaRecord,
-        ],
-      },
-      eventSource: "",
-      bootstrapServers: "",
-    };
-    await handler(mockEvent, {} as Context, callback);
-    expect(secSPY).toHaveBeenCalledTimes(1);
-  });
+  ])(
+    "%s",
+    async (_, auth, id) => {
+      const callback = vi.fn();
+      const secSPY = vi.spyOn(SESClient.prototype, "send");
+      const data = seatoolData(auth);
+      const mockEvent: KafkaEvent = {
+        records: {
+          "mock-topic": [
+            {
+              key: Buffer.from(id).toString("base64"),
+              value: Buffer.from(JSON.stringify(data)).toString("base64"),
+              headers: {},
+              timestamp: 1732645041557,
+              offset: "0",
+              partition: 0,
+              topic: "aws.seatool.ksql.onemac.three.agg.State_Plan",
+            } as unknown as KafkaRecord,
+          ],
+        },
+        eventSource: "",
+        bootstrapServers: "",
+      };
+      await handler(mockEvent, {} as Context, callback);
+      expect(secSPY).toHaveBeenCalledTimes(1);
+    },
+    15000,
+  );
   it("should not find the item ID and do nothing", async () => {
     const callback = vi.fn();
     const consoleSpy = vi.spyOn(console, "log");

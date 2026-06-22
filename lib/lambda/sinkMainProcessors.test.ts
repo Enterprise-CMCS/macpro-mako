@@ -534,6 +534,83 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     ]);
   });
 
+  it("handles valid kafka admin record to submit a NOSO package shell", async () => {
+    const submissionDate = Date.UTC(2026, 5, 4);
+    const proposedDate = Date.UTC(2026, 6, 29);
+
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [
+        createKafkaRecord({
+          topic: TOPIC,
+          key: "TUQtMjYtODQ0NS1Q",
+          value: convertObjToBase64({
+            id: "MD-26-8445-P",
+            authority: "CHIP SPA",
+            status: SEATOOL_STATUS.SUBMITTED,
+            submitterEmail: "james@example.com",
+            submitterName: "James D",
+            adminChangeType: "NOSO",
+            mockEvent: "new-chip-submission",
+            changeMade:
+              "MD-26-8445-P was manually added to OneMAC. Contact your CPOC to verify the initial submission documents.",
+            changeReason:
+              "This package was added to OneMAC per authorization from James D. MD-26-8445-P originally submitted through MMDL.",
+            submissionDate,
+            proposedDate,
+            stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+            cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+            packageId: "MD-26-8445-P",
+            origin: "SEATool",
+            isAdminChange: true,
+            event: "NOSO",
+            state: "MD",
+            makoChangedDate: TIMESTAMP,
+            changedDate: TIMESTAMP,
+            statusDate: TIMESTAMP,
+            timestamp: TIMESTAMP,
+          }),
+        }),
+      ],
+      TOPIC,
+    );
+
+    expect(bulkUpdateDataSpy).toBeCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      {
+        id: "MD-26-8445-P",
+        authority: "CHIP SPA",
+        status: SEATOOL_STATUS.SUBMITTED,
+        submitterEmail: "james@example.com",
+        submitterName: "James D",
+        adminChangeType: "NOSO",
+        mockEvent: "new-chip-submission",
+        changeMade:
+          "MD-26-8445-P was manually added to OneMAC. Contact your CPOC to verify the initial submission documents.",
+        changeReason:
+          "This package was added to OneMAC per authorization from James D. MD-26-8445-P originally submitted through MMDL.",
+        submissionDate: new Date(submissionDate).toISOString(),
+        proposedDate: new Date(proposedDate).toISOString(),
+        stateStatus: statusToDisplayToStateUser[SEATOOL_STATUS.SUBMITTED],
+        cmsStatus: statusToDisplayToCmsUser[SEATOOL_STATUS.SUBMITTED],
+        packageId: "MD-26-8445-P",
+        origin: "SEATool",
+        isAdminChange: true,
+        event: "NOSO",
+        state: "MD",
+        makoChangedDate: ISO_DATETIME,
+        changedDate: ISO_DATETIME,
+        statusDate: ISO_DATETIME,
+        timestamp: TIMESTAMP,
+        actionType: "Amend",
+        deleted: false,
+        description: null,
+        initialIntakeNeeded: true,
+        raiWithdrawEnabled: false,
+        seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        subject: null,
+      },
+    ]);
+  });
+
   it("skips invalid kafka admin records", async () => {
     await insertOneMacRecordsFromKafkaIntoMako(
       [

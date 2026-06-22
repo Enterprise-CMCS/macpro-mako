@@ -46,6 +46,7 @@ export type LabelAndValue = {
   label: string;
   value: ReactNode;
   canView?: boolean;
+  className?: string;
 };
 
 type GetLabelAndValueFromSubmission = (
@@ -75,6 +76,10 @@ const getDraftTitle = (submission: opensearch.main.Document) => {
 
   return typeof draftTitle === "string" && draftTitle.trim() ? draftTitle : undefined;
 };
+
+const fullWidthFormattedTextClassName = "sm:col-span-2";
+const formatMemoText = (value: string | null | undefined) =>
+  value ? <p className="whitespace-pre-line break-words">{value}</p> : BLANK_VALUE;
 
 export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
   submission,
@@ -144,8 +149,9 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Subject",
-      value: submission.subject || BLANK_VALUE,
+      value: formatMemoText(submission.subject),
       canView: isCmsUser(user) && submission.actionType !== "Extend",
+      className: fullWidthFormattedTextClassName,
     },
     {
       label: "Type",
@@ -240,8 +246,9 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
 export const getDescriptionDetails: GetLabelAndValueFromSubmission = (submission, { user }) => [
   {
     label: "Description",
-    value: submission.description || BLANK_VALUE,
+    value: formatMemoText(submission.description),
     canView: isCmsUser(user) && submission.actionType !== "Extend",
+    className: fullWidthFormattedTextClassName,
   },
 ];
 

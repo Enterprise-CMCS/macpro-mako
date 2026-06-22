@@ -1,7 +1,10 @@
 import { isAHoliday } from "@18f/us-federal-holidays";
 import { TZDate } from "@date-fns/tz";
 import { UTCDate } from "@date-fns/utc";
-import { addDays, format, isWeekend, startOfDay } from "date-fns";
+import { format, isWeekend, startOfDay } from "date-fns";
+
+const isEasternHoliday = (date: TZDate): boolean =>
+  isAHoliday(new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12)));
 
 /**
  * Returns the epoch timestamp for midnight UTC time for the date provided.
@@ -38,13 +41,11 @@ export const formatSeatoolDate = (date?: Date | string): string => {
  * @returns the timestamp of midnight UTC of the current business day relative to the date or today, if none provided
  */
 export const getBusinessDayTimestamp = (date: Date = new Date()): number => {
-  // Get the date in Eastern time
   const nyDateTime = new TZDate(date.toISOString(), "America/New_York");
 
-  // Check if the time is after 5pm Eastern time or if the day is not a business day.
-  // If any of those are true, check again for the next day.
-  if (nyDateTime.getHours() >= 17 || isAHoliday(nyDateTime) || isWeekend(nyDateTime)) {
-    return getBusinessDayTimestamp(startOfDay(addDays(nyDateTime, 1)));
+  while (nyDateTime.getHours() >= 17 || isEasternHoliday(nyDateTime) || isWeekend(nyDateTime)) {
+    nyDateTime.setDate(nyDateTime.getDate() + 1);
+    nyDateTime.setHours(0, 0, 0, 0);
   }
 
   return startOfDay(

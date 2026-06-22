@@ -29,9 +29,11 @@ vi.mock("@aws-sdk/client-s3", () => {
   }
 
   return {
-    S3Client: vi.fn().mockImplementation(() => ({
-      send: mockSend,
-    })),
+    S3Client: vi.fn(function MockS3Client() {
+      return {
+        send: mockSend,
+      };
+    }),
     GetObjectCommand: MockS3Command,
     GetObjectTaggingCommand: MockS3Command,
     HeadObjectCommand: MockS3Command,
@@ -48,9 +50,11 @@ vi.mock("@aws-sdk/client-sts", () => {
   }
 
   return {
-    STSClient: vi.fn().mockImplementation(() => ({
-      send: mockStsSend,
-    })),
+    STSClient: vi.fn(function MockStsClient() {
+      return {
+        send: mockStsSend,
+      };
+    }),
     AssumeRoleCommand: MockAssumeRoleCommand,
   };
 });
@@ -71,18 +75,16 @@ import { handler } from "./getAttachmentUrl";
 
 describe("Lambda Handler", () => {
   beforeEach(() => {
-    vi.mocked(S3Client).mockImplementation(
-      () =>
-        ({
-          send: mockSend,
-        }) as any,
-    );
-    vi.mocked(STSClient).mockImplementation(
-      () =>
-        ({
-          send: mockStsSend,
-        }) as any,
-    );
+    vi.mocked(S3Client).mockImplementation(function MockS3Client() {
+      return {
+        send: mockSend,
+      } as any;
+    });
+    vi.mocked(STSClient).mockImplementation(function MockStsClient() {
+      return {
+        send: mockStsSend,
+      } as any;
+    });
     mockSend.mockResolvedValue({});
     mockStsSend.mockResolvedValue({});
     vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue(undefined as any);

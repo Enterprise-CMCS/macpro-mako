@@ -178,6 +178,102 @@ describe("saveDraft handler", () => {
     );
   });
 
+  it("saves a temporary-extension draft when the selected type matches the approved waiver type", async () => {
+    const tempExtensionId = "MD-1198.R06.TE00";
+    const waiverNumber = "MD-0005.R01.00";
+    vi.mocked(packageApi.getPackage).mockImplementation(async (id) => {
+      if (id === waiverNumber) {
+        return {
+          found: true,
+          _id: waiverNumber,
+          _source: {
+            id: waiverNumber,
+            authority: "1915(c)",
+          },
+        } as any;
+      }
+
+      return undefined as any;
+    });
+    const temporaryExtensionEvent = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: tempExtensionId,
+        event: "temporary-extension",
+        draftData: {
+          ids: {
+            id: tempExtensionId,
+            validAuthority: {
+              authority: "1915(c)",
+              waiverNumber,
+            },
+          },
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(temporaryExtensionEvent, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: tempExtensionId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "1915(c)",
+          }),
+        }),
+      }),
+    );
+  });
+
+  it("returns 400 when a temporary-extension draft type does not match the approved waiver type", async () => {
+    const tempExtensionId = "MD-1198.R06.TE00";
+    const waiverNumber = "MD-0005.R01.00";
+    vi.mocked(packageApi.getPackage).mockImplementation(async (id) => {
+      if (id === waiverNumber) {
+        return {
+          found: true,
+          _id: waiverNumber,
+          _source: {
+            id: waiverNumber,
+            authority: "1915(c)",
+          },
+        } as any;
+      }
+
+      return undefined as any;
+    });
+    const temporaryExtensionEvent = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: tempExtensionId,
+        event: "temporary-extension",
+        draftData: {
+          ids: {
+            id: tempExtensionId,
+            validAuthority: {
+              authority: "1915(b)",
+              waiverNumber,
+            },
+          },
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(temporaryExtensionEvent, {} as Context);
+
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toEqual(
+      JSON.stringify({
+        message:
+          "The selected Temporary Extension Type does not match the Approved Initial or Renewal Waiver's type.",
+      }),
+    );
+    expect(os.updateData).not.toHaveBeenCalled();
+  });
+
   it("returns 400 when temporary-extension draft authority is missing", async () => {
     const tempExtensionId = "MD-1198.R06.TE00";
     const temporaryExtensionEvent = {

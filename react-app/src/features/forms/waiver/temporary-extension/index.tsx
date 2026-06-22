@@ -11,6 +11,7 @@ import {
   FormLabel,
   FormMessage,
   Input,
+  LoadingSpinner,
   RequiredIndicator,
   Select,
   SelectContent,
@@ -31,9 +32,15 @@ const actionTypeMap = {
 
 export const TemporaryExtensionForm = () => {
   const { id: waiverId } = useParams<{ id: string }>();
-  const { data: submission } = useGetItem(waiverId, { enabled: waiverId !== undefined });
+  const { data: submission, isLoading: isSubmissionLoading } = useGetItem(waiverId, {
+    enabled: waiverId !== undefined,
+  });
 
   const [temporaryExtensionType, setTemporaryExtensionType] = useState<string>("");
+
+  if (waiverId && isSubmissionLoading) {
+    return <LoadingSpinner />;
+  }
 
   const actionType = submission?._source?.actionType;
   const actionTypeLabel =
@@ -54,134 +61,136 @@ export const TemporaryExtensionForm = () => {
         submission ? submission._source.authority : "1915(b) or 1915(c)"
       } Temporary Extension`}
       formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
-      fields={(form) => (
-        <>
-          {waiverId && submission ? (
-            <div>
-              <p>Temporary Extension Type</p>
-              <p className="text-xl">{submission._source.authority}</p>
-            </div>
-          ) : (
+      fields={(form) => {
+        const triggerTemporaryExtensionTypeValidation = () => {
+          void Promise.resolve().then(() => form.trigger("ids.validAuthority"));
+        };
+
+        return (
+          <>
+            {waiverId && submission ? (
+              <div>
+                <p>Temporary Extension Type</p>
+                <p className="text-xl">{submission._source.authority}</p>
+              </div>
+            ) : (
+              <FormField
+                name="ids.validAuthority.authority"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem className="max-w-xs">
+                    <FormLabel>
+                      <strong className="font-bold">Temporary Extension Type</strong>{" "}
+                      <RequiredIndicator />
+                    </FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                        setTemporaryExtensionType(value);
+                        triggerTemporaryExtensionTypeValidation();
+                      }}
+                      value={field.value ?? ""}
+                    >
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="-- select a temporary extension type --" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="1915(b)">1915(b)</SelectItem>
+                        <SelectItem value="1915(c)">1915(c)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+            {submission ? (
+              <div>
+                <p>Approved Initial or Renewal Waiver Number</p>
+                <p className="text-xl">{waiverId}</p>
+              </div>
+            ) : (
+              <FormField
+                name="ids.validAuthority.waiverNumber"
+                control={form.control}
+                render={({ field }) => {
+                  return (
+                    <FormItem className="max-w-md">
+                      <FormLabel data-testid="waiverNumber-label">
+                        <strong className="font-bold">
+                          Approved Initial or Renewal Waiver Number
+                        </strong>{" "}
+                        <RequiredIndicator />
+                      </FormLabel>
+                      <FormDescription>
+                        Enter the existing waiver number in the format it was approved, using a dash
+                        after the two character state abbreviation.
+                      </FormDescription>
+                      <FormControl>
+                        <Input
+                          className="max-w-sm"
+                          ref={field.ref}
+                          value={field.value}
+                          onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                          onBlur={() => {
+                            field.onBlur();
+                            triggerTemporaryExtensionTypeValidation();
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  );
+                }}
+              />
+            )}
             <FormField
-              name="ids.validAuthority.authority"
               control={form.control}
+              name="ids.id"
               render={({ field }) => (
-                <FormItem className="max-w-xs">
-                  <FormLabel>
-                    <strong className="font-bold">Temporary Extension Type</strong>{" "}
-                    <RequiredIndicator />
+                <FormItem>
+                  <FormLabel data-testid="requestNumber-label">
+                    <strong className="font-bold">
+                      Temporary Extension Request Number
+                      <RequiredIndicator />
+                    </strong>
+                    <Link
+                      className="text-blue-600 cursor-pointer hover:underline px-4"
+                      to={"/faq/waiver-extension-id-format"}
+                      target={FAQ_TAB}
+                      rel="noopener noreferrer"
+                    >
+                      What is my Temporary Extension Request Number?
+                    </Link>
                   </FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                      setTemporaryExtensionType(value);
-                    }}
-                    value={field.value ?? ""}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="-- select a temporary extension type --" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="1915(b)">1915(b)</SelectItem>
-                      <SelectItem value="1915(c)">1915(c)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <FormDescription className="max-w-md">
+                    Must use a waiver extension request number with the format SS-####.R##.TE## or
+                    SS-#####.R##.TE##
+                  </FormDescription>
+                  <FormControl>
+                    <Input
+                      className="max-w-sm"
+                      ref={field.ref}
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
+                    />
+                  </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}
             />
-          )}
-          {submission ? (
-            <div>
-              <p>Approved Initial or Renewal Waiver Number</p>
-              <p className="text-xl">{waiverId}</p>
-            </div>
-          ) : (
-            <FormField
-              name="ids.validAuthority.waiverNumber"
-              control={form.control}
-              render={({ field }) => {
-                return (
-                  <FormItem
-                    className="max-w-md"
-                    onChange={async () => {
-                      await form.trigger("ids.validAuthority.authority");
-                    }}
-                  >
-                    <FormLabel data-testid="waiverNumber-label">
-                      <strong className="font-bold">
-                        Approved Initial or Renewal Waiver Number
-                      </strong>{" "}
-                      <RequiredIndicator />
-                    </FormLabel>
-                    <FormDescription>
-                      Enter the existing waiver number in the format it was approved, using a dash
-                      after the two character state abbreviation.
-                    </FormDescription>
-                    <FormControl>
-                      <Input
-                        className="max-w-sm"
-                        ref={field.ref}
-                        value={field.value}
-                        onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-          )}
-          <FormField
-            control={form.control}
-            name="ids.id"
-            render={({ field }) => (
-              <FormItem
-                onChange={async () => {
-                  await form.trigger("ids.validAuthority.authority");
-                }}
-              >
-                <FormLabel data-testid="requestNumber-label">
-                  <strong className="font-bold">
-                    Temporary Extension Request Number
-                    <RequiredIndicator />
-                  </strong>
-                  <Link
-                    className="text-blue-600 cursor-pointer hover:underline px-4"
-                    to={"/faq/waiver-extension-id-format"}
-                    target={FAQ_TAB}
-                    rel="noopener noreferrer"
-                  >
-                    What is my Temporary Extension Request Number?
-                  </Link>
-                </FormLabel>
-                <FormDescription className="max-w-md">
-                  Must use a waiver extension request number with the format SS-####.R##.TE## or
-                  SS-#####.R##.TE##
-                </FormDescription>
-                <FormControl>
-                  <Input
-                    className="max-w-sm"
-                    ref={field.ref}
-                    value={field.value}
-                    onChange={(e) => field.onChange(e.currentTarget.value.toUpperCase())}
-                  />
-                </FormControl>
-
-                <FormMessage />
-              </FormItem>
+            {type && (
+              <div>
+                <p>Type</p>
+                <p className="text-xl">{type}</p>
+              </div>
             )}
-          />
-          {type && (
-            <div>
-              <p>Type</p>
-              <p className="text-xl">{type}</p>
-            </div>
-          )}
-        </>
-      )}
+          </>
+        );
+      }}
       defaultValues={{
         ids: {
           validAuthority: {
@@ -206,11 +215,21 @@ export const TemporaryExtensionForm = () => {
         enabled: true,
         event: "temporary-extension",
         idPath: "ids.id",
+        idLabel: "Temporary Extension Request Number",
         authorityPath: "ids.validAuthority.authority",
         requiredSaveFields: [
           {
             path: "ids.validAuthority.authority",
             message: "Please select a Temporary Extension Type before saving.",
+          },
+        ],
+        validationPaths: ["ids.validAuthority"],
+        relatedIdValidations: [
+          {
+            sourcePath: "ids.validAuthority.waiverNumber",
+            sourceLabel: "Approved Initial or Renewal Waiver Number",
+            targetPath: "ids.id",
+            targetLabel: "The Temporary Extension Request Number",
           },
         ],
       }}

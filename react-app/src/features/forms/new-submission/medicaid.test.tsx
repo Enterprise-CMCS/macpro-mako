@@ -16,7 +16,7 @@ let intersectionObserverCb:
   | undefined;
 vi.stubGlobal(
   "IntersectionObserver",
-  vi.fn((cb: IntersectionObserverCallback) => {
+  vi.fn(function MockIntersectionObserver(this: unknown, cb: IntersectionObserverCallback) {
     intersectionObserverCb = (entries) =>
       cb(entries as IntersectionObserverEntry[], {} as IntersectionObserver);
     return {

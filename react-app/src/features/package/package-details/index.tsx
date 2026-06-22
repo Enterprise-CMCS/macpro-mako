@@ -5,6 +5,7 @@ import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection, LoadingSpinner } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils";
+import { isChipEligibilityPackage } from "@/utils/chipEligibility";
 
 import {
   getApprovedAndEffectiveDetails,
@@ -20,9 +21,9 @@ type PackageDetailsGridProps = {
 
 const PackageDetailsGrid = ({ details }: PackageDetailsGridProps) => (
   <div className="two-cols gap-y-6 sm:gap-y-6">
-    {details.map(({ label, value, canView = true }) => {
+    {details.map(({ label, value, canView = true, className }) => {
       return canView ? (
-        <dl key={label}>
+        <dl key={label} className={className}>
           <dt className="font-bold">{label}</dt>
           <dd className="py-2">{value}</dd>
         </dl>
@@ -40,18 +41,7 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const didSetGATag = useRef<boolean>(false);
   const isCHIPDetailsEnabled = useFeatureFlag("CHIP_SPA_DETAILS");
   const title = useMemo(() => {
-    const isEligibilityChipSubmissionType = submission.event === "new-chip-details-submission";
-    const hasChipSubmissionType =
-      Array.isArray(submission.chipSubmissionType) && submission.chipSubmissionType.length > 0;
-
-    const hasChipEligibilityAttachment =
-      Array.isArray(submission.attachments?.chipEligibility?.files) &&
-      submission.attachments.chipEligibility.files.length > 0;
-
-    if (
-      isCHIPDetailsEnabled &&
-      (isEligibilityChipSubmissionType || hasChipSubmissionType || hasChipEligibilityAttachment)
-    ) {
+    if (isCHIPDetailsEnabled && isChipEligibilityPackage(submission)) {
       return "CHIP Eligibility SPA Package Details";
     }
 
