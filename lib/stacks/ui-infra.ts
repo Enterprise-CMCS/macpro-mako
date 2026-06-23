@@ -111,14 +111,41 @@ export class UiInfra extends cdk.NestedStack {
       comment: "OAI to prevent direct public access to the bucket",
     });
 
-    // HSTS Function
-    const hstsFunction = new cdk.aws_cloudfront.Function(this, "HstsFunction", {
-      comment: "This function adds headers to implement HSTS",
+    const backupFileBlockFunction = new cdk.aws_cloudfront.Function(
+      this,
+      "BackupFileBlockFunction",
+      {
+        comment: "This function blocks backup-file probes before SPA fallback",
+        code: cdk.aws_cloudfront.FunctionCode.fromInline(`
+        function handler(event) {
+          var request = event.request;
+          var uri = request.uri.toLowerCase();
+
+          if (uri.endsWith('.bak')) {
+            return {
+              statusCode: 404,
+              statusDescription: 'Not Found',
+              headers: {
+                'content-type': { value: 'text/plain; charset=utf-8' }
+              },
+              body: 'Backup file paths are not served'
+            };
+          }
+
+          return request;
+        }
+      `),
+      },
+    );
+
+    const securityHeadersFunction = new cdk.aws_cloudfront.Function(this, "HstsFunction", {
+      comment: "This function adds security headers",
       code: cdk.aws_cloudfront.FunctionCode.fromInline(`
         function handler(event) {
           var response = event.response;
           var headers = response.headers;
           headers['strict-transport-security'] = { value: 'max-age=63072000; includeSubdomains; preload'};
+          headers['x-content-type-options'] = { value: 'nosniff' };
           return response;
         }
       `),
@@ -154,7 +181,11 @@ export class UiInfra extends cdk.NestedStack {
                 viewerProtocolPolicy: cdk.aws_cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                 functionAssociations: [
                   {
-                    function: hstsFunction,
+                    function: backupFileBlockFunction,
+                    eventType: cdk.aws_cloudfront.FunctionEventType.VIEWER_REQUEST,
+                  },
+                  {
+                    function: securityHeadersFunction,
                     eventType: cdk.aws_cloudfront.FunctionEventType.VIEWER_RESPONSE,
                   },
                 ],
