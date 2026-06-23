@@ -27,11 +27,13 @@ jobs:
         env:
           REF_NAME: ${{ github.ref_name }}
         run: |
-          STAGE_NAME="$REF_NAME"
+          STAGE_NAME=$(printf '%s' "$REF_NAME" \
+            | tr '[:upper:]' '[:lower:]' \
+            | sed -E 's/[^a-z0-9-]+/-/g; s/^-+//; s/-+$//')
 
-          if [[ "$REF_NAME" == snyk-* && ${#REF_NAME} -gt 26 ]]; then
-              REF_HASH=$(printf '%s' "$REF_NAME" | sha1sum | cut -c1-8)
-              REF_PREFIX="${REF_NAME#snyk-}"
+          if [[ "$STAGE_NAME" == snyk-* && ${#STAGE_NAME} -gt 26 ]]; then
+              REF_HASH=$(printf '%s' "$STAGE_NAME" | sha1sum | cut -c1-8)
+              REF_PREFIX="${STAGE_NAME#snyk-}"
               STAGE_NAME="snyk-${REF_PREFIX:0:2}-${REF_HASH}"
           fi
 
