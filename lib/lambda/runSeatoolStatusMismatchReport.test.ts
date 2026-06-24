@@ -61,8 +61,8 @@ describe("runSeatoolStatusMismatchReport", () => {
     SEATOOL_STATUS_MISMATCH_KAFKA_CONSUME_TIMEOUT_MS:
       process.env.SEATOOL_STATUS_MISMATCH_KAFKA_CONSUME_TIMEOUT_MS,
     SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS: process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS,
-    SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY:
-      process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY,
+    SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD:
+      process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD,
     emailAddressLookupSecretName: process.env.emailAddressLookupSecretName,
     brokerString: process.env.brokerString,
     osDomain: process.env.osDomain,
@@ -81,7 +81,7 @@ describe("runSeatoolStatusMismatchReport", () => {
       "aws.seatool.ksql.onemac.three.agg.State_Plan";
     process.env.SEATOOL_STATUS_MISMATCH_KAFKA_CONSUME_TIMEOUT_MS = "1000";
     delete process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS;
-    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY = "seatoolStatusMismatchAlerts";
+    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD = "seatoolStatusMismatchAlerts";
     process.env.emailAddressLookupSecretName = "emailAddresses"; // pragma: allowlist secret
     process.env.brokerString = "broker1,broker2";
     process.env.osDomain = "https://test-opensearch.example.com";
@@ -152,8 +152,8 @@ describe("runSeatoolStatusMismatchReport", () => {
       originalEnv.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS,
     );
     restoreEnvValue(
-      "SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY",
-      originalEnv.SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY,
+      "SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD",
+      originalEnv.SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD,
     );
     restoreEnvValue("emailAddressLookupSecretName", originalEnv.emailAddressLookupSecretName);
     restoreEnvValue("brokerString", originalEnv.brokerString);

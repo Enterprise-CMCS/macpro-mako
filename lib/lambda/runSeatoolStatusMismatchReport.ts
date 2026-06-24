@@ -19,7 +19,7 @@ const DEFAULT_BATCH_SIZE = 500;
 const DEFAULT_INPUT_SOURCE = "KAFKA";
 const DEFAULT_KAFKA_CONSUME_TIMEOUT_MS = 10 * 60 * 1000;
 const DEFAULT_REPORT_PREFIX = "seatool-status-mismatch";
-const DEFAULT_RECIPIENT_SECRET_KEY = "seatoolStatusMismatchAlerts";
+const DEFAULT_RECIPIENT_CONFIG_FIELD = "seatoolStatusMismatchAlerts";
 const DEFAULT_SEATOOL_STATUS_TOPIC = "aws.seatool.ksql.onemac.three.agg.State_Plan";
 const RAW_SEATOOL_STATUS_DISPLAY_FALLBACKS: Record<string, string> = {
   "Pending-Finance": SEATOOL_STATUS.UNKNOWN,
@@ -111,7 +111,7 @@ type KafkaSourceConfig = {
 type ReportNotificationConfig = {
   emailAddressLookupSecretName: string;
   recipientEmailOverrides: ParsedEmailAddress[];
-  recipientSecretKey: string;
+  recipientConfigField: string;
 };
 
 type ParsedEmailAddress = {
@@ -235,14 +235,14 @@ function getNotificationConfig(): ReportNotificationConfig {
   const recipientEmailOverrides = parseEmailAddressList(
     parseAddressEntries(process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS),
   );
-  const recipientSecretKey = (
-    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY || DEFAULT_RECIPIENT_SECRET_KEY
+  const recipientConfigField = (
+    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD || DEFAULT_RECIPIENT_CONFIG_FIELD
   ).trim();
 
   return {
     emailAddressLookupSecretName,
     recipientEmailOverrides,
-    recipientSecretKey,
+    recipientConfigField,
   };
 }
 
@@ -1073,7 +1073,7 @@ async function getNotificationEmailAddresses(notificationConfig: ReportNotificat
   const recipientEmails =
     notificationConfig.recipientEmailOverrides.length > 0
       ? notificationConfig.recipientEmailOverrides
-      : parseEmailAddressList(parseAddressEntries(secret[notificationConfig.recipientSecretKey]));
+      : parseEmailAddressList(parseAddressEntries(secret[notificationConfig.recipientConfigField]));
 
   if (recipientEmails.length === 0) {
     return {

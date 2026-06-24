@@ -68,7 +68,7 @@ describe("SEATool status mismatch report scheduling", () => {
       SEATOOL_STATUS_MISMATCH_REPORT_BUCKET_NAME:
         "mako-production-attachment-archives-123456789012",
       SEATOOL_STATUS_MISMATCH_REPORT_PREFIX: "seatool-status-mismatch",
-      SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY: "seatoolStatusMismatchAlerts",
+      SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD: "seatoolStatusMismatchAlerts",
       SEATOOL_STATUS_MISMATCH_SEATOOL_TOPIC: "aws.seatool.ksql.onemac.three.agg.State_Plan",
       emailAddressLookupSecretName: "emailAddresses",
     });
