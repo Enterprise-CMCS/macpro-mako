@@ -99,6 +99,7 @@ describe("Package Activity", () => {
   });
 
   it("wraps long package activity headers and attachment filenames within the section", async () => {
+    const longDocumentType = "Document Demonstrating Good-Faith Tribal Engagement";
     const longFilename =
       "IG_Consolidated_STATES_MSP_Eligibility_Income_Resource_Methodologies_Final_20170714_v.1.0.pdf";
     const draftSubmission = {
@@ -111,14 +112,14 @@ describe("Package Activity", () => {
         data: {
           attachments: {
             chipEligibility: {
-              label: "CHIP Eligibility Template",
+              label: longDocumentType,
               files: [
                 {
                   filename: longFilename,
                   key: "long-filename-key",
                   bucket: ATTACHMENT_BUCKET_NAME,
                   uploadDate: 1777046723000,
-                  title: "CHIP Eligibility Template",
+                  title: longDocumentType,
                 },
               ],
             },
@@ -134,12 +135,20 @@ describe("Package Activity", () => {
     );
 
     expect(screen.getByRole("table")).toHaveClass("table-fixed");
-    expect(screen.getByText("CHIP Eligibility Template").closest("td")).toHaveClass("break-words");
+
+    const documentTypeCell = screen.getByText(longDocumentType).closest("td");
+    expect(documentTypeCell).toHaveClass("[overflow-wrap:anywhere]");
+    expect(documentTypeCell).toHaveClass("[word-break:break-word]");
 
     const attachmentButton = screen.getByRole("button", { name: longFilename });
     expect(attachmentButton).toHaveClass("max-w-full");
     expect(attachmentButton).toHaveClass("whitespace-normal");
-    expect(attachmentButton).toHaveClass("break-words");
+
+    const attachmentFilename = screen.getByText(longFilename);
+    expect(attachmentFilename).toHaveClass("min-w-0");
+    expect(attachmentFilename).toHaveClass("max-w-full");
+    expect(attachmentFilename).toHaveClass("[overflow-wrap:anywhere]");
+    expect(attachmentFilename).toHaveClass("[word-break:break-word]");
 
     const activityTrigger = screen.getByRole("button", {
       name: /Created By StateAdmin_Micro_With_A_Long_Name/,
@@ -437,6 +446,42 @@ describe("Package Activity", () => {
     expect(screen.getByText("Initial Package Submitted By Bob Smith"));
     expect(screen.getByText("Download all attachments"));
     expect(screen.getByText("Contract Amendment"));
+  });
+
+  it("renders a legacy package activity when attachments are null", async () => {
+    const changelogWithNullAttachments = [
+      {
+        _id: "MA-24-0013-legacy-1728481070295",
+        _index: "productionchangelog",
+        found: true,
+        _source: {
+          id: "MA-24-0013-legacy-1728481070295",
+          packageId: "MA-24-0013",
+          timestamp: 1728481070295,
+          event: "legacy-withdraw-rai-request",
+          attachments: null,
+          additionalInformation:
+            "Massachusetts is withdrawing the 24-0013 RAI Response submitted on 8/12/24 in order to allow for more time to discuss with CMS.",
+          submitterEmail: "kaela.konefal@state.ma.us",
+          submitterName: "Kaela Konefal",
+          origin: "OneMACLegacy",
+        },
+      },
+    ] as unknown as opensearch.changelog.ItemResult[];
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id="MA-24-0013" changelog={changelogWithNullAttachments} />,
+      "MA-24-0013",
+    );
+
+    expect(screen.getByText("Package Activity (1)")).toBeInTheDocument();
+    expect(screen.getByText("No information submitted")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Massachusetts is withdrawing the 24-0013 RAI Response submitted on 8/12/24 in order to allow for more time to discuss with CMS.",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
   });
 
   it("requests the all-attachments archive and opens the returned url", async () => {

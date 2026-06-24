@@ -1,4 +1,10 @@
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+
 import { PdfList, Template } from "../utils";
+
+const CS18_TEMPLATE_HREF = "/chp/CS18.pdf";
+const UPDATED_CS18_TEMPLATE_HREF = "/chp/CS18_MOD_v2.pdf";
+const CS18_TEMPLATE_DOWNLOAD_NAME = "CS18.pdf";
 
 // MAGI Eligibility & Methods
 export const CHP_MAGI_TEMPLATES: Template[] = [
@@ -77,7 +83,8 @@ export const CHP_NON_FIN_TEMPLATE: Template[] = [
   {
     title: "CS 18",
     text: "Non-Financial Eligibility - Citizenship",
-    href: "/chp/CS18.pdf",
+    href: CS18_TEMPLATE_HREF,
+    downloadName: CS18_TEMPLATE_DOWNLOAD_NAME,
   },
   {
     title: "CS 19",
@@ -121,7 +128,19 @@ export const CHP_NON_FIN_TEMPLATE: Template[] = [
   },
 ];
 
+export const getChpNonFinTemplates = (useUpdatedCs18Documents: boolean): Template[] =>
+  CHP_NON_FIN_TEMPLATE.map((template) =>
+    template.title === "CS 18"
+      ? {
+          ...template,
+          href: useUpdatedCs18Documents ? UPDATED_CS18_TEMPLATE_HREF : CS18_TEMPLATE_HREF,
+        }
+      : template,
+  );
+
 export const ChipSpaTemplates = () => {
+  const useUpdatedCs18Documents = useFeatureFlag("CHIP_CS18_FAQ_DOCUMENTS");
+
   return (
     <section>
       <p>
@@ -157,7 +176,7 @@ export const ChipSpaTemplates = () => {
         <li className="space-y-2">
           <p>Non-Financial Eligibility</p>
           <PdfList
-            list={CHP_NON_FIN_TEMPLATE}
+            list={getChpNonFinTemplates(useUpdatedCs18Documents)}
             label="template"
             ulClassName="list-disc pl-7 space-y-2"
           />
