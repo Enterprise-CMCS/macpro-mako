@@ -214,6 +214,44 @@ describe("runSeatoolStatusMismatchReport", () => {
     });
   }
 
+  function setupSingleMismatchCsvReport() {
+    const seatoolCsvKey = "seatool-status-mismatch/main/input/mismatch.csv";
+    const objectStore: S3ObjectStore = new Map([
+      [
+        toStoreKey("report-bucket", seatoolCsvKey),
+        ["ID_Number,status,", "CA-25-0022,Pending-RAI,"].join("\n"),
+      ],
+    ]);
+    const putStore: S3ObjectStore = new Map();
+    mockS3({ objectStore, putStore });
+
+    const mget = vi.fn(async ({ body }: { body: { ids: string[] } }) => ({
+      body: {
+        docs: body.ids.map((id) => ({
+          _id: id,
+          found: true,
+          _source: {
+            id,
+            cmsStatus: "Submitted - Intake Needed",
+            stateStatus: "Submitted",
+            seatoolStatus: "Submitted",
+          },
+        })),
+      },
+    }));
+    vi.mocked(getClient).mockResolvedValue({ mget } as any);
+
+    return {
+      mget,
+      objectStore,
+      putStore,
+      event: {
+        seatoolCsvKey,
+        runTimestamp: "2026-03-19T16:45:07.000Z",
+      },
+    };
+  }
+
   it("normalizes status values like the manual comparison script", () => {
     expect(normalizeStatus("Pending - RAI")).toBe("Pending-RAI");
     expect(normalizeStatus("Pending – RAI")).toBe("Pending-RAI");
@@ -594,6 +632,73 @@ describe("runSeatoolStatusMismatchReport", () => {
           NEEDS_RAI_CHANGELOG_REVIEW: 1,
         },
         notificationStatus: "SENT",
+      }),
+    );
+  });
+
+  it("uses explicit status mismatch recipient override before the secret field", async () => {
+    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS =
+      '"Override Alerts" <override@example.com>';
+    const { event } = setupSingleMismatchCsvReport();
+
+    const result = await handler(event);
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        mismatchCount: 1,
+        notificationStatus: "SENT",
+        notificationRecipients: ["override@example.com"],
+      }),
+    );
+
+    const sesCommand = sesSendSpy.mock.calls[0]?.[0] as any;
+    expect(sesCommand.input.Destinations).toEqual(["override@example.com"]);
+    expect(Buffer.from(sesCommand.input.RawMessage.Data).toString("utf8")).toContain(
+      'To: "Override Alerts" <override@example.com>',
+    );
+  });
+
+  it("disables status mismatch notification when the recipient secret field is empty", async () => {
+    vi.mocked(getSecret).mockResolvedValue(
+      JSON.stringify({
+        sourceEmail: ['"OneMAC Alerts" <source@example.com>'],
+      }),
+    );
+    const { event } = setupSingleMismatchCsvReport();
+
+    const result = await handler(event);
+
+    expect(result).toEqual(
+      expect.objectContaining({
+        mismatchCount: 1,
+        notificationStatus: "DISABLED",
+        notificationRecipients: [],
+      }),
+    );
+    expect(sesSendSpy).not.toHaveBeenCalled();
+  });
+
+  it("fails status mismatch notification when recipients exist but sourceEmail is missing", async () => {
+    vi.mocked(getSecret).mockResolvedValue(
+      JSON.stringify({
+        seatoolStatusMismatchAlerts: ['"Status Mismatch" <status-mismatch@example.com>'],
+      }),
+    );
+    const { event, putStore } = setupSingleMismatchCsvReport();
+
+    await expect(handler(event)).rejects.toThrow(
+      "SEATool status mismatch notification failed: SEATool status mismatch notification secret is missing sourceEmail",
+    );
+    expect(sesSendSpy).not.toHaveBeenCalled();
+
+    const summaryEntry = Array.from(putStore.entries()).find(([key]) =>
+      key.endsWith("/summary.json"),
+    );
+    expect(JSON.parse(summaryEntry?.[1] || "{}")).toEqual(
+      expect.objectContaining({
+        mismatchCount: 1,
+        notificationStatus: "FAILED",
+        notificationError: "SEATool status mismatch notification secret is missing sourceEmail",
       }),
     );
   });
