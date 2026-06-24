@@ -89,6 +89,13 @@ export const mockedAdmin = {
   disconnect: vi.fn(),
 };
 
+export const mockedConsumer = {
+  connect: vi.fn(),
+  subscribe: vi.fn(),
+  run: vi.fn(),
+  disconnect: vi.fn(),
+};
+
 export const mockedKafka = vi.fn(function MockKafka() {
   return {
     producer: vi.fn(function producer() {
@@ -96,6 +103,9 @@ export const mockedKafka = vi.fn(function MockKafka() {
     }),
     admin: vi.fn(function admin() {
       return mockedAdmin;
+    }),
+    consumer: vi.fn(function consumer() {
+      return mockedConsumer;
     }),
   };
 });
