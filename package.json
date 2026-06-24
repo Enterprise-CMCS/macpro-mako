@@ -111,13 +111,17 @@
     ]
   },
   "overrides": {
-    "@vitest/browser": "4.1.8",
+    "@aws-sdk/client-cloudwatch-logs": "^3.687.0",
     "axios": "1.16.1",
+    "@vitest/browser": "4.1.8",
+    "postcss-selector-parser": "6.1.4",
     "shell-quote": "1.8.4",
     "tar": "7.5.13",
     "vite": "8.0.14",
     "vitest": "4.1.8",
-    "ws": "8.20.1"
+    "ws": "8.20.1",
+    "eslint": "9.39.4",
+    "uuid": "14.0.0"
   },
   "packageManager": "bun@1.1.20",
   "patchedDependencies": {

@@ -1,4 +1,3 @@
-import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Auth } from "aws-amplify";
@@ -326,6 +325,12 @@ export const Layout = () => {
 
 type ResponsiveNavProps = {
   isDesktop: boolean;
+};
+
+type AwsCognitoOAuthOpts = {
+  domain: string;
+  redirectSignIn: string;
+  responseType: string;
 };
 
 /**

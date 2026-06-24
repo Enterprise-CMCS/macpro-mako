@@ -1,0 +1,12 @@
+# Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
+version: v1.25.1
+# ignores vulnerabilities until expiry date; change duration by modifying expiry date
+ignore:
+  SNYK-CC-TF-69:
+    - 'node_modules/aws-cdk/lib/api/bootstrap/bootstrap-template.yaml > [DocId: 0] > Resources[CdkBoostrapPermissionsBoundaryPolicy] > Properties > PolicyDocument':
+        reason: >-
+          Vendor AWS CDK bootstrap example permissions boundary
+          (UseExamplePermissionsBoundary=false by default)
+        expires: 2026-07-16T07:02:52.421Z
+        created: 2026-06-16T07:02:52.423Z
+patch: {}

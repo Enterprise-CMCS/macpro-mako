@@ -3,7 +3,7 @@ import { TestSecretData } from "../index.d";
 export const TEST_SECRET_ID = "test-secret"; // pragma: allowlist secret
 export const TEST_SECRET_TO_DELETE_ID = "test-secret-to-delete"; // pragma: allowlist secret
 export const TEST_SECRET_NO_VALUE_ID = "test-secret-no-value"; // pragma: allowlist secret
-export const TEST_SECRET_ERROR_ID = "Throw Get Secret Error"; // pragma: allowlist secret
+export const TEST_SECRET_ERROR_ID = process.env.TEST_SECRET_ERROR_ID || ""; // pragma: allowlist secret
 export const TEST_PW_ARN = "test-arn-create-update-user"; // pragma: allowlist secret
 export const TEST_EMAIL_ID = "mock-email-secret";
 
@@ -36,7 +36,7 @@ const secrets: Record<string, TestSecretData> = {
     ARN: `arn://${TEST_PW_ARN}`,
     CreatedDate: Date.now(),
     Name: TEST_PW_ARN,
-    SecretString: "devUserPassword", // pragma: allowlist secret
+    SecretString: process.env.TEST_DEV_USER_PASSWORD,
     VersionId: "1.0",
     VersionStages: ["prod"],
   },

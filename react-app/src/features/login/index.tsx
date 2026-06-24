@@ -1,4 +1,3 @@
-import { AwsCognitoOAuthOpts } from "@aws-amplify/auth/lib-esm/types/Auth";
 import { Auth } from "aws-amplify";
 import { Link, Navigate } from "react-router";
 
@@ -9,6 +8,12 @@ import { cn } from "@/utils";
 
 const buttonStyling =
   "inline-flex p-2 items-center justify-center rounded-md text-[16px] font-bold ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
+
+type AwsCognitoOAuthOpts = {
+  domain: string;
+  redirectSignIn: string;
+  responseType: string;
+};
 
 export const Login = () => {
   const hideLogin = useFeatureFlag("LOGIN_PAGE");
