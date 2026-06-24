@@ -4,7 +4,7 @@ import { Construct } from "constructs";
 import { isSharedArchiveStage } from "./archive-bucket-routing";
 
 export const SEATOOL_STATUS_MISMATCH_REPORT_PREFIX = "seatool-status-mismatch";
-export const SEATOOL_STATUS_MISMATCH_DEFAULT_RECIPIENT_EMAIL = "James.d@globalalliantinc.com";
+export const SEATOOL_STATUS_MISMATCH_DEFAULT_RECIPIENT_SECRET_KEY = "seatoolStatusMismatchAlerts";
 export const SEATOOL_STATUS_MISMATCH_DEFAULT_SCHEDULE_EXPRESSION = "cron(0 21 * * ? *)";
 export const SEATOOL_STATUS_MISMATCH_DEFAULT_SCHEDULE_TIMEZONE = "America/New_York";
 export const SEATOOL_STATUS_MISMATCH_SEATOOL_TOPIC = "aws.seatool.ksql.onemac.three.agg.State_Plan";
@@ -16,7 +16,7 @@ export function buildSeatoolStatusMismatchReportEnvironment({
   indexNamespace,
   reportBucketName,
   emailAddressLookupSecretName,
-  recipientEmails = SEATOOL_STATUS_MISMATCH_DEFAULT_RECIPIENT_EMAIL,
+  recipientSecretKey = SEATOOL_STATUS_MISMATCH_DEFAULT_RECIPIENT_SECRET_KEY,
 }: {
   stage: string;
   brokerString: string;
@@ -24,7 +24,7 @@ export function buildSeatoolStatusMismatchReportEnvironment({
   indexNamespace: string;
   reportBucketName: string;
   emailAddressLookupSecretName: string;
-  recipientEmails?: string;
+  recipientSecretKey?: string;
 }): Record<string, string> {
   return {
     brokerString,
@@ -36,7 +36,7 @@ export function buildSeatoolStatusMismatchReportEnvironment({
     SEATOOL_STATUS_MISMATCH_INPUT_KEY_PREFIX: `${SEATOOL_STATUS_MISMATCH_REPORT_PREFIX}/${stage}/input/`,
     SEATOOL_STATUS_MISMATCH_REPORT_BUCKET_NAME: reportBucketName,
     SEATOOL_STATUS_MISMATCH_REPORT_PREFIX: SEATOOL_STATUS_MISMATCH_REPORT_PREFIX,
-    SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS: recipientEmails,
+    SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY: recipientSecretKey,
     SEATOOL_STATUS_MISMATCH_SEATOOL_TOPIC: SEATOOL_STATUS_MISMATCH_SEATOOL_TOPIC,
     emailAddressLookupSecretName,
   };

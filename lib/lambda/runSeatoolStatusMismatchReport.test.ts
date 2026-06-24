@@ -61,6 +61,8 @@ describe("runSeatoolStatusMismatchReport", () => {
     SEATOOL_STATUS_MISMATCH_KAFKA_CONSUME_TIMEOUT_MS:
       process.env.SEATOOL_STATUS_MISMATCH_KAFKA_CONSUME_TIMEOUT_MS,
     SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS: process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS,
+    SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY:
+      process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY,
     emailAddressLookupSecretName: process.env.emailAddressLookupSecretName,
     brokerString: process.env.brokerString,
     osDomain: process.env.osDomain,
@@ -78,7 +80,8 @@ describe("runSeatoolStatusMismatchReport", () => {
     process.env.SEATOOL_STATUS_MISMATCH_SEATOOL_TOPIC =
       "aws.seatool.ksql.onemac.three.agg.State_Plan";
     process.env.SEATOOL_STATUS_MISMATCH_KAFKA_CONSUME_TIMEOUT_MS = "1000";
-    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS = "James.d@globalalliantinc.com";
+    delete process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS;
+    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY = "seatoolStatusMismatchAlerts";
     process.env.emailAddressLookupSecretName = "emailAddresses"; // pragma: allowlist secret
     process.env.brokerString = "broker1,broker2";
     process.env.osDomain = "https://test-opensearch.example.com";
@@ -91,6 +94,7 @@ describe("runSeatoolStatusMismatchReport", () => {
     vi.mocked(getSecret).mockResolvedValue(
       JSON.stringify({
         sourceEmail: ['"OneMAC Alerts" <source@example.com>'],
+        seatoolStatusMismatchAlerts: ["status-mismatch@example.com"],
       }),
     );
     mockedAdmin.connect.mockResolvedValue(undefined);
@@ -146,6 +150,10 @@ describe("runSeatoolStatusMismatchReport", () => {
     restoreEnvValue(
       "SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS",
       originalEnv.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS,
+    );
+    restoreEnvValue(
+      "SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY",
+      originalEnv.SEATOOL_STATUS_MISMATCH_RECIPIENT_SECRET_KEY,
     );
     restoreEnvValue("emailAddressLookupSecretName", originalEnv.emailAddressLookupSecretName);
     restoreEnvValue("brokerString", originalEnv.brokerString);
@@ -553,14 +561,14 @@ describe("runSeatoolStatusMismatchReport", () => {
         skippedRows: 1,
         mismatchCount: 1,
         notificationStatus: "SENT",
-        notificationRecipients: ["James.d@globalalliantinc.com"],
+        notificationRecipients: ["status-mismatch@example.com"],
       }),
     );
     expect(mget).toHaveBeenCalledTimes(3);
     expect(sesSendSpy).toHaveBeenCalledTimes(1);
 
     const sesCommand = sesSendSpy.mock.calls[0]?.[0] as any;
-    expect(sesCommand.input.Destinations).toEqual(["James.d@globalalliantinc.com"]);
+    expect(sesCommand.input.Destinations).toEqual(["status-mismatch@example.com"]);
     const rawEmail = Buffer.from(sesCommand.input.RawMessage.Data).toString("utf8");
     expect(rawEmail).toContain("Subject: [main] OneMAC/SEATool status mismatches: 1");
     expect(rawEmail).toContain('filename="true_status_mismatches.csv"');
