@@ -19,6 +19,7 @@ const DEFAULT_BATCH_SIZE = 500;
 const DEFAULT_INPUT_SOURCE = "KAFKA";
 const DEFAULT_KAFKA_CONSUME_TIMEOUT_MS = 10 * 60 * 1000;
 const DEFAULT_REPORT_PREFIX = "seatool-status-mismatch";
+const DEFAULT_RECIPIENT_CONFIG_FIELD = "seatoolStatusMismatchAlerts";
 const DEFAULT_SEATOOL_STATUS_TOPIC = "aws.seatool.ksql.onemac.three.agg.State_Plan";
 const RAW_SEATOOL_STATUS_DISPLAY_FALLBACKS: Record<string, string> = {
   "Pending-Finance": SEATOOL_STATUS.UNKNOWN,
@@ -109,7 +110,8 @@ type KafkaSourceConfig = {
 
 type ReportNotificationConfig = {
   emailAddressLookupSecretName: string;
-  recipientEmails: string[];
+  recipientEmailOverrides: ParsedEmailAddress[];
+  recipientConfigField: string;
 };
 
 type ParsedEmailAddress = {
@@ -230,13 +232,17 @@ function getNotificationConfig(): ReportNotificationConfig {
   const emailAddressLookupSecretName = (
     process.env.emailAddressLookupSecretName || "emailAddresses"
   ).trim();
-  const recipientEmails = parseEmailAddressList(
+  const recipientEmailOverrides = parseEmailAddressList(
     parseAddressEntries(process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_EMAILS),
-  ).map((address) => address.email);
+  );
+  const recipientConfigField = (
+    process.env.SEATOOL_STATUS_MISMATCH_RECIPIENT_CONFIG_FIELD || DEFAULT_RECIPIENT_CONFIG_FIELD
+  ).trim();
 
   return {
     emailAddressLookupSecretName,
-    recipientEmails,
+    recipientEmailOverrides,
+    recipientConfigField,
   };
 }
 
@@ -1058,17 +1064,31 @@ async function loadSeatoolInputData({
   });
 }
 
-async function getSourceEmailAddress(emailAddressLookupSecretName: string) {
-  const rawSecret = await getSecret(emailAddressLookupSecretName);
-  const secret = JSON.parse(rawSecret || "{}") as {
+async function getNotificationEmailAddresses(notificationConfig: ReportNotificationConfig) {
+  const rawSecret = await getSecret(notificationConfig.emailAddressLookupSecretName);
+  const secret = JSON.parse(rawSecret || "{}") as Record<string, unknown> & {
     sourceEmail?: unknown;
   };
   const sourceEmail = parseEmailAddressList(parseAddressEntries(secret.sourceEmail))[0];
+  const recipientEmails =
+    notificationConfig.recipientEmailOverrides.length > 0
+      ? notificationConfig.recipientEmailOverrides
+      : parseEmailAddressList(parseAddressEntries(secret[notificationConfig.recipientConfigField]));
+
+  if (recipientEmails.length === 0) {
+    return {
+      recipientEmails,
+    };
+  }
+
   if (!sourceEmail) {
     throw new Error("SEATool status mismatch notification secret is missing sourceEmail");
   }
 
-  return sourceEmail;
+  return {
+    sourceEmail,
+    recipientEmails,
+  };
 }
 
 async function sendMismatchNotification({
@@ -1087,14 +1107,25 @@ async function sendMismatchNotification({
     };
   }
 
-  if (notificationConfig.recipientEmails.length === 0) {
+  const notificationEmails = await getNotificationEmailAddresses(notificationConfig);
+  if (notificationEmails.recipientEmails.length === 0) {
     return {
       notificationStatus: "DISABLED" as const,
       notificationRecipients: [] as string[],
     };
   }
 
-  const sourceEmail = await getSourceEmailAddress(notificationConfig.emailAddressLookupSecretName);
+  const sourceEmail = notificationEmails.sourceEmail;
+  if (!sourceEmail) {
+    throw new Error("SEATool status mismatch notification secret is missing sourceEmail");
+  }
+
+  const recipientEmailAddresses = notificationEmails.recipientEmails.map(
+    (address) => address.email,
+  );
+  const recipientEmailHeaders = notificationEmails.recipientEmails.map(
+    (address) => address.formatted,
+  );
   const subject = `[${result.stage}] OneMAC/SEATool status mismatches: ${result.mismatchCount}`;
   const sourceLine =
     result.inputSource === "KAFKA"
@@ -1112,7 +1143,7 @@ async function sendMismatchNotification({
   ].join("\n");
   const rawData = buildRawEmail({
     sourceEmailHeader: sourceEmail.formatted,
-    toEmailHeaders: notificationConfig.recipientEmails,
+    toEmailHeaders: recipientEmailHeaders,
     subject,
     bodyText,
     attachment: {
@@ -1128,13 +1159,13 @@ async function sendMismatchNotification({
         Data: Buffer.from(rawData, "utf8"),
       },
       Source: sourceEmail.email,
-      Destinations: notificationConfig.recipientEmails,
+      Destinations: recipientEmailAddresses,
     }),
   );
 
   return {
     notificationStatus: "SENT" as const,
-    notificationRecipients: notificationConfig.recipientEmails,
+    notificationRecipients: recipientEmailAddresses,
     notificationSentAt: new Date().toISOString(),
   };
 }
@@ -1268,7 +1299,9 @@ export const handler = async (
     );
   } catch (error) {
     result.notificationStatus = "FAILED";
-    result.notificationRecipients = notificationConfig.recipientEmails;
+    result.notificationRecipients = notificationConfig.recipientEmailOverrides.map(
+      (address) => address.email,
+    );
     result.notificationError = error instanceof Error ? error.message : String(error);
   }
 
