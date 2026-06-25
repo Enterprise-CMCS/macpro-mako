@@ -8,6 +8,7 @@ CRITICAL_ONLY=${CRITICAL_ONLY:-true}
 MIN_IMAGE_AGE_DAYS=${MIN_IMAGE_AGE_DAYS:-3}
 REPOSITORY_NAME=${REPOSITORY_NAME:-}
 ALLOW_NON_CDK_ASSET_REPOSITORY=${ALLOW_NON_CDK_ASSET_REPOSITORY:-false}
+TARGET_IMAGE_DIGEST=${TARGET_IMAGE_DIGEST:-}
 
 if ! command -v aws >/dev/null 2>&1; then
   echo "aws is required." >&2
@@ -21,6 +22,11 @@ fi
 
 if ! command -v python3 >/dev/null 2>&1; then
   echo "python3 is required." >&2
+  exit 1
+fi
+
+if [[ -n "$TARGET_IMAGE_DIGEST" && ! "$TARGET_IMAGE_DIGEST" =~ ^sha256:[0-9a-f]{64}$ ]]; then
+  echo "TARGET_IMAGE_DIGEST must be a full sha256 image digest, for example sha256:<64 hex characters>." >&2
   exit 1
 fi
 
@@ -144,6 +150,9 @@ echo "Scope: ECR image digests only. This script does not delete IAM roles, S3 b
 echo "Repository: ${REPOSITORY_NAME}"
 echo "Mode: $([[ "$DELETE_IMAGES" == "true" ]] && echo "delete" || echo "report-only")"
 echo "Criteria: unreferenced by active Lambda image functions and active ECS task definitions, age >= ${MIN_IMAGE_AGE_DAYS} day(s)"
+if [[ -n "$TARGET_IMAGE_DIGEST" ]]; then
+  echo "Target digest: ${TARGET_IMAGE_DIGEST}"
+fi
 if [[ -s "$REFERENCED_DIGESTS_FILE" ]]; then
   echo "Referenced digests found: $(wc -l < "$REFERENCED_DIGESTS_FILE" | tr -d ' ')"
 else
@@ -155,6 +164,10 @@ DELETED_COUNT=0
 
 while IFS= read -r image_row; do
   digest=$(jq -r '.digest' <<<"$image_row")
+
+  if [[ -n "$TARGET_IMAGE_DIGEST" && "$digest" != "$TARGET_IMAGE_DIGEST" ]]; then
+    continue
+  fi
 
   if [[ -s "$REFERENCED_DIGESTS_FILE" ]] && grep -Fxq "$digest" "$REFERENCED_DIGESTS_FILE"; then
     continue
