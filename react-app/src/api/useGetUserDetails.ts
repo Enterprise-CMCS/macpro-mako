@@ -4,6 +4,8 @@ import { UserDetails } from "shared-types";
 
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
+const USER_DETAILS_QUERY_STALE_TIME_MS = 5 * 60 * 1000;
+
 export const getUserDetails = async (userEmail?: string): Promise<UserDetails | null> => {
   try {
     const userDetails = await API.post("os", "/getUserDetails", { body: { userEmail } });
@@ -18,8 +20,11 @@ export const getUserDetails = async (userEmail?: string): Promise<UserDetails | 
   }
 };
 
-export const useGetUserDetails = () =>
-  useQuery<UserDetails | null>({
-    queryKey: ["userDetails"],
-    queryFn: () => getUserDetails(),
-  });
+export const userDetailsQueryOptions = {
+  queryKey: ["userDetails"],
+  queryFn: () => getUserDetails(),
+  staleTime: USER_DETAILS_QUERY_STALE_TIME_MS,
+  refetchOnWindowFocus: false,
+};
+
+export const useGetUserDetails = () => useQuery<UserDetails | null>(userDetailsQueryOptions);

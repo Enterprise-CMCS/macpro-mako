@@ -1,9 +1,21 @@
 import { QueryClient } from "@tanstack/react-query";
 import { redirect } from "react-router";
 
-import { getUser } from "@/api";
+import { userQueryOptions } from "@/api";
 import { createUserProfile } from "@/api/useCreateUserProfile";
 import { requestBaseCMSAccess } from "@/api/useRequestBaseCMSAccess";
+
+const USER_BOOTSTRAP_QUERY_STALE_TIME_MS = 5 * 60 * 1000;
+
+const userBootstrapQueryOptions = {
+  queryKey: ["userBootstrap"],
+  queryFn: async () => {
+    await requestBaseCMSAccess();
+    await createUserProfile();
+    return true;
+  },
+  staleTime: USER_BOOTSTRAP_QUERY_STALE_TIME_MS,
+};
 
 export const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
   return async () => {
@@ -18,15 +30,11 @@ export const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
       return { error };
     }
 
-    await requestBaseCMSAccess();
-    await createUserProfile();
+    await queryClient.fetchQuery(userBootstrapQueryOptions);
 
     // check user query has been initialized
     if (!queryClient.getQueryData(["user"])) {
-      const userFetch = await queryClient.fetchQuery({
-        queryKey: ["user"],
-        queryFn: () => getUser(),
-      });
+      const userFetch = await queryClient.fetchQuery(userQueryOptions);
       const isUserLoggedIn =
         !["/login", "/faq", "/support"].includes(window.location.pathname) && !userFetch?.user;
 

@@ -11,6 +11,8 @@ export type OneMacUser = {
   counties?: { label: string; value: string }[];
 };
 
+const USER_QUERY_STALE_TIME_MS = 5 * 60 * 1000;
+
 export const getUser = async (): Promise<OneMacUser> => {
   try {
     const currentAuthenticatedUser = await Auth.currentAuthenticatedUser();
@@ -49,8 +51,11 @@ export const getUser = async (): Promise<OneMacUser> => {
   }
 };
 
-export const useGetUser = () =>
-  useQuery({
-    queryKey: ["user"],
-    queryFn: () => getUser(),
-  });
+export const userQueryOptions = {
+  queryKey: ["user"],
+  queryFn: getUser,
+  staleTime: USER_QUERY_STALE_TIME_MS,
+  refetchOnWindowFocus: false,
+};
+
+export const useGetUser = () => useQuery<OneMacUser>(userQueryOptions);

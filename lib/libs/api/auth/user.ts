@@ -12,6 +12,15 @@ import {
   getLatestActiveRoleByEmail,
 } from "../../../lambda/user-management/userManagementService";
 
+const USER_ATTRIBUTE_CACHE_TTL_MS = 5 * 60 * 1000;
+
+type UserAttributeCacheEntry = {
+  expiresAt: number;
+  promise: Promise<CognitoUserType | Error>;
+};
+
+const userAttributeCache = new Map<string, UserAttributeCacheEntry>();
+
 // Retrieve user authentication details from the APIGatewayEvent
 export function getAuthDetails(event: APIGatewayEvent) {
   const authProvider = event?.requestContext?.identity?.cognitoAuthenticationProvider;
@@ -64,18 +73,26 @@ export async function fetchUserFromCognito(
   userID: string,
   poolID: string,
 ): Promise<CognitoUserType | Error> {
-  const cognitoClient = new CognitoIdentityProviderClient({
-    region: process.env.region,
-  });
+  const cacheKey = `${poolID}:${userID}`;
+  const cachedUser = userAttributeCache.get(cacheKey);
+  const now = Date.now();
 
-  const subFilter = `sub = "${userID}"`;
+  if (cachedUser && cachedUser.expiresAt > now) {
+    return cachedUser.promise;
+  }
 
-  const commandListUsers = new ListUsersCommand({
-    UserPoolId: poolID,
-    Filter: subFilter,
-  });
+  const fetchUserPromise = (async () => {
+    const cognitoClient = new CognitoIdentityProviderClient({
+      region: process.env.region,
+    });
 
-  try {
+    const subFilter = `sub = "${userID}"`;
+
+    const commandListUsers = new ListUsersCommand({
+      UserPoolId: poolID,
+      Filter: subFilter,
+    });
+
     const listUsersResponse = await cognitoClient.send(commandListUsers);
 
     if (listUsersResponse.Users === undefined || listUsersResponse.Users.length !== 1) {
@@ -84,7 +101,18 @@ export async function fetchUserFromCognito(
 
     const currentUser = listUsersResponse.Users[0];
     return currentUser;
+  })();
+
+  userAttributeCache.set(cacheKey, {
+    expiresAt: now + USER_ATTRIBUTE_CACHE_TTL_MS,
+    promise: fetchUserPromise,
+  });
+
+  try {
+    return await fetchUserPromise;
   } catch (error) {
+    userAttributeCache.delete(cacheKey);
+
     if (error instanceof Error && error.message === "No user found with this sub") {
       throw error;
     }

@@ -4,7 +4,7 @@ import { Link, Navigate, redirect } from "react-router";
 import { UserRoles } from "shared-types";
 import { isStateUser } from "shared-utils";
 
-import { getUser, useGetUser, useGetUserDetails } from "@/api";
+import { getUser, useGetUser, useGetUserDetails, userQueryOptions } from "@/api";
 import {
   FilterDrawerProvider,
   LoadingSpinner,
@@ -25,10 +25,7 @@ import { WaiversList } from "./Lists/waivers";
 const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
   return async () => {
     if (!queryClient.getQueryData(["user"])) {
-      await queryClient.fetchQuery({
-        queryKey: ["user"],
-        queryFn: () => getUser(),
-      });
+      await queryClient.fetchQuery(userQueryOptions);
     }
 
     const isUser = queryClient.getQueryData(["user"]) as Awaited<ReturnType<typeof getUser>>;
