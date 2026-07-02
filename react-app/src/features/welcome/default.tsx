@@ -115,14 +115,6 @@ export const Welcome = () => {
             <CardWithTopBorder className="">
               <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">
                 <article className="space-y-2">
-                  <h3 className="font-bold">Updated CS 18 CHIP SPA form</h3>
-                  <p>
-                    The CS 18 CHIP eligibility SPA template and implementation guide have been
-                    updated in OneMAC to include policies for targeted low-income pregnant women.
-                    These updates will be effective starting July 7, 2026.
-                  </p>
-                </article>
-                <article className="space-y-2">
                   <h3 className="font-bold">Saving Draft Packages</h3>
                   <p>
                     New functionality has been added to OneMAC allowing state users to save a draft
@@ -139,6 +131,14 @@ export const Welcome = () => {
                   >
                     Access State User Guide
                   </Link>
+                </article>
+                <article className="space-y-2">
+                  <h3 className="font-bold">Updated CS 18 CHIP SPA form</h3>
+                  <p>
+                    The CS 18 CHIP eligibility SPA template and implementation guide have been
+                    updated in OneMAC to include policies for targeted low-income pregnant women.
+                    These updates will be effective starting July 7, 2026.
+                  </p>
                 </article>
                 <article className="space-y-2">
                   <h3 className="font-bold">Updated CS 31 SPA form</h3>
