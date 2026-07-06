@@ -112,6 +112,7 @@
   },
   "overrides": {
     "@vitest/browser": "4.1.8",
+    "@vitest/browser-playwright": "4.1.8",
     "axios": "1.16.1",
     "shell-quote": "1.8.4",
     "tar": "7.5.13",
