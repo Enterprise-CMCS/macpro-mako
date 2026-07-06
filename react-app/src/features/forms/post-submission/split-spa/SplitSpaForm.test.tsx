@@ -13,6 +13,15 @@ import { SplitSpaForm } from "./index";
 
 describe("SplitSpaForm", () => {
   let user;
+
+  const selectSplitCount = async (value: string) => {
+    if (!screen.queryByRole("option", { name: value })) {
+      await user.click(screen.getByLabelText(/Select number of splits/));
+    }
+
+    await user.click(screen.getByRole("option", { name: value }));
+  };
+
   beforeAll(async () => {
     skipCleanup();
     mockApiRefinements();
@@ -67,7 +76,7 @@ describe("SplitSpaForm", () => {
   });
 
   it("should display the split spa ids and request when a splitCount is selected", async () => {
-    await user.click(screen.getByRole("option", { name: "3" }));
+    await selectSplitCount("3");
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
     expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
@@ -80,8 +89,7 @@ describe("SplitSpaForm", () => {
   });
 
   it("should handle changing the splitCount", async () => {
-    await user.click(screen.getByLabelText(/Select number of splits/));
-    await user.click(screen.getByRole("option", { name: "5" }));
+    await selectSplitCount("5");
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
     expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
@@ -92,6 +100,9 @@ describe("SplitSpaForm", () => {
   });
 
   it("should keep the edited suffices when changing the splitCount", async () => {
+    await selectSplitCount("5");
+    await waitFor(() => expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument());
+
     const spaId3 = screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-B`);
     await user.click(within(spaId3).getByRole("button", { name: "Edit" }));
     await user.type(within(spaId3).getByLabelText(`${TEST_SPA_ITEM_ID} split number 3`), "anana");
@@ -107,7 +118,6 @@ describe("SplitSpaForm", () => {
     await user.click(screen.getByRole("option", { name: "3" }));
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
-    screen.debug(screen.getByText(/SPAs after split/).parentElement);
     expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
     expect(screen.getByTestId(`2. ${TEST_SPA_ITEM_ID}-A`)).toBeInTheDocument();
     expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-Banana`)).toBeInTheDocument();
