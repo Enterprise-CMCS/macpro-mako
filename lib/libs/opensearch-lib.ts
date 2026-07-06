@@ -281,7 +281,13 @@ export async function getItems(ids: string[]): Promise<OSDocument[]> {
       },
     });
 
-    return response.body.docs.reduce<OSDocument[]>((acc, doc) => {
+    const docs = response.body.docs as Array<{
+      _id?: string;
+      found?: boolean;
+      _source?: OSDocument;
+    }>;
+
+    return docs.reduce<OSDocument[]>((acc, doc) => {
       if (doc && "found" in doc && doc.found && "_source" in doc && doc._source) {
         return acc.concat(doc._source as OSDocument);
       }

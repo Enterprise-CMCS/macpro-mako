@@ -11,36 +11,38 @@
 
 This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names used in searches.
 
-| Lambda Name                                     | cloudenv | source                                                      |
-| ----------------------------------------------- | -------- | ----------------------------------------------------------- |
-| mako-val-api-attachmentArchiveBackfillStatus    | impl     | /aws/lambda/mako-val-api-attachmentArchiveBackfillStatus    |
-| mako-val-api-backfillAttachmentArchives         | impl     | /aws/lambda/mako-val-api-backfillAttachmentArchives         |
-| mako-val-api-getAttachmentArchive               | impl     | /aws/lambda/mako-val-api-getAttachmentArchive               |
-| mako-val-api-markAttachmentArchiveFailed        | impl     | /aws/lambda/mako-val-api-markAttachmentArchiveFailed        |
-| mako-val-api-notifyAttachmentArchiveIntegrity   | impl     | /aws/lambda/mako-val-api-notifyAttachmentArchiveIntegrity   |
-| mako-val-api-rebuildAttachmentArchives          | impl     | /aws/lambda/mako-val-api-rebuildAttachmentArchives          |
-| mako-val-api-runAttachmentArchiveIntegrityCheck | impl     | /aws/lambda/mako-val-api-runAttachmentArchiveIntegrityCheck |
-| mako-val-api-deleteDraft                        | impl     | /aws/lambda/mako-val-api-deleteDraft                        |
-| mako-val-api-saveDraft                          | impl     | /aws/lambda/mako-val-api-saveDraft                          |
-| mako-val-api-submitNOSO                         | impl     | /aws/lambda/mako-val-api-submitNOSO                         |
-| mako-val-api-submitSplitSPA                     | impl     | /aws/lambda/mako-val-api-submitSplitSPA                     |
-| mako-val-api-updatePackage                      | impl     | /aws/lambda/mako-val-api-updatePackage                      |
-| mako-val-api-validateAttachmentArchive          | impl     | /aws/lambda/mako-val-api-validateAttachmentArchive          |
-| mako-val-data-sinkChangelog                     | impl     | /aws/lambda/mako-val-data-sinkChangelog                     |
-| mako-val-data-sinkCpocs                         | impl     | /aws/lambda/mako-val-data-sinkCpocs                         |
-| mako-val-data-sinkMain                          | impl     | /aws/lambda/mako-val-data-sinkMain                          |
-| mako-val-data-sinkSubtypes                      | impl     | /aws/lambda/mako-val-data-sinkSubtypes                      |
-| mako-val-data-sinkTypes                         | impl     | /aws/lambda/mako-val-data-sinkTypes                         |
-| mako-val-email-processEmails                    | impl     | /aws/lambda/mako-val-email-processEmails                    |
-| mako-production-api-submitNOSO                  | prod     | /aws/lambda/mako-production-api-submitNOSO                  |
-| mako-production-api-deleteDraft                 | prod     | /aws/lambda/mako-production-api-deleteDraft                 |
-| mako-production-api-saveDraft                   | prod     | /aws/lambda/mako-production-api-saveDraft                   |
-| mako-production-api-submitSplitSPA              | prod     | /aws/lambda/mako-production-api-submitSplitSPA              |
-| mako-production-api-updatePackage               | prod     | /aws/lambda/mako-production-api-updatePackage               |
-| mako-production-data-sinkChangelog              | prod     | /aws/lambda/mako-production-data-sinkChangelog              |
-| mako-production-data-sinkCpocs                  | prod     | /aws/lambda/mako-production-data-sinkCpocs                  |
-| mako-production-data-sinkMain                   | prod     | /aws/lambda/mako-production-data-sinkMain                   |
-| mako-production-email-processEmails             | prod     | /aws/lambda/mako-production-email-processEmails             |
+| Lambda Name                                        | cloudenv | source                                                         |
+| -------------------------------------------------- | -------- | -------------------------------------------------------------- |
+| mako-val-api-attachmentArchiveBackfillStatus       | impl     | /aws/lambda/mako-val-api-attachmentArchiveBackfillStatus       |
+| mako-val-api-backfillAttachmentArchives            | impl     | /aws/lambda/mako-val-api-backfillAttachmentArchives            |
+| mako-val-api-getAttachmentArchive                  | impl     | /aws/lambda/mako-val-api-getAttachmentArchive                  |
+| mako-val-api-markAttachmentArchiveFailed           | impl     | /aws/lambda/mako-val-api-markAttachmentArchiveFailed           |
+| mako-val-api-notifyAttachmentArchiveIntegrity      | impl     | /aws/lambda/mako-val-api-notifyAttachmentArchiveIntegrity      |
+| mako-val-api-rebuildAttachmentArchives             | impl     | /aws/lambda/mako-val-api-rebuildAttachmentArchives             |
+| mako-val-api-runAttachmentArchiveIntegrityCheck    | impl     | /aws/lambda/mako-val-api-runAttachmentArchiveIntegrityCheck    |
+| mako-val-api-runSeatoolStatusMismatchReport        | impl     | /aws/lambda/mako-val-api-runSeatoolStatusMismatchReport        |
+| mako-val-api-deleteDraft                           | impl     | /aws/lambda/mako-val-api-deleteDraft                           |
+| mako-val-api-saveDraft                             | impl     | /aws/lambda/mako-val-api-saveDraft                             |
+| mako-val-api-submitNOSO                            | impl     | /aws/lambda/mako-val-api-submitNOSO                            |
+| mako-val-api-submitSplitSPA                        | impl     | /aws/lambda/mako-val-api-submitSplitSPA                        |
+| mako-val-api-updatePackage                         | impl     | /aws/lambda/mako-val-api-updatePackage                         |
+| mako-val-api-validateAttachmentArchive             | impl     | /aws/lambda/mako-val-api-validateAttachmentArchive             |
+| mako-val-data-sinkChangelog                        | impl     | /aws/lambda/mako-val-data-sinkChangelog                        |
+| mako-val-data-sinkCpocs                            | impl     | /aws/lambda/mako-val-data-sinkCpocs                            |
+| mako-val-data-sinkMain                             | impl     | /aws/lambda/mako-val-data-sinkMain                             |
+| mako-val-data-sinkSubtypes                         | impl     | /aws/lambda/mako-val-data-sinkSubtypes                         |
+| mako-val-data-sinkTypes                            | impl     | /aws/lambda/mako-val-data-sinkTypes                            |
+| mako-val-email-processEmails                       | impl     | /aws/lambda/mako-val-email-processEmails                       |
+| mako-production-api-submitNOSO                     | prod     | /aws/lambda/mako-production-api-submitNOSO                     |
+| mako-production-api-deleteDraft                    | prod     | /aws/lambda/mako-production-api-deleteDraft                    |
+| mako-production-api-saveDraft                      | prod     | /aws/lambda/mako-production-api-saveDraft                      |
+| mako-production-api-runSeatoolStatusMismatchReport | prod     | /aws/lambda/mako-production-api-runSeatoolStatusMismatchReport |
+| mako-production-api-submitSplitSPA                 | prod     | /aws/lambda/mako-production-api-submitSplitSPA                 |
+| mako-production-api-updatePackage                  | prod     | /aws/lambda/mako-production-api-updatePackage                  |
+| mako-production-data-sinkChangelog                 | prod     | /aws/lambda/mako-production-data-sinkChangelog                 |
+| mako-production-data-sinkCpocs                     | prod     | /aws/lambda/mako-production-data-sinkCpocs                     |
+| mako-production-data-sinkMain                      | prod     | /aws/lambda/mako-production-data-sinkMain                      |
+| mako-production-email-processEmails                | prod     | /aws/lambda/mako-production-email-processEmails                |
 
 ## API Endpoint to Source Mapping
 
