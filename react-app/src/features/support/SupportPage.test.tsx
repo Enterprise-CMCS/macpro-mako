@@ -106,6 +106,7 @@ describe("OneMAC Support", () => {
 
   it("should display the Toggle group if the user is CMS", () => {
     vi.mocked(isCmsUser).mockReturnValue(true);
+
     render(<SupportPage />);
 
     expect(screen.getByTestId("cms-toggle-group")).toBeInTheDocument();
@@ -120,9 +121,8 @@ describe("OneMAC Support", () => {
     await userEvent.type(input, "FAQ 2");
     await userEvent.click(button);
 
-    expect(screen.getByText("Search Results")).toBeInTheDocument();
-
-    expect(screen.getByText("Answer 2")).toBeInTheDocument();
+    expect(await screen.findByText("Search Results")).toBeInTheDocument();
+    expect(await screen.findByText("Answer 2")).toBeInTheDocument();
   });
 
   it("should display the LeftNavigation when not searching", () => {

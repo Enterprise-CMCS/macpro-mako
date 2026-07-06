@@ -1,4 +1,5 @@
 import { PdfLink, PdfList, Template } from "../utils";
+
 // MAGI Eligibility & Methods
 export const CHP_MAGI_GUIDES: Template[] = [
   {

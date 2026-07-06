@@ -27,6 +27,10 @@ import {
   getLegacyAttachmentMirrorBuckets,
   getSharedAttachmentReadBucket,
 } from "./legacy-attachment-bucket-map";
+import {
+  buildSeatoolStatusMismatchReportEnvironment,
+  createSeatoolStatusMismatchReportDailySchedule,
+} from "./seatool-status-mismatch-report";
 
 interface ApiStackProps extends cdk.NestedStackProps {
   project: string;
@@ -558,6 +562,63 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const seatoolStatusMismatchReportRole = new cdk.aws_iam.Role(
+      this,
+      "SeatoolStatusMismatchReportRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          SeatoolStatusMismatchReportPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "es:ESHttpHead",
+                  "es:ESHttpPost",
+                  "es:ESHttpGet",
+                  "es:ESHttpPatch",
+                  "es:ESHttpDelete",
+                  "es:ESHttpPut",
+                ],
+                resources: [`${openSearchDomainArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject", "s3:PutObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["ses:SendRawEmail"],
+                resources: ["*"],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [
+                  `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${emailAddressLookupSecretName}-*`,
+                ],
+              }),
+            ],
+          }),
+        },
+      },
+    );
+
     const attachmentArchiveIntegrityNotificationRole = new cdk.aws_iam.Role(
       this,
       "AttachmentArchiveIntegrityNotificationRole",
@@ -1067,6 +1128,21 @@ export class Api extends cdk.NestedStack {
         memorySize: 2048,
       },
       {
+        id: "runSeatoolStatusMismatchReport",
+        entry: join(__dirname, "../lambda/runSeatoolStatusMismatchReport.ts"),
+        environment: buildSeatoolStatusMismatchReportEnvironment({
+          stage,
+          brokerString,
+          openSearchDomainEndpoint,
+          indexNamespace,
+          reportBucketName: archiveWriteBucketName,
+          emailAddressLookupSecretName,
+        }),
+        role: seatoolStatusMismatchReportRole,
+        timeoutSeconds: 900,
+        memorySize: 2048,
+      },
+      {
         id: "notifyAttachmentArchiveIntegrity",
         entry: join(__dirname, "../lambda/notifyAttachmentArchiveIntegrity.ts"),
         environment: buildAttachmentArchiveIntegrityNotificationEnvironment({
@@ -1417,6 +1493,14 @@ export class Api extends cdk.NestedStack {
       stack,
       isDev,
       stateMachine: archiveIntegrityStateMachine,
+    });
+
+    createSeatoolStatusMismatchReportDailySchedule(this, {
+      project,
+      stage,
+      stack,
+      isDev,
+      runSeatoolStatusMismatchReportLambda: lambdas.runSeatoolStatusMismatchReport,
     });
 
     // Create IAM role for API Gateway to invoke Lambda functions

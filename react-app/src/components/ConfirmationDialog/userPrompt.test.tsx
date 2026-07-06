@@ -78,6 +78,36 @@ describe("userPrompt", () => {
     await vi.runAllTimers();
   });
 
+  test("User prompt body can wrap long unbroken text", async () => {
+    const { getByTestId } = render(<UserPrompt />);
+    const longBody =
+      "IG_Consolidated_STATES_MSP_Eligibility_Income_Resource_Methodologies_Final_20170714_v.1.0.pdf";
+
+    await act(() =>
+      userPrompt({
+        header: "Testing",
+        body: longBody,
+        onAccept: vi.fn(),
+        onCancel: vi.fn(),
+      }),
+    );
+
+    const bodyText = screen.getByText(longBody);
+
+    expect(getByTestId("dialog-body")).toHaveClass("min-w-0");
+    expect(getByTestId("dialog-body")).toHaveClass("max-w-full");
+    expect(getByTestId("dialog-body")).toHaveClass("break-words");
+    expect(bodyText).toHaveClass("min-w-0");
+    expect(bodyText).toHaveClass("max-w-full");
+    expect(bodyText).not.toHaveClass("break-words");
+    expect(bodyText).toHaveClass("[overflow-wrap:anywhere]");
+    expect(bodyText).toHaveClass("[word-break:break-word]");
+
+    userPrompt.dismiss();
+
+    await vi.runAllTimers();
+  });
+
   test("Custom Accept and Cancel button texts are applied", async () => {
     const { getByTestId } = render(<UserPrompt />);
 
