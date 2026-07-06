@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { Control, useFieldArray } from "react-hook-form";
+import { useEffect, useRef } from "react";
+import { Control, useFieldArray, useWatch } from "react-hook-form";
 
 import {
   EditableText,
@@ -10,7 +10,7 @@ import {
   FormMessage,
 } from "@/components";
 
-const DEFAULT_SUFFIXES = {
+const DEFAULT_SUFFIXES: Record<number, string> = {
   1: "A",
   2: "B",
   3: "C",
@@ -19,6 +19,15 @@ const DEFAULT_SUFFIXES = {
   6: "F",
   7: "G",
 };
+
+type SpaIdField = {
+  suffix: string;
+};
+
+const buildSpaIdFields = (splitCount: number, currentSpaIds: SpaIdField[] = []) =>
+  Array.from({ length: splitCount - 1 }, (_, index) => ({
+    suffix: currentSpaIds[index]?.suffix ?? DEFAULT_SUFFIXES[index + 1],
+  }));
 
 const SplitSpaId = ({ control, index, spaId, ...props }) => (
   <FormField
@@ -62,18 +71,25 @@ export const SplitSpaIdsForm = ({
   spaId: string;
   splitCount: number;
 }) => {
-  const { fields, remove, append } = useFieldArray({
+  const { fields, replace } = useFieldArray({
     control,
     name: "spaIds",
   });
+  const spaIds = useWatch({ control, name: "spaIds" }) as SpaIdField[] | undefined;
+  const spaIdsRef = useRef<SpaIdField[]>([]);
 
   useEffect(() => {
-    remove();
-    const fieldData = [...Array(splitCount).keys()]
-      .splice(1)
-      .map((index) => ({ suffix: DEFAULT_SUFFIXES[index] }));
-    append(fieldData);
-  }, [splitCount]); // eslint-disable-line react-hooks/exhaustive-deps
+    spaIdsRef.current = spaIds ?? [];
+  }, [spaIds]);
+
+  useEffect(() => {
+    if (!splitCount || splitCount < 2 || splitCount > 8) {
+      replace([]);
+      return;
+    }
+
+    replace(buildSpaIdFields(splitCount, spaIdsRef.current));
+  }, [splitCount, replace]);
 
   if (!spaId || !splitCount || splitCount < 2 || splitCount > 8) {
     return;
@@ -90,7 +106,7 @@ export const SplitSpaIdsForm = ({
         </span>
       </div>
       {fields.map((field, index) => (
-        <SplitSpaId control={control} index={index} spaId={spaId} {...field} />
+        <SplitSpaId key={field.id} control={control} index={index} spaId={spaId} {...field} />
       ))}
     </section>
   );

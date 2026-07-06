@@ -1,4 +1,4 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormProvider, useForm } from "react-hook-form";
 import { describe, expect, it } from "vitest";
@@ -140,6 +140,26 @@ describe("SplitSpaIdsForm", () => {
     expect(screen.getByTestId(`2. ${SPA_ID}-A`)).toBeInTheDocument();
     expect(screen.getByTestId(`3. ${SPA_ID}-Z`)).toBeInTheDocument();
     expect(screen.getByTestId(`4. ${SPA_ID}-C`)).toBeInTheDocument();
+  });
+
+  it("should keep edited suffices when the split count changes", async () => {
+    const user = userEvent.setup();
+    const { rerender } = render(<WrappedSplitSpaIdsForm spaId={SPA_ID} splitCount={5} />);
+
+    await waitFor(() => expect(screen.getByTestId(`5. ${SPA_ID}-D`)).toBeInTheDocument());
+
+    const spaId3 = screen.getByTestId(`3. ${SPA_ID}-B`);
+    await user.click(within(spaId3).getByRole("button", { name: "Edit" }));
+    await user.type(within(spaId3).getByLabelText(`${SPA_ID} split number 3`), "anana");
+    await user.click(within(spaId3).getByRole("button", { name: "Save" }));
+
+    await waitFor(() => expect(screen.getByTestId(`3. ${SPA_ID}-Banana`)).toBeInTheDocument());
+
+    rerender(<WrappedSplitSpaIdsForm spaId={SPA_ID} splitCount={3} />);
+
+    await waitFor(() => expect(screen.getByTestId(`3. ${SPA_ID}-Banana`)).toBeInTheDocument());
+    expect(screen.queryByTestId(`4. ${SPA_ID}-C`)).toBeNull();
+    expect(screen.queryByTestId(`5. ${SPA_ID}-D`)).toBeNull();
   });
 
   it("should handle canceling the edit of one of the suffices", async () => {
