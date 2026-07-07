@@ -133,11 +133,12 @@ export const Welcome = () => {
                   </Link>
                 </article>
                 <article className="space-y-2">
-                  <h3 className="font-bold">Updated CS 18 SPA form</h3>
+                  <h3 className="font-bold">Updated CS 18 CHIP SPA form</h3>
                   <p>
                     The CS 18 CHIP eligibility SPA template and implementation guide have been
-                    updated in OneMAC to include policies for targeted low-income pregnant women.
-                    These updates will be effective starting July 7, 2026.
+                    updated in OneMAC to include compliance attestations for changes made by section
+                    71109 of the Working Families Tax Cut (WFTC) legislation effective October 1,
+                    2026. These updates to the CS18 will be effective starting July 7, 2026.
                   </p>
                 </article>
                 <article className="space-y-2">
