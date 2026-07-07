@@ -22,6 +22,8 @@ const userHasAuthorizedRole = (user: FullUser | UserDetails | null, authorized: 
   return authorized.includes(user.role);
 };
 
+export const normalizeEmail = (email?: string | null): string => email?.trim().toLowerCase() || "";
+
 /** Confirms user is any kind of CMS user */
 export const isCmsUser = (user: FullUser | UserDetails | null) =>
   userHasAuthorizedRole(user, CMS_ROLES);
@@ -69,7 +71,10 @@ export const canSelfRevokeAccess = (
   currentEmail: string,
   emailToUpdate: string,
 ) => {
-  return currentRole === "statesubmitter" && currentEmail === emailToUpdate;
+  return (
+    currentRole === "statesubmitter" &&
+    normalizeEmail(currentEmail) === normalizeEmail(emailToUpdate)
+  );
 };
 
 // gets the role that approves current user
