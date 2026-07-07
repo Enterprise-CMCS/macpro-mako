@@ -80,7 +80,7 @@ describe("Default Welcome", () => {
       within(newAndNotableSection as HTMLElement)
         .getAllByRole("heading", { level: 3 })
         .map((heading) => heading.textContent),
-    ).toEqual(["Saving Draft Packages", "Updated CS 18 CHIP SPA form", "Updated CS 31 SPA form"]);
+    ).toEqual(["Saving Draft Packages", "Updated CS 18 SPA form", "Updated CS 31 SPA form"]);
 
     const resourcesSection = screen.getByRole("heading", {
       name: "Resources",
