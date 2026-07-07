@@ -138,7 +138,7 @@ export const Welcome = () => {
                     The CS 18 CHIP eligibility SPA template and implementation guide have been
                     updated in OneMAC to include compliance attestations for changes made by section
                     71109 of the Working Families Tax Cut (WFTC) legislation effective October 1,
-                    2026. These updates to the CS18 will be effective starting July 7, 2026.
+                    2026. These updates to the CS 18 will be effective starting July 7, 2026.
                   </p>
                 </article>
                 <article className="space-y-2">
