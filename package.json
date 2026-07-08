@@ -11,6 +11,7 @@
     "build:archive": "test -d lib/attachment-archive/node_modules || (echo 'Missing lib/attachment-archive dependencies. Run ./run install.' >&2; exit 1); (cd lib/attachment-archive && bun run typecheck)",
     "build:mocks": "(cd mocks && bun run build)",
     "build:ui": "(cd react-app && bun run build)",
+    "audit:case-email-duplicates": "tsx scripts/audit-case-insensitive-user-duplicates.ts",
     "repair:attachment-scan-status": "tsx scripts/repair-attachment-scan-status.ts",
     "export:opensearch": "tsx scripts/export-opensearch-to-s3.ts",
     "watch": "tsc -w",

@@ -4,6 +4,12 @@ import { getFilteredUserResultList } from "../../data/osusers";
 import { SearchQueryBody } from "../../index.d";
 import { getFilterValueAsStringArray } from "../search.utils";
 
+type QueryRules = Parameters<typeof getFilterValueAsStringArray>[0];
+
+const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
+
+const toQueryArray = (query: QueryRules) => (Array.isArray(query) ? query : query ? [query] : []);
+
 const defaultUserSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-users/_search",
   async ({ request }) => {
@@ -16,7 +22,17 @@ const defaultUserSearchHandler = http.post<PathParams, SearchQueryBody>(
     }
     if (query?.bool?.should) {
       const should = query?.bool?.should;
-      emails = getFilterValueAsStringArray(should, "term", "email.keyword");
+      const termEmails = getFilterValueAsStringArray(should, "term", "email.keyword");
+      const wildcardEmails = toQueryArray(should)
+        .map((rule: any) => rule?.wildcard?.["email.keyword"])
+        .flatMap((value: any) =>
+          typeof value === "string"
+            ? [value]
+            : value && typeof value === "object" && "value" in value
+              ? [String(value.value)]
+              : [],
+        );
+      emails = [...new Set([...termEmails, ...wildcardEmails].map(normalizeEmail).filter(Boolean))];
     }
 
     const hits = getFilteredUserResultList(emails);

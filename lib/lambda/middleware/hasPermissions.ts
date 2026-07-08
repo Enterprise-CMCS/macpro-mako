@@ -1,7 +1,7 @@
 import { MiddlewareObj, Request } from "@middy/core";
 import { createError } from "@middy/util";
 import { SEATOOL_STATUS } from "shared-types";
-import { isCmsUser, isUserManagerUser } from "shared-utils";
+import { isCmsUser, isUserManagerUser, normalizeEmail } from "shared-utils";
 
 import { getAuthUserFromRequest, getPackageFromRequest } from "./utils";
 
@@ -61,7 +61,7 @@ export const canViewUser = (): MiddlewareObj => ({
     // authorization to view another user's details, throw an error
     if (
       userEmail &&
-      authenticatedUser.email !== userEmail &&
+      normalizeEmail(authenticatedUser.email) !== normalizeEmail(userEmail) &&
       !isUserManagerUser(authenticatedUser)
     ) {
       throw createError(403, JSON.stringify({ message: "Not authorized to view this resource" }));

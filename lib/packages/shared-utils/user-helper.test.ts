@@ -10,6 +10,7 @@ import {
   isCmsWriteUser,
   isIDM,
   isStateUser,
+  normalizeEmail,
 } from ".";
 import {
   testCMSCognitoUser,
@@ -102,5 +103,16 @@ describe("canRequestAccess", () => {
   });
   it("should return true if the role is allowed to request access", () => {
     expect(canRequestAccess("statesubmitter")).toBeTruthy();
+  });
+});
+
+describe("normalizeEmail", () => {
+  it("returns a trimmed lowercase email", () => {
+    expect(normalizeEmail("  Mixed.Case@Example.com ")).toBe("mixed.case@example.com");
+  });
+
+  it("returns an empty string for missing values", () => {
+    expect(normalizeEmail()).toBe("");
+    expect(normalizeEmail(null)).toBe("");
   });
 });

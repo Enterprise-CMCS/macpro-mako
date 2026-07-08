@@ -67,6 +67,29 @@ describe("Auth functions", () => {
         lookupUserAttributes("12345678-1234-1234-1234-123456789012", USER_POOL_ID),
       ).rejects.toThrow("No user found with this sub");
     });
+
+    it("lowercases email values from Cognito attributes", async () => {
+      const emailAttribute = testStateSubmitter.UserAttributes?.find(
+        (attr) => attr.Name === "email",
+      );
+      const originalEmail = emailAttribute?.Value;
+
+      if (!emailAttribute) {
+        throw new Error("Test user is missing email attribute");
+      }
+
+      emailAttribute.Value = "StateSubmitter@Nightwatch.Test";
+
+      try {
+        const userAttributes = await lookupUserAttributes(
+          testStateSubmitter.Username || "",
+          USER_POOL_ID,
+        );
+        expect(userAttributes.email).toBe("statesubmitter@nightwatch.test");
+      } finally {
+        emailAttribute.Value = originalEmail;
+      }
+    });
   });
 
   describe("isAuthorized", () => {
