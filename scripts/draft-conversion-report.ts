@@ -1,13 +1,14 @@
 #!/usr/bin/env tsx
 
 import { GetParameterCommand, SSMClient } from "@aws-sdk/client-ssm";
-import type { Client } from "@opensearch-project/opensearch";
 import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { SEATOOL_STATUS } from "shared-types";
 import type { Document as MainDocument } from "shared-types/opensearch/main";
 
 import { getClient } from "../lib/libs/opensearch-lib";
+
+type OpenSearchClient = Awaited<ReturnType<typeof getClient>>;
 
 type ScriptOptions = {
   stage?: string;
@@ -20,8 +21,12 @@ type ScriptOptions = {
   from?: Date;
   to?: Date;
   states?: string[];
+  excludeStates?: string[];
   events?: string[];
   convertedOnly: boolean;
+  quarterly: boolean;
+  quarterlyOutput?: string;
+  quarterField: "draft-created" | "submitted";
 };
 
 type DraftDocument = Pick<
@@ -80,10 +85,22 @@ type ReportRow = {
   draftRecordChangedAt: string;
   convertedToSubmission: "yes" | "no";
   currentMainStatus: string;
-  mainDeleted: "yes" | "no";
   submissionDate: string;
-  daysFromDraftCreatedToSubmit: string;
-  daysFromLastDraftSaveToSubmit: string;
+  draftCreatedToSubmit: string;
+  lastDraftSaveToSubmit: string;
+};
+
+type QuarterlyMetricRow = {
+  quarter: string;
+  totalDrafts: string;
+  activeDrafts: string;
+  convertedDrafts: string;
+  deletedNotConvertedDrafts: string;
+  conversionRate: string;
+  averageDraftCreatedToSubmit: string;
+  medianDraftCreatedToSubmit: string;
+  averageLastDraftSaveToSubmit: string;
+  medianLastDraftSaveToSubmit: string;
 };
 
 const DEFAULT_PROJECT = "mako";
@@ -116,10 +133,22 @@ const csvHeaders: Array<keyof ReportRow> = [
   "draftRecordChangedAt",
   "convertedToSubmission",
   "currentMainStatus",
-  "mainDeleted",
   "submissionDate",
-  "daysFromDraftCreatedToSubmit",
-  "daysFromLastDraftSaveToSubmit",
+  "draftCreatedToSubmit",
+  "lastDraftSaveToSubmit",
+];
+
+const quarterlyCsvHeaders: Array<keyof QuarterlyMetricRow> = [
+  "quarter",
+  "totalDrafts",
+  "activeDrafts",
+  "convertedDrafts",
+  "deletedNotConvertedDrafts",
+  "conversionRate",
+  "averageDraftCreatedToSubmit",
+  "medianDraftCreatedToSubmit",
+  "averageLastDraftSaveToSubmit",
+  "medianLastDraftSaveToSubmit",
 ];
 
 function printUsage() {
@@ -137,14 +166,18 @@ Options:
   --from <date>                Include drafts first saved on/after this ISO date.
   --to <date>                  Include drafts first saved on/before this ISO date.
   --state <states>             Comma-separated state filters, e.g. MD,VA.
+  --exclude-state <states>     Comma-separated state filters to exclude, e.g. ZZ.
   --event <events>             Comma-separated event filters.
   --converted-only             Only output drafts with an active submitted main record.
+  --quarterly                  Also write a quarterly metrics CSV.
+  --quarterly-output <path>    Quarterly metrics CSV output path.
+  --quarter-field <field>      Quarter grouping field: draft-created or submitted. Default: draft-created.
   --batch-size <number>        OpenSearch scroll/mget batch size. Default: ${DEFAULT_BATCH_SIZE}
   --help                       Show this help text.
 
 Examples:
-  bun run report:draft-conversions -- --stage main
-  bun run report:draft-conversions -- --stage val --from 2026-01-01 --state MD
+  bun run report:draft-conversions -- --stage production --quarterly --exclude-state ZZ
+  bun run report:draft-conversions -- --stage val --from 2026-01-01 --state MD --quarterly
   bun run report:draft-conversions -- --domain https://example --index-namespace main --output -
 `);
 }
@@ -188,6 +221,8 @@ function parseArgs(argv: string[]): ScriptOptions {
     region: DEFAULT_REGION,
     batchSize: DEFAULT_BATCH_SIZE,
     convertedOnly: false,
+    quarterly: false,
+    quarterField: "draft-created",
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -235,6 +270,10 @@ function parseArgs(argv: string[]): ScriptOptions {
         options.states = parseListArg(argv[index + 1], (item) => item.toUpperCase());
         index += 1;
         break;
+      case "--exclude-state":
+        options.excludeStates = parseListArg(argv[index + 1], (item) => item.toUpperCase());
+        index += 1;
+        break;
       case "--event":
         options.events = parseListArg(argv[index + 1]);
         index += 1;
@@ -242,6 +281,22 @@ function parseArgs(argv: string[]): ScriptOptions {
       case "--converted-only":
         options.convertedOnly = true;
         break;
+      case "--quarterly":
+        options.quarterly = true;
+        break;
+      case "--quarterly-output":
+        options.quarterlyOutput = argv[index + 1];
+        index += 1;
+        break;
+      case "--quarter-field": {
+        const value = argv[index + 1];
+        if (value !== "draft-created" && value !== "submitted") {
+          throw new Error(`Invalid quarter field: ${value}`);
+        }
+        options.quarterField = value;
+        index += 1;
+        break;
+      }
       case "--batch-size": {
         const batchSize = Number.parseInt(argv[index + 1] || "", 10);
         if (!Number.isFinite(batchSize) || batchSize <= 0) {
@@ -333,9 +388,14 @@ async function resolveRuntimeConfig(options: ScriptOptions) {
 
 function getOpenSearchQuery(options: ScriptOptions) {
   const must: unknown[] = [{ term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } }];
+  const mustNot: unknown[] = [];
 
   if (options.states?.length) {
     must.push({ terms: { "state.keyword": options.states } });
+  }
+
+  if (options.excludeStates?.length) {
+    mustNot.push({ terms: { "state.keyword": options.excludeStates } });
   }
 
   if (options.events?.length) {
@@ -346,6 +406,7 @@ function getOpenSearchQuery(options: ScriptOptions) {
     query: {
       bool: {
         must,
+        ...(mustNot.length > 0 && { must_not: mustNot }),
       },
     },
     sort: [{ "id.keyword": { order: "asc" } }],
@@ -361,7 +422,7 @@ async function* scrollDocuments<TDocument>({
   query,
   batchSize,
 }: {
-  client: Client;
+  client: OpenSearchClient;
   index: string;
   query: unknown;
   batchSize: number;
@@ -375,7 +436,7 @@ async function* scrollDocuments<TDocument>({
       size: batchSize,
       body: query,
     });
-    let responseBody = initialResponse.body as SearchResponse<TDocument>;
+    let responseBody = initialResponse.body as unknown as SearchResponse<TDocument>;
     scrollId = responseBody._scroll_id;
     let hits = responseBody.hits.hits;
 
@@ -390,7 +451,7 @@ async function* scrollDocuments<TDocument>({
         scroll_id: scrollId,
         scroll: "2m",
       });
-      responseBody = scrollResponse.body as SearchResponse<TDocument>;
+      responseBody = scrollResponse.body as unknown as SearchResponse<TDocument>;
       scrollId = responseBody._scroll_id;
       hits = responseBody.hits.hits;
     }
@@ -405,7 +466,11 @@ async function* scrollDocuments<TDocument>({
   }
 }
 
-async function fetchDraftDocuments(client: Client, draftIndex: string, options: ScriptOptions) {
+async function fetchDraftDocuments(
+  client: OpenSearchClient,
+  draftIndex: string,
+  options: ScriptOptions,
+) {
   const drafts: DraftDocument[] = [];
   const query = getOpenSearchQuery(options);
 
@@ -428,7 +493,7 @@ async function fetchMainDocumentsById({
   ids,
   batchSize,
 }: {
-  client: Client;
+  client: OpenSearchClient;
   mainIndex: string;
   ids: string[];
   batchSize: number;
@@ -482,15 +547,49 @@ function getTime(value: string) {
   return Number.isNaN(time) ? undefined : time;
 }
 
-function getElapsedDays(start: string, end: string) {
+function getElapsedDaysNumber(start: string, end: string) {
   const startTime = getTime(start);
   const endTime = getTime(end);
 
   if (startTime === undefined || endTime === undefined) {
+    return undefined;
+  }
+
+  return (endTime - startTime) / MS_PER_DAY;
+}
+
+function formatDurationFromDays(days: number | undefined) {
+  if (days === undefined || days < 0) {
     return "";
   }
 
-  return ((endTime - startTime) / MS_PER_DAY).toFixed(2);
+  let seconds = Math.round(days * MS_PER_DAY);
+  if (seconds < 60) {
+    return `${seconds} sec`;
+  }
+
+  const dayCount = Math.floor(seconds / 86_400);
+  seconds -= dayCount * 86_400;
+  const hourCount = Math.floor(seconds / 3_600);
+  seconds -= hourCount * 3_600;
+  const minuteCount = Math.floor(seconds / 60);
+  seconds -= minuteCount * 60;
+
+  if (dayCount > 0) {
+    return hourCount > 0
+      ? `${dayCount} day${dayCount === 1 ? "" : "s"} ${hourCount} hr`
+      : `${dayCount} day${dayCount === 1 ? "" : "s"}`;
+  }
+
+  if (hourCount > 0) {
+    return minuteCount > 0 ? `${hourCount} hr ${minuteCount} min` : `${hourCount} hr`;
+  }
+
+  return seconds > 0 ? `${minuteCount} min ${seconds} sec` : `${minuteCount} min`;
+}
+
+function getElapsedDuration(start: string, end: string) {
+  return formatDurationFromDays(getElapsedDaysNumber(start, end));
 }
 
 function isConvertedToSubmission(mainDocument: MainDocument | undefined) {
@@ -529,6 +628,11 @@ function buildReportRows({
       continue;
     }
 
+    const state = draft.state || draft.id?.slice(0, 2) || "";
+    if (options.excludeStates?.includes(state)) {
+      continue;
+    }
+
     const mainDocument = mainDocumentsById.get(draft.id);
     const convertedToSubmission = isConvertedToSubmission(mainDocument);
 
@@ -540,7 +644,7 @@ function buildReportRows({
 
     rows.push({
       packageId: draft.id || "",
-      state: draft.state || draft.id?.slice(0, 2) || "",
+      state,
       event: draft.event || "",
       authority: draft.authority || "",
       draftRecordStatus: draft.deleted === true ? "deleted" : "active",
@@ -549,10 +653,9 @@ function buildReportRows({
       draftRecordChangedAt: asIso(draft.makoChangedDate || draft.changedDate || draft.statusDate),
       convertedToSubmission: convertedToSubmission ? "yes" : "no",
       currentMainStatus: mainDocument?.seatoolStatus || "",
-      mainDeleted: mainDocument?.deleted === true ? "yes" : "no",
       submissionDate,
-      daysFromDraftCreatedToSubmit: getElapsedDays(draftCreatedAt, submissionDate),
-      daysFromLastDraftSaveToSubmit: getElapsedDays(draftLastSavedAt, submissionDate),
+      draftCreatedToSubmit: getElapsedDuration(draftCreatedAt, submissionDate),
+      lastDraftSaveToSubmit: getElapsedDuration(draftLastSavedAt, submissionDate),
     });
   }
 
@@ -567,11 +670,11 @@ function escapeCsvValue(value: string) {
   return value;
 }
 
-function toCsv(rows: ReportRow[]) {
+function toCsv<T>(rows: T[], headers: Array<keyof T>) {
   const lines = [
-    csvHeaders.join(","),
+    headers.join(","),
     ...rows.map((row) =>
-      csvHeaders.map((header) => escapeCsvValue(String(row[header] ?? ""))).join(","),
+      headers.map((header) => escapeCsvValue(String(row[header] ?? ""))).join(","),
     ),
   ];
 
@@ -589,6 +692,17 @@ function getDefaultOutputPath(indexNamespace: string) {
   );
 }
 
+function getDefaultQuarterlyOutputPath(indexNamespace: string) {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const safeNamespace = indexNamespace.replace(/[^a-zA-Z0-9_-]/g, "-");
+  return path.join(
+    "docs",
+    "local",
+    "reports",
+    `draft-conversion-quarterly-${safeNamespace}-${timestamp}.csv`,
+  );
+}
+
 async function writeCsv(outputPath: string, csv: string) {
   if (outputPath === "-") {
     console.log(csv);
@@ -597,6 +711,81 @@ async function writeCsv(outputPath: string, csv: string) {
 
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, csv);
+}
+
+function getQuarter(value: string) {
+  const time = getTime(value);
+  if (time === undefined) {
+    return "unknown";
+  }
+
+  const date = new Date(time);
+  const quarter = Math.floor(date.getUTCMonth() / 3) + 1;
+  return `${date.getUTCFullYear()}-Q${quarter}`;
+}
+
+function average(values: number[]) {
+  if (values.length === 0) {
+    return undefined;
+  }
+
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function median(values: number[]) {
+  if (values.length === 0) {
+    return undefined;
+  }
+
+  const sorted = [...values].sort((left, right) => left - right);
+  const midpoint = Math.floor(sorted.length / 2);
+
+  if (sorted.length % 2 === 1) {
+    return sorted[midpoint];
+  }
+
+  return (sorted[midpoint - 1] + sorted[midpoint]) / 2;
+}
+
+function buildQuarterlyMetrics(
+  rows: ReportRow[],
+  quarterField: ScriptOptions["quarterField"],
+): QuarterlyMetricRow[] {
+  const groupedRows = rows.reduce<Map<string, ReportRow[]>>((acc, row) => {
+    const sourceDate = quarterField === "submitted" ? row.submissionDate : row.draftCreatedAt;
+    const quarter = getQuarter(sourceDate);
+    acc.set(quarter, [...(acc.get(quarter) || []), row]);
+    return acc;
+  }, new Map());
+
+  return [...groupedRows.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .map(([quarter, quarterRows]) => {
+      const convertedRows = quarterRows.filter((row) => row.convertedToSubmission === "yes");
+      const activeDrafts = quarterRows.filter((row) => row.draftRecordStatus === "active").length;
+      const deletedNotConvertedDrafts = quarterRows.filter(
+        (row) => row.draftRecordStatus === "deleted" && row.convertedToSubmission === "no",
+      ).length;
+      const draftCreatedDurations = convertedRows
+        .map((row) => getElapsedDaysNumber(row.draftCreatedAt, row.submissionDate))
+        .filter((value): value is number => value !== undefined);
+      const lastSavedDurations = convertedRows
+        .map((row) => getElapsedDaysNumber(row.draftLastSavedAt, row.submissionDate))
+        .filter((value): value is number => value !== undefined);
+
+      return {
+        quarter,
+        totalDrafts: String(quarterRows.length),
+        activeDrafts: String(activeDrafts),
+        convertedDrafts: String(convertedRows.length),
+        deletedNotConvertedDrafts: String(deletedNotConvertedDrafts),
+        conversionRate: getPercent(convertedRows.length, quarterRows.length),
+        averageDraftCreatedToSubmit: formatDurationFromDays(average(draftCreatedDurations)),
+        medianDraftCreatedToSubmit: formatDurationFromDays(median(draftCreatedDurations)),
+        averageLastDraftSaveToSubmit: formatDurationFromDays(average(lastSavedDurations)),
+        medianLastDraftSaveToSubmit: formatDurationFromDays(median(lastSavedDurations)),
+      };
+    });
 }
 
 function getPercent(numerator: number, denominator: number) {
@@ -611,6 +800,8 @@ function printSummary({
   rows,
   draftCountBeforeFilters,
   outputPath,
+  quarterlyOutputPath,
+  quarterlyMetrics,
   domain,
   draftIndex,
   mainIndex,
@@ -618,6 +809,8 @@ function printSummary({
   rows: ReportRow[];
   draftCountBeforeFilters: number;
   outputPath: string;
+  quarterlyOutputPath?: string;
+  quarterlyMetrics?: QuarterlyMetricRow[];
   domain: string;
   draftIndex: string;
   mainIndex: string;
@@ -651,6 +844,11 @@ function printSummary({
   console.log(`Still active drafts: ${activeDraftCount}`);
   console.log(`Deleted drafts without active submitted main record: ${deletedNotConvertedCount}`);
   console.log(`CSV output: ${outputPath}`);
+
+  if (quarterlyOutputPath && quarterlyMetrics) {
+    console.log(`Quarterly metrics CSV output: ${quarterlyOutputPath}`);
+    console.log(`Quarterly rows written: ${quarterlyMetrics.length}`);
+  }
 
   if (byEvent.size > 0) {
     console.log("\nBy event");
@@ -690,13 +888,25 @@ async function main() {
     mainDocumentsById,
     options,
   });
-  const csv = toCsv(rows);
+  const csv = toCsv(rows, csvHeaders);
+
+  let quarterlyOutputPath: string | undefined;
+  let quarterlyMetrics: QuarterlyMetricRow[] | undefined;
 
   await writeCsv(outputPath, csv);
+
+  if (options.quarterly) {
+    quarterlyOutputPath = options.quarterlyOutput || getDefaultQuarterlyOutputPath(indexNamespace);
+    quarterlyMetrics = buildQuarterlyMetrics(rows, options.quarterField);
+    await writeCsv(quarterlyOutputPath, toCsv(quarterlyMetrics, quarterlyCsvHeaders));
+  }
+
   printSummary({
     rows,
     draftCountBeforeFilters: drafts.length,
     outputPath,
+    quarterlyOutputPath,
+    quarterlyMetrics,
     domain,
     draftIndex,
     mainIndex,
