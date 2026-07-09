@@ -5,7 +5,7 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { APIGatewayEvent } from "aws-lambda";
 import { CognitoUserAttributes } from "shared-types";
-import { isCmsUser, isCmsWriteUser, isHelpDeskUser } from "shared-utils";
+import { isCmsUser, isCmsWriteUser, isHelpDeskUser, normalizeEmail } from "shared-utils";
 
 import {
   getActiveStatesForUserByEmail,
@@ -38,6 +38,7 @@ function userAttrDict(cognitoUser: CognitoUserType): CognitoUserAttributes {
     });
   }
   attributes["username"] = cognitoUser.Username;
+  attributes["email"] = normalizeEmail(attributes["email"]);
 
   return attributes as CognitoUserAttributes;
 }

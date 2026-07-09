@@ -40,7 +40,7 @@ jobs:
           files: coverage/lcov.info
       - name: Upload Coverage Summary
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         id: upload-json
         with:
           name: ${{ env.JSON_ARTIFACT_ID }}
@@ -49,7 +49,7 @@ jobs:
           retention-days: 90
       - name: Upload Coverage Report
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         id: upload-html
         with:
           name: ${{ env.HTML_ARTIFACT_ID }}

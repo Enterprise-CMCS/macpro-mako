@@ -362,7 +362,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                       cellpadding="0"
                       cellspacing="0"
                       role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
+                      style="margin-bottom: 2px; margin-top: 2px; table-layout: fixed; width: 100%;"
                       width="100%"
                     >
                       <tbody
@@ -374,28 +374,22 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                           <td
                             align="left"
                             data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; padding-right: 12px; vertical-align: top; width: 35%;"
                           >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px;"
-                              >
-                                Waiver Extension Request:
-                              </p>
-                               
-                            </span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
+                            >
+                              Waiver Extension Request:
+                            </p>
                           </td>
                           <td
                             data-id="__react-email-column"
-                            style="vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; vertical-align: top; width: 65%;"
                           >
                             <p
-                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px;"
+                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
                             >
-                              <span>
-                                Temporary Extention Document for submission.pdf
-                              </span>
+                              Temporary Extention Document for submission.pdf
                             </p>
                           </td>
                         </tr>
@@ -407,7 +401,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                       cellpadding="0"
                       cellspacing="0"
                       role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
+                      style="margin-bottom: 2px; margin-top: 2px; table-layout: fixed; width: 100%;"
                       width="100%"
                     >
                       <tbody
@@ -419,28 +413,22 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                           <td
                             align="left"
                             data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; padding-right: 12px; vertical-align: top; width: 35%;"
                           >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px;"
-                              >
-                                Waiver Extension Request:
-                              </p>
-                               
-                            </span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
+                            >
+                              Waiver Extension Request:
+                            </p>
                           </td>
                           <td
                             data-id="__react-email-column"
-                            style="vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; vertical-align: top; width: 65%;"
                           >
                             <p
-                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px;"
+                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
                             >
-                              <span>
-                                Second Extention Document for submission.pdf
-                              </span>
+                              Second Extention Document for submission.pdf
                             </p>
                           </td>
                         </tr>
@@ -452,7 +440,7 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                       cellpadding="0"
                       cellspacing="0"
                       role="presentation"
-                      style="margin-bottom: 2px; margin-top: 2px;"
+                      style="margin-bottom: 2px; margin-top: 2px; table-layout: fixed; width: 100%;"
                       width="100%"
                     >
                       <tbody
@@ -464,28 +452,22 @@ exports[`Initial Submission CMS Email Snapshot Test > renders a TempExt Preview 
                           <td
                             align="left"
                             data-id="__react-email-column"
-                            style="width: 50%; vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; padding-right: 12px; vertical-align: top; width: 35%;"
                           >
-                             
-                            <span>
-                              <p
-                                style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px;"
-                              >
-                                Waiver Extension Request:
-                              </p>
-                               
-                            </span>
+                            <p
+                              style="font-size: 14px; line-height: 1.4; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
+                            >
+                              Waiver Extension Request:
+                            </p>
                           </td>
                           <td
                             data-id="__react-email-column"
-                            style="vertical-align: top;"
+                            style="overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal; vertical-align: top; width: 65%;"
                           >
                             <p
-                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px;"
+                              style="font-size: 14px; line-height: 1.4; color: rgb(51, 51, 51); margin-bottom: 4px; margin-top: 4px; overflow-wrap: anywhere; word-break: break-word; word-wrap: break-word; white-space: normal;"
                             >
-                              <span>
-                                Third Extention Document for submission.pdf
-                              </span>
+                              Third Extention Document for submission.pdf
                             </p>
                           </td>
                         </tr>

@@ -105,6 +105,25 @@ describe("zod schema helpers", () => {
       await expect(unit.getItem("TEST_ID")).resolves.toBeUndefined();
     });
 
+    it("returns a found item when package content contains a 404 phone area code", async () => {
+      const packageResponse = {
+        found: true,
+        _id: "GA-25-0015",
+        _source: {
+          id: "GA-25-0015",
+          additionalInformation: "Please contact Perri Nena Smith at (404) 805-6716.",
+        },
+      };
+
+      mockedServer.use(
+        http.post("https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/item", () =>
+          HttpResponse.json(packageResponse),
+        ),
+      );
+
+      await expect(unit.getItem("GA-25-0015")).resolves.toEqual(packageResponse);
+    });
+
     it("should call sendGAEvent when the API throws an error", async () => {
       mockedServer.use(errorApiItemHandler);
 

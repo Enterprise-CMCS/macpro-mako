@@ -11,6 +11,7 @@
     "build:archive": "test -d lib/attachment-archive/node_modules || (echo 'Missing lib/attachment-archive dependencies. Run ./run install.' >&2; exit 1); (cd lib/attachment-archive && bun run typecheck)",
     "build:mocks": "(cd mocks && bun run build)",
     "build:ui": "(cd react-app && bun run build)",
+    "audit:case-email-duplicates": "tsx scripts/audit-case-insensitive-user-duplicates.ts",
     "repair:attachment-scan-status": "tsx scripts/repair-attachment-scan-status.ts",
     "export:opensearch": "tsx scripts/export-opensearch-to-s3.ts",
     "report:draft-conversions": "tsx scripts/draft-conversion-report.ts",
@@ -113,11 +114,16 @@
   },
   "overrides": {
     "@vitest/browser": "4.1.8",
+    "@vitest/browser-playwright": "4.1.8",
     "axios": "1.16.1",
+    "shell-quote": "1.8.4",
     "tar": "7.5.13",
     "vite": "8.0.14",
     "vitest": "4.1.8",
     "ws": "8.20.1"
   },
-  "packageManager": "bun@1.1.20"
+  "packageManager": "bun@1.1.20",
+  "patchedDependencies": {
+    "@aws-amplify/api-rest@3.5.18": "patches/@aws-amplify%2Fapi-rest@3.5.18.patch"
+  }
 }

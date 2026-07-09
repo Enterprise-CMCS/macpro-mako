@@ -58,6 +58,12 @@ describe("Default Welcome", () => {
       "href",
       "/faq/onboarding-materials",
     );
+    expect(screen.getByText("Updated CS 18 SPA form")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "The CS 18 CHIP eligibility SPA template and implementation guide have been updated in OneMAC to include compliance attestations for changes made by section 71109 of the Working Families Tax Cut (WFTC) legislation effective October 1, 2026. These updates to the CS 18 will be effective starting July 7, 2026.",
+      ),
+    ).toBeInTheDocument();
     expect(screen.getByText("Updated CS 31 SPA form")).toBeInTheDocument();
     expect(
       screen.getByText(/The CS 31 CHIP eligibility SPA template and implementation guide/),
@@ -65,6 +71,16 @@ describe("Default Welcome", () => {
     expect(
       screen.getByRole("link", { name: "Access SPA templates and implementation guides" }),
     ).toHaveAttribute("href", "/faq/chip-spa-templates");
+
+    const newAndNotableSection = screen
+      .getByRole("heading", { name: "New and Notable", level: 2 })
+      .closest("section");
+    expect(newAndNotableSection).not.toBeNull();
+    expect(
+      within(newAndNotableSection as HTMLElement)
+        .getAllByRole("heading", { level: 3 })
+        .map((heading) => heading.textContent),
+    ).toEqual(["Saving Draft Packages", "Updated CS 18 SPA form", "Updated CS 31 SPA form"]);
 
     const resourcesSection = screen.getByRole("heading", {
       name: "Resources",

@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, expect, it, vi } from "vitest";
+import { isCmsUser } from "shared-utils";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { SupportPage } from "./SupportPage";
 
@@ -51,6 +52,10 @@ vi.mock("@/api/useGetUser", () => ({
 }));
 
 describe("OneMAC Support", () => {
+  beforeEach(() => {
+    vi.mocked(isCmsUser).mockReturnValue(false);
+  });
+
   it("should set open items correctly when id param is passed", async () => {
     const scrollToMock = vi.fn();
     global.scrollTo = scrollToMock;
@@ -100,9 +105,8 @@ describe("OneMAC Support", () => {
   });
 
   it("should display the Toggle group if the user is CMS", () => {
-    vi.mock("shared-utils", () => ({
-      isCmsUser: vi.fn().mockReturnValue(true),
-    }));
+    vi.mocked(isCmsUser).mockReturnValue(true);
+
     render(<SupportPage />);
 
     expect(screen.getByTestId("cms-toggle-group")).toBeInTheDocument();
@@ -114,12 +118,11 @@ describe("OneMAC Support", () => {
     const input = screen.getByPlaceholderText("Search OneMAC support");
     const button = screen.getByRole("button", { name: /Search/i });
 
-    await userEvent.type(input, "CMS FAQ 2");
+    await userEvent.type(input, "FAQ 2");
     await userEvent.click(button);
 
-    expect(screen.getByText("Search Results")).toBeInTheDocument();
-
-    expect(screen.getByText("Answer 2")).toBeInTheDocument();
+    expect(await screen.findByText("Search Results")).toBeInTheDocument();
+    expect(await screen.findByText("Answer 2")).toBeInTheDocument();
   });
 
   it("should display the LeftNavigation when not searching", () => {

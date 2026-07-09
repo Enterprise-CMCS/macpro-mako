@@ -28,7 +28,7 @@ type PackageActivityRecord = {
   label: string;
   submitterName?: string;
   timestamp?: string | number;
-  attachments: opensearch.changelog.Document["attachments"];
+  attachments: Attachments;
   additionalInformation?: string | null;
   detailMessage?: string;
   isAdminChange?: boolean;
@@ -97,7 +97,7 @@ const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
 type AttachmentDetailsProps = {
   id: string;
   packageId: string;
-  attachments: opensearch.changelog.Document["attachments"];
+  attachments: Attachments;
   onClick: (attachment: Attachments[number]) => Promise<string | undefined>;
 };
 
@@ -106,10 +106,12 @@ const AttachmentDetails = ({ id, packageId, attachments, onClick }: AttachmentDe
     {attachments.map((attachment) => {
       return (
         <TableRow key={`${id}-${attachment.key}`}>
-          <TableCell>{attachment.title}</TableCell>
-          <TableCell>
+          <TableCell className="w-[28%] min-w-0 [overflow-wrap:anywhere] [word-break:break-word]">
+            {attachment.title}
+          </TableCell>
+          <TableCell className="min-w-0 [overflow-wrap:anywhere] [word-break:break-word]">
             <Button
-              className="ml-[-15px] align-left text-left min-h-fit"
+              className="h-auto min-h-fit w-full max-w-full justify-start whitespace-normal px-0 py-0 text-left"
               variant="link"
               onClick={() => {
                 onClick(attachment).then((url) => {
@@ -123,7 +125,9 @@ const AttachmentDetails = ({ id, packageId, attachments, onClick }: AttachmentDe
                 });
               }}
             >
-              {attachment.filename}
+              <span className="min-w-0 max-w-full [overflow-wrap:anywhere] [word-break:break-word]">
+                {attachment.filename}
+              </span>
             </Button>
           </TableCell>
         </TableRow>
@@ -137,7 +141,7 @@ type SubmissionProps = {
 };
 
 const Submission = ({ packageActivity }: SubmissionProps) => {
-  const { attachments = [], id, packageId, additionalInformation, detailMessage } = packageActivity;
+  const { attachments, id, packageId, additionalInformation, detailMessage } = packageActivity;
   const {
     archiveErrorMessage,
     archiveWarningMessage,
@@ -162,10 +166,10 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
         <h2 className="font-bold text-lg mb-2">Attachments</h2>
 
         {attachments && attachments.length > 0 ? (
-          <Table>
+          <Table className="table-fixed">
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[300px]">Document Type</TableHead>
+                <TableHead className="w-[28%]">Document Type</TableHead>
                 <TableHead>Attached File</TableHead>
               </TableRow>
             </TableHeader>
@@ -228,14 +232,14 @@ type PackageActivityProps = {
 const PackageActivity = ({ packageActivity }: PackageActivityProps) => {
   return (
     <AccordionItem value={packageActivity.id}>
-      <AccordionTrigger className="bg-gray-100 px-3" showPlusMinus>
-        <p className="flex flex-row gap-2 text-gray-600">
-          <strong className="text-left">
+      <AccordionTrigger className="min-w-0 bg-gray-100 px-3" showPlusMinus>
+        <p className="flex min-w-0 flex-1 flex-row flex-wrap gap-x-2 gap-y-1 pr-3 text-left text-gray-600">
+          <strong className="min-w-0 break-words text-left">
             {packageActivity.label}{" "}
             {packageActivity.submitterName ? `By ${packageActivity.submitterName}` : ""}
           </strong>
           {" - "}
-          <span className="text-right">
+          <span className="whitespace-nowrap text-right">
             {packageActivity.timestamp ? formatDateToET(packageActivity.timestamp) : "Unknown"}
           </span>
         </p>
@@ -323,7 +327,7 @@ const mapChangelogItemToPackageActivity = ({
     label,
     submitterName: packageActivity.submitterName,
     timestamp: packageActivity.timestamp,
-    attachments: packageActivity.attachments,
+    attachments: packageActivity.attachments ?? [],
     additionalInformation: packageActivity.additionalInformation,
     isAdminChange: packageActivity.isAdminChange,
   };
@@ -346,7 +350,7 @@ export const PackageActivities = ({ id, changelog, submission }: PackageActiviti
     <DetailsSection
       id="package_activity"
       title={
-        <div className="flex justify-between">
+        <div className="flex min-w-0 flex-wrap items-start justify-between gap-3">
           Package Activity ({packageActivities.length || 0})
           <DownloadAllButton packageActivities={packageActivities} packageId={id} />
         </div>

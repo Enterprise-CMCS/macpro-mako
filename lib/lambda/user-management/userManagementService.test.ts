@@ -51,6 +51,10 @@ describe("User Management Service", () => {
       const result = await getUserByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
       expect(result).toEqual(OS_STATE_SYSTEM_ADMIN_USER._source);
     });
+    it("should return the same user for mixed-case email input", async () => {
+      const result = await getUserByEmail("StateSubmitter@Nightwatch.Test");
+      expect(result).toEqual(OS_STATE_SUBMITTER_USER._source);
+    });
   });
 
   describe("getUsersByEmail", () => {
@@ -165,6 +169,10 @@ describe("User Management Service", () => {
       const result = await getAllUserRolesByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
       expect(result).toEqual(getFilteredRoleDocsByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL));
     });
+    it("should return the correct roles for mixed-case email input", async () => {
+      const result = await getAllUserRolesByEmail("StateSubmitter@Nightwatch.Test");
+      expect(result).toEqual(getFilteredRoleDocsByEmail(OS_STATE_SUBMITTER_EMAIL));
+    });
   });
 
   describe("userHasThisRole", () => {
@@ -192,6 +200,14 @@ describe("User Management Service", () => {
     });
     it("should return true if the email, state, and role record exist", async () => {
       const result = await userHasThisRole(OS_STATE_SYSTEM_ADMIN_EMAIL, "MD", "statesystemadmin");
+      expect(result).toBeTruthy();
+    });
+    it("should match roles with mixed-case email input", async () => {
+      const result = await userHasThisRole(
+        "StateSystemAdmin@Nightwatch.Test",
+        "MD",
+        "statesystemadmin",
+      );
       expect(result).toBeTruthy();
     });
   });
@@ -259,6 +275,11 @@ describe("User Management Service", () => {
     it("should return the latest role for the state sysadmin", async () => {
       const [role] = getLatestRoleByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
       const result = await getLatestActiveRoleByEmail(OS_STATE_SYSTEM_ADMIN_EMAIL);
+      expect(result).toEqual(role._source);
+    });
+    it("should return the latest role for mixed-case email input", async () => {
+      const [role] = getLatestRoleByEmail(OS_STATE_SUBMITTER_EMAIL);
+      const result = await getLatestActiveRoleByEmail("StateSubmitter@Nightwatch.Test");
       expect(result).toEqual(role._source);
     });
   });

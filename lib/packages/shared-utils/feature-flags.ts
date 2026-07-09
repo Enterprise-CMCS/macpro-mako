@@ -103,7 +103,6 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
-  /*
    *  Toggle visibility between the enhanced experience and mmdl banner
    */
   UPGRADE_MMDL_BANNER: {

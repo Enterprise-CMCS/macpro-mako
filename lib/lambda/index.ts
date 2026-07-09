@@ -19,6 +19,7 @@ export * as markAttachmentArchiveFailed from "./markAttachmentArchiveFailed";
 export * as notifyAttachmentArchiveIntegrity from "./notifyAttachmentArchiveIntegrity";
 export * as rebuildAttachmentArchives from "./rebuildAttachmentArchives";
 export * as runAttachmentArchiveIntegrityCheck from "./runAttachmentArchiveIntegrityCheck";
+export * as runSeatoolStatusMismatchReport from "./runSeatoolStatusMismatchReport";
 export * as validateAttachmentArchive from "./validateAttachmentArchive";
 export * as processEmails from "./processEmails";
 export * as runReindex from "./runReindex";

@@ -1,5 +1,6 @@
 import { produceMessage } from "libs/api/kafka";
 import { APIGatewayEvent } from "shared-types";
+import { normalizeEmail } from "shared-utils";
 
 import { authenticatedMiddy, ContextWithAuthenticatedUser } from "../middleware";
 import { getUserByEmail } from "./userManagementService";
@@ -15,9 +16,10 @@ export const handler = authenticatedMiddy({
     throw new Error("Email is undefined");
   }
 
-  const userInfo = await getUserByEmail(authenticatedUser.email);
+  const normalizedEmail = normalizeEmail(authenticatedUser.email);
+  const userInfo = await getUserByEmail(normalizedEmail);
 
-  const id = `${authenticatedUser.email}_user-information`;
+  const id = `${normalizedEmail}_user-information`;
 
   if (!userInfo) {
     await produceMessage(
@@ -25,7 +27,7 @@ export const handler = authenticatedMiddy({
       id,
       JSON.stringify({
         eventType: "user-info",
-        email: authenticatedUser.email,
+        email: normalizedEmail,
         fullName: `${authenticatedUser.given_name} ${authenticatedUser.family_name}`,
       }),
     );

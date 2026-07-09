@@ -69,7 +69,7 @@ describe("CMSSignup", () => {
     setDefaultStateSubmitter();
     await setup();
 
-    expect(screen.getByText("Profile")).toBeInTheDocument();
+    await waitFor(() => expect(screen.getByText("Profile")).toBeInTheDocument());
   });
 
   it("should show the form if the user is a defaultcmsuser", async () => {

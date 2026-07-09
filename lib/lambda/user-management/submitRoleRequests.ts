@@ -2,7 +2,12 @@ import { createError } from "@middy/util";
 import { produceMessage } from "libs/api/kafka";
 import { APIGatewayEvent } from "shared-types";
 import { baseRoleInformationSchema } from "shared-types/events/legacy-user";
-import { canRequestAccess, canSelfRevokeAccess, canUpdateAccess } from "shared-utils";
+import {
+  canRequestAccess,
+  canSelfRevokeAccess,
+  canUpdateAccess,
+  normalizeEmail,
+} from "shared-utils";
 import { z } from "zod";
 
 import { authenticatedMiddy, ContextWithAuthenticatedUser } from "../middleware";
@@ -26,7 +31,7 @@ export const handler = authenticatedMiddy({
 }).handler(async (event: SubmitRoleRequestEvent, context: ContextWithAuthenticatedUser) => {
   const { authenticatedUser } = context;
   const {
-    email,
+    email: requestedEmail,
     state,
     role: roleToUpdate,
     eventType,
@@ -40,7 +45,9 @@ export const handler = authenticatedMiddy({
     throw new Error("Email is undefined");
   }
 
-  const userInfo = await getUserByEmail(authenticatedUser.email);
+  const email = normalizeEmail(requestedEmail);
+  const authenticatedEmail = normalizeEmail(authenticatedUser.email);
+  const userInfo = await getUserByEmail(authenticatedEmail);
 
   let status: RoleStatus;
   // Determine the status based on the user's role and action
@@ -69,7 +76,7 @@ export const handler = authenticatedMiddy({
 
   const id = `${email}_${state}_${roleToUpdate}`;
   const date = Date.now(); // correct time format?
-  const doneByEmail = userInfo?.email || authenticatedUser.email;
+  const doneByEmail = userInfo?.email || authenticatedEmail;
   const doneByName =
     userInfo?.fullName || `${authenticatedUser.given_name} ${authenticatedUser.family_name}`; // full name of current user. Cognito (userAttributes) may have a different full name
 

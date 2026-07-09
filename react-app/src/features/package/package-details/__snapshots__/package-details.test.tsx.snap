@@ -71,7 +71,9 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
               Maryland
             </dd>
           </dl>
-          <dl>
+          <dl
+            class="sm:col-span-2"
+          >
             <dt
               class="font-bold"
             >
@@ -179,7 +181,9 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
               -- --
             </dd>
           </dl>
-          <dl>
+          <dl
+            class="sm:col-span-2"
+          >
             <dt
               class="font-bold"
             >
@@ -321,7 +325,9 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
               Maryland
             </dd>
           </dl>
-          <dl>
+          <dl
+            class="sm:col-span-2"
+          >
             <dt
               class="font-bold"
             >
@@ -429,7 +435,9 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
               -- --
             </dd>
           </dl>
-          <dl>
+          <dl
+            class="sm:col-span-2"
+          >
             <dt
               class="font-bold"
             >
@@ -571,7 +579,9 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
               Maryland
             </dd>
           </dl>
-          <dl>
+          <dl
+            class="sm:col-span-2"
+          >
             <dt
               class="font-bold"
             >
@@ -679,7 +689,9 @@ exports[`package details > as CMS Reviewer > renders package details for a 1915(
               -- --
             </dd>
           </dl>
-          <dl>
+          <dl
+            class="sm:col-span-2"
+          >
             <dt
               class="font-bold"
             >
