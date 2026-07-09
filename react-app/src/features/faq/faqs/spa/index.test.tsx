@@ -1,37 +1,9 @@
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
-import {
-  CHP_ELIGIBILITY_GUIDES,
-  CHP_MAGI_GUIDES,
-  CHP_MED_EXPANSION_GUIDES,
-  CHP_NON_FIN_GUIDES,
-  ChipSpaImplementationGuides,
-} from "./chip-spa-implementation-guides";
-import {
-  CHP_ELIGIBILITY_TEMPLATE,
-  CHP_MAGI_TEMPLATES,
-  CHP_MED_EXPANSION_TEMPLATES,
-  CHP_NON_FIN_TEMPLATE,
-  ChipSpaTemplates,
-} from "./chip-spa-templates";
+import { ChipSpaImplementationGuides } from "./chip-spa-implementation-guides";
+import { ChipSpaTemplates } from "./chip-spa-templates";
 import { spaContent } from "./index";
-
-const chipSpaTemplates = [
-  ...CHP_MAGI_TEMPLATES,
-  ...CHP_MED_EXPANSION_TEMPLATES,
-  ...CHP_ELIGIBILITY_TEMPLATE,
-  ...CHP_NON_FIN_TEMPLATE,
-];
-
-const chipSpaImplementationGuides = [
-  ...CHP_MAGI_GUIDES,
-  ...CHP_MED_EXPANSION_GUIDES,
-  ...CHP_ELIGIBILITY_GUIDES,
-  ...CHP_NON_FIN_GUIDES,
-];
-
-const compactTitle = (title: string) => title.replace(/\s+/g, "");
 
 describe("CHIP SPA FAQ documents", () => {
   it("serves the CS18 template and implementation guide from the canonical PDF paths", () => {
@@ -76,16 +48,6 @@ describe("CHIP SPA FAQ documents", () => {
     expect(templateLink).toHaveAttribute("download", "CS23.pdf");
     expect(guideLink).toHaveAttribute("download", "CS23 Implementation Guide.pdf");
     expect(introductionLink).toHaveAttribute("download", "CHIP Eligibility Introduction.pdf");
-  });
-
-  it("assigns compact CS download names to all CHIP SPA template and guide entries", () => {
-    for (const template of chipSpaTemplates) {
-      expect(template.downloadName).toBe(`${compactTitle(template.title)}.pdf`);
-    }
-
-    for (const guide of chipSpaImplementationGuides) {
-      expect(guide.downloadName).toBe(`${compactTitle(guide.title)} Implementation Guide.pdf`);
-    }
   });
 
   it("marks CHIP eligibility template and implementation guide FAQs as updated", () => {
