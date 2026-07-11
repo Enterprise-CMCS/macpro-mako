@@ -1,3 +1,6 @@
+import { existsSync, readFileSync } from "node:fs";
+import { join } from "node:path";
+
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
@@ -5,7 +8,20 @@ import { ChipSpaImplementationGuides } from "./chip-spa-implementation-guides";
 import { ChipSpaTemplates } from "./chip-spa-templates";
 import { spaContent } from "./index";
 
-describe("CHIP SPA FAQ documents", () => {
+const assetRoot = ["src/assets", "react-app/src/assets"]
+  .map((assetPath) => join(process.cwd(), assetPath))
+  .find(existsSync);
+
+const getPdfTitle = (assetPath: string) => {
+  if (!assetRoot) {
+    throw new Error("Could not locate react-app asset root");
+  }
+
+  const pdf = readFileSync(join(assetRoot, assetPath), "latin1");
+  return pdf.match(/<dc:title>[\s\S]*?<rdf:li xml:lang="x-default">([^<]*)<\/rdf:li>/)?.[1];
+};
+
+describe("SPA FAQ documents", () => {
   it("serves the CS18 template and implementation guide from the canonical PDF paths", () => {
     render(
       <>
@@ -64,6 +80,19 @@ describe("CHIP SPA FAQ documents", () => {
           labelColor: "green",
         }),
       ]),
+    );
+  });
+
+  it("uses descriptive PDF titles for ABP and Premiums and Cost Sharing implementation guides", () => {
+    expect(getPdfTitle("abp/IG_ABP2c_EnrollmentAssurancesMandatoryParticipants.pdf")).toBe(
+      "ABP2c Implementation Guide",
+    );
+    expect(getPdfTitle("mpc/IG_G2b_CostSharingAmountsMN.pdf")).toBe("G2b Implementation Guide");
+    expect(getPdfTitle("mpc/IG_P&CSSpaImplemntationGuide.pdf")).toBe(
+      "Premiums and Cost Sharing Public Notice and General Information Implementation Guide",
+    );
+    expect(getPdfTitle("abp/IG_AbpGeneralInfoImplementationGuide.pdf")).toBe(
+      "ABP General Information Implementation Guide",
     );
   });
 });
