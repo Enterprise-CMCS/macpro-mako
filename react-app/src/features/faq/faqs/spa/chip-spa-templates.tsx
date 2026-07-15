@@ -1,5 +1,12 @@
 import { PdfList, Template } from "../utils";
 
+const getTemplateDownloadName = (title: string) => `${title.replace(/\s+/g, "")}.pdf`;
+
+const withTemplateDownloadName = (template: Template): Template => ({
+  ...template,
+  downloadName: getTemplateDownloadName(template.title),
+});
+
 // MAGI Eligibility & Methods
 export const CHP_MAGI_TEMPLATES: Template[] = [
   {
@@ -47,7 +54,7 @@ export const CHP_MAGI_TEMPLATES: Template[] = [
     text: "Other Eligibility Criteria - Spenddowns",
     href: "/chp/CS16.pdf",
   },
-];
+].map(withTemplateDownloadName);
 
 // XXI Medicaid Expansion
 export const CHP_MED_EXPANSION_TEMPLATES: Template[] = [
@@ -56,7 +63,7 @@ export const CHP_MED_EXPANSION_TEMPLATES: Template[] = [
     text: "Eligibility for Medicaid Expansion Program",
     href: "/chp/CS3.pdf",
   },
-];
+].map(withTemplateDownloadName);
 
 // Eligibility Processing
 export const CHP_ELIGIBILITY_TEMPLATE: Template[] = [
@@ -65,7 +72,7 @@ export const CHP_ELIGIBILITY_TEMPLATE: Template[] = [
     text: "General Eligibility - Eligibility Processing",
     href: "/chp/CS24.pdf",
   },
-];
+].map(withTemplateDownloadName);
 
 // Non-Financial Eligibility
 export const CHP_NON_FIN_TEMPLATE: Template[] = [
@@ -119,7 +126,7 @@ export const CHP_NON_FIN_TEMPLATE: Template[] = [
     text: "Incarcerated CHIP Beneficiaries",
     href: "/chp/CS31.pdf",
   },
-];
+].map(withTemplateDownloadName);
 
 export const ChipSpaTemplates = () => {
   return (
