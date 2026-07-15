@@ -13,12 +13,22 @@ import {
   getArchiveManifestKey,
   parseAttachmentArchiveCurrent,
 } from "../attachment-archive/archive-manifest";
-import { getAttachmentBucketMap } from "../attachment-archive/bucket-routing";
+import {
+  createAttachmentBucketClientFactory,
+  getAttachmentBucketMap,
+  isLegacyUploadBucket,
+  resolveTargetBucket,
+} from "../attachment-archive/bucket-routing";
 import { resolveAttachmentArchiveCurrentState } from "../attachment-archive/current-state";
 import {
+  buildAttachmentNotCleanArchiveFailure,
   getAttachmentArchiveWarningMessage,
   isTerminalAttachmentArchiveFailure,
 } from "../attachment-archive/failure-state";
+import {
+  CLEAN_VIRUS_SCAN_STATUS,
+  VIRUS_SCAN_STATUS_TAG_KEY,
+} from "../attachment-archive/file-scan-status";
 import {
   AttachmentArchiveChangelogItem,
   buildAttachmentArchiveSections,
@@ -26,26 +36,36 @@ import {
 } from "../attachment-archive/package-activity";
 import {
   getJsonObject,
+  getObjectTags,
   getObjectText,
   objectExists,
   putJsonObject,
 } from "../attachment-archive/storage";
 import {
   AttachmentArchiveCurrent,
+  AttachmentArchiveManifestAttachment,
   AttachmentArchiveNamespace,
   AttachmentArchivePackageManifest,
   AttachmentArchiveScope,
   AttachmentArchiveSectionManifest,
+  AttachmentArchiveSourceAttachment,
   AttachmentArchiveStateMachineInput,
 } from "../attachment-archive/types";
 import { buildResponseContentDisposition } from "./presignedAttachmentUrl";
 
 const DEFAULT_POLL_AFTER_SECONDS = 3;
 const DEFAULT_REBUILD_START_DELAY_MS = 1000;
+const SOURCE_SCAN_PENDING_POLL_AFTER_SECONDS = 5;
+const SOURCE_SCAN_PENDING_MESSAGE =
+  "Attachments are still being scanned. Please try again shortly.";
 const awsRegion = process.env.region || process.env.AWS_REGION;
 
 const archiveBucketClient = new S3Client({ region: awsRegion });
 const stateMachineClient = new SFNClient({ region: awsRegion });
+const sourceAttachmentClientFactory = createAttachmentBucketClientFactory({
+  region: awsRegion,
+  legacyS3AccessRoleArn: process.env.LEGACY_S3_ACCESS_ROLE_ARN || process.env.legacyS3AccessRoleArn,
+});
 
 type ArchiveArtifactPlan = {
   scope: AttachmentArchiveScope;
@@ -70,6 +90,7 @@ type ArchiveArtifactResult = {
   artifactBucketName: string;
   artifactKey: string;
   current?: AttachmentArchiveCurrent;
+  sourceScanPending?: boolean;
   started: boolean;
   status: "FAILED" | "PENDING" | "READY" | "RUNNING";
 };
@@ -95,6 +116,8 @@ export type AttachmentArchiveDownloadResponse =
     }
   | {
       status: "PENDING";
+      reason?: AttachmentArchiveCurrent["pendingReason"];
+      message?: string;
       pollAfterSeconds?: number;
     }
   | {
@@ -534,6 +557,8 @@ async function resolveArchiveArtifactForRead({
   | {
       action: "in_progress";
       current?: AttachmentArchiveCurrent;
+      pendingMessage?: string;
+      pendingReason?: AttachmentArchiveCurrent["pendingReason"];
       status: "PENDING" | "RUNNING";
     }
   | {
@@ -573,6 +598,8 @@ async function resolveArchiveArtifactForRead({
     return {
       action: "in_progress",
       current: writeCurrent,
+      pendingMessage: writeResolution.pendingMessage,
+      pendingReason: writeResolution.pendingReason,
       status: writeResolution.status,
     };
   }
@@ -615,6 +642,8 @@ async function resolveArchiveArtifactForRead({
       return {
         action: "in_progress",
         current: baseCurrent,
+        pendingMessage: baseResolution.pendingMessage,
+        pendingReason: baseResolution.pendingReason,
         status: baseResolution.status,
       };
     }
@@ -639,13 +668,121 @@ async function resolveArchiveArtifactForRead({
   };
 }
 
+type SourceAttachmentScanResolution =
+  | { status: "CLEAN" }
+  | {
+      status: "PENDING";
+      attachment: AttachmentArchiveSourceAttachment;
+    }
+  | {
+      status: "BLOCKED";
+      failure: ReturnType<typeof buildAttachmentNotCleanArchiveFailure>;
+    };
+
+function getArtifactSourceAttachments({
+  artifact,
+  sectionArtifacts,
+}: {
+  artifact: ArchiveArtifactPlan;
+  sectionArtifacts?: ArchiveArtifactPlan[];
+}): AttachmentArchiveManifestAttachment[] {
+  if (artifact.manifest.scope === "section") {
+    return artifact.manifest.attachments;
+  }
+
+  if (!sectionArtifacts) {
+    return [];
+  }
+
+  return sectionArtifacts.flatMap((sectionArtifact) =>
+    sectionArtifact.manifest.scope === "section" ? sectionArtifact.manifest.attachments : [],
+  );
+}
+
+async function getSourceAttachmentVirusScanStatus(
+  attachment: AttachmentArchiveSourceAttachment,
+): Promise<string | undefined> {
+  if (isLegacyUploadBucket(attachment.bucket)) {
+    return CLEAN_VIRUS_SCAN_STATUS;
+  }
+
+  const attachmentBucketMap = getLegacyAttachmentBucketMap();
+  const resolution = resolveTargetBucket(attachment.bucket, attachmentBucketMap);
+  const client = await sourceAttachmentClientFactory(resolution.destinationBucket);
+  const tags = await getObjectTags({
+    client,
+    bucket: resolution.destinationBucket,
+    key: attachment.key,
+  });
+
+  return tags[VIRUS_SCAN_STATUS_TAG_KEY];
+}
+
+async function resolveSourceAttachmentScanState({
+  artifact,
+  sectionArtifacts,
+}: {
+  artifact: ArchiveArtifactPlan;
+  sectionArtifacts?: ArchiveArtifactPlan[];
+}): Promise<SourceAttachmentScanResolution> {
+  const attachments = getArtifactSourceAttachments({ artifact, sectionArtifacts });
+
+  for (const attachment of attachments) {
+    let virusScanStatus: string | undefined;
+    try {
+      virusScanStatus = await getSourceAttachmentVirusScanStatus(attachment);
+    } catch (error) {
+      console.warn(
+        JSON.stringify({
+          event: "attachment_archive_source_scan_tag_lookup_failed",
+          bucket: attachment.bucket,
+          key: attachment.key,
+          filename: attachment.filename,
+          message: error instanceof Error ? error.message : String(error),
+        }),
+      );
+      return {
+        status: "PENDING",
+        attachment,
+      };
+    }
+
+    if (!virusScanStatus) {
+      return {
+        status: "PENDING",
+        attachment,
+      };
+    }
+
+    if (virusScanStatus.toUpperCase() !== CLEAN_VIRUS_SCAN_STATUS) {
+      return {
+        status: "BLOCKED",
+        failure: buildAttachmentNotCleanArchiveFailure({
+          attachment,
+          virusScanStatus,
+        }),
+      };
+    }
+  }
+
+  return { status: "CLEAN" };
+}
+
 async function ensureArchiveArtifact({
   artifact,
   beforeStart,
+  failSourceScanPending = false,
+  sectionArtifacts,
+  sourceScanPendingAt,
+  sourceScanRetryCount,
   syncBaseManifestToWrite = false,
 }: {
   artifact: ArchiveArtifactPlan;
   beforeStart?: () => Promise<void>;
+  failSourceScanPending?: boolean;
+  sectionArtifacts?: ArchiveArtifactPlan[];
+  sourceScanPendingAt?: string;
+  sourceScanRetryCount?: number;
   syncBaseManifestToWrite?: boolean;
 }): Promise<ArchiveArtifactResult> {
   const { writeBucketName } = getArchiveStorageConfig();
@@ -702,6 +839,80 @@ async function ensureArchiveArtifact({
     key: artifact.manifestKey,
     body: artifact.manifest,
   });
+
+  const sourceScanState = await resolveSourceAttachmentScanState({ artifact, sectionArtifacts });
+
+  if (
+    sourceScanState.status === "BLOCKED" ||
+    (sourceScanState.status === "PENDING" && failSourceScanPending)
+  ) {
+    const failure =
+      sourceScanState.status === "BLOCKED"
+        ? sourceScanState.failure
+        : buildAttachmentNotCleanArchiveFailure({
+            attachment: sourceScanState.attachment,
+          });
+
+    await putJsonObject({
+      client: archiveBucketClient,
+      bucket: writeBucketName,
+      key: artifact.currentKey,
+      body: buildAttachmentArchiveCurrent({
+        scope: artifact.scope,
+        hash: artifact.hash,
+        status: "FAILED",
+        artifactKey: artifact.artifactKey,
+        manifestKey: artifact.manifestKey,
+        attachmentCount: artifact.attachmentCount,
+        sectionId: artifact.sectionId,
+        sectionNumber: artifact.sectionNumber,
+        sectionLabel: artifact.sectionLabel,
+        sectionFolderName: artifact.sectionFolderName,
+        ...failure,
+      }),
+    });
+
+    return {
+      artifact,
+      artifactBucketName: writeBucketName,
+      artifactKey: artifact.artifactKey,
+      started: false,
+      status: "FAILED",
+    };
+  }
+
+  if (sourceScanState.status === "PENDING") {
+    await putJsonObject({
+      client: archiveBucketClient,
+      bucket: writeBucketName,
+      key: artifact.currentKey,
+      body: buildAttachmentArchiveCurrent({
+        scope: artifact.scope,
+        hash: artifact.hash,
+        status: "PENDING",
+        artifactKey: artifact.artifactKey,
+        manifestKey: artifact.manifestKey,
+        attachmentCount: artifact.attachmentCount,
+        pendingReason: "SOURCE_SCAN_PENDING",
+        pendingMessage: SOURCE_SCAN_PENDING_MESSAGE,
+        sourceScanPendingAt: sourceScanPendingAt || new Date().toISOString(),
+        sourceScanRetryCount,
+        sectionId: artifact.sectionId,
+        sectionNumber: artifact.sectionNumber,
+        sectionLabel: artifact.sectionLabel,
+        sectionFolderName: artifact.sectionFolderName,
+      }),
+    });
+
+    return {
+      artifact,
+      artifactBucketName: writeBucketName,
+      artifactKey: artifact.artifactKey,
+      sourceScanPending: true,
+      started: false,
+      status: "PENDING",
+    };
+  }
 
   await beforeStart?.();
 
@@ -832,7 +1043,12 @@ export async function getRequestedAttachmentArchiveDownload({
     return {
       response: {
         status: "PENDING",
-        pollAfterSeconds: DEFAULT_POLL_AFTER_SECONDS,
+        ...(resolution.pendingReason ? { reason: resolution.pendingReason } : {}),
+        ...(resolution.pendingMessage ? { message: resolution.pendingMessage } : {}),
+        pollAfterSeconds:
+          resolution.pendingReason === "SOURCE_SCAN_PENDING"
+            ? SOURCE_SCAN_PENDING_POLL_AFTER_SECONDS
+            : DEFAULT_POLL_AFTER_SECONDS,
       },
       needsRebuild: false,
     };
@@ -949,10 +1165,16 @@ export async function rebuildPackageAttachmentArchives({
   packageId,
   changelog,
   archiveNamespace = "main",
+  failSourceScanPending = false,
+  sourceScanPendingAt,
+  sourceScanRetryCount,
 }: {
   packageId: string;
   changelog: AttachmentArchiveChangelogItem[];
   archiveNamespace?: AttachmentArchiveNamespace;
+  failSourceScanPending?: boolean;
+  sourceScanPendingAt?: string;
+  sourceScanRetryCount?: number;
 }) {
   const plan = buildPackageArchivePlan({ packageId, changelog, archiveNamespace });
   if (!plan) {
@@ -986,6 +1208,10 @@ export async function rebuildPackageAttachmentArchives({
     const result = await ensureArchiveArtifact({
       artifact,
       beforeStart: waitForStartThrottle,
+      failSourceScanPending,
+      sectionArtifacts: plan.sectionArtifacts,
+      sourceScanPendingAt,
+      sourceScanRetryCount,
       syncBaseManifestToWrite: artifact.scope === "section",
     });
     if (result.started) {
@@ -1004,6 +1230,8 @@ export async function rebuildPackageAttachmentArchives({
     packageId,
     packageStatus: packageResult.status,
     rebuildStartDelayMs,
+    sourceScanPending:
+      packageResult.sourceScanPending || sectionResults.some((result) => result.sourceScanPending),
     startedArtifactCount,
     delayedStartCount,
     sectionResults: sectionResults.map((result) => ({

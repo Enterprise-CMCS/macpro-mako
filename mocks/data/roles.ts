@@ -740,8 +740,10 @@ export const roleResults: TestRoleResult[] = [
 
 export const roleDocs = roleResults.map((role) => role?._source as TestRoleDocument);
 
+const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
+
 export const getFilteredRolesByEmail = (email: string) =>
-  roleResults.filter((role) => role?._source?.email === email);
+  roleResults.filter((role) => normalizeEmail(role?._source?.email) === normalizeEmail(email));
 
 export const getFilteredRoleDocsByEmail = (email: string) =>
   getFilteredRolesByEmail(email).map((role) => role?._source as TestRoleDocument);
@@ -770,7 +772,11 @@ export const getFilteredRoleDocsByRole = (role: string) =>
 
 export const getLatestRoleByEmail = (email: string) =>
   roleResults
-    .filter((role) => role?._source?.email === email && role?._source?.status === "active")
+    .filter(
+      (role) =>
+        normalizeEmail(role?._source?.email) === normalizeEmail(email) &&
+        role?._source?.status === "active",
+    )
     .sort((a, b) => {
       const lastModifiedDateA = a?._source?.lastModifiedDate || 0;
       const lastModifiedDateB = b?._source?.lastModifiedDate || 0;
@@ -791,7 +797,7 @@ export const getActiveStatesForUserByEmail = (email: string, role?: string) =>
         .filter(
           (roleItem) =>
             roleItem &&
-            roleItem._source?.email === email &&
+            normalizeEmail(roleItem._source?.email) === normalizeEmail(email) &&
             (!role || roleItem._source?.role === role) &&
             roleItem._source?.status === "active",
         )
@@ -803,7 +809,7 @@ export const getActiveStatesForUserByEmail = (email: string, role?: string) =>
 export const getApprovedRoleByEmailAndState = (email: string, state: string, role: string) =>
   roleResults.find(
     (roleItem) =>
-      roleItem?._source?.email === email &&
+      normalizeEmail(roleItem?._source?.email) === normalizeEmail(email) &&
       roleItem?._source?.territory === state &&
       roleItem?._source?.role === role &&
       roleItem?._source?.status === "active",

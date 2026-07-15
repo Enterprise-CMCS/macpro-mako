@@ -1,12 +1,21 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-const { buildDraftAttachmentChangelog, rebuildPackageAttachmentArchives } = vi.hoisted(() => ({
+const {
+  buildDraftAttachmentChangelog,
+  rebuildPackageAttachmentArchives,
+  sendAttachmentArchiveRebuildRequest,
+} = vi.hoisted(() => ({
   buildDraftAttachmentChangelog: vi.fn(),
   rebuildPackageAttachmentArchives: vi.fn(),
+  sendAttachmentArchiveRebuildRequest: vi.fn(),
 }));
 
 vi.mock("../attachment-archive/draft-package", () => ({
   buildDraftAttachmentChangelog,
+}));
+
+vi.mock("../attachment-archive/rebuild-queue", () => ({
+  sendAttachmentArchiveRebuildRequest,
 }));
 
 vi.mock("./attachmentArchive-lib", () => ({
@@ -21,6 +30,7 @@ describe("rebuildAttachmentArchives handler", () => {
     vi.restoreAllMocks();
     buildDraftAttachmentChangelog.mockReset();
     rebuildPackageAttachmentArchives.mockReset();
+    sendAttachmentArchiveRebuildRequest.mockReset();
   });
 
   it("rebuilds draft archives from synthetic draft changelog when preferDraft is true", async () => {
@@ -89,6 +99,9 @@ describe("rebuildAttachmentArchives handler", () => {
       archiveNamespace: "draft",
       packageId: "MD-26-9999-P",
       changelog: draftChangelog,
+      failSourceScanPending: false,
+      sourceScanPendingAt: undefined,
+      sourceScanRetryCount: 0,
     });
   });
 
@@ -141,6 +154,90 @@ describe("rebuildAttachmentArchives handler", () => {
       archiveNamespace: "main",
       packageId: "MD-26-9999-P",
       changelog: persistedChangelog,
+      failSourceScanPending: false,
+      sourceScanPendingAt: undefined,
+      sourceScanRetryCount: 0,
     });
+  });
+
+  it("requeues source-scan pending rebuilds with bounded backoff", async () => {
+    vi.spyOn(packageApi, "getPackageChangelog").mockResolvedValue({
+      hits: {
+        hits: [],
+      },
+    } as any);
+    rebuildPackageAttachmentArchives.mockResolvedValue({
+      packageId: "MD-26-9999-P",
+      packageStatus: "PENDING",
+      sourceScanPending: true,
+      sectionResults: [],
+    });
+
+    await handler(
+      {
+        Records: [
+          {
+            body: JSON.stringify({
+              packageId: "MD-26-9999-P",
+              source: "sink-changelog",
+              sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+              sourceScanRetryCount: 2,
+            }),
+          },
+        ],
+      } as any,
+      {} as any,
+      {} as any,
+    );
+
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
+      {
+        packageId: "MD-26-9999-P",
+        source: "sink-changelog",
+        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+        sourceScanRetryCount: 3,
+      },
+      { delaySeconds: 30 },
+    );
+  });
+
+  it("does not requeue source-scan pending rebuilds after the retry cap", async () => {
+    vi.spyOn(packageApi, "getPackageChangelog").mockResolvedValue({
+      hits: {
+        hits: [],
+      },
+    } as any);
+    rebuildPackageAttachmentArchives.mockResolvedValue({
+      packageId: "MD-26-9999-P",
+      packageStatus: "FAILED",
+      sourceScanPending: false,
+      sectionResults: [],
+    });
+
+    await handler(
+      {
+        Records: [
+          {
+            body: JSON.stringify({
+              packageId: "MD-26-9999-P",
+              source: "sink-changelog",
+              sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+              sourceScanRetryCount: 20,
+            }),
+          },
+        ],
+      } as any,
+      {} as any,
+      {} as any,
+    );
+
+    expect(rebuildPackageAttachmentArchives).toHaveBeenCalledWith(
+      expect.objectContaining({
+        failSourceScanPending: true,
+        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+        sourceScanRetryCount: 20,
+      }),
+    );
+    expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
   });
 });

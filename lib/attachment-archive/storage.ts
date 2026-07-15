@@ -1,5 +1,6 @@
 import {
   GetObjectCommand,
+  GetObjectTaggingCommand,
   HeadObjectCommand,
   NoSuchKey,
   PutObjectCommand,
@@ -115,4 +116,30 @@ export async function objectExists({
 
     throw error;
   }
+}
+
+export async function getObjectTags({
+  client,
+  bucket,
+  key,
+}: {
+  client: S3LikeClient;
+  bucket: string;
+  key: string;
+}): Promise<Record<string, string>> {
+  const response = await client.send(
+    new GetObjectTaggingCommand({
+      Bucket: bucket,
+      Key: key,
+    }),
+  );
+
+  const tagSet = (response.TagSet || []) as Array<{ Key?: string; Value?: string }>;
+
+  return tagSet.reduce<Record<string, string>>((acc, tag) => {
+    if (tag.Key && tag.Value) {
+      acc[tag.Key] = tag.Value;
+    }
+    return acc;
+  }, {});
 }
