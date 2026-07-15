@@ -55,7 +55,6 @@ const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 const OPENSEARCH_DRAFT_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}draftmain`;
 const TEST_ITEM_KEY = Buffer.from(TEST_ITEM_ID).toString("base64");
 const WITHDRAWAL_REQUESTED_KEY = Buffer.from(WITHDRAWAL_REQUESTED_ID).toString("base64");
-const SUBMITTED_RAI_KEY = Buffer.from(SUBMITTED_RAI_ID).toString("base64");
 const RAI_WITHDRAWAL_KEY = Buffer.from(RAI_WITHDRAWAL_ID).toString("base64");
 const TIMESTAMP = 1732645041557;
 const ISO_DATETIME = "2024-11-26T18:17:21.557Z";
@@ -1880,12 +1879,12 @@ describe("insertNewSeatoolRecordsFromKafkaIntoMako", () => {
       },
     ]);
   });
-  it("tries to tries to update a  package that already responded to an rai", async () => {
+  it("preserves the OneMAC RAI response timestamp when the SEA Tool ID casing differs", async () => {
     await insertNewSeatoolRecordsFromKafkaIntoMako(
       [
         createKafkaRecord({
           topic: TOPIC,
-          key: SUBMITTED_RAI_KEY,
+          key: Buffer.from(SUBMITTED_RAI_ID.toLowerCase()).toString("base64"),
           value: convertObjToBase64({
             id: SUBMITTED_RAI_ID,
             ACTION_OFFICERS: [

@@ -496,14 +496,14 @@ export const insertOneMacRecordsFromKafkaIntoMako = async (
 
 const getMakoDocTimestamps = async (kafkaRecords: KafkaRecord[]) => {
   const kafkaIds = kafkaRecords.map((record) =>
-    removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)),
+    removeDoubleQuotesSurroundingString(decodeBase64WithUtf8(record.key)).toUpperCase(),
   );
   const openSearchRecords = await getItems(kafkaIds);
 
   return openSearchRecords.reduce<
     Map<string, { changedDate?: number; raiReceivedDate?: number; raiWithdrawnDate?: number }>
   >((map, item) => {
-    map.set(item.id, {
+    map.set(item.id.toUpperCase(), {
       changedDate: item.changedDate ? new Date(item.changedDate).getTime() : undefined,
       raiReceivedDate: item.raiReceivedDate ? new Date(item.raiReceivedDate).getTime() : undefined,
       raiWithdrawnDate: item.raiWithdrawnDate
