@@ -563,7 +563,7 @@ function formatDurationFromDays(days: number | undefined) {
     return "";
   }
 
-  let seconds = Math.round(days * MS_PER_DAY);
+  let seconds = Math.round((days * MS_PER_DAY) / 1000);
   if (seconds < 60) {
     return `${seconds} sec`;
   }
