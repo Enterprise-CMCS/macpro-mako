@@ -129,10 +129,28 @@ type BreakdownMetricRow = {
   shortDraftSubmissions: string;
 };
 
+type CsvColumn<TRow> = {
+  key: keyof TRow;
+  label: string;
+};
+
 const DEFAULT_PROJECT = "mako";
 const DEFAULT_REGION = process.env.AWS_REGION || process.env.REGION_A || "us-east-1";
 const DEFAULT_BATCH_SIZE = 500;
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const EVENT_LABELS: Record<string, string> = {
+  "app-k": "App K",
+  "capitated-amendment": "1915(b) Capitated Amendment",
+  "capitated-initial": "1915(b) Capitated Initial",
+  "capitated-renewal": "1915(b) Capitated Renewal",
+  "contracting-amendment": "1915(b) Contracting Amendment",
+  "contracting-initial": "1915(b) Contracting Initial",
+  "contracting-renewal": "1915(b) Contracting Renewal",
+  "new-chip-details-submission": "CHIP Details",
+  "new-chip-submission": "CHIP SPA",
+  "new-medicaid-submission": "Medicaid SPA",
+  "temporary-extension": "Temporary Extension",
+};
 const sourceExcludes = [
   "attachments",
   "changelog",
@@ -148,50 +166,61 @@ const sourceExcludes = [
   "submitterName",
 ];
 
-const csvHeaders: Array<keyof ReportRow> = [
-  "packageId",
-  "state",
-  "event",
-  "authority",
-  "category",
-  "draftLifecycleStatus",
-  "draftDurationUnderOneMinute",
-  "draftCreatedAt",
-  "draftLastSavedAt",
-  "draftRecordChangedAt",
-  "currentMainStatus",
-  "submissionDate",
-  "draftCreatedToSubmit",
-  "lastDraftSaveToSubmit",
+const csvColumns: Array<CsvColumn<ReportRow>> = [
+  { key: "packageId", label: "Package ID" },
+  { key: "state", label: "State" },
+  { key: "event", label: "Submission Type" },
+  { key: "authority", label: "Authority" },
+  { key: "category", label: "Category" },
+  { key: "draftLifecycleStatus", label: "Draft Lifecycle Status" },
+  { key: "draftDurationUnderOneMinute", label: "Draft Duration Under 1 Minute" },
+  { key: "draftCreatedAt", label: "Draft Created Date" },
+  { key: "draftLastSavedAt", label: "Last Draft Save Date" },
+  { key: "draftRecordChangedAt", label: "Draft Record Changed Date" },
+  { key: "currentMainStatus", label: "Current Main Status" },
+  { key: "submissionDate", label: "Submission Date" },
+  { key: "draftCreatedToSubmit", label: "Draft Created to Submission Time" },
+  { key: "lastDraftSaveToSubmit", label: "Last Draft Save to Submission Time" },
 ];
 
-const quarterlyCsvHeaders: Array<keyof QuarterlyMetricRow> = [
-  "quarter",
-  "category",
-  "totalDrafts",
-  "activeDrafts",
-  "submittedFromDraft",
-  "deletedDraftsNotSubmitted",
-  "draftConversionRate",
-  "totalSubmissions",
-  "submittedUsingDraftRate",
-  "shortDraftSubmissions",
-  "averageDraftCreatedToSubmit",
-  "medianDraftCreatedToSubmit",
-  "averageLastDraftSaveToSubmit",
-  "medianLastDraftSaveToSubmit",
+const quarterlyCsvColumns: Array<CsvColumn<QuarterlyMetricRow>> = [
+  { key: "quarter", label: "Quarter" },
+  { key: "category", label: "Category" },
+  { key: "totalDrafts", label: "Total Drafts" },
+  { key: "activeDrafts", label: "Active Drafts" },
+  { key: "submittedFromDraft", label: "Submitted From Draft" },
+  { key: "deletedDraftsNotSubmitted", label: "Deleted Drafts Not Submitted" },
+  { key: "draftConversionRate", label: "Draft Conversion Rate" },
+  { key: "totalSubmissions", label: "Total Submissions" },
+  { key: "submittedUsingDraftRate", label: "Submissions Using Draft Rate" },
+  { key: "shortDraftSubmissions", label: "Submitted Drafts Under 1 Minute" },
+  { key: "averageDraftCreatedToSubmit", label: "Average Draft Created to Submission Time" },
+  { key: "medianDraftCreatedToSubmit", label: "Median Draft Created to Submission Time" },
+  { key: "averageLastDraftSaveToSubmit", label: "Average Last Draft Save to Submission Time" },
+  { key: "medianLastDraftSaveToSubmit", label: "Median Last Draft Save to Submission Time" },
 ];
 
-const breakdownCsvHeaders: Array<keyof BreakdownMetricRow> = [
-  "quarter",
-  "category",
-  "value",
-  "totalDrafts",
-  "activeDrafts",
-  "submittedFromDraft",
-  "deletedDraftsNotSubmitted",
-  "draftConversionRate",
-  "shortDraftSubmissions",
+const stateBreakdownCsvColumns: Array<CsvColumn<BreakdownMetricRow>> = [
+  { key: "quarter", label: "Quarter" },
+  { key: "category", label: "Category" },
+  { key: "value", label: "State" },
+  { key: "totalDrafts", label: "Total Drafts" },
+  { key: "activeDrafts", label: "Active Drafts" },
+  { key: "submittedFromDraft", label: "Submitted From Draft" },
+  { key: "deletedDraftsNotSubmitted", label: "Deleted Drafts Not Submitted" },
+  { key: "draftConversionRate", label: "Draft Conversion Rate" },
+  { key: "shortDraftSubmissions", label: "Submitted Drafts Under 1 Minute" },
+];
+
+const eventBreakdownCsvColumns: Array<CsvColumn<BreakdownMetricRow>> = [
+  { key: "quarter", label: "Quarter" },
+  { key: "value", label: "Submission Type" },
+  { key: "totalDrafts", label: "Total Drafts" },
+  { key: "activeDrafts", label: "Active Drafts" },
+  { key: "submittedFromDraft", label: "Submitted From Draft" },
+  { key: "deletedDraftsNotSubmitted", label: "Deleted Drafts Not Submitted" },
+  { key: "draftConversionRate", label: "Draft Conversion Rate" },
+  { key: "shortDraftSubmissions", label: "Submitted Drafts Under 1 Minute" },
 ];
 
 function printUsage() {
@@ -686,6 +715,29 @@ function asIso(value: unknown) {
   return date.toISOString();
 }
 
+function formatDateTimeEastern(value: string) {
+  const time = getTime(value);
+  if (time === undefined) {
+    return "";
+  }
+
+  const date = new Date(time);
+  const parts = new Intl.DateTimeFormat("en-US", {
+    day: "2-digit",
+    hour: "2-digit",
+    hour12: false,
+    minute: "2-digit",
+    month: "2-digit",
+    second: "2-digit",
+    timeZone: "America/New_York",
+    timeZoneName: "short",
+    year: "numeric",
+  }).formatToParts(date);
+  const partByType = new Map(parts.map((part) => [part.type, part.value]));
+
+  return `${partByType.get("year")}-${partByType.get("month")}-${partByType.get("day")} ${partByType.get("hour")}:${partByType.get("minute")}:${partByType.get("second")} ${partByType.get("timeZoneName")}`;
+}
+
 function getTime(value: string) {
   if (!value) {
     return undefined;
@@ -738,6 +790,14 @@ function formatDurationFromDays(days: number | undefined) {
 
 function getElapsedDuration(start: string, end: string) {
   return formatDurationFromDays(getElapsedDaysNumber(start, end));
+}
+
+function getEventLabel(event: string | undefined) {
+  if (!event) {
+    return "";
+  }
+
+  return EVENT_LABELS[event] || event;
 }
 
 function getElapsedSeconds(start: string, end: string) {
@@ -843,7 +903,7 @@ function buildReportRows({
     rows.push({
       packageId: draft.id || "",
       state,
-      event: draft.event || "",
+      event: getEventLabel(draft.event),
       authority: draft.authority || "",
       category,
       draftLifecycleStatus: getDraftLifecycleStatus({ draft, convertedToSubmission }),
@@ -875,15 +935,33 @@ function escapeCsvValue(value: string) {
   return value;
 }
 
-function toCsv<T>(rows: T[], headers: Array<keyof T>) {
+function toCsv<T>(
+  rows: T[],
+  columns: Array<CsvColumn<T>>,
+  formatValue: (header: keyof T, row: T) => string = (header, row) => String(row[header] ?? ""),
+) {
   const lines = [
-    headers.join(","),
+    columns.map((column) => escapeCsvValue(column.label)).join(","),
     ...rows.map((row) =>
-      headers.map((header) => escapeCsvValue(String(row[header] ?? ""))).join(","),
+      columns.map((column) => escapeCsvValue(formatValue(column.key, row))).join(","),
     ),
   ];
 
   return `${lines.join("\n")}\n`;
+}
+
+function formatReportCsvValue(header: keyof ReportRow, row: ReportRow) {
+  const value = row[header];
+  if (
+    header === "draftCreatedAt" ||
+    header === "draftLastSavedAt" ||
+    header === "draftRecordChangedAt" ||
+    header === "submissionDate"
+  ) {
+    return formatDateTimeEastern(String(value || ""));
+  }
+
+  return String(value ?? "");
 }
 
 function getDefaultOutputPath(indexNamespace: string) {
@@ -1074,7 +1152,8 @@ function buildQuarterlyMetrics(
       categories
         .map((category) => {
           const categoryRows = quarterRows.filter((row) => categoryMatches(category, row.category));
-          if (categoryRows.length === 0 && category !== "All") {
+          const totalSubmissions = submissionCounts.get(`${quarter}|${category}`) || 0;
+          if (categoryRows.length === 0 && totalSubmissions === 0 && category !== "All") {
             return undefined;
           }
 
@@ -1084,7 +1163,6 @@ function buildQuarterlyMetrics(
           const shortDraftSubmissions = submittedRows.filter(
             (row) => row.draftDurationUnderOneMinute === "yes",
           ).length;
-          const totalSubmissions = submissionCounts.get(`${quarter}|${category}`) || 0;
           const draftCreatedDurations = submittedRows
             .map((row) => getElapsedDaysNumber(row.draftCreatedAt, row.submissionDate))
             .filter((value): value is number => value !== undefined);
@@ -1117,16 +1195,19 @@ function buildBreakdownMetrics({
   rows,
   quarterField,
   valueForRow,
+  includeCategoryRows = true,
 }: {
   rows: ReportRow[];
   quarterField: ScriptOptions["quarterField"];
   valueForRow: (row: ReportRow) => string;
+  includeCategoryRows?: boolean;
 }): BreakdownMetricRow[] {
   const groupedRows = rows.reduce<Map<string, ReportRow[]>>((acc, row) => {
     const quarter = getQuarter(getQuarterSourceDate(row, quarterField));
     const value = valueForRow(row) || "unknown";
+    const categories = includeCategoryRows ? ["All", row.category] : ["All"];
 
-    for (const category of ["All", row.category]) {
+    for (const category of categories) {
       const key = `${quarter}|${category}|${value}`;
       acc.set(key, [...(acc.get(key) || []), row]);
     }
@@ -1266,7 +1347,7 @@ async function main() {
     mainDocumentsById,
     options,
   });
-  const csv = toCsv(rows, csvHeaders);
+  const csv = toCsv(rows, csvColumns, formatReportCsvValue);
 
   let quarterlyOutputPath: string | undefined;
   let stateBreakdownOutputPath: string | undefined;
@@ -1292,7 +1373,7 @@ async function main() {
     });
 
     quarterlyMetrics = buildQuarterlyMetrics(rows, options.quarterField, mainSubmissions);
-    await writeCsv(quarterlyOutputPath, toCsv(quarterlyMetrics, quarterlyCsvHeaders));
+    await writeCsv(quarterlyOutputPath, toCsv(quarterlyMetrics, quarterlyCsvColumns));
     await writeCsv(
       stateBreakdownOutputPath,
       toCsv(
@@ -1301,7 +1382,7 @@ async function main() {
           quarterField: options.quarterField,
           valueForRow: (row) => row.state,
         }),
-        breakdownCsvHeaders,
+        stateBreakdownCsvColumns,
       ),
     );
     await writeCsv(
@@ -1311,8 +1392,9 @@ async function main() {
           rows,
           quarterField: options.quarterField,
           valueForRow: (row) => row.event,
+          includeCategoryRows: false,
         }),
-        breakdownCsvHeaders,
+        eventBreakdownCsvColumns,
       ),
     );
   }
