@@ -26,7 +26,10 @@ type ScriptOptions = {
   convertedOnly: boolean;
   quarterly: boolean;
   quarterlyOutput?: string;
+  stateBreakdownOutput?: string;
+  eventBreakdownOutput?: string;
   quarterField: "draft-created" | "submitted";
+  shortDraftThresholdSeconds: number;
 };
 
 type DraftDocument = Pick<
@@ -43,6 +46,11 @@ type DraftDocument = Pick<
 > & {
   draft?: MainDocument["draft"];
 };
+
+type MainSubmissionDocument = Pick<
+  MainDocument,
+  "authority" | "deleted" | "event" | "id" | "seatoolStatus" | "state" | "submissionDate"
+>;
 
 type SearchHit<TDocument> = {
   _id: string;
@@ -79,7 +87,9 @@ type ReportRow = {
   state: string;
   event: string;
   authority: string;
-  draftRecordStatus: "active" | "deleted";
+  draftLifecycleStatus: "Active draft" | "Deleted draft not submitted" | "Submitted from draft";
+  category: "SPA" | "Waiver" | "Other";
+  draftDurationUnderOneMinute: "yes" | "no" | "";
   draftCreatedAt: string;
   draftLastSavedAt: string;
   draftRecordChangedAt: string;
@@ -92,15 +102,31 @@ type ReportRow = {
 
 type QuarterlyMetricRow = {
   quarter: string;
+  category: string;
   totalDrafts: string;
   activeDrafts: string;
-  convertedDrafts: string;
-  deletedNotConvertedDrafts: string;
-  conversionRate: string;
+  submittedFromDraft: string;
+  deletedDraftsNotSubmitted: string;
+  draftConversionRate: string;
+  totalSubmissions: string;
+  submittedUsingDraftRate: string;
+  shortDraftSubmissions: string;
   averageDraftCreatedToSubmit: string;
   medianDraftCreatedToSubmit: string;
   averageLastDraftSaveToSubmit: string;
   medianLastDraftSaveToSubmit: string;
+};
+
+type BreakdownMetricRow = {
+  quarter: string;
+  category: string;
+  value: string;
+  totalDrafts: string;
+  activeDrafts: string;
+  submittedFromDraft: string;
+  deletedDraftsNotSubmitted: string;
+  draftConversionRate: string;
+  shortDraftSubmissions: string;
 };
 
 const DEFAULT_PROJECT = "mako";
@@ -127,11 +153,12 @@ const csvHeaders: Array<keyof ReportRow> = [
   "state",
   "event",
   "authority",
-  "draftRecordStatus",
+  "category",
+  "draftLifecycleStatus",
+  "draftDurationUnderOneMinute",
   "draftCreatedAt",
   "draftLastSavedAt",
   "draftRecordChangedAt",
-  "convertedToSubmission",
   "currentMainStatus",
   "submissionDate",
   "draftCreatedToSubmit",
@@ -140,15 +167,31 @@ const csvHeaders: Array<keyof ReportRow> = [
 
 const quarterlyCsvHeaders: Array<keyof QuarterlyMetricRow> = [
   "quarter",
+  "category",
   "totalDrafts",
   "activeDrafts",
-  "convertedDrafts",
-  "deletedNotConvertedDrafts",
-  "conversionRate",
+  "submittedFromDraft",
+  "deletedDraftsNotSubmitted",
+  "draftConversionRate",
+  "totalSubmissions",
+  "submittedUsingDraftRate",
+  "shortDraftSubmissions",
   "averageDraftCreatedToSubmit",
   "medianDraftCreatedToSubmit",
   "averageLastDraftSaveToSubmit",
   "medianLastDraftSaveToSubmit",
+];
+
+const breakdownCsvHeaders: Array<keyof BreakdownMetricRow> = [
+  "quarter",
+  "category",
+  "value",
+  "totalDrafts",
+  "activeDrafts",
+  "submittedFromDraft",
+  "deletedDraftsNotSubmitted",
+  "draftConversionRate",
+  "shortDraftSubmissions",
 ];
 
 function printUsage() {
@@ -171,7 +214,13 @@ Options:
   --converted-only             Only output drafts with an active submitted main record.
   --quarterly                  Also write a quarterly metrics CSV.
   --quarterly-output <path>    Quarterly metrics CSV output path.
+  --state-breakdown-output <path>
+                              State breakdown CSV output path.
+  --event-breakdown-output <path>
+                              Event/type breakdown CSV output path.
   --quarter-field <field>      Quarter grouping field: draft-created or submitted. Default: draft-created.
+  --short-draft-threshold <seconds>
+                              Threshold used for draftDurationUnderOneMinute flag. Default: 60.
   --batch-size <number>        OpenSearch scroll/mget batch size. Default: ${DEFAULT_BATCH_SIZE}
   --help                       Show this help text.
 
@@ -223,6 +272,7 @@ function parseArgs(argv: string[]): ScriptOptions {
     convertedOnly: false,
     quarterly: false,
     quarterField: "draft-created",
+    shortDraftThresholdSeconds: 60,
   };
 
   for (let index = 0; index < argv.length; index += 1) {
@@ -288,12 +338,29 @@ function parseArgs(argv: string[]): ScriptOptions {
         options.quarterlyOutput = argv[index + 1];
         index += 1;
         break;
+      case "--state-breakdown-output":
+        options.stateBreakdownOutput = argv[index + 1];
+        index += 1;
+        break;
+      case "--event-breakdown-output":
+        options.eventBreakdownOutput = argv[index + 1];
+        index += 1;
+        break;
       case "--quarter-field": {
         const value = argv[index + 1];
         if (value !== "draft-created" && value !== "submitted") {
           throw new Error(`Invalid quarter field: ${value}`);
         }
         options.quarterField = value;
+        index += 1;
+        break;
+      }
+      case "--short-draft-threshold": {
+        const threshold = Number.parseInt(argv[index + 1] || "", 10);
+        if (!Number.isFinite(threshold) || threshold < 0) {
+          throw new Error(`Invalid short draft threshold: ${argv[index + 1]}`);
+        }
+        options.shortDraftThresholdSeconds = threshold;
         index += 1;
         break;
       }
@@ -416,6 +483,58 @@ function getOpenSearchQuery(options: ScriptOptions) {
   };
 }
 
+function getMainSubmissionQuery({
+  options,
+  from,
+  to,
+}: {
+  options: ScriptOptions;
+  from?: Date;
+  to?: Date;
+}) {
+  const must: unknown[] = [{ exists: { field: "submissionDate" } }];
+  const mustNot: unknown[] = [
+    { term: { deleted: true } },
+    { term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } },
+  ];
+
+  if (from || to) {
+    must.push({
+      range: {
+        submissionDate: {
+          ...(from && { gte: from.toISOString() }),
+          ...(to && { lte: to.toISOString() }),
+        },
+      },
+    });
+  }
+
+  if (options.states?.length) {
+    must.push({ terms: { "state.keyword": options.states } });
+  }
+
+  if (options.excludeStates?.length) {
+    mustNot.push({ terms: { "state.keyword": options.excludeStates } });
+  }
+
+  if (options.events?.length) {
+    must.push({ terms: { "event.keyword": options.events } });
+  }
+
+  return {
+    query: {
+      bool: {
+        must,
+        must_not: mustNot,
+      },
+    },
+    sort: [{ submissionDate: { order: "asc" } }, { "id.keyword": { order: "asc" } }],
+    _source: {
+      excludes: sourceExcludes,
+    },
+  };
+}
+
 async function* scrollDocuments<TDocument>({
   client,
   index,
@@ -525,6 +644,35 @@ async function fetchMainDocumentsById({
   return documentsById;
 }
 
+async function fetchMainSubmissionDocuments({
+  client,
+  mainIndex,
+  options,
+  from,
+  to,
+}: {
+  client: OpenSearchClient;
+  mainIndex: string;
+  options: ScriptOptions;
+  from?: Date;
+  to?: Date;
+}) {
+  const submissions: MainSubmissionDocument[] = [];
+  const query = getMainSubmissionQuery({ options, from, to });
+
+  for await (const hits of scrollDocuments<MainSubmissionDocument>({
+    client,
+    index: mainIndex,
+    query,
+    batchSize: options.batchSize,
+  })) {
+    submissions.push(...hits.map((hit) => hit._source));
+    console.log(`Fetched ${submissions.length} submitted main records...`);
+  }
+
+  return submissions;
+}
+
 function asIso(value: unknown) {
   if (typeof value !== "string" && typeof value !== "number") {
     return "";
@@ -592,6 +740,36 @@ function getElapsedDuration(start: string, end: string) {
   return formatDurationFromDays(getElapsedDaysNumber(start, end));
 }
 
+function getElapsedSeconds(start: string, end: string) {
+  const days = getElapsedDaysNumber(start, end);
+  return days === undefined ? undefined : (days * MS_PER_DAY) / 1000;
+}
+
+function getCategory({ authority, event }: { authority?: string; event?: string }) {
+  const authorityText = (authority || "").toLowerCase();
+  const eventText = (event || "").toLowerCase();
+
+  if (
+    authorityText.includes("spa") ||
+    eventText.includes("chip") ||
+    eventText.includes("medicaid")
+  ) {
+    return "SPA" as const;
+  }
+
+  if (
+    authorityText.includes("1915") ||
+    eventText.includes("app-k") ||
+    eventText.includes("capitated") ||
+    eventText.includes("contracting") ||
+    eventText.includes("temporary-extension")
+  ) {
+    return "Waiver" as const;
+  }
+
+  return "Other" as const;
+}
+
 function isConvertedToSubmission(mainDocument: MainDocument | undefined) {
   return (
     mainDocument !== undefined &&
@@ -599,6 +777,24 @@ function isConvertedToSubmission(mainDocument: MainDocument | undefined) {
     mainDocument.seatoolStatus !== SEATOOL_STATUS.DRAFT &&
     Boolean(mainDocument.submissionDate)
   );
+}
+
+function getDraftLifecycleStatus({
+  draft,
+  convertedToSubmission,
+}: {
+  draft: DraftDocument;
+  convertedToSubmission: boolean;
+}): ReportRow["draftLifecycleStatus"] {
+  if (convertedToSubmission) {
+    return "Submitted from draft";
+  }
+
+  if (draft.deleted === true) {
+    return "Deleted draft not submitted";
+  }
+
+  return "Active draft";
 }
 
 function buildReportRows({
@@ -641,13 +837,22 @@ function buildReportRows({
     }
 
     const submissionDate = asIso(mainDocument?.submissionDate);
+    const draftCreatedToSubmitSeconds = getElapsedSeconds(draftCreatedAt, submissionDate);
+    const category = getCategory({ authority: draft.authority, event: draft.event });
 
     rows.push({
       packageId: draft.id || "",
       state,
       event: draft.event || "",
       authority: draft.authority || "",
-      draftRecordStatus: draft.deleted === true ? "deleted" : "active",
+      category,
+      draftLifecycleStatus: getDraftLifecycleStatus({ draft, convertedToSubmission }),
+      draftDurationUnderOneMinute:
+        convertedToSubmission && draftCreatedToSubmitSeconds !== undefined
+          ? draftCreatedToSubmitSeconds < options.shortDraftThresholdSeconds
+            ? "yes"
+            : "no"
+          : "",
       draftCreatedAt,
       draftLastSavedAt,
       draftRecordChangedAt: asIso(draft.makoChangedDate || draft.changedDate || draft.statusDate),
@@ -703,6 +908,17 @@ function getDefaultQuarterlyOutputPath(indexNamespace: string) {
   );
 }
 
+function getDefaultBreakdownOutputPath(indexNamespace: string, breakdownName: string) {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+  const safeNamespace = indexNamespace.replace(/[^a-zA-Z0-9_-]/g, "-");
+  return path.join(
+    "docs",
+    "local",
+    "reports",
+    `draft-conversion-${breakdownName}-${safeNamespace}-${timestamp}.csv`,
+  );
+}
+
 async function writeCsv(outputPath: string, csv: string) {
   if (outputPath === "-") {
     console.log(csv);
@@ -722,6 +938,43 @@ function getQuarter(value: string) {
   const date = new Date(time);
   const quarter = Math.floor(date.getUTCMonth() / 3) + 1;
   return `${date.getUTCFullYear()}-Q${quarter}`;
+}
+
+function getQuarterDateRange(quarter: string) {
+  const match = /^(\d{4})-Q([1-4])$/.exec(quarter);
+  if (!match) {
+    return undefined;
+  }
+
+  const year = Number.parseInt(match[1], 10);
+  const quarterNumber = Number.parseInt(match[2], 10);
+  const startMonth = (quarterNumber - 1) * 3;
+
+  return {
+    from: new Date(Date.UTC(year, startMonth, 1, 0, 0, 0, 0)),
+    to: new Date(Date.UTC(year, startMonth + 3, 0, 23, 59, 59, 999)),
+  };
+}
+
+function getQuarterSourceDate(row: ReportRow, quarterField: ScriptOptions["quarterField"]) {
+  return quarterField === "submitted" ? row.submissionDate : row.draftCreatedAt;
+}
+
+function getQuarterFetchRange(rows: ReportRow[], quarterField: ScriptOptions["quarterField"]) {
+  const ranges = rows
+    .map((row) => getQuarter(getQuarterSourceDate(row, quarterField)))
+    .filter((quarter) => quarter !== "unknown")
+    .map(getQuarterDateRange)
+    .filter((range): range is { from: Date; to: Date } => range !== undefined);
+
+  if (ranges.length === 0) {
+    return {};
+  }
+
+  return {
+    from: new Date(Math.min(...ranges.map((range) => range.from.getTime()))),
+    to: new Date(Math.max(...ranges.map((range) => range.to.getTime()))),
+  };
 }
 
 function average(values: number[]) {
@@ -747,43 +1000,160 @@ function median(values: number[]) {
   return (sorted[midpoint - 1] + sorted[midpoint]) / 2;
 }
 
+function isSubmittedFromDraft(row: ReportRow) {
+  return row.draftLifecycleStatus === "Submitted from draft";
+}
+
+function isActiveDraft(row: ReportRow) {
+  return row.draftLifecycleStatus === "Active draft";
+}
+
+function isDeletedDraftNotSubmitted(row: ReportRow) {
+  return row.draftLifecycleStatus === "Deleted draft not submitted";
+}
+
+function getCategories(rows: ReportRow[], submissions: MainSubmissionDocument[] = []) {
+  const categories = new Set<string>(["All", "SPA", "Waiver"]);
+
+  for (const row of rows) {
+    categories.add(row.category);
+  }
+
+  for (const submission of submissions) {
+    categories.add(getCategory({ authority: submission.authority, event: submission.event }));
+  }
+
+  return [...categories].sort((left, right) => {
+    const order = ["All", "SPA", "Waiver", "Other"];
+    return order.indexOf(left) - order.indexOf(right) || left.localeCompare(right);
+  });
+}
+
+function categoryMatches(category: string, value: string) {
+  return category === "All" || category === value;
+}
+
+function getSubmissionCountsByQuarterAndCategory(submissions: MainSubmissionDocument[]) {
+  const counts = new Map<string, number>();
+
+  for (const submission of submissions) {
+    const quarter = getQuarter(asIso(submission.submissionDate));
+    if (quarter === "unknown") {
+      continue;
+    }
+
+    const categories = [
+      "All",
+      getCategory({ authority: submission.authority, event: submission.event }),
+    ];
+    for (const category of categories) {
+      const key = `${quarter}|${category}`;
+      counts.set(key, (counts.get(key) || 0) + 1);
+    }
+  }
+
+  return counts;
+}
+
 function buildQuarterlyMetrics(
   rows: ReportRow[],
   quarterField: ScriptOptions["quarterField"],
+  submissions: MainSubmissionDocument[] = [],
 ): QuarterlyMetricRow[] {
   const groupedRows = rows.reduce<Map<string, ReportRow[]>>((acc, row) => {
-    const sourceDate = quarterField === "submitted" ? row.submissionDate : row.draftCreatedAt;
-    const quarter = getQuarter(sourceDate);
+    const quarter = getQuarter(getQuarterSourceDate(row, quarterField));
     acc.set(quarter, [...(acc.get(quarter) || []), row]);
+    return acc;
+  }, new Map());
+  const submissionCounts = getSubmissionCountsByQuarterAndCategory(submissions);
+  const categories = getCategories(rows, submissions);
+
+  return [...groupedRows.entries()]
+    .sort(([left], [right]) => left.localeCompare(right))
+    .flatMap(([quarter, quarterRows]) =>
+      categories
+        .map((category) => {
+          const categoryRows = quarterRows.filter((row) => categoryMatches(category, row.category));
+          if (categoryRows.length === 0 && category !== "All") {
+            return undefined;
+          }
+
+          const submittedRows = categoryRows.filter(isSubmittedFromDraft);
+          const activeDrafts = categoryRows.filter(isActiveDraft).length;
+          const deletedDraftsNotSubmitted = categoryRows.filter(isDeletedDraftNotSubmitted).length;
+          const shortDraftSubmissions = submittedRows.filter(
+            (row) => row.draftDurationUnderOneMinute === "yes",
+          ).length;
+          const totalSubmissions = submissionCounts.get(`${quarter}|${category}`) || 0;
+          const draftCreatedDurations = submittedRows
+            .map((row) => getElapsedDaysNumber(row.draftCreatedAt, row.submissionDate))
+            .filter((value): value is number => value !== undefined);
+          const lastSavedDurations = submittedRows
+            .map((row) => getElapsedDaysNumber(row.draftLastSavedAt, row.submissionDate))
+            .filter((value): value is number => value !== undefined);
+
+          return {
+            quarter,
+            category,
+            totalDrafts: String(categoryRows.length),
+            activeDrafts: String(activeDrafts),
+            submittedFromDraft: String(submittedRows.length),
+            deletedDraftsNotSubmitted: String(deletedDraftsNotSubmitted),
+            draftConversionRate: getPercent(submittedRows.length, categoryRows.length),
+            totalSubmissions: String(totalSubmissions),
+            submittedUsingDraftRate: getPercent(submittedRows.length, totalSubmissions),
+            shortDraftSubmissions: String(shortDraftSubmissions),
+            averageDraftCreatedToSubmit: formatDurationFromDays(average(draftCreatedDurations)),
+            medianDraftCreatedToSubmit: formatDurationFromDays(median(draftCreatedDurations)),
+            averageLastDraftSaveToSubmit: formatDurationFromDays(average(lastSavedDurations)),
+            medianLastDraftSaveToSubmit: formatDurationFromDays(median(lastSavedDurations)),
+          };
+        })
+        .filter((row): row is QuarterlyMetricRow => row !== undefined),
+    );
+}
+
+function buildBreakdownMetrics({
+  rows,
+  quarterField,
+  valueForRow,
+}: {
+  rows: ReportRow[];
+  quarterField: ScriptOptions["quarterField"];
+  valueForRow: (row: ReportRow) => string;
+}): BreakdownMetricRow[] {
+  const groupedRows = rows.reduce<Map<string, ReportRow[]>>((acc, row) => {
+    const quarter = getQuarter(getQuarterSourceDate(row, quarterField));
+    const value = valueForRow(row) || "unknown";
+
+    for (const category of ["All", row.category]) {
+      const key = `${quarter}|${category}|${value}`;
+      acc.set(key, [...(acc.get(key) || []), row]);
+    }
+
     return acc;
   }, new Map());
 
   return [...groupedRows.entries()]
     .sort(([left], [right]) => left.localeCompare(right))
-    .map(([quarter, quarterRows]) => {
-      const convertedRows = quarterRows.filter((row) => row.convertedToSubmission === "yes");
-      const activeDrafts = quarterRows.filter((row) => row.draftRecordStatus === "active").length;
-      const deletedNotConvertedDrafts = quarterRows.filter(
-        (row) => row.draftRecordStatus === "deleted" && row.convertedToSubmission === "no",
-      ).length;
-      const draftCreatedDurations = convertedRows
-        .map((row) => getElapsedDaysNumber(row.draftCreatedAt, row.submissionDate))
-        .filter((value): value is number => value !== undefined);
-      const lastSavedDurations = convertedRows
-        .map((row) => getElapsedDaysNumber(row.draftLastSavedAt, row.submissionDate))
-        .filter((value): value is number => value !== undefined);
+    .map(([key, groupRows]) => {
+      const [quarter, category, value] = key.split("|");
+      const submittedRows = groupRows.filter(isSubmittedFromDraft);
+      const activeDrafts = groupRows.filter(isActiveDraft).length;
+      const deletedDraftsNotSubmitted = groupRows.filter(isDeletedDraftNotSubmitted).length;
 
       return {
         quarter,
-        totalDrafts: String(quarterRows.length),
+        category,
+        value,
+        totalDrafts: String(groupRows.length),
         activeDrafts: String(activeDrafts),
-        convertedDrafts: String(convertedRows.length),
-        deletedNotConvertedDrafts: String(deletedNotConvertedDrafts),
-        conversionRate: getPercent(convertedRows.length, quarterRows.length),
-        averageDraftCreatedToSubmit: formatDurationFromDays(average(draftCreatedDurations)),
-        medianDraftCreatedToSubmit: formatDurationFromDays(median(draftCreatedDurations)),
-        averageLastDraftSaveToSubmit: formatDurationFromDays(average(lastSavedDurations)),
-        medianLastDraftSaveToSubmit: formatDurationFromDays(median(lastSavedDurations)),
+        submittedFromDraft: String(submittedRows.length),
+        deletedDraftsNotSubmitted: String(deletedDraftsNotSubmitted),
+        draftConversionRate: getPercent(submittedRows.length, groupRows.length),
+        shortDraftSubmissions: String(
+          submittedRows.filter((row) => row.draftDurationUnderOneMinute === "yes").length,
+        ),
       };
     });
 }
@@ -801,6 +1171,8 @@ function printSummary({
   draftCountBeforeFilters,
   outputPath,
   quarterlyOutputPath,
+  stateBreakdownOutputPath,
+  eventBreakdownOutputPath,
   quarterlyMetrics,
   domain,
   draftIndex,
@@ -810,22 +1182,22 @@ function printSummary({
   draftCountBeforeFilters: number;
   outputPath: string;
   quarterlyOutputPath?: string;
+  stateBreakdownOutputPath?: string;
+  eventBreakdownOutputPath?: string;
   quarterlyMetrics?: QuarterlyMetricRow[];
   domain: string;
   draftIndex: string;
   mainIndex: string;
 }) {
-  const convertedCount = rows.filter((row) => row.convertedToSubmission === "yes").length;
-  const activeDraftCount = rows.filter((row) => row.draftRecordStatus === "active").length;
-  const deletedNotConvertedCount = rows.filter(
-    (row) => row.draftRecordStatus === "deleted" && row.convertedToSubmission === "no",
-  ).length;
+  const convertedCount = rows.filter(isSubmittedFromDraft).length;
+  const activeDraftCount = rows.filter(isActiveDraft).length;
+  const deletedNotConvertedCount = rows.filter(isDeletedDraftNotSubmitted).length;
 
   const byEvent = rows.reduce<Map<string, { drafts: number; converted: number }>>((acc, row) => {
     const key = row.event || "unknown";
     const current = acc.get(key) || { drafts: 0, converted: 0 };
     current.drafts += 1;
-    if (row.convertedToSubmission === "yes") {
+    if (isSubmittedFromDraft(row)) {
       current.converted += 1;
     }
     acc.set(key, current);
@@ -848,6 +1220,12 @@ function printSummary({
   if (quarterlyOutputPath && quarterlyMetrics) {
     console.log(`Quarterly metrics CSV output: ${quarterlyOutputPath}`);
     console.log(`Quarterly rows written: ${quarterlyMetrics.length}`);
+  }
+  if (stateBreakdownOutputPath) {
+    console.log(`State breakdown CSV output: ${stateBreakdownOutputPath}`);
+  }
+  if (eventBreakdownOutputPath) {
+    console.log(`Event/type breakdown CSV output: ${eventBreakdownOutputPath}`);
   }
 
   if (byEvent.size > 0) {
@@ -891,14 +1269,52 @@ async function main() {
   const csv = toCsv(rows, csvHeaders);
 
   let quarterlyOutputPath: string | undefined;
+  let stateBreakdownOutputPath: string | undefined;
+  let eventBreakdownOutputPath: string | undefined;
   let quarterlyMetrics: QuarterlyMetricRow[] | undefined;
 
   await writeCsv(outputPath, csv);
 
   if (options.quarterly) {
     quarterlyOutputPath = options.quarterlyOutput || getDefaultQuarterlyOutputPath(indexNamespace);
-    quarterlyMetrics = buildQuarterlyMetrics(rows, options.quarterField);
+    stateBreakdownOutputPath =
+      options.stateBreakdownOutput || getDefaultBreakdownOutputPath(indexNamespace, "by-state");
+    eventBreakdownOutputPath =
+      options.eventBreakdownOutput || getDefaultBreakdownOutputPath(indexNamespace, "by-event");
+
+    const submissionFetchRange = getQuarterFetchRange(rows, options.quarterField);
+    console.log(`Fetching submitted main records for quarterly comparison from ${mainIndex}...`);
+    const mainSubmissions = await fetchMainSubmissionDocuments({
+      client,
+      mainIndex,
+      options,
+      ...submissionFetchRange,
+    });
+
+    quarterlyMetrics = buildQuarterlyMetrics(rows, options.quarterField, mainSubmissions);
     await writeCsv(quarterlyOutputPath, toCsv(quarterlyMetrics, quarterlyCsvHeaders));
+    await writeCsv(
+      stateBreakdownOutputPath,
+      toCsv(
+        buildBreakdownMetrics({
+          rows,
+          quarterField: options.quarterField,
+          valueForRow: (row) => row.state,
+        }),
+        breakdownCsvHeaders,
+      ),
+    );
+    await writeCsv(
+      eventBreakdownOutputPath,
+      toCsv(
+        buildBreakdownMetrics({
+          rows,
+          quarterField: options.quarterField,
+          valueForRow: (row) => row.event,
+        }),
+        breakdownCsvHeaders,
+      ),
+    );
   }
 
   printSummary({
@@ -906,6 +1322,8 @@ async function main() {
     draftCountBeforeFilters: drafts.length,
     outputPath,
     quarterlyOutputPath,
+    stateBreakdownOutputPath,
+    eventBreakdownOutputPath,
     quarterlyMetrics,
     domain,
     draftIndex,
