@@ -94,7 +94,8 @@ type ReportRow = {
   draftLastSavedAt: string;
   draftRecordChangedAt: string;
   convertedToSubmission: "yes" | "no";
-  currentMainStatus: string;
+  cmsStatus: string;
+  stateStatus: string;
   submissionDate: string;
   draftCreatedToSubmit: string;
   lastDraftSaveToSubmit: string;
@@ -173,11 +174,15 @@ const csvColumns: Array<CsvColumn<ReportRow>> = [
   { key: "authority", label: "Authority" },
   { key: "category", label: "Category" },
   { key: "draftLifecycleStatus", label: "Draft Lifecycle Status" },
-  { key: "draftDurationUnderOneMinute", label: "Draft Duration Under 1 Minute" },
+  {
+    key: "draftDurationUnderOneMinute",
+    label: "Submitted Within 1 Minute of Draft Creation",
+  },
   { key: "draftCreatedAt", label: "Draft Created Date" },
   { key: "draftLastSavedAt", label: "Last Draft Save Date" },
   { key: "draftRecordChangedAt", label: "Draft Record Changed Date" },
-  { key: "currentMainStatus", label: "Current Main Status" },
+  { key: "cmsStatus", label: "CMS Status" },
+  { key: "stateStatus", label: "State Status" },
   { key: "submissionDate", label: "Submission Date" },
   { key: "draftCreatedToSubmit", label: "Draft Created to Submission Time" },
   { key: "lastDraftSaveToSubmit", label: "Last Draft Save to Submission Time" },
@@ -193,7 +198,10 @@ const quarterlyCsvColumns: Array<CsvColumn<QuarterlyMetricRow>> = [
   { key: "draftConversionRate", label: "Draft Conversion Rate" },
   { key: "totalSubmissions", label: "Total Submissions" },
   { key: "submittedUsingDraftRate", label: "Submissions Using Draft Rate" },
-  { key: "shortDraftSubmissions", label: "Submitted Drafts Under 1 Minute" },
+  {
+    key: "shortDraftSubmissions",
+    label: "Submissions Within 1 Minute of Draft Creation",
+  },
   { key: "averageDraftCreatedToSubmit", label: "Average Draft Created to Submission Time" },
   { key: "medianDraftCreatedToSubmit", label: "Median Draft Created to Submission Time" },
   { key: "averageLastDraftSaveToSubmit", label: "Average Last Draft Save to Submission Time" },
@@ -209,7 +217,10 @@ const stateBreakdownCsvColumns: Array<CsvColumn<BreakdownMetricRow>> = [
   { key: "submittedFromDraft", label: "Submitted From Draft" },
   { key: "deletedDraftsNotSubmitted", label: "Deleted Drafts Not Submitted" },
   { key: "draftConversionRate", label: "Draft Conversion Rate" },
-  { key: "shortDraftSubmissions", label: "Submitted Drafts Under 1 Minute" },
+  {
+    key: "shortDraftSubmissions",
+    label: "Submissions Within 1 Minute of Draft Creation",
+  },
 ];
 
 const eventBreakdownCsvColumns: Array<CsvColumn<BreakdownMetricRow>> = [
@@ -220,7 +231,10 @@ const eventBreakdownCsvColumns: Array<CsvColumn<BreakdownMetricRow>> = [
   { key: "submittedFromDraft", label: "Submitted From Draft" },
   { key: "deletedDraftsNotSubmitted", label: "Deleted Drafts Not Submitted" },
   { key: "draftConversionRate", label: "Draft Conversion Rate" },
-  { key: "shortDraftSubmissions", label: "Submitted Drafts Under 1 Minute" },
+  {
+    key: "shortDraftSubmissions",
+    label: "Submissions Within 1 Minute of Draft Creation",
+  },
 ];
 
 function printUsage() {
@@ -917,7 +931,8 @@ function buildReportRows({
       draftLastSavedAt,
       draftRecordChangedAt: asIso(draft.makoChangedDate || draft.changedDate || draft.statusDate),
       convertedToSubmission: convertedToSubmission ? "yes" : "no",
-      currentMainStatus: mainDocument?.seatoolStatus || "",
+      cmsStatus: mainDocument?.cmsStatus || mainDocument?.seatoolStatus || "",
+      stateStatus: mainDocument?.stateStatus || mainDocument?.seatoolStatus || "",
       submissionDate,
       draftCreatedToSubmit: getElapsedDuration(draftCreatedAt, submissionDate),
       lastDraftSaveToSubmit: getElapsedDuration(draftLastSavedAt, submissionDate),
