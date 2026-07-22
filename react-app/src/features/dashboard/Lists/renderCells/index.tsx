@@ -2,7 +2,7 @@ import { EllipsisVerticalIcon } from "@heroicons/react/24/outline";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { type MouseEvent, useState } from "react";
 import { Link, useNavigate } from "react-router";
-import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
+import { Action, FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatDateToET, getAvailableActions, isStateUser } from "shared-utils";
 
 import { deleteDraft } from "@/api/deleteDraft";
@@ -79,10 +79,15 @@ const ActionMenuCell = ({
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
   const canDeleteDraft =
     isSaveInProgressEnabled && data.seatoolStatus === SEATOOL_STATUS.DRAFT && isStateUser(user);
   const canContinueDraft = canDeleteDraft && !!draftLink;
-  const actions = canDeleteDraft ? [] : getAvailableActions(user, data);
+  const actions = (canDeleteDraft ? [] : getAvailableActions(user, data)).filter(
+    (action) =>
+      !hideWithdrawRaiResponseToggle ||
+      (action !== Action.ENABLE_RAI_WITHDRAW && action !== Action.DISABLE_RAI_WITHDRAW),
+  );
   const draftLinkState = {
     from: `${window.location.pathname}${window.location.search}`,
   };
