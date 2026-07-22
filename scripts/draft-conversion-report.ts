@@ -139,6 +139,7 @@ const DEFAULT_PROJECT = "mako";
 const DEFAULT_REGION = process.env.AWS_REGION || process.env.REGION_A || "us-east-1";
 const DEFAULT_BATCH_SIZE = 500;
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
+const TOTAL_CATEGORY = "Total";
 const EVENT_LABELS: Record<string, string> = {
   "app-k": "App K",
   "capitated-amendment": "1915(b) Capitated Amendment",
@@ -1106,7 +1107,7 @@ function isDeletedDraftNotSubmitted(row: ReportRow) {
 }
 
 function getCategories(rows: ReportRow[], submissions: MainSubmissionDocument[] = []) {
-  const categories = new Set<string>(["All", "SPA", "Waiver"]);
+  const categories = new Set<string>([TOTAL_CATEGORY, "SPA", "Waiver"]);
 
   for (const row of rows) {
     categories.add(row.category);
@@ -1117,13 +1118,13 @@ function getCategories(rows: ReportRow[], submissions: MainSubmissionDocument[] 
   }
 
   return [...categories].sort((left, right) => {
-    const order = ["All", "SPA", "Waiver", "Other"];
+    const order = [TOTAL_CATEGORY, "SPA", "Waiver", "Other"];
     return order.indexOf(left) - order.indexOf(right) || left.localeCompare(right);
   });
 }
 
 function categoryMatches(category: string, value: string) {
-  return category === "All" || category === value;
+  return category === TOTAL_CATEGORY || category === value;
 }
 
 function getSubmissionCountsByQuarterAndCategory(submissions: MainSubmissionDocument[]) {
@@ -1136,7 +1137,7 @@ function getSubmissionCountsByQuarterAndCategory(submissions: MainSubmissionDocu
     }
 
     const categories = [
-      "All",
+      TOTAL_CATEGORY,
       getCategory({ authority: submission.authority, event: submission.event }),
     ];
     for (const category of categories) {
@@ -1168,7 +1169,7 @@ function buildQuarterlyMetrics(
         .map((category) => {
           const categoryRows = quarterRows.filter((row) => categoryMatches(category, row.category));
           const totalSubmissions = submissionCounts.get(`${quarter}|${category}`) || 0;
-          if (categoryRows.length === 0 && totalSubmissions === 0 && category !== "All") {
+          if (categoryRows.length === 0 && totalSubmissions === 0 && category !== TOTAL_CATEGORY) {
             return undefined;
           }
 
@@ -1220,7 +1221,7 @@ function buildBreakdownMetrics({
   const groupedRows = rows.reduce<Map<string, ReportRow[]>>((acc, row) => {
     const quarter = getQuarter(getQuarterSourceDate(row, quarterField));
     const value = valueForRow(row) || "unknown";
-    const categories = includeCategoryRows ? ["All", row.category] : ["All"];
+    const categories = includeCategoryRows ? [TOTAL_CATEGORY, row.category] : [TOTAL_CATEGORY];
 
     for (const category of categories) {
       const key = `${quarter}|${category}|${value}`;
