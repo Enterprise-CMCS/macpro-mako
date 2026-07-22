@@ -1,7 +1,7 @@
 FROM --platform=linux/amd64 oven/bun:1.1.20-alpine AS builder
 
 # Increment CACHE_BUST to force Docker to pull a fresh base image (e.g., for security patches)
-ARG CACHE_BUST=2026-05-13-clamav-al2023-security-refresh
+ARG CACHE_BUST=2026-07-22-clamav-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR /app
@@ -15,7 +15,7 @@ RUN bun run build
 
 FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24
 
-ARG CACHE_BUST=2026-05-13-clamav-al2023-security-refresh
+ARG CACHE_BUST=2026-07-22-clamav-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR ${LAMBDA_TASK_ROOT}
