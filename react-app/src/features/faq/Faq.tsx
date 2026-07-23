@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 
 import {
@@ -10,6 +10,7 @@ import {
   CardWithTopBorder,
   SubNavHeader,
 } from "@/components";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { oneMACFAQContent } from "./faqs";
@@ -17,18 +18,32 @@ import { helpDeskContact } from "./faqs/utils";
 
 export const Faq = () => {
   const { id } = useParams<{ id: string }>();
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
+  const faqContent = useMemo(() => {
+    if (!hideWithdrawRaiResponseToggle) return oneMACFAQContent;
+
+    const retiredWithdrawRaiFaqs = new Set([
+      "withdraw-spa-rai-response",
+      "withdraw-chip-spa-rai-response",
+      "withdraw-waiver-rai-response",
+    ]);
+    return oneMACFAQContent.map((section) => ({
+      ...section,
+      qanda: section.qanda.filter(({ anchorText }) => !retiredWithdrawRaiFaqs.has(anchorText)),
+    }));
+  }, [hideWithdrawRaiResponseToggle]);
 
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [allExpanded, setAllExpanded] = useState<boolean>(false);
 
   const expandAll = useCallback(() => {
     const allIds = [];
-    oneMACFAQContent.forEach(({ qanda }) => {
+    faqContent.forEach(({ qanda }) => {
       qanda.forEach(({ anchorText }) => allIds.push(anchorText));
     });
     setOpenItems(allIds);
     setAllExpanded(true);
-  }, [setOpenItems]);
+  }, [faqContent, setOpenItems]);
 
   useEffect(() => {
     if (id) {
@@ -77,7 +92,7 @@ export const Faq = () => {
               onValueChange={setOpenItems}
               id="faq-accordions"
             >
-              {oneMACFAQContent.map(({ sectionTitle, qanda }) => (
+              {faqContent.map(({ sectionTitle, qanda }) => (
                 <article key={sectionTitle} className="mb-8">
                   <h2 className="text-2xl mb-4 text-primary">{sectionTitle}</h2>
                   {qanda.map(({ anchorText, answerJSX, question, label, labelColor }) => (
