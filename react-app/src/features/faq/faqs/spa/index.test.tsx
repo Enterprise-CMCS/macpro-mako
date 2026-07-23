@@ -66,6 +66,10 @@ describe("SPA FAQ documents", () => {
     expect(introductionLink).toHaveAttribute("download", "CHIP Eligibility Introduction.pdf");
   });
 
+  it("uses the CS27 template name as its PDF title", () => {
+    expect(getPdfTitle("chp/CS27.pdf")).toBe("CS27");
+  });
+
   it("marks CHIP eligibility template and implementation guide FAQs as updated", () => {
     expect(spaContent).toEqual(
       expect.arrayContaining([
