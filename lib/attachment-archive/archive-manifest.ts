@@ -5,6 +5,7 @@ import {
   ATTACHMENT_ARCHIVE_BUILD_VERSION,
   ATTACHMENT_ARCHIVE_FAILURE_CODES,
   ATTACHMENT_ARCHIVE_NAMESPACES,
+  ATTACHMENT_ARCHIVE_PENDING_REASONS,
   ATTACHMENT_ARCHIVE_SCOPES,
   ATTACHMENT_ARCHIVE_STATUSES,
   AttachmentArchiveBlockedAttachment,
@@ -315,6 +316,10 @@ export function buildAttachmentArchiveCurrent({
   appendedAttachmentCount,
   skippedAttachmentCount,
   executionArn,
+  pendingReason,
+  pendingMessage,
+  sourceScanPendingAt,
+  sourceScanRetryCount,
   sectionId,
   sectionNumber,
   sectionLabel,
@@ -333,6 +338,10 @@ export function buildAttachmentArchiveCurrent({
   appendedAttachmentCount?: number;
   skippedAttachmentCount?: number;
   executionArn?: string;
+  pendingReason?: AttachmentArchiveCurrent["pendingReason"];
+  pendingMessage?: string;
+  sourceScanPendingAt?: string;
+  sourceScanRetryCount?: number;
   sectionId?: string;
   sectionNumber?: number;
   sectionLabel?: string;
@@ -354,6 +363,10 @@ export function buildAttachmentArchiveCurrent({
     ...(typeof skippedAttachmentCount === "number" ? { skippedAttachmentCount } : {}),
     updatedAt: new Date().toISOString(),
     ...(executionArn ? { executionArn } : {}),
+    ...(pendingReason ? { pendingReason } : {}),
+    ...(pendingMessage ? { pendingMessage } : {}),
+    ...(sourceScanPendingAt ? { sourceScanPendingAt } : {}),
+    ...(typeof sourceScanRetryCount === "number" ? { sourceScanRetryCount } : {}),
     ...(sectionId ? { sectionId } : {}),
     ...(sectionNumber ? { sectionNumber } : {}),
     ...(sectionLabel ? { sectionLabel } : {}),
@@ -388,6 +401,10 @@ export const AttachmentArchiveCurrentSchema = z
     skippedAttachmentCount: z.number().optional(),
     updatedAt: z.string(),
     executionArn: z.string().optional(),
+    pendingReason: z.enum(ATTACHMENT_ARCHIVE_PENDING_REASONS).optional(),
+    pendingMessage: z.string().optional(),
+    sourceScanPendingAt: z.string().optional(),
+    sourceScanRetryCount: z.number().optional(),
     sectionId: z.string().optional(),
     sectionNumber: z.number().optional(),
     sectionLabel: z.string().optional(),

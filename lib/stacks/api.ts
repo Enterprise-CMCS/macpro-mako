@@ -419,6 +419,21 @@ export class Api extends cdk.NestedStack {
               }),
               new cdk.aws_iam.PolicyStatement({
                 effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObjectTagging"],
+                resources: [`${attachmentsBucket.bucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObjectTagging"],
+                resources: [`${sharedAttachmentReadBucket.arn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObjectTagging"],
+                resources: legacyMirrorBucketArns.map((bucketArn) => `${bucketArn}/*`),
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
                 actions: ["s3:ListBucket"],
                 resources: [archiveWriteBucketArn],
               }),
@@ -784,6 +799,8 @@ export class Api extends cdk.NestedStack {
         environment: {
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,
+          LEGACY_ATTACHMENT_BUCKET_MAP: legacyAttachmentBucketMap,
+          legacyS3AccessRoleArn,
           ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
           ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
           ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
@@ -1157,7 +1174,7 @@ export class Api extends cdk.NestedStack {
       {} as { [key: string]: NodejsFunction },
     );
 
-    const attachmentArchiveImageCacheBust = "2026-05-13-attachment-archive-security-refresh";
+    const attachmentArchiveImageCacheBust = "2026-07-22-attachment-archive-security-refresh";
 
     const archiveWorkerImage = new cdk.aws_ecr_assets.DockerImageAsset(
       this,

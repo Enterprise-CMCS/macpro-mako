@@ -370,6 +370,36 @@ describe("getAttachmentArchive handler", () => {
     );
   });
 
+  it("returns source-scan pending details without queuing another rebuild", async () => {
+    getRequestedAttachmentArchiveStatus.mockResolvedValue({
+      needsRebuild: false,
+      response: {
+        status: "PENDING",
+        reason: "SOURCE_SCAN_PENDING",
+        message: "Attachments are still being scanned. Please try again shortly.",
+        pollAfterSeconds: 5,
+      },
+    });
+
+    const event = {
+      body: JSON.stringify({ id: WITHDRAWN_CHANGELOG_ITEM_ID, scope: "all" }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(200);
+    expect(response.body).toBe(
+      JSON.stringify({
+        status: "PENDING",
+        reason: "SOURCE_SCAN_PENDING",
+        message: "Attachments are still being scanned. Please try again shortly.",
+        pollAfterSeconds: 5,
+      }),
+    );
+    expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
+  });
+
   it("queues a draft rebuild when a draft archive is pending and stale", async () => {
     getRequestedAttachmentArchiveStatus.mockResolvedValue({
       needsRebuild: true,

@@ -166,7 +166,9 @@ describe("attachment archive worker runtime", () => {
       },
     }));
     vi.doMock("archiver", () => ({
-      default: vi.fn(() => archiveMock),
+      ZipArchive: vi.fn(function ZipArchiveMock() {
+        return archiveMock;
+      }),
     }));
     vi.doMock("fs", () => ({
       createReadStream: createReadStreamMock,
