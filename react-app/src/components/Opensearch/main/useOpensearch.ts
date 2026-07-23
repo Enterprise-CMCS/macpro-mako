@@ -72,6 +72,11 @@ export const removeDraftStatusFilters = (
     return value.length ? [{ ...filter, value }] : [];
   });
 
+export const removeWithdrawRaiEnabledFilters = (
+  filters: opensearch.main.Filterable[] = [],
+): opensearch.main.Filterable[] =>
+  filters.filter((filter) => filter.field !== "raiWithdrawEnabled");
+
 export const getSaveInProgressDashboardFilters = (
   isSaveInProgressEnabled: boolean,
 ): opensearch.main.Filterable[] => (isSaveInProgressEnabled ? [] : [EXCLUDE_DRAFT_STATUS_FILTER]);
@@ -81,13 +86,21 @@ export const getDashboardSearchFilters = ({
   search,
   tab,
   isSaveInProgressEnabled,
+  hideWithdrawRaiResponseToggle = false,
 }: {
   filters: opensearch.main.Filterable[];
   search?: string;
   tab: OsTab;
   isSaveInProgressEnabled: boolean;
+  hideWithdrawRaiResponseToggle?: boolean;
 }): opensearch.main.Filterable[] => [
-  ...(isSaveInProgressEnabled ? filters : removeDraftStatusFilters(filters)),
+  ...(hideWithdrawRaiResponseToggle
+    ? removeWithdrawRaiEnabledFilters(
+        isSaveInProgressEnabled ? filters : removeDraftStatusFilters(filters),
+      )
+    : isSaveInProgressEnabled
+      ? filters
+      : removeDraftStatusFilters(filters)),
   ...createSearchFilterable(search || ""),
   ...(DEFAULT_FILTERS[tab].filters || []),
   ...getSaveInProgressDashboardFilters(isSaveInProgressEnabled),
@@ -104,6 +117,7 @@ Comments
 export const useOsData = () => {
   const params = useOsUrl();
   const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
   const [data, setData] = useState<opensearch.main.Response["hits"]>();
   const { mutateAsync, isLoading, error } = useOsSearch<
     opensearch.main.Field,
@@ -133,6 +147,7 @@ export const useOsData = () => {
             search: query.search,
             tab: params.state.tab,
             isSaveInProgressEnabled,
+            hideWithdrawRaiResponseToggle,
           }),
           includeDrafts: isSaveInProgressEnabled,
         },

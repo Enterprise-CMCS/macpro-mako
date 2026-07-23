@@ -3,7 +3,13 @@ import { format } from "date-fns";
 import { type FC, useCallback, useMemo } from "react";
 import { opensearch } from "shared-types";
 
-import { checkMultiFilter, Chip, removeDraftStatusFilters, useOsUrl } from "@/components";
+import {
+  checkMultiFilter,
+  Chip,
+  removeDraftStatusFilters,
+  removeWithdrawRaiEnabledFilters,
+  useOsUrl,
+} from "@/components";
 import { useLabelMapping } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
@@ -80,11 +86,13 @@ export const FilterChips: FC = () => {
   const url = useOsUrl();
   const { setDrawerState } = useFilterDrawerContext();
   const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
-  const visibleFilters = useMemo(
-    () =>
-      isSaveInProgressEnabled ? url.state.filters : removeDraftStatusFilters(url.state.filters),
-    [isSaveInProgressEnabled, url.state.filters],
-  );
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
+  const visibleFilters = useMemo(() => {
+    const filters = isSaveInProgressEnabled
+      ? url.state.filters
+      : removeDraftStatusFilters(url.state.filters);
+    return hideWithdrawRaiResponseToggle ? removeWithdrawRaiEnabledFilters(filters) : filters;
+  }, [hideWithdrawRaiResponseToggle, isSaveInProgressEnabled, url.state.filters]);
 
   const openDrawer = useCallback(() => setDrawerState(true), [setDrawerState]);
   const twoOrMoreFiltersApplied = checkMultiFilter(visibleFilters, 2);

@@ -2,7 +2,13 @@ import { useEffect, useMemo, useState } from "react";
 import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import { useGetUser } from "@/api";
-import { checkMultiFilter, removeDraftStatusFilters, useOsAggregate, useOsUrl } from "@/components";
+import {
+  checkMultiFilter,
+  removeDraftStatusFilters,
+  removeWithdrawRaiEnabledFilters,
+  useOsAggregate,
+  useOsUrl,
+} from "@/components";
 import { useLabelMapping } from "@/hooks";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
@@ -17,6 +23,7 @@ export const useFilterState = () => {
   const url = useOsUrl();
 
   const isCms = !!user?.isCms && user.user?.role !== "helpdesk";
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
 
   const filters: FilterGroup = (() => {
     // ------------------------ SPAS ------------------------ //
@@ -28,7 +35,9 @@ export const useFilterState = () => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
         })(),
-        [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
+        ...(!hideWithdrawRaiResponseToggle
+          ? { [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED }
+          : {}),
         [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
         [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
         [C.DATE_LATESTPACKAGEACTIVITY.field]: C.DATE_LATESTPACKAGEACTIVITY,
@@ -47,7 +56,9 @@ export const useFilterState = () => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };
         })(),
-        [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED,
+        ...(!hideWithdrawRaiResponseToggle
+          ? { [C.BOOL_RAIWITHDRAWENABLED.field]: C.BOOL_RAIWITHDRAWENABLED }
+          : {}),
         [C.DATE_INITIALSUBMISSION.field]: C.DATE_INITIALSUBMISSION,
         [C.DATE_FINALDISPOSITION.field]: C.DATE_FINALDISPOSITION,
         [C.DATE_LATESTPACKAGEACTIVITY.field]: C.DATE_LATESTPACKAGEACTIVITY,
@@ -96,11 +107,13 @@ export const useFilterDrawer = () => {
   const drawer = useFilterDrawerContext();
   const [filters, setFilters] = useFilterState();
   const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
-  const activeUrlFilters = useMemo(
-    () =>
-      isSaveInProgressEnabled ? url.state.filters : removeDraftStatusFilters(url.state.filters),
-    [isSaveInProgressEnabled, url.state.filters],
-  );
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
+  const activeUrlFilters = useMemo(() => {
+    const filters = isSaveInProgressEnabled
+      ? url.state.filters
+      : removeDraftStatusFilters(url.state.filters);
+    return hideWithdrawRaiResponseToggle ? removeWithdrawRaiEnabledFilters(filters) : filters;
+  }, [hideWithdrawRaiResponseToggle, isSaveInProgressEnabled, url.state.filters]);
 
   const [accordionValues, setAccordionValues] = useState<string[]>([]);
   const labelMap = useLabelMapping();

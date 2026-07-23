@@ -39,8 +39,10 @@ import {
 
 import { SpasList } from "./index";
 
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
+
 vi.mock("@/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+  useFeatureFlag: mockUseFeatureFlag,
 }));
 
 const pendingDoc = {
@@ -269,6 +271,27 @@ describe("SpasList", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
+    mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
+  });
+
+  it("hides the RAI withdraw enabled dashboard sub-status when the SMART launch flag is on", async () => {
+    mockUseFeatureFlag.mockImplementation(
+      (flag: string) => flag === "SAVE_IN_PROGRESS" || flag === "HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE",
+    );
+
+    await setup(
+      {
+        total: { value: 1, relation: "eq" },
+        max_score: null,
+        hits: [{ _id: withdrawEnabledDoc.id, _index: "test", _source: withdrawEnabledDoc }],
+      },
+      getDashboardQueryString({ tab: "spas" }),
+      TEST_REVIEWER_USER,
+      true,
+    );
+
+    expect(screen.queryByText("· Withdraw Formal RAI Response - Enabled")).not.toBeInTheDocument();
+    expect(screen.getByText(withdrawEnabledDoc.cmsStatus)).toBeInTheDocument();
   });
 
   it("should return no columns if the user is not logged in", async () => {

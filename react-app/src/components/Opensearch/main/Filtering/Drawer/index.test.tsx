@@ -9,6 +9,12 @@ import { getDashboardQueryString, renderFilterDrawer } from "@/utils/test-helper
 import { triggerGAEvent } from "./hooks";
 import { OsFilterDrawer } from "./index";
 
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
+}));
+
 const setup = (
   filters: opensearch.Filterable<opensearch.main.Field>[],
   tab: "spas" | "waivers",
@@ -25,6 +31,19 @@ const setup = (
 };
 
 describe("OsFilterDrawer", () => {
+  it("hides the RAI Withdraw Enabled filter when the SMART launch flag is on", async () => {
+    mockUseFeatureFlag.mockImplementation(
+      (flag: string) => flag === "SAVE_IN_PROGRESS" || flag === "HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE",
+    );
+    const { user } = setup([], "spas");
+
+    await user.click(screen.getByRole("button", { name: "Open filter panel" }));
+
+    expect(screen.queryByRole("button", { name: "RAI Withdraw Enabled" })).not.toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Status" })).toBeInTheDocument();
+    mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
+  });
+
   describe("SPA Filters", () => {
     it("should display the drawer closed initially", () => {
       setup([], "spas");

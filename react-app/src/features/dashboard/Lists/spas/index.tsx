@@ -6,11 +6,15 @@ import { formatDateToET, formatDateToUTC } from "shared-utils";
 import { OneMacUser } from "@/api";
 import { OsMainView, OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
-const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
+const getColumns = (
+  { user, isCms }: OneMacUser,
+  hideWithdrawRaiResponseToggle: boolean,
+): OsTableColumn[] => {
   if (!user || user === null) {
     return [];
   }
@@ -63,6 +67,7 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
         })();
 
         const subStatusRAI =
+          !hideWithdrawRaiResponseToggle &&
           data.raiWithdrawEnabled &&
           data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
           data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE
@@ -81,7 +86,8 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
         return (
           <>
             <p className={data.seatoolStatus === SEATOOL_STATUS.DRAFT ? "italic" : ""}>{status}</p>
-            {data.raiWithdrawEnabled &&
+            {!hideWithdrawRaiResponseToggle &&
+              data.raiWithdrawEnabled &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
                 <p className="text-xs opacity-65">· Withdraw Formal RAI Response - Enabled</p>
@@ -158,6 +164,10 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
 };
 
 export const SpasList = ({ oneMacUser }: { oneMacUser: OneMacUser }) => {
-  const columns = useMemo(() => getColumns(oneMacUser), [oneMacUser]);
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
+  const columns = useMemo(
+    () => getColumns(oneMacUser, hideWithdrawRaiResponseToggle),
+    [oneMacUser, hideWithdrawRaiResponseToggle],
+  );
   return <OsMainView columns={columns} />;
 };

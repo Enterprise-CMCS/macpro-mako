@@ -5,11 +5,15 @@ import { formatActionType, formatDateToET, formatDateToUTC } from "shared-utils"
 import { OneMacUser } from "@/api";
 import { OsMainView, OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
-const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
+const getColumns = (
+  { isCms, user }: OneMacUser,
+  hideWithdrawRaiResponseToggle: boolean,
+): OsTableColumn[] => {
   if (!user || user === null) {
     return [];
   }
@@ -68,9 +72,10 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
           return data.cmsStatus;
         })();
 
-        const subStatusRAI = data.raiWithdrawEnabled
-          ? " (Withdraw Formal RAI Response - Enabled)"
-          : "";
+        const subStatusRAI =
+          !hideWithdrawRaiResponseToggle && data.raiWithdrawEnabled
+            ? " (Withdraw Formal RAI Response - Enabled)"
+            : "";
 
         return `${status}${subStatusRAI}`;
       },
@@ -84,7 +89,8 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
         return (
           <>
             <p className={data.seatoolStatus === SEATOOL_STATUS.DRAFT ? "italic" : ""}>{status}</p>
-            {data.raiWithdrawEnabled &&
+            {!hideWithdrawRaiResponseToggle &&
+              data.raiWithdrawEnabled &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
                 <p className="text-xs opacity-65">· Withdraw Formal RAI Response - Enabled</p>
@@ -160,6 +166,10 @@ const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
 };
 
 export const WaiversList = ({ oneMacUser }: { oneMacUser: OneMacUser }) => {
-  const columns = useMemo(() => getColumns(oneMacUser), [oneMacUser]);
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
+  const columns = useMemo(
+    () => getColumns(oneMacUser, hideWithdrawRaiResponseToggle),
+    [oneMacUser, hideWithdrawRaiResponseToggle],
+  );
   return <OsMainView columns={columns} />;
 };

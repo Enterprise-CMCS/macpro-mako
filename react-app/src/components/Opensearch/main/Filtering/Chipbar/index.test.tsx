@@ -7,12 +7,19 @@ import { DEFAULT_FILTERS, getDashboardQueryString, renderFilterDrawer } from "@/
 
 import { ChipBool, ChipDate, ChipTerms, FilterChips } from "./index";
 
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn(() => false));
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
+}));
+
 describe("FilterChips", () => {
   const openDrawer = vi.fn();
   const clearFilter = vi.fn();
 
   afterEach(() => {
     vi.clearAllMocks();
+    mockUseFeatureFlag.mockReturnValue(false);
   });
 
   describe("ChipBool", () => {
@@ -367,6 +374,17 @@ describe("FilterChips", () => {
         "RAI Withdraw Enabled: Yes",
       );
       expect(screen.getByText("Final Disposition: 1/1/2025 - 1/1/2025")).toBeInTheDocument();
+    });
+
+    it("hides a stale RAI Withdraw Enabled chip when the SMART launch flag is on", () => {
+      mockUseFeatureFlag.mockImplementation(
+        (flag: string) => flag === "HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE",
+      );
+
+      setup(DEFAULT_FILTERS);
+
+      expect(screen.queryByText("RAI Withdraw Enabled:")).not.toBeInTheDocument();
+      expect(screen.getByText("State: Maryland, MD")).toBeInTheDocument();
     });
 
     it("should display filters with multiple values", () => {
