@@ -11,7 +11,6 @@ import {
   DetailsSection,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 type AdminChangeProps = {
   adminActivity: opensearch.changelog.Document;
@@ -66,9 +65,6 @@ function checkRegexPatterns(input: string): string {
   }
 }
 
-const isWithdrawRaiToggleActivity = (adminActivity: opensearch.changelog.Document) =>
-  adminActivity.event === "toggle-withdraw-rai" ||
-  (adminActivity.event === "legacy-admin-change" && !!checkRegexPatterns(adminActivity.changeMade));
 const AC_Update = () => <p>Coming Soon</p>;
 
 export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
@@ -132,15 +128,12 @@ const getAdminChangeKey = ({ _source: adminActivity }: ItemResult) =>
   ].join("|");
 
 export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
-  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
   const adminChangelog = changelog.filter(
     (item, index, items) =>
       item._source.isAdminChange &&
-      (!hideWithdrawRaiResponseToggle || !isWithdrawRaiToggleActivity(item._source)) &&
       items.findIndex(
         (candidate) =>
           candidate._source.isAdminChange &&
-          (!hideWithdrawRaiResponseToggle || !isWithdrawRaiToggleActivity(candidate._source)) &&
           getAdminChangeKey(candidate) === getAdminChangeKey(item),
       ) === index,
   );

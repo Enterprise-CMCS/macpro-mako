@@ -10,29 +10,11 @@ import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { AdminPackageActivities } from ".";
 
-const mockUseFeatureFlag = vi.hoisted(() => vi.fn(() => false));
-
-vi.mock("@/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: mockUseFeatureFlag,
-}));
-
 describe("Admin Features test", () => {
   vi.spyOn(api, "useGetUser").mockImplementation(() => {
     const response = mockUseGetUser();
     response.data.isCms = false;
     return response as UseQueryResult<OneMacUser, unknown>;
-  });
-
-  it("hides RAI withdraw toggle administrative activities when the SMART launch flag is on", () => {
-    mockUseFeatureFlag.mockReturnValue(true);
-
-    renderWithQueryClient(
-      <AdminPackageActivities changelog={ADMIN_CHANGE_ITEM._source.changelog} />,
-    );
-
-    expect(screen.queryByText(/Enable Formal RAI Response Withdraw/)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Disable Formal RAI Response Withdraw/)).not.toBeInTheDocument();
-    mockUseFeatureFlag.mockReturnValue(false);
   });
 
   it("finds no admin changes", () => {
@@ -65,6 +47,8 @@ describe("Admin Features test", () => {
     expect(screen.getByText("add file")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Change Reason" })).toBeInTheDocument();
     expect(screen.getByText("missing file")).toBeInTheDocument();
+    expect(screen.getAllByText(/Enable Formal RAI Response Withdraw/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Disable Formal RAI Response Withdraw/).length).toBeGreaterThan(0);
   });
 
   it("displays duplicate manual updates only once", () => {

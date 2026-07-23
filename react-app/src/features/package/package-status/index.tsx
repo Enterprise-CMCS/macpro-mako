@@ -2,6 +2,7 @@ import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { isCmsUser, isHelpDeskUser } from "shared-utils";
 
 import { useGetUser } from "@/api";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 
 type PackageStatusCardProps = {
   submission: opensearch.main.Document;
@@ -9,6 +10,7 @@ type PackageStatusCardProps = {
 
 export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
   const { data: user } = useGetUser();
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
 
   // This really a check to determine if we should show the status of an RAI Withdraw being enabled
   // We have a flag that we monitor but there are certain things that can be done outside of onemac,
@@ -16,6 +18,7 @@ export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
   // below (Pending Approval, and Pending Concurrence). In the future we should build logic into the
   // seatool sink that allows us to simply clear these flags
   const isInRAIWithdrawEnabledSubStatus =
+    !hideWithdrawRaiResponseToggle &&
     submission.raiWithdrawEnabled &&
     submission.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
     submission.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE;
