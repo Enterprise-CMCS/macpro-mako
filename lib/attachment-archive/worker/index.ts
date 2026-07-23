@@ -7,7 +7,7 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-import archiver, { Archiver } from "archiver";
+import { Archiver, ZipArchive } from "archiver";
 import { randomUUID } from "crypto";
 import { createReadStream, createWriteStream, promises as fs } from "fs";
 import { join } from "path";
@@ -433,7 +433,7 @@ async function run(): Promise<void> {
     }),
   );
 
-  const archive = archiver("zip", { zlib: { level: 9 } });
+  const archive = new ZipArchive({ zlib: { level: 9 } });
   const tempArchivePath = join("/tmp", `attachment-archive-${hash}-${randomUUID()}.zip`);
   const archiveFileStream = createWriteStream(tempArchivePath);
   archive.on("warning", (error: Error) => {
