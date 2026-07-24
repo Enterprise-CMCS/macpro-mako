@@ -6,15 +6,11 @@ import { formatDateToET, formatDateToUTC } from "shared-utils";
 import { OneMacUser } from "@/api";
 import { OsMainView, OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
-const getColumns = (
-  { user, isCms }: OneMacUser,
-  hideWithdrawRaiResponseToggle: boolean,
-): OsTableColumn[] => {
+const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
   if (!user || user === null) {
     return [];
   }
@@ -67,7 +63,6 @@ const getColumns = (
         })();
 
         const subStatusRAI =
-          !hideWithdrawRaiResponseToggle &&
           data.raiWithdrawEnabled &&
           data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
           data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE
@@ -86,8 +81,7 @@ const getColumns = (
         return (
           <>
             <p className={data.seatoolStatus === SEATOOL_STATUS.DRAFT ? "italic" : ""}>{status}</p>
-            {!hideWithdrawRaiResponseToggle &&
-              data.raiWithdrawEnabled &&
+            {data.raiWithdrawEnabled &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
                 <p className="text-xs opacity-65">· Withdraw Formal RAI Response - Enabled</p>
@@ -164,10 +158,6 @@ const getColumns = (
 };
 
 export const SpasList = ({ oneMacUser }: { oneMacUser: OneMacUser }) => {
-  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
-  const columns = useMemo(
-    () => getColumns(oneMacUser, hideWithdrawRaiResponseToggle),
-    [oneMacUser, hideWithdrawRaiResponseToggle],
-  );
+  const columns = useMemo(() => getColumns(oneMacUser), [oneMacUser]);
   return <OsMainView columns={columns} />;
 };

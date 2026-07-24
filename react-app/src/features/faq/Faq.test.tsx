@@ -5,11 +5,6 @@ import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { Faq } from "./Faq";
 
-const mockUseFeatureFlag = vi.hoisted(() => vi.fn(() => false));
-
-vi.mock("@/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: mockUseFeatureFlag,
-}));
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
   useParams: vi.fn().mockReturnValue({ id: "q1" }),
@@ -24,11 +19,6 @@ vi.mock("./faqs", () => ({
       qanda: [
         { anchorText: "q1", question: "What is FAQ 1?", answerJSX: <p>Answer 1</p> },
         { anchorText: "q2", question: "What is FAQ 2?", answerJSX: <p>Answer 2</p> },
-        {
-          anchorText: "withdraw-spa-rai-response",
-          question: "How do I withdraw an RAI response?",
-          answerJSX: <p>Use the Enable action.</p>,
-        },
       ],
     },
   ],
@@ -75,16 +65,6 @@ it("should fire GA event when help desk email is clicked", () => {
 });
 
 describe("Faq", () => {
-  it("hides obsolete Withdraw RAI FAQs when the SMART launch flag is on", () => {
-    mockUseFeatureFlag.mockReturnValue(true);
-
-    render(<Faq />);
-
-    expect(screen.queryByText("How do I withdraw an RAI response?")).not.toBeInTheDocument();
-    expect(screen.getByText("What is FAQ 1?")).toBeInTheDocument();
-    mockUseFeatureFlag.mockReturnValue(false);
-  });
-
   it("should set open items correctly when id param is passed", async () => {
     const scrollToMock = vi.fn();
     global.scrollTo = scrollToMock;

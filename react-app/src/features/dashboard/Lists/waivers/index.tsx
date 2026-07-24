@@ -5,15 +5,11 @@ import { formatActionType, formatDateToET, formatDateToUTC } from "shared-utils"
 import { OneMacUser } from "@/api";
 import { OsMainView, OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { removeUnderscoresAndCapitalize } from "@/utils";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
-const getColumns = (
-  { isCms, user }: OneMacUser,
-  hideWithdrawRaiResponseToggle: boolean,
-): OsTableColumn[] => {
+const getColumns = ({ isCms, user }: OneMacUser): OsTableColumn[] => {
   if (!user || user === null) {
     return [];
   }
@@ -72,10 +68,9 @@ const getColumns = (
           return data.cmsStatus;
         })();
 
-        const subStatusRAI =
-          !hideWithdrawRaiResponseToggle && data.raiWithdrawEnabled
-            ? " (Withdraw Formal RAI Response - Enabled)"
-            : "";
+        const subStatusRAI = data.raiWithdrawEnabled
+          ? " (Withdraw Formal RAI Response - Enabled)"
+          : "";
 
         return `${status}${subStatusRAI}`;
       },
@@ -89,8 +84,7 @@ const getColumns = (
         return (
           <>
             <p className={data.seatoolStatus === SEATOOL_STATUS.DRAFT ? "italic" : ""}>{status}</p>
-            {!hideWithdrawRaiResponseToggle &&
-              data.raiWithdrawEnabled &&
+            {data.raiWithdrawEnabled &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
               data.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE && (
                 <p className="text-xs opacity-65">· Withdraw Formal RAI Response - Enabled</p>
@@ -166,10 +160,6 @@ const getColumns = (
 };
 
 export const WaiversList = ({ oneMacUser }: { oneMacUser: OneMacUser }) => {
-  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
-  const columns = useMemo(
-    () => getColumns(oneMacUser, hideWithdrawRaiResponseToggle),
-    [oneMacUser, hideWithdrawRaiResponseToggle],
-  );
+  const columns = useMemo(() => getColumns(oneMacUser), [oneMacUser]);
   return <OsMainView columns={columns} />;
 };

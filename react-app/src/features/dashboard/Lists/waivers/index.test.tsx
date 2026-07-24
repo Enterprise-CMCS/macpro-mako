@@ -40,10 +40,8 @@ import {
 
 import { WaiversList } from "./index";
 
-const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
-
 vi.mock("@/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: mockUseFeatureFlag,
+  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
 }));
 
 const pendingDoc = {
@@ -291,7 +289,6 @@ describe("WaiversList", () => {
 
   afterEach(() => {
     vi.clearAllMocks();
-    mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
   });
 
   it("should return no columns if the user is not logged in", async () => {

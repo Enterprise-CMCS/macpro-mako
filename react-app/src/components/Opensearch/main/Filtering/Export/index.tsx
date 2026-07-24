@@ -22,7 +22,6 @@ import {
   DEFAULT_FILTERS,
   getSaveInProgressDashboardFilters,
   removeDraftStatusFilters,
-  removeWithdrawRaiEnabledFilters,
 } from "../../useOpensearch";
 import {
   buildCsvExportRows,
@@ -42,17 +41,13 @@ export const OsExportData: FC<{
   const [showAlert, setShowAlert] = useState(false);
   const url = useOsUrl();
   const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
-  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
 
   const exportToCsv = async () => {
     setLoading(true);
-    const dashboardFilters = isSaveInProgressEnabled
-      ? url.state.filters
-      : removeDraftStatusFilters(url.state.filters);
     const filters = [
-      ...(hideWithdrawRaiResponseToggle
-        ? removeWithdrawRaiEnabledFilters(dashboardFilters)
-        : dashboardFilters),
+      ...(isSaveInProgressEnabled
+        ? url.state.filters
+        : removeDraftStatusFilters(url.state.filters)),
       ...(DEFAULT_FILTERS[url.state.tab]?.filters || []),
       ...createSearchFilterable(url.state.search || ""),
       ...getSaveInProgressDashboardFilters(isSaveInProgressEnabled),
