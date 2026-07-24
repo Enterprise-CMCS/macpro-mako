@@ -211,8 +211,8 @@ const quarterlyCsvColumns: Array<CsvColumn<QuarterlyMetricRow>> = [
 
 const stateBreakdownCsvColumns: Array<CsvColumn<BreakdownMetricRow>> = [
   { key: "quarter", label: "Quarter" },
-  { key: "category", label: "Category" },
   { key: "value", label: "State" },
+  { key: "category", label: "Category" },
   { key: "totalDrafts", label: "Total Drafts" },
   { key: "activeDrafts", label: "Active Drafts" },
   { key: "submittedFromDraft", label: "Submitted From Draft" },
@@ -966,6 +966,18 @@ function toCsv<T>(
   return `${lines.join("\n")}\n`;
 }
 
+function getQuarterCsvColumns<T>(
+  columns: Array<CsvColumn<T>>,
+  quarterField: ScriptOptions["quarterField"],
+) {
+  const quarterLabel =
+    quarterField === "submitted" ? "Submission Quarter" : "Draft Created Quarter";
+
+  return columns.map((column) =>
+    column.key === "quarter" ? { ...column, label: quarterLabel } : column,
+  );
+}
+
 function formatReportCsvValue(header: keyof ReportRow, row: ReportRow) {
   const value = row[header];
   if (
@@ -1212,11 +1224,13 @@ function buildBreakdownMetrics({
   quarterField,
   valueForRow,
   includeCategoryRows = true,
+  sortCategories = false,
 }: {
   rows: ReportRow[];
   quarterField: ScriptOptions["quarterField"];
   valueForRow: (row: ReportRow) => string;
   includeCategoryRows?: boolean;
+  sortCategories?: boolean;
 }): BreakdownMetricRow[] {
   const groupedRows = rows.reduce<Map<string, ReportRow[]>>((acc, row) => {
     const quarter = getQuarter(getQuarterSourceDate(row, quarterField));
@@ -1231,28 +1245,42 @@ function buildBreakdownMetrics({
     return acc;
   }, new Map());
 
-  return [...groupedRows.entries()]
-    .sort(([left], [right]) => left.localeCompare(right))
-    .map(([key, groupRows]) => {
-      const [quarter, category, value] = key.split("|");
-      const submittedRows = groupRows.filter(isSubmittedFromDraft);
-      const activeDrafts = groupRows.filter(isActiveDraft).length;
-      const deletedDraftsNotSubmitted = groupRows.filter(isDeletedDraftNotSubmitted).length;
+  const metrics = [...groupedRows.entries()].map(([key, groupRows]) => {
+    const [quarter, category, value] = key.split("|");
+    const submittedRows = groupRows.filter(isSubmittedFromDraft);
+    const activeDrafts = groupRows.filter(isActiveDraft).length;
+    const deletedDraftsNotSubmitted = groupRows.filter(isDeletedDraftNotSubmitted).length;
 
-      return {
-        quarter,
-        category,
-        value,
-        totalDrafts: String(groupRows.length),
-        activeDrafts: String(activeDrafts),
-        submittedFromDraft: String(submittedRows.length),
-        deletedDraftsNotSubmitted: String(deletedDraftsNotSubmitted),
-        draftConversionRate: getPercent(submittedRows.length, groupRows.length),
-        shortDraftSubmissions: String(
-          submittedRows.filter((row) => row.draftDurationUnderOneMinute === "yes").length,
-        ),
-      };
-    });
+    return {
+      quarter,
+      category,
+      value,
+      totalDrafts: String(groupRows.length),
+      activeDrafts: String(activeDrafts),
+      submittedFromDraft: String(submittedRows.length),
+      deletedDraftsNotSubmitted: String(deletedDraftsNotSubmitted),
+      draftConversionRate: getPercent(submittedRows.length, groupRows.length),
+      shortDraftSubmissions: String(
+        submittedRows.filter((row) => row.draftDurationUnderOneMinute === "yes").length,
+      ),
+    };
+  });
+
+  if (!sortCategories) {
+    return metrics.sort(
+      (left, right) =>
+        left.quarter.localeCompare(right.quarter) || left.value.localeCompare(right.value),
+    );
+  }
+
+  const categoryOrder = ["SPA", "Waiver", TOTAL_CATEGORY, "Other"];
+  return metrics.sort(
+    (left, right) =>
+      left.quarter.localeCompare(right.quarter) ||
+      left.value.localeCompare(right.value) ||
+      categoryOrder.indexOf(left.category) - categoryOrder.indexOf(right.category) ||
+      left.category.localeCompare(right.category),
+  );
 }
 
 function getPercent(numerator: number, denominator: number) {
@@ -1389,7 +1417,10 @@ async function main() {
     });
 
     quarterlyMetrics = buildQuarterlyMetrics(rows, options.quarterField, mainSubmissions);
-    await writeCsv(quarterlyOutputPath, toCsv(quarterlyMetrics, quarterlyCsvColumns));
+    await writeCsv(
+      quarterlyOutputPath,
+      toCsv(quarterlyMetrics, getQuarterCsvColumns(quarterlyCsvColumns, options.quarterField)),
+    );
     await writeCsv(
       stateBreakdownOutputPath,
       toCsv(
@@ -1397,8 +1428,9 @@ async function main() {
           rows,
           quarterField: options.quarterField,
           valueForRow: (row) => row.state,
+          sortCategories: true,
         }),
-        stateBreakdownCsvColumns,
+        getQuarterCsvColumns(stateBreakdownCsvColumns, options.quarterField),
       ),
     );
     await writeCsv(
@@ -1410,7 +1442,7 @@ async function main() {
           valueForRow: (row) => row.event,
           includeCategoryRows: false,
         }),
-        eventBreakdownCsvColumns,
+        getQuarterCsvColumns(eventBreakdownCsvColumns, options.quarterField),
       ),
     );
   }
