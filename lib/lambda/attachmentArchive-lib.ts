@@ -1197,16 +1197,19 @@ export async function rebuildPackageAttachmentArchives({
   scope?: AttachmentArchiveScope;
   sectionId?: string;
 }) {
+  const rebuildStartDelayMs = getArchiveRebuildStartDelayMs();
   const plan = buildPackageArchivePlan({ packageId, changelog, archiveNamespace });
   if (!plan) {
     return {
       packageId,
       packageStatus: "SKIPPED" as const,
       sectionResults: [],
+      rebuildStartDelayMs,
+      startedArtifactCount: 0,
+      delayedStartCount: 0,
     };
   }
 
-  const rebuildStartDelayMs = getArchiveRebuildStartDelayMs();
   let startedArtifactCount = 0;
   let delayedStartCount = 0;
   const waitForStartThrottle = async () => {
