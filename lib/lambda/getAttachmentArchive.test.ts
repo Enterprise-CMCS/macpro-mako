@@ -366,6 +366,7 @@ describe("getAttachmentArchive handler", () => {
       expect.objectContaining({
         packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
         source: "request",
+        scope: "all",
       }),
     );
   });
@@ -462,6 +463,7 @@ describe("getAttachmentArchive handler", () => {
         packageId: "MD-26-9999-P",
         preferDraft: true,
         source: "request",
+        scope: "all",
       }),
     );
   });
@@ -473,6 +475,7 @@ describe("getAttachmentArchive handler", () => {
         status: "FAILED",
         message:
           "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+        canRetry: false,
       },
     });
 
@@ -489,6 +492,7 @@ describe("getAttachmentArchive handler", () => {
         status: "FAILED",
         message:
           "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
+        canRetry: false,
       }),
     );
     expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();

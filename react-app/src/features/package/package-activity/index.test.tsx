@@ -492,6 +492,8 @@ describe("Package Activity", () => {
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive,
       onUrl: vi.fn(),
@@ -523,6 +525,8 @@ describe("Package Activity", () => {
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive,
       onUrl: vi.fn(),
@@ -557,9 +561,12 @@ describe("Package Activity", () => {
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       onUrl: spiedOnUrl,
       loading: false,
       onArchive: vi.fn(),
+      onRetryArchive: vi.fn(),
       error: null,
     }));
 
@@ -594,6 +601,8 @@ describe("Package Activity", () => {
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive,
       onUrl: vi.fn(),
@@ -659,6 +668,8 @@ describe("Package Activity", () => {
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive,
       onUrl: vi.fn(),
@@ -726,9 +737,11 @@ describe("Package Activity", () => {
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
       onUrl,
       loading: false,
       onArchive: vi.fn(),
+      onRetryArchive: vi.fn(),
       error: null,
     }));
 
@@ -754,8 +767,11 @@ describe("Package Activity", () => {
       attachmentErrorMessage: "This attachment is no longer available.",
       archiveErrorMessage: undefined,
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive: vi.fn(),
+      onRetryArchive: vi.fn(),
       onUrl: vi.fn(),
       error: null,
     }));
@@ -777,8 +793,11 @@ describe("Package Activity", () => {
       archiveErrorMessage:
         "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive: vi.fn(),
+      onRetryArchive: vi.fn(),
       onUrl: vi.fn(),
       error: null,
     }));
@@ -804,8 +823,11 @@ describe("Package Activity", () => {
       archiveErrorMessage: undefined,
       archiveWarningMessage:
         "Some attachments in this download are no longer available and were not included.",
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive: vi.fn(),
+      onRetryArchive: vi.fn(),
       onUrl: vi.fn(),
       error: null,
     }));
@@ -825,14 +847,79 @@ describe("Package Activity", () => {
     ).toBeGreaterThan(0);
   });
 
+  it("renders the archive info message inline for package downloads", async () => {
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
+      archiveWarningMessage: undefined,
+      archiveInfoMessage:
+        "Preparing your download. Large packages can take several minutes — you can leave this page and check back later.",
+      archiveCanRetry: false,
+      loading: false,
+      onArchive: vi.fn(),
+      onRetryArchive: vi.fn(),
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    expect(
+      screen.getAllByText(
+        "Preparing your download. Large packages can take several minutes — you can leave this page and check back later.",
+      ).length,
+    ).toBeGreaterThan(0);
+    expect(screen.getAllByRole("status").length).toBeGreaterThan(0);
+  });
+
+  it("renders Try again for retryable archive failures", async () => {
+    const onRetryArchive = vi.fn(() => Promise.resolve(undefined));
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: "Archive execution failed",
+      archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: true,
+      loading: false,
+      onArchive: vi.fn(),
+      onRetryArchive,
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    const user = userEvent.setup();
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    expect(screen.getAllByText("Archive execution failed").length).toBeGreaterThan(0);
+    const retryButtons = screen.getAllByRole("button", { name: "Try again" });
+    expect(retryButtons.length).toBeGreaterThan(0);
+    await user.click(retryButtons[0]);
+    expect(onRetryArchive).toHaveBeenCalled();
+  });
+
   it("uses consistent typography for attachment and archive status messages", async () => {
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
       attachmentErrorMessage: "This attachment is no longer available.",
       archiveErrorMessage:
         "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
       archiveWarningMessage: undefined,
+      archiveInfoMessage: undefined,
+      archiveCanRetry: false,
       loading: false,
       onArchive: vi.fn(),
+      onRetryArchive: vi.fn(),
       onUrl: vi.fn(),
       error: null,
     }));

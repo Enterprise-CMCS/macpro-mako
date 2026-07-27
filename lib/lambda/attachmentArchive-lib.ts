@@ -54,7 +54,7 @@ import {
 import { buildResponseContentDisposition } from "./presignedAttachmentUrl";
 
 const DEFAULT_POLL_AFTER_SECONDS = 3;
-const DEFAULT_REBUILD_START_DELAY_MS = 1000;
+const DEFAULT_REBUILD_START_DELAY_MS = 200;
 const SOURCE_SCAN_PENDING_POLL_AFTER_SECONDS = 5;
 const SOURCE_SCAN_PENDING_MESSAGE =
   "Attachments are still being scanned. Please try again shortly.";
@@ -123,6 +123,7 @@ export type AttachmentArchiveDownloadResponse =
   | {
       status: "FAILED";
       message?: string;
+      canRetry?: boolean;
     };
 
 function getArchiveBucketName(): string {
@@ -570,6 +571,7 @@ async function resolveArchiveArtifactForRead({
       action: "rebuild";
       current?: AttachmentArchiveCurrent;
       reason: string;
+      message?: string;
     }
 > {
   const { baseReadBucketName, writeBucketName } = getArchiveStorageConfig();
@@ -665,6 +667,9 @@ async function resolveArchiveArtifactForRead({
     action: "rebuild",
     current: writeCurrent,
     reason: writeResolution.action === "rebuild" ? writeResolution.reason : "rebuild_required",
+    ...(writeResolution.action === "rebuild" && writeResolution.message
+      ? { message: writeResolution.message }
+      : {}),
   };
 }
 
@@ -1059,8 +1064,20 @@ export async function getRequestedAttachmentArchiveDownload({
       response: {
         status: "FAILED",
         message: resolution.message,
+        canRetry: false,
       },
       needsRebuild: false,
+    };
+  }
+
+  if (resolution.action === "rebuild" && resolution.reason === "failed") {
+    return {
+      response: {
+        status: "FAILED",
+        message: resolution.message || "Unable to prepare the attachment archive",
+        canRetry: true,
+      },
+      needsRebuild: true,
     };
   }
 
@@ -1168,6 +1185,8 @@ export async function rebuildPackageAttachmentArchives({
   failSourceScanPending = false,
   sourceScanPendingAt,
   sourceScanRetryCount,
+  scope,
+  sectionId,
 }: {
   packageId: string;
   changelog: AttachmentArchiveChangelogItem[];
@@ -1175,6 +1194,8 @@ export async function rebuildPackageAttachmentArchives({
   failSourceScanPending?: boolean;
   sourceScanPendingAt?: string;
   sourceScanRetryCount?: number;
+  scope?: AttachmentArchiveScope;
+  sectionId?: string;
 }) {
   const plan = buildPackageArchivePlan({ packageId, changelog, archiveNamespace });
   if (!plan) {
@@ -1219,6 +1240,44 @@ export async function rebuildPackageAttachmentArchives({
     }
     return result;
   };
+
+  if (scope === "section") {
+    if (!sectionId) {
+      throw new Error("sectionId is required when rebuild scope is 'section'");
+    }
+
+    const sectionArtifact = plan.sectionArtifacts.find(
+      (artifact) => artifact.sectionId === sectionId,
+    );
+    if (!sectionArtifact) {
+      return {
+        packageId,
+        packageStatus: "SKIPPED" as const,
+        sectionResults: [],
+        rebuildStartDelayMs,
+        startedArtifactCount: 0,
+        delayedStartCount: 0,
+      };
+    }
+
+    const sectionResult = await ensureArchiveArtifactWithThrottle(sectionArtifact);
+    return {
+      packageId,
+      packageStatus: sectionResult.status,
+      rebuildStartDelayMs,
+      sourceScanPending: sectionResult.sourceScanPending,
+      startedArtifactCount,
+      delayedStartCount,
+      sectionResults: [
+        {
+          sectionId: sectionResult.artifact.sectionId,
+          started: sectionResult.started,
+          status: sectionResult.status,
+        },
+      ],
+    };
+  }
+
   const sectionResults: ArchiveArtifactResult[] = [];
   for (const sectionArtifact of plan.sectionArtifacts) {
     sectionResults.push(await ensureArchiveArtifactWithThrottle(sectionArtifact));

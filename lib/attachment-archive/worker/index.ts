@@ -1,5 +1,3 @@
-import type { ReadableStream as NodeReadableStream } from "node:stream/web";
-
 import {
   GetObjectCommand,
   GetObjectCommandOutput,
@@ -7,7 +5,7 @@ import {
   S3Client,
 } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
-import { Archiver, ZipArchive } from "archiver";
+import archiver, { Archiver } from "archiver";
 import { randomUUID } from "crypto";
 import { createReadStream, createWriteStream, promises as fs } from "fs";
 import { join } from "path";
@@ -66,8 +64,43 @@ const getAttachmentBucketClient = createAttachmentBucketClientFactory({
   legacyS3AccessRoleArn,
 });
 
-type AttachmentBody = NonNullable<GetObjectCommandOutput["Body"]>;
-type ArchiverInput = Buffer | Readable;
+type AttachmentBody = Buffer;
+
+type SdkAttachmentBody = NonNullable<GetObjectCommandOutput["Body"]> & {
+  transformToByteArray?: () => Promise<Uint8Array>;
+};
+
+async function consumeAttachmentBody(body: SdkAttachmentBody): Promise<Buffer> {
+  if (typeof body.transformToByteArray === "function") {
+    return Buffer.from(await body.transformToByteArray());
+  }
+
+  if (!isNodeReadableStream(body)) {
+    throw new Error("Attachment body could not be consumed into a buffer");
+  }
+
+  const chunks: Buffer[] = [];
+  for await (const chunk of body as Readable) {
+    chunks.push(Buffer.isBuffer(chunk) ? chunk : Buffer.from(chunk));
+  }
+  return Buffer.concat(chunks);
+}
+
+async function getAttachmentBody(bucket: string, key: string): Promise<AttachmentBody> {
+  const client = await getAttachmentBucketClient(bucket);
+  const response = await client.send(
+    new GetObjectCommand({
+      Bucket: bucket,
+      Key: key,
+    }),
+  );
+
+  if (!response.Body) {
+    throw new Error(`Attachment ${bucket}/${key} returned an empty body`);
+  }
+
+  return consumeAttachmentBody(response.Body);
+}
 
 function isSectionManifest(
   manifest: AttachmentArchiveManifest,
@@ -145,22 +178,6 @@ async function markFailed(
   );
 }
 
-async function getAttachmentBody(bucket: string, key: string): Promise<AttachmentBody> {
-  const client = await getAttachmentBucketClient(bucket);
-  const response = await client.send(
-    new GetObjectCommand({
-      Bucket: bucket,
-      Key: key,
-    }),
-  );
-
-  if (!response.Body) {
-    throw new Error(`Attachment ${bucket}/${key} returned an empty body`);
-  }
-
-  return response.Body;
-}
-
 async function getAttachmentObjectTags(
   bucket: string,
   key: string,
@@ -196,6 +213,74 @@ async function loadManifest(key = manifestKey): Promise<AttachmentArchiveManifes
   return manifest;
 }
 
+const ATTACHMENT_PREFETCH_CONCURRENCY = 3;
+
+async function mapWithConcurrency<T, R>(
+  items: T[],
+  concurrency: number,
+  mapper: (item: T, index: number) => Promise<R>,
+): Promise<R[]> {
+  const results = new Array<R>(items.length);
+  let nextIndex = 0;
+
+  async function worker() {
+    while (nextIndex < items.length) {
+      const currentIndex = nextIndex;
+      nextIndex += 1;
+      results[currentIndex] = await mapper(items[currentIndex], currentIndex);
+    }
+  }
+
+  if (items.length === 0) {
+    return results;
+  }
+
+  const workerCount = Math.min(Math.max(concurrency, 1), items.length);
+  await Promise.all(Array.from({ length: workerCount }, () => worker()));
+  return results;
+}
+
+async function loadAttachmentForArchive(
+  attachment: AttachmentArchiveManifestAttachment,
+): Promise<
+  | { skipped: true }
+  | { skipped: false; body: AttachmentBody; attachment: AttachmentArchiveManifestAttachment }
+> {
+  try {
+    const result = await loadArchiveAttachment({
+      attachment,
+      attachmentBucketMap,
+      consumer: "attachment_archive_worker",
+      getAttachmentBody,
+      getObjectTags: getAttachmentObjectTags,
+    });
+
+    if (result.skipped) {
+      return { skipped: true };
+    }
+
+    return {
+      skipped: false,
+      body: result.body,
+      attachment,
+    };
+  } catch (error) {
+    const failure = await classifyAttachmentArchiveAccessFailure({
+      attachment,
+      error,
+      getObjectTags: getAttachmentObjectTags,
+    });
+
+    if (failure) {
+      throw Object.assign(new Error(failure.failureMessage), failure, {
+        cause: error,
+      });
+    }
+
+    throw error;
+  }
+}
+
 async function appendSectionManifest(
   archive: Archiver,
   manifest: AttachmentArchiveSectionManifest,
@@ -207,40 +292,20 @@ async function appendSectionManifest(
   let appendedAttachmentCount = 0;
   let skippedAttachmentCount = 0;
 
-  for (const attachment of manifest.attachments) {
-    let result: Awaited<ReturnType<typeof loadArchiveAttachment<AttachmentBody>>>;
+  const loadedAttachments = await mapWithConcurrency(
+    manifest.attachments,
+    ATTACHMENT_PREFETCH_CONCURRENCY,
+    (attachment) => loadAttachmentForArchive(attachment),
+  );
 
-    try {
-      result = await loadArchiveAttachment({
-        attachment,
-        attachmentBucketMap,
-        consumer: "attachment_archive_worker",
-        getAttachmentBody,
-        getObjectTags: getAttachmentObjectTags,
-      });
-    } catch (error) {
-      const failure = await classifyAttachmentArchiveAccessFailure({
-        attachment,
-        error,
-        getObjectTags: getAttachmentObjectTags,
-      });
-
-      if (failure) {
-        throw Object.assign(new Error(failure.failureMessage), failure, {
-          cause: error,
-        });
-      }
-
-      throw error;
-    }
-
-    if (result.skipped) {
+  for (const loaded of loadedAttachments) {
+    if (loaded.skipped) {
       skippedAttachmentCount += 1;
       continue;
     }
 
-    archive.append(toArchiverInput(result.body), {
-      name: pathResolver(attachment),
+    archive.append(loaded.body, {
+      name: pathResolver(loaded.attachment),
     });
     appendedAttachmentCount += 1;
   }
@@ -360,46 +425,6 @@ function isNodeReadableStream(value: unknown): value is NodeJS.ReadableStream {
   return !!value && typeof (value as NodeJS.ReadableStream).pipe === "function";
 }
 
-function isWebReadableStream(value: unknown): value is ReadableStream<Uint8Array> {
-  return !!value && typeof (value as ReadableStream<Uint8Array>).getReader === "function";
-}
-
-function isAsyncIterableStream(value: unknown): value is AsyncIterable<Uint8Array> {
-  return (
-    !!value && typeof (value as AsyncIterable<Uint8Array>)[Symbol.asyncIterator] === "function"
-  );
-}
-
-function hasTransformToWebStream(body: AttachmentBody): body is AttachmentBody & {
-  transformToWebStream: () => ReadableStream<Uint8Array>;
-} {
-  return typeof (body as { transformToWebStream?: unknown }).transformToWebStream === "function";
-}
-
-function toNodeWebReadableStream(stream: ReadableStream<Uint8Array>): NodeReadableStream<any> {
-  return stream as unknown as NodeReadableStream<any>;
-}
-
-function toArchiverInput(body: AttachmentBody): ArchiverInput {
-  if (isNodeReadableStream(body)) {
-    return body as Readable;
-  }
-
-  if (hasTransformToWebStream(body)) {
-    return Readable.fromWeb(toNodeWebReadableStream(body.transformToWebStream()));
-  }
-
-  if (isWebReadableStream(body)) {
-    return Readable.fromWeb(toNodeWebReadableStream(body));
-  }
-
-  if (isAsyncIterableStream(body)) {
-    return Readable.from(body);
-  }
-
-  throw new Error("Attachment body could not be converted to a readable stream");
-}
-
 async function run(): Promise<void> {
   const current = await getCurrentArchiveStatus();
 
@@ -433,7 +458,7 @@ async function run(): Promise<void> {
     }),
   );
 
-  const archive = new ZipArchive({ zlib: { level: 9 } });
+  const archive = archiver("zip", { zlib: { level: 1 } });
   const tempArchivePath = join("/tmp", `attachment-archive-${hash}-${randomUUID()}.zip`);
   const archiveFileStream = createWriteStream(tempArchivePath);
   archive.on("warning", (error: Error) => {

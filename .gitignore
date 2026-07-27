@@ -40,3 +40,4 @@ graphify-out/cost.json
 /graphify-out/.graphify_detect.json
 .codex/
 .agents.md
+tmp

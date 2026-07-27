@@ -193,6 +193,10 @@ describe("resolveAttachmentArchiveCurrentState", () => {
         current,
         artifactExists: false,
       }),
-    ).toEqual({ action: "rebuild", reason: "failed" });
+    ).toEqual({
+      action: "rebuild",
+      reason: "failed",
+      message: "Archive execution failed",
+    });
   });
 });

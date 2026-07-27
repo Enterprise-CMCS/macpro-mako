@@ -20,6 +20,7 @@ export type AttachmentArchiveResponse =
   | {
       status: "FAILED";
       message?: string;
+      canRetry?: boolean;
     };
 
 export const getAttachmentArchive = async (

@@ -102,6 +102,8 @@ describe("rebuildAttachmentArchives handler", () => {
       failSourceScanPending: false,
       sourceScanPendingAt: undefined,
       sourceScanRetryCount: 0,
+      scope: undefined,
+      sectionId: undefined,
     });
   });
 
@@ -157,6 +159,8 @@ describe("rebuildAttachmentArchives handler", () => {
       failSourceScanPending: false,
       sourceScanPendingAt: undefined,
       sourceScanRetryCount: 0,
+      scope: undefined,
+      sectionId: undefined,
     });
   });
 

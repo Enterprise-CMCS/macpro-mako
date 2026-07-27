@@ -58,6 +58,8 @@ export const handler: SQSHandler = async (event) => {
       failSourceScanPending: sourceScanRetriesExceeded,
       sourceScanPendingAt: message.sourceScanPendingAt,
       sourceScanRetryCount,
+      scope: message.scope,
+      sectionId: message.sectionId,
     });
 
     if (result.sourceScanPending && !sourceScanRetriesExceeded) {

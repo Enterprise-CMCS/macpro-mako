@@ -18,7 +18,7 @@ import {
   TableRow,
 } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { sendGAEvent } from "@/utils";
+import { cn, sendGAEvent } from "@/utils";
 
 import { Attachments, useAttachmentService } from "./hook";
 
@@ -93,6 +93,71 @@ const getDraftPackageActivities = (
 };
 
 const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
+const attachmentInfoMessageClassName = "text-sm font-normal text-gray-700";
+
+type ArchiveStatusMessagesProps = {
+  errorMessage?: string;
+  warningMessage?: string;
+  infoMessage?: string;
+  canRetry?: boolean;
+  onRetry?: () => Promise<string | undefined>;
+  retryLoading?: boolean;
+  className?: string;
+};
+
+const ArchiveStatusMessages = ({
+  errorMessage,
+  warningMessage,
+  infoMessage,
+  canRetry,
+  onRetry,
+  retryLoading,
+  className,
+}: ArchiveStatusMessagesProps) => {
+  if (errorMessage) {
+    return (
+      <div className={cn("flex flex-col gap-2", className)}>
+        <p role="alert" className={attachmentStatusMessageClassName}>
+          {errorMessage}
+        </p>
+        {canRetry && onRetry && (
+          <Button
+            variant="outline"
+            className="w-max"
+            loading={retryLoading}
+            onClick={() => {
+              onRetry().then((url) => {
+                if (url) {
+                  window.open(url);
+                }
+              });
+            }}
+          >
+            Try again
+          </Button>
+        )}
+      </div>
+    );
+  }
+
+  if (warningMessage) {
+    return (
+      <p role="alert" className={cn(attachmentStatusMessageClassName, className)}>
+        {warningMessage}
+      </p>
+    );
+  }
+
+  if (infoMessage) {
+    return (
+      <p role="status" className={cn(attachmentInfoMessageClassName, className)}>
+        {infoMessage}
+      </p>
+    );
+  }
+
+  return null;
+};
 
 type AttachmentDetailsProps = {
   id: string;
@@ -145,15 +210,17 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
   const {
     archiveErrorMessage,
     archiveWarningMessage,
+    archiveInfoMessage,
+    archiveCanRetry,
     attachmentErrorMessage,
     onArchive,
+    onRetryArchive,
     onUrl,
     loading,
   } = useAttachmentService({
     packageId,
     preferDraft: packageActivity.isSyntheticDraft,
   });
-  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
   const hasAdditionalInformation = Boolean(additionalInformation?.trim());
 
   if (detailMessage && attachments.length === 0 && !hasAdditionalInformation) {
@@ -210,11 +277,14 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
           >
             Download section attachments
           </Button>
-          {archiveMessage && (
-            <p role="alert" className={attachmentStatusMessageClassName}>
-              {archiveMessage}
-            </p>
-          )}
+          <ArchiveStatusMessages
+            errorMessage={archiveErrorMessage}
+            warningMessage={archiveWarningMessage}
+            infoMessage={archiveInfoMessage}
+            canRetry={archiveCanRetry}
+            retryLoading={loading}
+            onRetry={onRetryArchive}
+          />
         </>
       )}
       <div>
@@ -265,11 +335,18 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
     return acc.concat(packageActivity.attachments);
   }, []);
   const preferDraft = packageActivities.some((packageActivity) => packageActivity.isSyntheticDraft);
-  const { archiveErrorMessage, archiveWarningMessage, loading, onArchive } = useAttachmentService({
+  const {
+    archiveErrorMessage,
+    archiveWarningMessage,
+    archiveInfoMessage,
+    archiveCanRetry,
+    loading,
+    onArchive,
+    onRetryArchive,
+  } = useAttachmentService({
     packageId,
     preferDraft,
   });
-  const archiveMessage = archiveErrorMessage || archiveWarningMessage;
 
   if (attachmentsAggregate.length === 0) {
     return null;
@@ -301,11 +378,15 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
       >
         Download all attachments
       </Button>
-      {archiveMessage && (
-        <p role="alert" className={`justify-self-end ${attachmentStatusMessageClassName}`}>
-          {archiveMessage}
-        </p>
-      )}
+      <ArchiveStatusMessages
+        errorMessage={archiveErrorMessage}
+        warningMessage={archiveWarningMessage}
+        infoMessage={archiveInfoMessage}
+        canRetry={archiveCanRetry}
+        retryLoading={loading}
+        className="justify-self-end"
+        onRetry={onRetryArchive}
+      />
     </>
   );
 };

@@ -129,4 +129,6 @@ export interface AttachmentArchiveRebuildMessage {
   sourceScanPendingAt?: string;
   sourceScanRetryCount?: number;
   source: "request" | "sink-changelog" | "backfill";
+  scope?: AttachmentArchiveScope;
+  sectionId?: string;
 }

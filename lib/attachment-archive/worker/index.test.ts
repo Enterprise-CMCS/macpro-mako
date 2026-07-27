@@ -165,11 +165,15 @@ describe("attachment archive worker runtime", () => {
         done = uploadDoneMock;
       },
     }));
-    vi.doMock("archiver", () => ({
-      ZipArchive: vi.fn(function ZipArchiveMock() {
+    vi.doMock("archiver", () => {
+      const archiverMock = vi.fn(function archiverFactory() {
         return archiveMock;
-      }),
-    }));
+      });
+      return {
+        __esModule: true,
+        default: archiverMock,
+      };
+    });
     vi.doMock("fs", () => ({
       createReadStream: createReadStreamMock,
       createWriteStream: createWriteStreamMock,
@@ -210,6 +214,13 @@ describe("attachment archive worker runtime", () => {
     expect(events).toContain("attachment_archive_current_status_write_completed");
     expect(events).toContain("attachment_archive_ready");
     expect(errorSpy).not.toHaveBeenCalled();
+
+    expect(archiveMock.append).toHaveBeenCalledWith(
+      Buffer.from("attachment-body"),
+      expect.objectContaining({
+        name: "CO-25-0002-1960-section-1-initial-package-submitted/attachment-1.docx",
+      }),
+    );
 
     expect(jsonStore.get(process.env.ARCHIVE_CURRENT_KEY as string)).toMatchObject({
       status: "READY",

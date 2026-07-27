@@ -1070,7 +1070,7 @@ export class Api extends cdk.NestedStack {
           ATTACHMENT_ARCHIVE_BUCKET_NAME: archiveWriteBucketName,
           ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
           ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
-          ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS: "1000",
+          ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS: "200",
         },
         role: attachmentArchiveRequestRole,
         timeoutSeconds: 300,

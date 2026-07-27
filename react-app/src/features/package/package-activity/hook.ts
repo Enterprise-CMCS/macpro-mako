@@ -14,8 +14,10 @@ type AttachmentArchiveRequest = {
 const DEFAULT_POLL_AFTER_SECONDS = 3;
 const DEFAULT_ATTACHMENT_ERROR_MESSAGE = "This attachment is no longer available.";
 const DEFAULT_ARCHIVE_ERROR_MESSAGE = "Unable to prepare the attachment archive";
+const DEFAULT_ARCHIVE_PREPARING_MESSAGE =
+  "Preparing your download. Large packages can take several minutes — you can leave this page and check back later.";
 const DEFAULT_ARCHIVE_TIMEOUT_MESSAGE =
-  "Attachment archive is taking longer than expected. Please try again in a few moments.";
+  "This download is still being prepared. Please check back later and try again.";
 const DEFAULT_SOURCE_SCAN_PENDING_MESSAGE =
   "Attachments are still being scanned. Please try again shortly.";
 const MAX_ARCHIVE_BUILD_POLL_ATTEMPTS = 20;
@@ -65,7 +67,12 @@ export const useAttachmentService = ({
   const [archiveLoading, setArchiveLoading] = useState(false);
   const [archiveErrorMessage, setArchiveErrorMessage] = useState<string | undefined>();
   const [archiveWarningMessage, setArchiveWarningMessage] = useState<string | undefined>();
+  const [archiveInfoMessage, setArchiveInfoMessage] = useState<string | undefined>();
+  const [archiveCanRetry, setArchiveCanRetry] = useState(false);
   const [attachmentErrorMessage, setAttachmentErrorMessage] = useState<string | undefined>();
+  const [lastArchiveRequest, setLastArchiveRequest] = useState<
+    AttachmentArchiveRequest | undefined
+  >();
 
   const onUrl = async (attachment: Attachments[number]) => {
     setAttachmentErrorMessage(undefined);
@@ -86,6 +93,9 @@ export const useAttachmentService = ({
   }: AttachmentArchiveRequest): Promise<string | undefined> => {
     setArchiveErrorMessage(undefined);
     setArchiveWarningMessage(undefined);
+    setArchiveInfoMessage(undefined);
+    setArchiveCanRetry(false);
+    setLastArchiveRequest({ scope, sectionId });
     setArchiveLoading(true);
 
     try {
@@ -101,24 +111,35 @@ export const useAttachmentService = ({
         });
 
         if (response.status === "READY") {
+          setArchiveInfoMessage(undefined);
           setArchiveWarningMessage(response.warningMessage);
           return response.url;
         }
 
         if (response.status === "FAILED") {
-          throw new Error(response.message || DEFAULT_ARCHIVE_ERROR_MESSAGE);
+          setArchiveInfoMessage(undefined);
+          setArchiveErrorMessage(response.message || DEFAULT_ARCHIVE_ERROR_MESSAGE);
+          setArchiveCanRetry(Boolean(response.canRetry));
+          return undefined;
         }
 
         if (response.reason === "SOURCE_SCAN_PENDING") {
           sourceScanAttempts += 1;
+          setArchiveInfoMessage(undefined);
           setArchiveWarningMessage(response.message || DEFAULT_SOURCE_SCAN_PENDING_MESSAGE);
           if (sourceScanAttempts >= MAX_SOURCE_SCAN_POLL_ATTEMPTS) {
             throw new Error(response.message || DEFAULT_SOURCE_SCAN_PENDING_MESSAGE);
           }
         } else {
           archiveBuildAttempts += 1;
+          setArchiveWarningMessage(undefined);
+          setArchiveInfoMessage(
+            archiveBuildAttempts >= MAX_ARCHIVE_BUILD_POLL_ATTEMPTS
+              ? DEFAULT_ARCHIVE_TIMEOUT_MESSAGE
+              : DEFAULT_ARCHIVE_PREPARING_MESSAGE,
+          );
           if (archiveBuildAttempts >= MAX_ARCHIVE_BUILD_POLL_ATTEMPTS) {
-            throw new Error(DEFAULT_ARCHIVE_TIMEOUT_MESSAGE);
+            return undefined;
           }
         }
 
@@ -126,7 +147,9 @@ export const useAttachmentService = ({
       }
     } catch (archiveError) {
       const message = getApiErrorMessage(archiveError, DEFAULT_ARCHIVE_ERROR_MESSAGE);
+      setArchiveInfoMessage(undefined);
       setArchiveErrorMessage(message);
+      setArchiveCanRetry(false);
       console.error(archiveError);
       return undefined;
     } finally {
@@ -134,13 +157,24 @@ export const useAttachmentService = ({
     }
   };
 
+  const onRetryArchive = async (): Promise<string | undefined> => {
+    if (!lastArchiveRequest) {
+      return undefined;
+    }
+
+    return onArchive(lastArchiveRequest);
+  };
+
   return {
     attachmentErrorMessage,
     archiveErrorMessage,
     archiveWarningMessage,
+    archiveInfoMessage,
+    archiveCanRetry,
     error,
     loading: isLoading || archiveLoading,
     onArchive,
+    onRetryArchive,
     onUrl,
   };
 };

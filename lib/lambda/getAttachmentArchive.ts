@@ -150,6 +150,8 @@ export const handler = authenticatedMiddy({
       latestTimestamp,
       preferDraft: isDraftPackage || undefined,
       source: "request",
+      scope: body.scope,
+      ...(body.scope === "section" && body.sectionId ? { sectionId: body.sectionId } : {}),
     });
   }
 

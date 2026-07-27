@@ -15,7 +15,7 @@ export type AttachmentArchiveCurrentResolution =
       pendingMessage?: string;
     }
   | { action: "failed"; message: string }
-  | { action: "rebuild"; reason: string };
+  | { action: "rebuild"; reason: string; message?: string };
 
 function getUpdatedAtMs(current: AttachmentArchiveCurrent): number | undefined {
   const updatedAtMs = Date.parse(current.updatedAt);
@@ -68,7 +68,11 @@ export function resolveAttachmentArchiveCurrentState({
       };
     }
 
-    return { action: "rebuild", reason: "failed" };
+    return {
+      action: "rebuild",
+      reason: "failed",
+      message: getAttachmentArchiveFailureMessage(current),
+    };
   }
 
   if (current.executionArn) {

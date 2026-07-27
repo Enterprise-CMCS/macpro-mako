@@ -357,6 +357,7 @@ describe("attachmentArchive-lib", () => {
       needsRebuild: false,
       response: {
         status: "FAILED",
+        canRetry: false,
         message:
           "Unable to prepare the attachment archive because blocked.xlsx is not available for download. File scanning did not complete successfully.",
       },
@@ -397,8 +398,45 @@ describe("attachmentArchive-lib", () => {
       needsRebuild: false,
       response: {
         status: "FAILED",
+        canRetry: false,
         message:
           "The attachments in this section are no longer available, so this download could not be created.",
+      },
+    });
+  });
+
+  it("returns a retryable failed response that queues a rebuild", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "FAILED",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 1,
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+          errorMessage: "Archive execution failed",
+        }),
+      ),
+    );
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: true,
+      response: {
+        status: "FAILED",
+        canRetry: true,
+        message: "Archive execution failed",
       },
     });
   });
@@ -590,6 +628,34 @@ describe("attachmentArchive-lib", () => {
     });
     expect(stepFunctionsSpy).toHaveBeenCalledTimes(2);
     expect(putJsonObject).toHaveBeenCalled();
+  });
+
+  it("scopes section rebuilds to a single section artifact", async () => {
+    getObjectText.mockResolvedValue(undefined);
+    stepFunctionsSpy.mockResolvedValue({} as never);
+
+    const result = await rebuildPackageAttachmentArchives({
+      packageId: "MD-10-6772",
+      changelog: [],
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+    });
+
+    expect(result).toMatchObject({
+      packageId: "MD-10-6772",
+      packageStatus: "PENDING",
+      rebuildStartDelayMs: 0,
+      startedArtifactCount: 1,
+      delayedStartCount: 0,
+      sectionResults: [
+        {
+          sectionId: "section-a",
+          started: true,
+          status: "PENDING",
+        },
+      ],
+    });
+    expect(stepFunctionsSpy).toHaveBeenCalledTimes(1);
   });
 
   it("keeps rebuilds pending when source attachment scanning has not completed", async () => {
