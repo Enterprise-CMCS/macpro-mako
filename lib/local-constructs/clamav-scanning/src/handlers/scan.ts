@@ -24,9 +24,7 @@ export function isTransientScanError(error: unknown): boolean {
       : undefined;
 
   return (
-    code === "ENOSPC" ||
-    message.includes("ENOSPC") ||
-    message.includes("no space left on device")
+    code === "ENOSPC" || message.includes("ENOSPC") || message.includes("no space left on device")
   );
 }
 
