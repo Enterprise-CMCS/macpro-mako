@@ -13,7 +13,18 @@ import {
   STATUS_ERROR_PROCESSING_FILE,
   tagWithScanStatus,
 } from "./../lib";
-import { handler } from "./scan";
+import { handler, isTransientScanError } from "./scan";
+
+const { unlinkMock } = vi.hoisted(() => ({
+  unlinkMock: vi.fn().mockResolvedValue(undefined),
+}));
+
+vi.mock("fs/promises", () => ({
+  default: {
+    unlink: unlinkMock,
+  },
+  unlink: unlinkMock,
+}));
 
 vi.mock("pino", () => {
   return {
@@ -75,6 +86,7 @@ test("should handle event and return scan results", async () => {
   (checkFileExt as any).mockResolvedValueOnce(STATUS_CLEAN_FILE);
   (scanLocalFile as any).mockResolvedValueOnce(STATUS_CLEAN_FILE);
   (tagWithScanStatus as any).mockResolvedValueOnce(undefined);
+  unlinkMock.mockClear();
 
   const result = await handler(mockEvent);
 
@@ -86,8 +98,10 @@ test("should handle event and return scan results", async () => {
   expect(downloadFileFromS3).toHaveBeenCalledWith("test-key", "test-bucket");
   expect(checkFileExt).toHaveBeenCalledWith("file-location");
   expect(scanLocalFile).toHaveBeenCalledWith("file-location");
+  expect(tagWithScanStatus).toHaveBeenCalledTimes(1);
   expect(tagWithScanStatus).toHaveBeenCalledWith("test-bucket", "test-key", STATUS_CLEAN_FILE);
-  expect(result).toEqual([STATUS_CLEAN_FILE, STATUS_CLEAN_FILE]);
+  expect(unlinkMock).toHaveBeenCalledWith("file-location");
+  expect(result).toEqual([STATUS_CLEAN_FILE]);
 });
 
 test("should handle errors during event processing", async () => {
@@ -103,4 +117,32 @@ test("should handle errors during event processing", async () => {
   expect(startClamd).toHaveBeenCalled();
   expect(extractKeyFromS3Event).toHaveBeenCalled();
   expect(result).toEqual([STATUS_ERROR_PROCESSING_FILE]);
+});
+
+test("should cleanup local download and avoid ERROR tag on ENOSPC", async () => {
+  const enospc = Object.assign(new Error("ENOSPC: no space left on device, write"), {
+    code: "ENOSPC",
+  });
+
+  (downloadAVDefinitions as any).mockResolvedValueOnce(undefined);
+  (startClamd as any).mockResolvedValueOnce(undefined);
+  (extractKeyFromS3Event as any).mockReturnValueOnce("test-key");
+  (extractBucketFromS3Event as any).mockReturnValueOnce("test-bucket");
+  (checkFileSize as any).mockResolvedValueOnce(STATUS_CLEAN_FILE);
+  (downloadFileFromS3 as any).mockResolvedValueOnce("file-location");
+  (checkFileExt as any).mockResolvedValueOnce(STATUS_CLEAN_FILE);
+  (scanLocalFile as any).mockRejectedValueOnce(enospc);
+  unlinkMock.mockClear();
+
+  await expect(handler(mockEvent)).rejects.toThrow(/ENOSPC/);
+  expect(tagWithScanStatus).not.toHaveBeenCalled();
+  expect(unlinkMock).toHaveBeenCalledWith("file-location");
+});
+
+test("isTransientScanError detects disk-full failures", () => {
+  expect(isTransientScanError(Object.assign(new Error("write failed"), { code: "ENOSPC" }))).toBe(
+    true,
+  );
+  expect(isTransientScanError(new Error("ENOSPC: no space left on device, write"))).toBe(true);
+  expect(isTransientScanError(new Error("AccessDenied"))).toBe(false);
 });
