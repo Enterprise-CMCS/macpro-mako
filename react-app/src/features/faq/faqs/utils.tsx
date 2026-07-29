@@ -56,6 +56,20 @@ export const PdfLink = ({
   </a>
 );
 
+const compactTitle = (title: string) => title.replace(/\s+/g, "");
+
+const getDefaultTemplateDownloadName = ({ title, text, href }: Template) => {
+  const titleIncludesGuide = /\bImplementation Guide\b/i.test(title);
+  const isImplementationGuide =
+    titleIncludesGuide || /\bImplementation Guide\b/i.test(text ?? "") || /\/IG_/i.test(href);
+
+  if (isImplementationGuide && !titleIncludesGuide) {
+    return `${compactTitle(title)} Implementation Guide.pdf`;
+  }
+
+  return `${compactTitle(title)}.pdf`;
+};
+
 export const PdfList = ({
   list,
   label,
@@ -73,7 +87,7 @@ export const PdfList = ({
           title={pdf.title}
           text={pdf.text}
           label={label}
-          downloadName={pdf.downloadName}
+          downloadName={pdf.downloadName ?? getDefaultTemplateDownloadName(pdf)}
           className=""
         />
         {pdf.subtext && (

@@ -1,5 +1,13 @@
 import { PdfLink, PdfList, Template } from "../utils";
 
+const getGuideDownloadName = (title: string) =>
+  `${title.replace(/\s+/g, "")} Implementation Guide.pdf`;
+
+const withGuideDownloadName = (guide: Template): Template => ({
+  ...guide,
+  downloadName: getGuideDownloadName(guide.title),
+});
+
 // MAGI Eligibility & Methods
 export const CHP_MAGI_GUIDES: Template[] = [
   {
@@ -47,7 +55,7 @@ export const CHP_MAGI_GUIDES: Template[] = [
     text: "Other Eligibility Criteria - Spenddowns Implementation Guide",
     href: "/chp/IG_CS16_Spenddown.pdf",
   },
-];
+].map(withGuideDownloadName);
 
 // XXI Medicaid Expansion
 export const CHP_MED_EXPANSION_GUIDES: Template[] = [
@@ -56,7 +64,7 @@ export const CHP_MED_EXPANSION_GUIDES: Template[] = [
     text: "Eligibility for Medicaid Expansion Program Implementation Guide",
     href: "/chp/IG_CS3_MedicaidExpansion.pdf",
   },
-];
+].map(withGuideDownloadName);
 
 // Eligibility Processing
 export const CHP_ELIGIBILITY_GUIDES: Template[] = [
@@ -65,7 +73,7 @@ export const CHP_ELIGIBILITY_GUIDES: Template[] = [
     text: "General Eligibility - Eligibility Processing Implementation Guide",
     href: "/chp/IG_CS24_EligibilityProcessing.pdf",
   },
-];
+].map(withGuideDownloadName);
 
 // Non-Financial Eligibility
 export const CHP_NON_FIN_GUIDES: Template[] = [
@@ -119,7 +127,7 @@ export const CHP_NON_FIN_GUIDES: Template[] = [
     text: "Incarcerated CHIP Beneficiaries Implementation Guide",
     href: "/chp/IG_CS31_IncarceratedCHIPBeneficiaries.pdf",
   },
-];
+].map(withGuideDownloadName);
 
 export const ChipSpaImplementationGuides = () => {
   return (
@@ -132,6 +140,7 @@ export const ChipSpaImplementationGuides = () => {
               href="/chp/IG_ChipEligibilityIntroduction.pdf"
               label="template"
               title="CHIP Eligibility Introduction"
+              downloadName="CHIP Eligibility Introduction.pdf"
               className=""
             />
           </li>

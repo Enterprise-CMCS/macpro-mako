@@ -8,13 +8,29 @@ export const LEGACY_IN_PROGRESS_STALE_AFTER_MS = 30 * 60 * 1000;
 
 export type AttachmentArchiveCurrentResolution =
   | { action: "ready" }
-  | { action: "in_progress"; status: "PENDING" | "RUNNING" }
+  | {
+      action: "in_progress";
+      status: "PENDING" | "RUNNING";
+      pendingReason?: AttachmentArchiveCurrent["pendingReason"];
+      pendingMessage?: string;
+    }
   | { action: "failed"; message: string }
   | { action: "rebuild"; reason: string };
 
 function getUpdatedAtMs(current: AttachmentArchiveCurrent): number | undefined {
   const updatedAtMs = Date.parse(current.updatedAt);
   return Number.isNaN(updatedAtMs) ? undefined : updatedAtMs;
+}
+
+function buildInProgressResolution(
+  current: AttachmentArchiveCurrent,
+): Extract<AttachmentArchiveCurrentResolution, { action: "in_progress" }> {
+  return {
+    action: "in_progress",
+    status: current.status as "PENDING" | "RUNNING",
+    ...(current.pendingReason ? { pendingReason: current.pendingReason } : {}),
+    ...(current.pendingMessage ? { pendingMessage: current.pendingMessage } : {}),
+  };
 }
 
 export function resolveAttachmentArchiveCurrentState({
@@ -57,7 +73,7 @@ export function resolveAttachmentArchiveCurrentState({
 
   if (current.executionArn) {
     return hasRunningExecution
-      ? { action: "in_progress", status: current.status }
+      ? buildInProgressResolution(current)
       : { action: "rebuild", reason: "execution_not_running" };
   }
 
@@ -68,5 +84,5 @@ export function resolveAttachmentArchiveCurrentState({
 
   return nowMs - updatedAtMs >= staleAfterMs
     ? { action: "rebuild", reason: "legacy_in_progress_stale" }
-    : { action: "in_progress", status: current.status };
+    : buildInProgressResolution(current);
 }

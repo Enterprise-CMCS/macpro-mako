@@ -5,6 +5,11 @@ export type AttachmentArchiveNamespace = (typeof ATTACHMENT_ARCHIVE_NAMESPACES)[
 
 export const ATTACHMENT_ARCHIVE_STATUSES = ["PENDING", "RUNNING", "READY", "FAILED"] as const;
 export type AttachmentArchiveStatus = (typeof ATTACHMENT_ARCHIVE_STATUSES)[number];
+export const ATTACHMENT_ARCHIVE_PENDING_REASONS = [
+  "SOURCE_SCAN_PENDING",
+  "ARCHIVE_BUILD_PENDING",
+] as const;
+export type AttachmentArchivePendingReason = (typeof ATTACHMENT_ARCHIVE_PENDING_REASONS)[number];
 
 export const ATTACHMENT_ARCHIVE_FAILURE_CODES = [
   "ALL_ATTACHMENTS_UNAVAILABLE",
@@ -94,6 +99,10 @@ export interface AttachmentArchiveCurrent {
   skippedAttachmentCount?: number;
   updatedAt: string;
   executionArn?: string;
+  pendingReason?: AttachmentArchivePendingReason;
+  pendingMessage?: string;
+  sourceScanPendingAt?: string;
+  sourceScanRetryCount?: number;
   sectionId?: string;
   sectionNumber?: number;
   sectionLabel?: string;
@@ -117,5 +126,7 @@ export interface AttachmentArchiveRebuildMessage {
   packageId: string;
   latestTimestamp?: number;
   preferDraft?: boolean;
+  sourceScanPendingAt?: string;
+  sourceScanRetryCount?: number;
   source: "request" | "sink-changelog" | "backfill";
 }

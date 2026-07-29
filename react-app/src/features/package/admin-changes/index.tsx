@@ -118,8 +118,24 @@ type AdminChangesProps = {
   changelog: ItemResult[];
 };
 
+const getAdminChangeKey = ({ _source: adminActivity }: ItemResult) =>
+  [
+    adminActivity.event,
+    adminActivity.timestamp,
+    adminActivity.changeMade,
+    adminActivity.changeReason,
+  ].join("|");
+
 export const AdminPackageActivities = ({ changelog }: AdminChangesProps) => {
-  const adminChangelog = changelog.filter((item) => item._source.isAdminChange);
+  const adminChangelog = changelog.filter(
+    (item, index, items) =>
+      item._source.isAdminChange &&
+      items.findIndex(
+        (candidate) =>
+          candidate._source.isAdminChange &&
+          getAdminChangeKey(candidate) === getAdminChangeKey(item),
+      ) === index,
+  );
 
   if (adminChangelog.length === 0) return null;
 

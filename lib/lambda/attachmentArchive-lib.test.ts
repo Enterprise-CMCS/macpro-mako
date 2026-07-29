@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("../attachment-archive/storage", () => ({
   getJsonObject: vi.fn(),
+  getObjectTags: vi.fn(),
   getObjectText: vi.fn(),
   objectExists: vi.fn(),
   putJsonObject: vi.fn(),
@@ -38,6 +39,7 @@ import {
 
 describe("attachmentArchive-lib", () => {
   const getJsonObject = vi.mocked(storage.getJsonObject);
+  const getObjectTags = vi.mocked(storage.getObjectTags);
   const getObjectText = vi.mocked(storage.getObjectText);
   const objectExists = vi.mocked(storage.objectExists);
   const putJsonObject = vi.mocked(storage.putJsonObject);
@@ -136,6 +138,7 @@ describe("attachmentArchive-lib", () => {
     process.env.ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS = "0";
     buildAttachmentArchiveSections.mockReturnValue([sectionDescriptor]);
     getAttachmentArchiveSectionById.mockReturnValue(sectionDescriptor);
+    getObjectTags.mockResolvedValue({ virusScanStatus: "CLEAN" });
     getSignedUrl.mockResolvedValue("https://example.com/archive.zip");
   });
 
@@ -146,6 +149,7 @@ describe("attachmentArchive-lib", () => {
     process.env.ATTACHMENT_ARCHIVE_STATE_MACHINE_ARN = originalStateMachineArn;
     process.env.ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS = originalRebuildStartDelayMs;
     getJsonObject.mockReset();
+    getObjectTags.mockReset();
     getObjectText.mockReset();
     objectExists.mockReset();
     putJsonObject.mockReset();
@@ -229,6 +233,46 @@ describe("attachmentArchive-lib", () => {
       response: {
         pollAfterSeconds: 3,
         status: "PENDING",
+      },
+    });
+  });
+
+  it("returns source-scan pending details from current archive state", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "PENDING",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 1,
+          pendingReason: "SOURCE_SCAN_PENDING",
+          pendingMessage: "Attachments are still being scanned. Please try again shortly.",
+          sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+          sourceScanRetryCount: 2,
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+        }),
+      ),
+    );
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: false,
+      response: {
+        status: "PENDING",
+        reason: "SOURCE_SCAN_PENDING",
+        message: "Attachments are still being scanned. Please try again shortly.",
+        pollAfterSeconds: 5,
       },
     });
   });
@@ -546,6 +590,82 @@ describe("attachmentArchive-lib", () => {
     });
     expect(stepFunctionsSpy).toHaveBeenCalledTimes(2);
     expect(putJsonObject).toHaveBeenCalled();
+  });
+
+  it("keeps rebuilds pending when source attachment scanning has not completed", async () => {
+    getObjectText.mockResolvedValue(undefined);
+    getObjectTags.mockResolvedValue({});
+
+    const result = await rebuildPackageAttachmentArchives({
+      packageId: "MD-10-6772",
+      changelog: [],
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 2,
+    });
+
+    expect(result).toMatchObject({
+      packageId: "MD-10-6772",
+      packageStatus: "PENDING",
+      sourceScanPending: true,
+      startedArtifactCount: 0,
+      sectionResults: [
+        {
+          sectionId: "section-a",
+          started: false,
+          status: "PENDING",
+        },
+      ],
+    });
+    expect(stepFunctionsSpy).not.toHaveBeenCalled();
+    expect(putJsonObject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        key: expect.stringContaining("current.json"),
+        body: expect.objectContaining({
+          status: "PENDING",
+          pendingReason: "SOURCE_SCAN_PENDING",
+          pendingMessage: "Attachments are still being scanned. Please try again shortly.",
+          sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+          sourceScanRetryCount: 2,
+        }),
+      }),
+    );
+  });
+
+  it("marks rebuilds failed when source attachment scanning reaches a non-clean status", async () => {
+    getObjectText.mockResolvedValue(undefined);
+    getObjectTags.mockResolvedValue({ virusScanStatus: "INFECTED" });
+
+    const result = await rebuildPackageAttachmentArchives({
+      packageId: "MD-10-6772",
+      changelog: [],
+    });
+
+    expect(result).toMatchObject({
+      packageId: "MD-10-6772",
+      packageStatus: "FAILED",
+      sourceScanPending: false,
+      startedArtifactCount: 0,
+      sectionResults: [
+        {
+          sectionId: "section-a",
+          started: false,
+          status: "FAILED",
+        },
+      ],
+    });
+    expect(stepFunctionsSpy).not.toHaveBeenCalled();
+    expect(putJsonObject).toHaveBeenCalledWith(
+      expect.objectContaining({
+        body: expect.objectContaining({
+          status: "FAILED",
+          failureCode: "ATTACHMENT_NOT_CLEAN",
+          blockedAttachment: expect.objectContaining({
+            filename: "object.pdf",
+            virusScanStatus: "INFECTED",
+          }),
+        }),
+      }),
+    );
   });
 
   it("uses a dedicated draft archive namespace when rebuilding synthetic draft archives", async () => {

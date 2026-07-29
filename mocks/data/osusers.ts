@@ -235,12 +235,18 @@ export const NO_STATE_SUBMITTER_USER = osUsers[NO_STATE_SUBMITTER_EMAIL];
 
 export const userResultList = Object.values(osUsers);
 
+const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
+
 export const getFilteredUserResultList = (emails: string[]) =>
-  userResultList.filter((user) => emails.includes(user?._source?.email || ""));
+  userResultList.filter((user) =>
+    emails.map(normalizeEmail).includes(normalizeEmail(user?._source?.email || "")),
+  );
 
 export const userDocList: TestUserDocument[] = userResultList
   .filter((user) => user?._source)
   .map((user) => user?._source as TestUserDocument);
 
 export const getFilteredUserDocList = (emails: string[]) =>
-  userDocList.filter((user) => emails.includes(user?.email || ""));
+  userDocList.filter((user) =>
+    emails.map(normalizeEmail).includes(normalizeEmail(user?.email || "")),
+  );

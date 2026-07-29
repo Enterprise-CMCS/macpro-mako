@@ -16,7 +16,10 @@ const DEFAULT_ATTACHMENT_ERROR_MESSAGE = "This attachment is no longer available
 const DEFAULT_ARCHIVE_ERROR_MESSAGE = "Unable to prepare the attachment archive";
 const DEFAULT_ARCHIVE_TIMEOUT_MESSAGE =
   "Attachment archive is taking longer than expected. Please try again in a few moments.";
-const MAX_ARCHIVE_POLL_ATTEMPTS = 20;
+const DEFAULT_SOURCE_SCAN_PENDING_MESSAGE =
+  "Attachments are still being scanned. Please try again shortly.";
+const MAX_ARCHIVE_BUILD_POLL_ATTEMPTS = 20;
+const MAX_SOURCE_SCAN_POLL_ATTEMPTS = 60;
 
 function sleep(ms: number) {
   return new Promise((resolve) => {
@@ -86,7 +89,13 @@ export const useAttachmentService = ({
     setArchiveLoading(true);
 
     try {
-      for (let attempt = 1; attempt <= MAX_ARCHIVE_POLL_ATTEMPTS; attempt += 1) {
+      let archiveBuildAttempts = 0;
+      let sourceScanAttempts = 0;
+
+      while (
+        archiveBuildAttempts < MAX_ARCHIVE_BUILD_POLL_ATTEMPTS &&
+        sourceScanAttempts < MAX_SOURCE_SCAN_POLL_ATTEMPTS
+      ) {
         const response = await getAttachmentArchive(packageId, scope, sectionId, {
           preferDraft,
         });
@@ -100,8 +109,17 @@ export const useAttachmentService = ({
           throw new Error(response.message || DEFAULT_ARCHIVE_ERROR_MESSAGE);
         }
 
-        if (attempt === MAX_ARCHIVE_POLL_ATTEMPTS) {
-          throw new Error(DEFAULT_ARCHIVE_TIMEOUT_MESSAGE);
+        if (response.reason === "SOURCE_SCAN_PENDING") {
+          sourceScanAttempts += 1;
+          setArchiveWarningMessage(response.message || DEFAULT_SOURCE_SCAN_PENDING_MESSAGE);
+          if (sourceScanAttempts >= MAX_SOURCE_SCAN_POLL_ATTEMPTS) {
+            throw new Error(response.message || DEFAULT_SOURCE_SCAN_PENDING_MESSAGE);
+          }
+        } else {
+          archiveBuildAttempts += 1;
+          if (archiveBuildAttempts >= MAX_ARCHIVE_BUILD_POLL_ATTEMPTS) {
+            throw new Error(DEFAULT_ARCHIVE_TIMEOUT_MESSAGE);
+          }
         }
 
         await sleep((response.pollAfterSeconds || DEFAULT_POLL_AFTER_SECONDS) * 1000);

@@ -16,6 +16,10 @@ import { Construct } from "constructs";
 
 interface ClamScanScannerProps {
   readonly fileBucket: s3.Bucket;
+  readonly batchSize?: number;
+  readonly reservedConcurrentExecutions?: number;
+  readonly timeout?: cdk.Duration;
+  readonly visibilityTimeout?: cdk.Duration;
 }
 
 export class ClamScanScanner extends Construct {
@@ -23,7 +27,13 @@ export class ClamScanScanner extends Construct {
 
   constructor(scope: Construct, id: string, props: ClamScanScannerProps) {
     super(scope, id);
-    const { fileBucket } = props;
+    const {
+      batchSize = 1,
+      fileBucket,
+      reservedConcurrentExecutions = 5,
+      timeout = cdk.Duration.minutes(3),
+      visibilityTimeout = cdk.Duration.minutes(4),
+    } = props;
 
     // S3 Bucket
     const clamDefsBucket = new s3.Bucket(this, `ClamDefsBucket`, {
@@ -73,7 +83,7 @@ export class ClamScanScanner extends Construct {
     const notificationQueue = new sqs.Queue(this, "NotificationQueue", {
       encryption: sqs.QueueEncryption.KMS,
       encryptionMasterKey: kmsKey,
-      visibilityTimeout: cdk.Duration.seconds(90),
+      visibilityTimeout,
     });
 
     // Add permissions for S3 to send messages to the SQS queue
@@ -153,7 +163,7 @@ export class ClamScanScanner extends Construct {
     const clamscanDefsLogGroup = new logs.LogGroup(this, `${id}ClamDefsLogGroup`, {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
-    const clamAvImageCacheBust = "2026-05-13-clamav-al2023-security-refresh";
+    const clamAvImageCacheBust = "2026-07-23-clamav-al2023-latest-security-refresh";
 
     const clamDefsLambda = new DockerImageFunction(this, "ServerlessClamDefs", {
       code: DockerImageCode.fromImageAsset(__dirname, {
@@ -184,7 +194,7 @@ export class ClamScanScanner extends Construct {
           CACHE_BUST: clamAvImageCacheBust,
         },
       }),
-      timeout: cdk.Duration.minutes(1),
+      timeout,
       memorySize: 10240,
       role: this.lambdaRole,
       logGroup: clamscanLambdaLogGroup,
@@ -194,11 +204,15 @@ export class ClamScanScanner extends Construct {
         CLAMAV_BUCKET_NAME: clamDefsBucket.bucketName,
         PATH_TO_AV_DEFINITIONS: "lambda/s3-antivirus/av-definitions",
       },
-      reservedConcurrentExecutions: 1,
+      reservedConcurrentExecutions,
     });
 
     // Add the SQS queue as an event source to the Lambda function
-    clamscanLambda.addEventSource(new lambdaEventSources.SqsEventSource(notificationQueue));
+    clamscanLambda.addEventSource(
+      new lambdaEventSources.SqsEventSource(notificationQueue, {
+        batchSize,
+      }),
+    );
 
     const rule = new Rule(this, "ClamscanScheduleRule", {
       schedule: Schedule.expression("cron(0/2 0-6,8-23 * * ? *)"),

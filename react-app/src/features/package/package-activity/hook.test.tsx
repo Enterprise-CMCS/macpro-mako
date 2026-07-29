@@ -129,6 +129,47 @@ describe("useAttachmentService", () => {
     }
   });
 
+  it("continues polling source-scan pending archives longer than archive-build pending archives", async () => {
+    vi.useFakeTimers();
+    try {
+      const pendingResponses = Array.from({ length: 21 }, () => ({
+        status: "PENDING" as const,
+        reason: "SOURCE_SCAN_PENDING" as const,
+        message: "Attachments are still being scanned. Please try again shortly.",
+        pollAfterSeconds: 1,
+      }));
+      const getAttachmentArchiveSpy = vi.spyOn(api, "getAttachmentArchive");
+      pendingResponses.forEach((pendingResponse) => {
+        getAttachmentArchiveSpy.mockResolvedValueOnce(pendingResponse);
+      });
+      getAttachmentArchiveSpy.mockResolvedValueOnce({
+        status: "READY",
+        filename: "testPackage - Mon Mar 23 2026.zip",
+        url: "http://example.com/archive.zip",
+      });
+
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
+      });
+
+      const archivePromise = result.current.onArchive({ scope: "all" });
+
+      await vi.advanceTimersByTimeAsync(0);
+      expect(result.current.archiveWarningMessage).toBe(
+        "Attachments are still being scanned. Please try again shortly.",
+      );
+
+      for (let i = 0; i < pendingResponses.length; i += 1) {
+        await vi.advanceTimersByTimeAsync(1000);
+      }
+
+      await expect(archivePromise).resolves.toBe("http://example.com/archive.zip");
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(22);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("stores an archive warning message when the archive is ready with omitted attachments", async () => {
     vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
       status: "READY",

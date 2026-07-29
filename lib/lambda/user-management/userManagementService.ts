@@ -1,52 +1,91 @@
 import { search } from "libs";
 import { getDomainAndNamespace } from "libs/utils";
 import { Index, roles, users } from "shared-types/opensearch";
-import { getApprovingRole } from "shared-utils";
+import { getApprovingRole, normalizeEmail } from "shared-utils";
 
 const QUERY_LIMIT = 2000;
+
+const getEmailShouldClauses = (email?: string | null) => {
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail) {
+    return [];
+  }
+
+  return [
+    { term: { "email.keyword": normalizedEmail } },
+    {
+      wildcard: {
+        "email.keyword": {
+          value: normalizedEmail,
+          case_insensitive: true,
+        },
+      },
+    },
+  ];
+};
+
+const getCaseInsensitiveEmailQuery = (email?: string | null) => {
+  const should = getEmailShouldClauses(email);
+  if (!should.length) {
+    return null;
+  }
+
+  return {
+    bool: {
+      should,
+      minimum_should_match: 1,
+    },
+  };
+};
 
 export const getUserByEmail = async (
   email: string,
   domainNamespace?: { domain: string; index: Index },
 ): Promise<users.Document | null> => {
-  console.log("Looking up user by email:", email);
+  const normalizedEmail = normalizeEmail(email);
+  console.log("Looking up user by email:", normalizedEmail);
+  if (!normalizedEmail) {
+    return null;
+  }
   if (!domainNamespace) domainNamespace = getDomainAndNamespace("users");
   const { domain, index } = domainNamespace;
 
   const result = await search(domain, index, {
-    size: 1,
-    query: {
-      term: {
-        "email.keyword": email,
-      },
-    },
+    size: 10,
+    query: getCaseInsensitiveEmailQuery(normalizedEmail),
   });
 
-  return result.hits.hits[0]?._source ?? null;
+  const canonicalHit =
+    result.hits.hits.find((hit: any) => normalizeEmail(hit?._source?.email) === normalizedEmail) ??
+    result.hits.hits[0];
+
+  return canonicalHit?._source ?? null;
 };
 
 export const getUsersByEmails = async (
   emails: string[],
 ): Promise<Record<string, { fullName?: string }>> => {
+  const normalizedEmails = Array.from(
+    new Set((emails || []).map((email) => normalizeEmail(email)).filter(Boolean)),
+  );
+  if (!normalizedEmails.length) {
+    return {};
+  }
+
   const { domain, index } = getDomainAndNamespace("users");
   const results = await search(domain, index, {
     size: QUERY_LIMIT,
     query: {
       bool: {
-        should: emails
-          ?.filter((email) => email)
-          .map((email) => ({
-            term: {
-              "email.keyword": email,
-            },
-          })),
+        should: normalizedEmails.flatMap((email) => getEmailShouldClauses(email)),
+        minimum_should_match: 1,
       },
     },
   });
 
   return results.hits.hits.reduce(
     (acc: any, hit: any) => {
-      acc[hit._source.email] = hit._source;
+      acc[normalizeEmail(hit._source.email)] = hit._source;
       return acc;
     },
     {} as Record<string, { fullName?: string }>,
@@ -54,15 +93,15 @@ export const getUsersByEmails = async (
 };
 
 export const getAllUserRolesByEmail = async (email: string): Promise<roles.Document[]> => {
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail) {
+    return [];
+  }
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
     size: QUERY_LIMIT,
-    query: {
-      term: {
-        "email.keyword": email,
-      },
-    },
+    query: getCaseInsensitiveEmailQuery(normalizedEmail),
   });
 
   return result.hits.hits.map((hit: any) => ({ ...hit._source }));
@@ -73,6 +112,10 @@ export const userHasThisRole = async (
   state: string,
   role: string,
 ): Promise<boolean> => {
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail || !state || !role) {
+    return false;
+  }
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -80,7 +123,7 @@ export const userHasThisRole = async (
     query: {
       bool: {
         must: [
-          { term: { "email.keyword": email } },
+          { bool: { should: getEmailShouldClauses(normalizedEmail), minimum_should_match: 1 } },
           { term: { status: "active" } },
           { term: { role: role } },
           { term: { "territory.keyword": state } },
@@ -129,7 +172,7 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
 
   const rolesWithName = roleRequests.map((roleObj) => {
     const email = roleObj.email;
-    const fullName = users[email]?.fullName || "Unknown";
+    const fullName = users[normalizeEmail(email)]?.fullName || "Unknown";
 
     return {
       ...roleObj,
@@ -142,13 +185,20 @@ export const getUserRolesWithNames = async (roleRequests: any[]) => {
 };
 
 export const getLatestActiveRoleByEmail = async (email: string): Promise<roles.Document | null> => {
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail) {
+    return null;
+  }
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
     size: 1,
     query: {
       bool: {
-        must: [{ term: { "email.keyword": email } }, { term: { status: "active" } }],
+        must: [
+          { bool: { should: getEmailShouldClauses(normalizedEmail), minimum_should_match: 1 } },
+          { term: { status: "active" } },
+        ],
       },
     },
     sort: [
@@ -279,6 +329,10 @@ export const getActiveStatesForUserByEmail = async (
   email: string,
   latestActiveRole?: string,
 ): Promise<string[]> => {
+  const normalizedEmail = normalizeEmail(email);
+  if (!normalizedEmail) {
+    return [];
+  }
   const { domain, index } = getDomainAndNamespace("roles");
 
   const result = await search(domain, index, {
@@ -286,7 +340,7 @@ export const getActiveStatesForUserByEmail = async (
     query: {
       bool: {
         must: [
-          { term: { "email.keyword": email } },
+          { bool: { should: getEmailShouldClauses(normalizedEmail), minimum_should_match: 1 } },
           { term: { status: "active" } },
           ...(latestActiveRole ? [{ term: { role: latestActiveRole } }] : []),
         ],
@@ -330,7 +384,7 @@ export const getStateUsersByState = async (
 
   const seen = new Set<string>();
   const emails = rolesResult.hits.hits
-    .map((hit: any) => hit._source.email)
+    .map((hit: any) => normalizeEmail(hit._source.email))
     .filter((email: string): email is string => {
       if (seen.has(email)) return false;
       seen.add(email);
@@ -343,9 +397,8 @@ export const getStateUsersByState = async (
     size: QUERY_LIMIT,
     query: {
       bool: {
-        should: emails.map((email: string) => ({
-          term: { "email.keyword": email },
-        })),
+        should: emails.flatMap((email: string) => getEmailShouldClauses(email)),
+        minimum_should_match: 1,
       },
     },
     _source: ["email", "fullName"],

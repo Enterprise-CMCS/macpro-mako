@@ -1,5 +1,6 @@
 import { createError } from "@middy/util";
 import { APIGatewayEvent } from "shared-types";
+import { normalizeEmail } from "shared-utils";
 import { z } from "zod";
 
 import { authenticatedMiddy, canViewUser, ContextWithAuthenticatedUser } from "../middleware";
@@ -26,7 +27,7 @@ export const handler = authenticatedMiddy({
 })
   .use(canViewUser())
   .handler(async (event: GetUserDetailsEvent, context: ContextWithAuthenticatedUser) => {
-    const email = event?.body?.userEmail || context?.authenticatedUser?.email;
+    const email = normalizeEmail(event?.body?.userEmail || context?.authenticatedUser?.email);
 
     if (!email) {
       throw new Error("Email is undefined");

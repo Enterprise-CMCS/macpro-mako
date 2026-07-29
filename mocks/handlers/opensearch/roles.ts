@@ -12,6 +12,44 @@ import {
 import { SearchQueryBody, TestRoleResult } from "../../index.d";
 import { getFilterValueAsString } from "../search.utils";
 
+type QueryRules = Parameters<typeof getFilterValueAsString>[0];
+
+const normalizeEmail = (email?: string | null) => email?.trim().toLowerCase() || "";
+
+const toQueryArray = (query: QueryRules) => (Array.isArray(query) ? query : query ? [query] : []);
+
+const getEmailFromShouldQuery = (should: QueryRules) => {
+  const termEmail = getFilterValueAsString(should, "term", "email.keyword");
+  if (termEmail) {
+    return normalizeEmail(termEmail);
+  }
+
+  const wildcardRule = toQueryArray(should).find(
+    (rule: any) => rule?.wildcard?.["email.keyword"],
+  ) as any;
+  const wildcardEmail = wildcardRule?.wildcard?.["email.keyword"];
+
+  if (typeof wildcardEmail === "string") {
+    return normalizeEmail(wildcardEmail);
+  }
+
+  if (wildcardEmail && typeof wildcardEmail === "object" && "value" in wildcardEmail) {
+    return normalizeEmail(String(wildcardEmail.value));
+  }
+
+  return "";
+};
+
+const getEmailFromMustQuery = (must: QueryRules) => {
+  const email = getEmailFromShouldQuery(must);
+  if (email) {
+    return email;
+  }
+
+  const boolRule = toQueryArray(must).find((rule: any) => rule?.bool?.should) as any;
+  return getEmailFromShouldQuery(boolRule?.bool?.should);
+};
+
 const defaultRoleSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-roles/_search",
   async ({ request }) => {
@@ -21,19 +59,22 @@ const defaultRoleSearchHandler = http.post<PathParams, SearchQueryBody>(
     if (query?.term?.["email.keyword"]) {
       const email = getFilterValueAsString(query, "term", "email.keyword") || "";
       hits = getFilteredRolesByEmail(email);
+    } else if (query?.bool?.should) {
+      const email = getEmailFromShouldQuery(query.bool.should);
+      hits = getFilteredRolesByEmail(email);
     } else if (query?.term?.["territory.keyword"]) {
       const state = getFilterValueAsString(query, "term", "territory.keyword") || "";
       hits = getFilteredRolesByState(state);
     } else if (query?.bool?.must && query?.bool?.must_not && _source) {
-      const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
+      const email = getEmailFromMustQuery(query.bool.must);
       hits = getFilteredRolesByEmail(email).filter(
         (roleObj) => roleObj._source?.status === "active",
       );
     } else if (query?.bool?.must && size === 1) {
-      const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
+      const email = getEmailFromMustQuery(query.bool.must);
       hits = getLatestRoleByEmail(email);
     } else if (query?.bool?.must) {
-      const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
+      const email = getEmailFromMustQuery(query.bool.must);
       const role = getFilterValueAsString(query.bool.must, "term", "role") || "";
       const state = getFilterValueAsString(query.bool.must, "term", "territory.keyword") || "";
       if (email) {
@@ -91,6 +132,12 @@ export const errorOnSearchTypeRoleSearchHandler = (failOn: string) =>
         }
         const email = getFilterValueAsString(query, "term", "email.keyword") || "";
         hits = getFilteredRolesByEmail(email);
+      } else if (query?.bool?.should) {
+        if (failOn === "getAllUserRolesByEmail") {
+          return new HttpResponse("Internal server error", { status: 500 });
+        }
+        const email = getEmailFromShouldQuery(query.bool.should);
+        hits = getFilteredRolesByEmail(email);
       } else if (query?.term?.["territory.keyword"]) {
         if (failOn === "getAllUserRolesByState") {
           return new HttpResponse("Internal server error", { status: 500 });
@@ -101,7 +148,7 @@ export const errorOnSearchTypeRoleSearchHandler = (failOn: string) =>
         if (failOn === "getActiveStatesForUserByEmail") {
           return new HttpResponse("Internal server error", { status: 500 });
         }
-        const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
+        const email = getEmailFromMustQuery(query.bool.must);
         hits = getFilteredRolesByEmail(email).filter(
           (roleObj) => roleObj._source?.status === "active",
         );
@@ -109,10 +156,10 @@ export const errorOnSearchTypeRoleSearchHandler = (failOn: string) =>
         if (failOn === "getLatestActiveRoleByEmail") {
           return new HttpResponse("Internal server error", { status: 500 });
         }
-        const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
+        const email = getEmailFromMustQuery(query.bool.must);
         hits = getLatestRoleByEmail(email);
       } else if (query?.bool?.must) {
-        const email = getFilterValueAsString(query.bool.must, "term", "email.keyword") || "";
+        const email = getEmailFromMustQuery(query.bool.must);
         const role = getFilterValueAsString(query.bool.must, "term", "role") || "";
         const state = getFilterValueAsString(query.bool.must, "term", "territory.keyword") || "";
         if (email) {

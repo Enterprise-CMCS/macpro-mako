@@ -1,7 +1,7 @@
 FROM --platform=linux/amd64 oven/bun:1.1.20-alpine AS builder
 
 # Increment CACHE_BUST to force Docker to pull a fresh base image (e.g., for security patches)
-ARG CACHE_BUST=2026-05-13-clamav-al2023-security-refresh
+ARG CACHE_BUST=2026-07-23-clamav-al2023-latest-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR /app
@@ -15,14 +15,21 @@ RUN bun run build
 
 FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24
 
-ARG CACHE_BUST=2026-05-13-clamav-al2023-security-refresh
+ARG CACHE_BUST=2026-07-23-clamav-al2023-latest-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR ${LAMBDA_TASK_ROOT}
 
-# Keep the runtime image limited to ClamAV and the bundled handlers.
-RUN (dnf install -y clamav clamd || microdnf install -y clamav clamd || yum install -y clamav clamd) \
-    && (dnf --refresh upgrade -y || microdnf upgrade -y || yum update -y) \
+# Keep the runtime image limited to ClamAV and the bundled handlers. AL2023
+# locks package repositories to a release version, so opt into the latest
+# repository release to receive security updates published after the base
+# Lambda image was built.
+RUN (dnf --releasever=latest install -y clamav1.4 clamd1.4 \
+      || microdnf --releasever=latest install -y clamav1.4 clamd1.4 \
+      || yum --releasever=latest install -y clamav1.4 clamd1.4) \
+    && (dnf --releasever=latest --refresh upgrade -y \
+      || microdnf --releasever=latest upgrade -y \
+      || yum --releasever=latest update -y) \
     && (dnf clean all || microdnf clean all || yum clean all) \
     && rm -rf /var/cache/dnf \
     # npm is not required to execute the bundled Lambda handlers and keeping it
