@@ -47,7 +47,6 @@ export async function downloadFileFromS3(
     fs.mkdirSync(constants.TMP_DOWNLOAD_PATH);
   }
 
-  // Keep filenames unique and filesystem-safe; object keys may include path separators.
   const safeKey = s3ObjectKey.replace(/[\\/]/g, "_");
   const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}--${safeKey}`;
 
@@ -71,7 +70,7 @@ export async function downloadFileFromS3(
     try {
       await asyncfs.unlink(localPath);
     } catch {
-      // Ignore cleanup failures for partial downloads.
+      // ignore
     }
     throw err;
   }

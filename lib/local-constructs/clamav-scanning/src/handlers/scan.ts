@@ -16,12 +16,16 @@ import {
 } from "./../lib";
 const logger = pino();
 
+function getErrorCode(error: unknown): string | undefined {
+  if (error && typeof error === "object" && "code" in error) {
+    return String((error as { code?: unknown }).code);
+  }
+  return undefined;
+}
+
 export function isTransientScanError(error: unknown): boolean {
   const message = error instanceof Error ? error.message : `${error}`;
-  const code =
-    error && typeof error === "object" && "code" in error
-      ? String((error as { code?: unknown }).code)
-      : undefined;
+  const code = getErrorCode(error);
 
   return (
     code === "ENOSPC" || message.includes("ENOSPC") || message.includes("no space left on device")
@@ -36,11 +40,7 @@ async function cleanupLocalDownload(fileLoc: string | undefined): Promise<void> 
   try {
     await fs.unlink(fileLoc);
   } catch (error) {
-    const code =
-      error && typeof error === "object" && "code" in error
-        ? String((error as { code?: unknown }).code)
-        : undefined;
-    if (code !== "ENOENT") {
+    if (getErrorCode(error) !== "ENOENT") {
       logger.error({ err: error, fileLoc }, "Failed to cleanup local download");
     }
   }
@@ -95,8 +95,6 @@ export async function handler(event: any): Promise<string[]> {
       await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
       results.push(virusScanStatus);
     } catch (error) {
-      // Transient disk pressure should fail the invocation so SQS can retry on a
-      // healthy environment instead of permanently tagging the object ERROR.
       if (isTransientScanError(error)) {
         logger.error({ err: error, s3ObjectBucket, s3ObjectKey }, "Transient scan failure");
         throw error;
