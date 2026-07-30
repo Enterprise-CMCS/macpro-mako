@@ -1,4 +1,5 @@
 import { Navigate, useParams } from "react-router";
+import { opensearch } from "shared-types";
 import { z } from "zod";
 
 import { useGetItem } from "@/api";
@@ -16,6 +17,72 @@ import { formSchemas } from "@/formSchemas";
 import { getEffectiveInitialSubmissionEvent } from "@/utils/chipEligibility";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
+
+const initialSubmissionEvents = [
+  "app-k",
+  "capitated-amendment",
+  "capitated-initial",
+  "capitated-renewal",
+  "contracting-amendment",
+  "contracting-initial",
+  "contracting-renewal",
+  "new-chip-details-submission",
+  "new-chip-submission",
+  "new-medicaid-submission",
+  "temporary-extension",
+] as const;
+
+type InitialSubmissionEvent = (typeof initialSubmissionEvents)[number];
+
+const isInitialSubmissionEvent = (event?: string | null): event is InitialSubmissionEvent =>
+  initialSubmissionEvents.some((submissionEvent) => submissionEvent === event);
+
+const inferInitialSubmissionEvent = (
+  submission: opensearch.main.Document,
+): InitialSubmissionEvent | null => {
+  const candidateEvents = [
+    submission.event,
+    submission.mockEvent,
+    ...(submission.changelog ?? []).map((item) => item._source?.event),
+  ];
+  const initialSubmissionEvent = candidateEvents.find(isInitialSubmissionEvent);
+
+  if (initialSubmissionEvent) {
+    return initialSubmissionEvent;
+  }
+
+  // Legacy packages may only have post-submission changelog events. In that case,
+  // reconstruct the initial form type from stable package metadata.
+  if (submission.actionType?.toLocaleLowerCase().includes("extend")) {
+    return "temporary-extension";
+  }
+
+  switch (submission.authority) {
+    case "Medicaid SPA":
+      return "new-medicaid-submission";
+    case "CHIP SPA":
+      return "new-chip-submission";
+    case "1915(c)":
+      return "app-k";
+    case "1915(b)": {
+      const waiverType =
+        "waiverAuthority" in submission && submission.waiverAuthority === "1915(b)(4)"
+          ? "contracting"
+          : "capitated";
+      const actionType = submission.actionType?.toLocaleLowerCase() ?? "";
+
+      if (actionType.includes("renew")) {
+        return `${waiverType}-renewal`;
+      }
+      if (actionType.includes("amend")) {
+        return `${waiverType}-amendment`;
+      }
+      return `${waiverType}-initial`;
+    }
+    default:
+      return null;
+  }
+};
 
 const pickAttachmentsAndAdditionalInfo = (
   schema: SchemaWithEnforcableProps,
@@ -107,24 +174,15 @@ export const UploadSubsequentDocuments = () => {
     return <Navigate to="/dashboard" />;
   }
 
-  let originalSubmissionEvent = (submission._source.changelog ?? []).reduce<string | null>(
-    (acc, { _source }) => (_source?.event ? _source?.event : acc),
-    null,
-  );
-  if (originalSubmissionEvent === "NOSO") {
-    originalSubmissionEvent = submission._source.mockEvent;
-  }
-
-  if (originalSubmissionEvent === "split-spa") {
-    originalSubmissionEvent = submission._source.mockEvent;
-  }
+  const originalSubmissionEvent = inferInitialSubmissionEvent(submission._source);
 
   const effectiveSubmissionEvent = getEffectiveInitialSubmissionEvent(
     submission._source,
     originalSubmissionEvent,
   );
 
-  const schema: SchemaWithEnforcableProps | undefined = formSchemas[effectiveSubmissionEvent];
+  const schema: SchemaWithEnforcableProps | undefined =
+    effectiveSubmissionEvent === null ? undefined : formSchemas[effectiveSubmissionEvent];
 
   if (schema === undefined) {
     return <Navigate to="/dashboard" />;
