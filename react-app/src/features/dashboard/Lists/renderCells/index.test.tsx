@@ -480,7 +480,6 @@ describe("renderCells", () => {
           raiReceivedDate: "2024-01-01T00:00:00.000Z",
         });
         await user.click(screen.getByLabelText("Available package actions"));
-
         expect(screen.queryByText("Enable Formal RAI Response Withdraw")).toBeInTheDocument();
         expect(
           screen.getByText("Enable Formal RAI Response Withdraw").getAttribute("href"),
@@ -497,11 +496,29 @@ describe("renderCells", () => {
           raiWithdrawEnabled: true,
         });
         await user.click(screen.getByLabelText("Available package actions"));
-
         expect(screen.queryByText("Disable Formal RAI Response Withdraw")).toBeInTheDocument();
         expect(
           screen.getByText("Disable Formal RAI Response Withdraw").getAttribute("href"),
         ).toEqual(getUrl(Action.DISABLE_RAI_WITHDRAW, TEST_MED_SPA_ITEM._source));
+      });
+
+      it("should hide enable and disable RAI withdraw actions when the SMART launch flag is on", async () => {
+        mockUseFeatureFlag.mockImplementation(
+          (flag: string) =>
+            flag === "SAVE_IN_PROGRESS" || flag === "HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE",
+        );
+        setup(TEST_REVIEWER_USER, "cmsreviewer", {
+          ...TEST_MED_SPA_ITEM._source,
+          seatoolStatus: SEATOOL_STATUS.PENDING,
+          actionType: "New",
+          raiRequestedDate: "2024-01-01T00:00:00.000Z",
+          raiReceivedDate: "2024-01-01T00:00:00.000Z",
+          raiWithdrawEnabled: true,
+        });
+
+        expect(screen.getByLabelText("Available package actions")).toBeDisabled();
+        expect(screen.queryByText("Enable Formal RAI Response Withdraw")).not.toBeInTheDocument();
+        expect(screen.queryByText("Disable Formal RAI Response Withdraw")).not.toBeInTheDocument();
       });
     });
   });

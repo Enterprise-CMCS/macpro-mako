@@ -7,6 +7,7 @@ import * as api from "@/api/useGetUser";
 import { renderWithQueryClient } from "@/utils/test-helpers";
 
 import { PackageStatusCard } from ".";
+
 describe("Package Status test", () => {
   vi.spyOn(api, "useGetUser").mockImplementation(() => {
     const response = mockUseGetUser();

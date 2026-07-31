@@ -64,6 +64,7 @@ function checkRegexPatterns(input: string): string {
       return "";
   }
 }
+
 const AC_Update = () => <p>Coming Soon</p>;
 
 export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
