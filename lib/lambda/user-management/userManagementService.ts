@@ -4,6 +4,9 @@ import { Index, roles, users } from "shared-types/opensearch";
 import { getApprovingRole, normalizeEmail } from "shared-utils";
 
 const QUERY_LIMIT = 2000;
+// Each email adds a term and wildcard clause. Keep batches safely below OpenSearch's
+// default 1,024-clause boolean query limit.
+const EMAIL_QUERY_CHUNK_SIZE = 250;
 
 const getEmailShouldClauses = (email?: string | null) => {
   const normalizedEmail = normalizeEmail(email);
@@ -73,23 +76,34 @@ export const getUsersByEmails = async (
   }
 
   const { domain, index } = getDomainAndNamespace("users");
-  const results = await search(domain, index, {
-    size: QUERY_LIMIT,
-    query: {
-      bool: {
-        should: normalizedEmails.flatMap((email) => getEmailShouldClauses(email)),
-        minimum_should_match: 1,
-      },
-    },
-  });
-
-  return results.hits.hits.reduce(
-    (acc: any, hit: any) => {
-      acc[normalizeEmail(hit._source.email)] = hit._source;
-      return acc;
-    },
-    {} as Record<string, { fullName?: string }>,
+  const emailChunks = Array.from(
+    { length: Math.ceil(normalizedEmails.length / EMAIL_QUERY_CHUNK_SIZE) },
+    (_, index) =>
+      normalizedEmails.slice(index * EMAIL_QUERY_CHUNK_SIZE, (index + 1) * EMAIL_QUERY_CHUNK_SIZE),
   );
+  const results = await Promise.all(
+    emailChunks.map((emailChunk) =>
+      search(domain, index, {
+        size: QUERY_LIMIT,
+        query: {
+          bool: {
+            should: emailChunk.flatMap((email) => getEmailShouldClauses(email)),
+            minimum_should_match: 1,
+          },
+        },
+      }),
+    ),
+  );
+
+  return results
+    .flatMap((result) => result.hits.hits)
+    .reduce(
+      (acc: any, hit: any) => {
+        acc[normalizeEmail(hit._source.email)] = hit._source;
+        return acc;
+      },
+      {} as Record<string, { fullName?: string }>,
+    );
 };
 
 export const getAllUserRolesByEmail = async (email: string): Promise<roles.Document[]> => {

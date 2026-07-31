@@ -163,7 +163,7 @@ export class ClamScanScanner extends Construct {
     const clamscanDefsLogGroup = new logs.LogGroup(this, `${id}ClamDefsLogGroup`, {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
-    const clamAvImageCacheBust = "2026-07-23-clamav-al2023-latest-security-refresh";
+    const clamAvImageCacheBust = "2026-07-27-enospc-tmp-cleanup";
 
     const clamDefsLambda = new DockerImageFunction(this, "ServerlessClamDefs", {
       code: DockerImageCode.fromImageAsset(__dirname, {
@@ -174,6 +174,7 @@ export class ClamScanScanner extends Construct {
       }),
       timeout: cdk.Duration.minutes(1),
       memorySize: 10240,
+      ephemeralStorageSize: cdk.Size.mebibytes(2048),
       role: this.lambdaRole,
       logGroup: clamscanDefsLogGroup,
       onSuccess: new destinations.SqsDestination(successQueue),
@@ -196,6 +197,7 @@ export class ClamScanScanner extends Construct {
       }),
       timeout,
       memorySize: 10240,
+      ephemeralStorageSize: cdk.Size.mebibytes(2048),
       role: this.lambdaRole,
       logGroup: clamscanLambdaLogGroup,
       onSuccess: new destinations.SqsDestination(successQueue),
