@@ -111,6 +111,13 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   * Toggle visibility of the CHIP CS22 FAQ forms
+   */
+  CHIP_CS22_FORMS: {
+    flag: "chip-cs22-forms",
+    defaultValue: false,
+  },
+  /*
    *  Toggle visibility between the enhanced experience and mmdl banner
    */
   UPGRADE_MMDL_BANNER: {

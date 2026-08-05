@@ -2,11 +2,17 @@ import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { ChipSpaImplementationGuides } from "./chip-spa-implementation-guides";
 import { ChipSpaTemplates } from "./chip-spa-templates";
 import { spaContent } from "./index";
+
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn(() => false));
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
+}));
 
 const assetRoot = ["src/assets", "react-app/src/assets"]
   .map((assetPath) => join(process.cwd(), assetPath))
@@ -22,6 +28,10 @@ const getPdfTitle = (assetPath: string) => {
 };
 
 describe("SPA FAQ documents", () => {
+  beforeEach(() => {
+    mockUseFeatureFlag.mockReturnValue(false);
+  });
+
   it("serves the CS18 template and implementation guide from the canonical PDF paths", () => {
     render(
       <>
@@ -64,6 +74,69 @@ describe("SPA FAQ documents", () => {
     expect(templateLink).toHaveAttribute("download", "CS23.pdf");
     expect(guideLink).toHaveAttribute("download", "CS23 Implementation Guide.pdf");
     expect(introductionLink).toHaveAttribute("download", "CHIP Eligibility Introduction.pdf");
+  });
+
+  it("hides the CS22 template and implementation guide when the feature flag is disabled", () => {
+    render(
+      <>
+        <ChipSpaTemplates />
+        <ChipSpaImplementationGuides />
+      </>,
+    );
+
+    expect(
+      screen.queryByRole("link", {
+        name: "CS 22: Retroactive Eligibility for Children, From Conception to End of Pregnancy, and/or Pregnant Women",
+      }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("link", {
+        name: "CS 22: General Eligibility - Retroactive Eligibility for Children and/or Pregnant Women",
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  it("shows the CS22 documents between CS21 and CS23 when the feature flag is enabled", () => {
+    mockUseFeatureFlag.mockReturnValue(true);
+
+    const { rerender } = render(<ChipSpaTemplates />);
+
+    const templateLink = screen.getByRole("link", {
+      name: "CS 22: Retroactive Eligibility for Children, From Conception to End of Pregnancy, and/or Pregnant Women",
+    });
+    let linkNames = screen.getAllByRole("link").map((link) => link.textContent);
+
+    expect(templateLink).toHaveAttribute("href", "/chp/CS22.pdf");
+    expect(templateLink).toHaveAttribute("download", "CS22.pdf");
+    expect(linkNames.indexOf(templateLink.textContent)).toBe(
+      linkNames.indexOf("CS 21: Non-Financial Eligibility - Non-Payment of Premiums") + 1,
+    );
+    expect(linkNames.indexOf(templateLink.textContent)).toBe(
+      linkNames.indexOf("CS 23: Non-Financial Requirements - Other Eligibility Standards") - 1,
+    );
+
+    rerender(<ChipSpaImplementationGuides />);
+
+    const guideLink = screen.getByRole("link", {
+      name: "CS 22: General Eligibility - Retroactive Eligibility for Children and/or Pregnant Women",
+    });
+    linkNames = screen.getAllByRole("link").map((link) => link.textContent);
+
+    expect(guideLink).toHaveAttribute(
+      "href",
+      "/chp/IG_CS22_RetroactiveEligibilityforChildrenand-orPregnantWomen.pdf",
+    );
+    expect(guideLink).toHaveAttribute("download", "CS22 Implementation Guide.pdf");
+    expect(linkNames.indexOf(guideLink.textContent)).toBe(
+      linkNames.indexOf(
+        "CS 21: Non-Financial Eligibility - Non-Payment of Premiums Implementation Guide",
+      ) + 1,
+    );
+    expect(linkNames.indexOf(guideLink.textContent)).toBe(
+      linkNames.indexOf(
+        "CS 23: Non-Financial Requirements - Other Eligibility Standards Implementation Guide",
+      ) - 1,
+    );
   });
 
   it("uses the CS27 template name as its PDF title", () => {
