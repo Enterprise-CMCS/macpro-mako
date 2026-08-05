@@ -47,6 +47,8 @@ describe("Admin Features test", () => {
     expect(screen.getByText("add file")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Change Reason" })).toBeInTheDocument();
     expect(screen.getByText("missing file")).toBeInTheDocument();
+    expect(screen.getAllByText(/Enable Formal RAI Response Withdraw/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Disable Formal RAI Response Withdraw/).length).toBeGreaterThan(0);
   });
 
   it("displays duplicate manual updates only once", () => {

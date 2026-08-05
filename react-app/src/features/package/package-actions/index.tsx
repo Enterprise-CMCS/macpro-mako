@@ -1,6 +1,6 @@
 import { type MouseEvent } from "react";
 import { Link, useLocation, useNavigate } from "react-router";
-import { opensearch, SEATOOL_STATUS } from "shared-types";
+import { Action, opensearch, SEATOOL_STATUS } from "shared-types";
 import { isStateUser } from "shared-utils";
 
 import { deleteDraft, useGetPackageActions, useGetUser } from "@/api";
@@ -35,6 +35,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   const location = useLocation();
   const navigate = useNavigate();
   const isSaveInProgressEnabled = useFeatureFlag("SAVE_IN_PROGRESS");
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
   const { data: oneMacUser, isLoading: isUserLoading } = useGetUser();
   const isDraftPackage = submission.seatoolStatus === SEATOOL_STATUS.DRAFT;
   const isDraft = isSaveInProgressEnabled && isDraftPackage;
@@ -180,7 +181,13 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
 
   if (isLoading) return <LoadingSpinner />;
 
-  if (!data?.actions?.length) {
+  const actions = data?.actions?.filter(
+    (action) =>
+      !hideWithdrawRaiResponseToggle ||
+      (action !== Action.ENABLE_RAI_WITHDRAW && action !== Action.DISABLE_RAI_WITHDRAW),
+  );
+
+  if (!actions?.length) {
     return (
       <div className="my-3" aria-labelledby="package-actions-heading">
         <em className="text-gray-400 my-3">
@@ -193,7 +200,7 @@ export const PackageActionsCard = ({ submission, id }: PackageActionsCardProps) 
   return (
     <nav className="my-3 sm:text-nowrap sm:min-w-min" aria-labelledby="package-actions-heading">
       <ul className="my-3">
-        {data.actions.map((type, idx) => (
+        {actions.map((type, idx) => (
           <li className="py-2" key={`${type}-${idx}`}>
             <Link
               key={`${idx}-${type}`}
