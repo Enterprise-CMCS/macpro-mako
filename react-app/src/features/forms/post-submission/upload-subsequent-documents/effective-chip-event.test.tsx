@@ -60,3 +60,59 @@ describe("Upload Subsequent Documents for backend-converted CHIP Eligibility pac
     expect(screen.queryByText("Subsequent CHIP SPA Documents")).not.toBeInTheDocument();
   });
 });
+
+describe("Upload Subsequent Documents for legacy packages", () => {
+  beforeEach(() => {
+    cleanup();
+    delete process.env.SKIP_CLEANUP;
+  });
+
+  afterEach(() => {
+    delete process.env.SKIP_CLEANUP;
+  });
+
+  it("uses the package authority when the changelog has no initial submission event", async () => {
+    const id = "TX-21-0009";
+
+    mockedServer.use(
+      onceApiItemHandler({
+        _id: id,
+        found: true,
+        _source: {
+          id,
+          actionType: "New",
+          authority: "Medicaid SPA",
+          origin: "OneMACLegacy",
+          changelog: [
+            {
+              _id: `${id}-313433`,
+              _source: {
+                id: `${id}-313433`,
+                packageId: id,
+                event: "respond-to-rai",
+                timestamp: 1781214697656,
+              },
+            },
+            {
+              _id: `${id}-legacy-1741902359431`,
+              _source: {
+                id: `${id}-legacy-1741902359431`,
+                packageId: id,
+                event: "respond-to-rai",
+                timestamp: 1741902359431,
+              },
+            },
+          ],
+        },
+      } as opensearch.main.ItemResult),
+    );
+
+    await renderFormWithPackageSectionAsync(<UploadSubsequentDocuments />, id, "Medicaid SPA");
+
+    expect(screen.queryByRole("heading", { name: "dashboard test" })).not.toBeInTheDocument();
+    expect(screen.getByTestId("detail-section-title")).toHaveTextContent(
+      "Medicaid SPA Subsequent Documents Details",
+    );
+    expect(screen.getByTestId("cmsForm179-label")).toHaveTextContent("CMS-179 Form");
+  });
+});

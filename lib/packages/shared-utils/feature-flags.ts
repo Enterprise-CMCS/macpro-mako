@@ -89,6 +89,14 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   * Hide CMS controls and administrative activity for enabling/disabling
+   * Formal RAI Response Withdraw after OneMAC SMART launches.
+   */
+  HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE: {
+    flag: "hide-withdraw-rai-response-toggle",
+    defaultValue: false,
+  },
+  /*
    * Toggle visibility of the homepage resources section
    */
   HOMEPAGE_RESOURCES: {

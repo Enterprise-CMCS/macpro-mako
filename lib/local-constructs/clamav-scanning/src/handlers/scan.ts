@@ -1,3 +1,4 @@
+import fs from "fs/promises";
 import pino from "pino";
 
 import {
@@ -14,6 +15,36 @@ import {
   tagWithScanStatus,
 } from "./../lib";
 const logger = pino();
+
+function getErrorCode(error: unknown): string | undefined {
+  if (error && typeof error === "object" && "code" in error) {
+    return String((error as { code?: unknown }).code);
+  }
+  return undefined;
+}
+
+export function isTransientScanError(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : `${error}`;
+  const code = getErrorCode(error);
+
+  return (
+    code === "ENOSPC" || message.includes("ENOSPC") || message.includes("no space left on device")
+  );
+}
+
+async function cleanupLocalDownload(fileLoc: string | undefined): Promise<void> {
+  if (!fileLoc) {
+    return;
+  }
+
+  try {
+    await fs.unlink(fileLoc);
+  } catch (error) {
+    if (getErrorCode(error) !== "ENOENT") {
+      logger.error({ err: error, fileLoc }, "Failed to cleanup local download");
+    }
+  }
+}
 
 export async function handler(event: any): Promise<string[]> {
   logger.info("Download AV Definitions");
@@ -44,6 +75,7 @@ export async function handler(event: any): Promise<string[]> {
     }
 
     let virusScanStatus: string;
+    let fileLoc: string | undefined;
 
     try {
       virusScanStatus = await checkFileSize(s3ObjectKey, s3ObjectBucket);
@@ -52,7 +84,7 @@ export async function handler(event: any): Promise<string[]> {
         results.push(virusScanStatus);
         continue;
       }
-      const fileLoc: string = await downloadFileFromS3(s3ObjectKey, s3ObjectBucket);
+      fileLoc = await downloadFileFromS3(s3ObjectKey, s3ObjectBucket);
       virusScanStatus = await checkFileExt(fileLoc);
       if (virusScanStatus !== STATUS_CLEAN_FILE) {
         await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
@@ -62,14 +94,18 @@ export async function handler(event: any): Promise<string[]> {
       virusScanStatus = (await scanLocalFile(fileLoc))!;
       await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
       results.push(virusScanStatus);
-    } catch {
+    } catch (error) {
+      if (isTransientScanError(error)) {
+        logger.error({ err: error, s3ObjectBucket, s3ObjectKey }, "Transient scan failure");
+        throw error;
+      }
+
       virusScanStatus = STATUS_ERROR_PROCESSING_FILE;
       await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
       results.push(virusScanStatus);
+    } finally {
+      await cleanupLocalDownload(fileLoc);
     }
-
-    await tagWithScanStatus(s3ObjectBucket, s3ObjectKey, virusScanStatus);
-    results.push(virusScanStatus);
   }
 
   return results;

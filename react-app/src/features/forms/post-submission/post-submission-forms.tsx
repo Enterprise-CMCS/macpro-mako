@@ -2,6 +2,7 @@ import { LoaderFunction, Navigate, useParams } from "react-router";
 import { Action, AuthorityUnion } from "shared-types";
 
 import { getItem } from "@/api";
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { queryClient } from "@/utils";
 
 import { TemporaryExtensionForm } from "../waiver/temporary-extension";
@@ -64,8 +65,21 @@ export const postSubmissionForms: Partial<
 };
 
 export const PostSubmissionWrapper = () => {
-  const { type, authority } = useParams<{ authority: AuthorityUnion; type: string }>();
+  const { type, authority, id } = useParams<{
+    authority: AuthorityUnion;
+    type: string;
+    id: string;
+  }>();
+  const hideWithdrawRaiResponseToggle = useFeatureFlag("HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE");
+  const isWithdrawRaiToggle =
+    type === Action.ENABLE_RAI_WITHDRAW || type === Action.DISABLE_RAI_WITHDRAW;
   const PostSubmissionForm = postSubmissionForms?.[type]?.[authority];
+
+  if (hideWithdrawRaiResponseToggle && isWithdrawRaiToggle) {
+    const detailsPath =
+      authority && id ? `/details/${encodeURIComponent(authority)}/${encodeURIComponent(id)}` : "/";
+    return <Navigate to={detailsPath} replace />;
+  }
 
   if (PostSubmissionForm === undefined) {
     return <Navigate to="/" />;
