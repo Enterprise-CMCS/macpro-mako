@@ -15,6 +15,7 @@ export const handler: Handler = async (event, __, callback) => {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
         deleted: { type: "boolean" },
+        externalSystemIdentifier: { type: "keyword" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
         statusDate: { type: "date" },
@@ -27,6 +28,7 @@ export const handler: Handler = async (event, __, callback) => {
       update: {
         changedDate: { type: "date" },
         deleted: { type: "boolean" },
+        externalSystemIdentifier: { type: "keyword" },
         makoChangedDate: { type: "date" },
         statusDate: { type: "date" },
       },

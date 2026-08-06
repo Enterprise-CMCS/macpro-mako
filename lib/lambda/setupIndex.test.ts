@@ -47,6 +47,7 @@ describe("handler", () => {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
         deleted: { type: "boolean" },
+        externalSystemIdentifier: { type: "keyword" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
         statusDate: { type: "date" },
@@ -59,6 +60,7 @@ describe("handler", () => {
       {
         changedDate: { type: "date" },
         deleted: { type: "boolean" },
+        externalSystemIdentifier: { type: "keyword" },
         makoChangedDate: { type: "date" },
         statusDate: { type: "date" },
       },

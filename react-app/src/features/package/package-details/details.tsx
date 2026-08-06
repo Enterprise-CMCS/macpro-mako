@@ -7,6 +7,7 @@ import {
   isCmsUser,
   isHelpDeskUser,
   isStateUser,
+  PackageCheck,
 } from "shared-utils";
 
 import { OneMacUser } from "@/api/useGetUser";
@@ -126,6 +127,11 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     {
       label: "Submission ID",
       value: submission.id,
+    },
+    {
+      label: "External System Identifier",
+      value: submission.externalSystemIdentifier || BLANK_VALUE,
+      canView: isCmsUser(user) && PackageCheck(submission).isSpa,
     },
     {
       label: "Authority",

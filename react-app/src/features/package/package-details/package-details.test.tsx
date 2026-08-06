@@ -2,9 +2,11 @@ import { screen, waitForElementToBeRemoved, within } from "@testing-library/reac
 import {
   EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+  HELP_DESK_USER_USERNAME,
   setMockUsername,
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
+  TEST_MED_SPA_ITEM,
   TEST_REVIEWER_USERNAME,
   TEST_STATE_SUBMITTER_USERNAME,
 } from "mocks";
@@ -139,6 +141,45 @@ describe("package details", () => {
     expect(screen.getByText("Created By")).toBeInTheDocument();
     expect(screen.queryByText("Submitted By")).not.toBeInTheDocument();
     expect(screen.getByText("Original Draft Creator")).toBeInTheDocument();
+  });
+
+  test.each([
+    ["CMS reviewer", TEST_REVIEWER_USERNAME],
+    ["Help Desk user", HELP_DESK_USER_USERNAME],
+  ])("shows the external system identifier to a %s on SPA details", async (_, username) => {
+    setMockUsername(username);
+
+    await setup({
+      ...TEST_MED_SPA_ITEM._source,
+      externalSystemIdentifier: "smart-spa-12345",
+    });
+
+    expect(screen.getByText("External System Identifier")).toBeInTheDocument();
+    expect(screen.getByText("smart-spa-12345")).toBeInTheDocument();
+  });
+
+  it("does not show the external system identifier to a state user", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    await setup({
+      ...TEST_MED_SPA_ITEM._source,
+      externalSystemIdentifier: "smart-spa-12345",
+    });
+
+    expect(screen.queryByText("External System Identifier")).not.toBeInTheDocument();
+    expect(screen.queryByText("smart-spa-12345")).not.toBeInTheDocument();
+  });
+
+  it("does not show the external system identifier on waiver details", async () => {
+    setMockUsername(TEST_REVIEWER_USERNAME);
+
+    await setup({
+      ...TEST_1915B_ITEM._source,
+      externalSystemIdentifier: "smart-waiver-12345",
+    });
+
+    expect(screen.queryByText("External System Identifier")).not.toBeInTheDocument();
+    expect(screen.queryByText("smart-waiver-12345")).not.toBeInTheDocument();
   });
 
   it("renders CMS Subject and Description as full-width formatted text", async () => {

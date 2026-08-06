@@ -87,6 +87,7 @@ export type Document = AppkDocument &
     deleted?: boolean;
     adminChangeType?: string;
     changeMade?: string;
+    externalSystemIdentifier?: string | null;
     idToBeUpdated?: string;
     mockEvent?: string;
     withdrawEmailSent?: boolean;
