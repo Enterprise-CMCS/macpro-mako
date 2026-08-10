@@ -438,7 +438,7 @@ describe("attachmentArchive-lib", () => {
         status: "READY",
         url: "https://example.com/archive.zip",
         warningMessage:
-          "Some attachments in this download are no longer available and were not included.",
+          "One or more files are unavailable and were not included as part of the .zip file download.",
       },
     });
   });
@@ -479,7 +479,7 @@ describe("attachmentArchive-lib", () => {
         artifactKey,
         filename: "MD-10-6772-section-1-initial-package-submitted-attachments.zip",
         warningMessage:
-          "Some attachments in this download are no longer available and were not included.",
+          "One or more files are unavailable and were not included as part of the .zip file download.",
       },
     });
   });

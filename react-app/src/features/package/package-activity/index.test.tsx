@@ -803,7 +803,7 @@ describe("Package Activity", () => {
       attachmentErrorMessage: undefined,
       archiveErrorMessage: undefined,
       archiveWarningMessage:
-        "Some attachments in this download are no longer available and were not included.",
+        "One or more files are unavailable and were not included as part of the .zip file download.",
       loading: false,
       onArchive: vi.fn(),
       onUrl: vi.fn(),
@@ -820,7 +820,7 @@ describe("Package Activity", () => {
 
     expect(
       screen.getAllByText(
-        "Some attachments in this download are no longer available and were not included.",
+        "One or more files are unavailable and were not included as part of the .zip file download.",
       ).length,
     ).toBeGreaterThan(0);
   });

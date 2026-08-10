@@ -176,7 +176,7 @@ describe("useAttachmentService", () => {
       filename: "testPackage - Mon Mar 23 2026.zip",
       url: "http://example.com/archive.zip",
       warningMessage:
-        "Some attachments in this download are no longer available and were not included.",
+        "One or more files are unavailable and were not included as part of the .zip file download.",
     });
 
     const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
@@ -189,7 +189,7 @@ describe("useAttachmentService", () => {
 
     await waitFor(() => {
       expect(result.current.archiveWarningMessage).toBe(
-        "Some attachments in this download are no longer available and were not included.",
+        "One or more files are unavailable and were not included as part of the .zip file download.",
       );
     });
     expect(result.current.archiveErrorMessage).toBeUndefined();
