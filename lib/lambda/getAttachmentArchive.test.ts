@@ -370,13 +370,14 @@ describe("getAttachmentArchive handler", () => {
     );
   });
 
-  it("returns source-scan pending details without queuing another rebuild", async () => {
+  it("returns source-scan pending details and queues a recovery rebuild", async () => {
     getRequestedAttachmentArchiveStatus.mockResolvedValue({
-      needsRebuild: false,
+      needsRebuild: true,
       response: {
         status: "PENDING",
         reason: "SOURCE_SCAN_PENDING",
-        message: "Attachments are still being scanned. Please try again shortly.",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
         pollAfterSeconds: 5,
       },
     });
@@ -393,11 +394,17 @@ describe("getAttachmentArchive handler", () => {
       JSON.stringify({
         status: "PENDING",
         reason: "SOURCE_SCAN_PENDING",
-        message: "Attachments are still being scanned. Please try again shortly.",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
         pollAfterSeconds: 5,
       }),
     );
-    expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+        source: "request",
+      }),
+    );
   });
 
   it("queues a draft rebuild when a draft archive is pending and stale", async () => {

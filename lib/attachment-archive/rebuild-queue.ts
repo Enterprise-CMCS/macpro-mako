@@ -28,7 +28,6 @@ export function getAttachmentArchiveRebuildQueueUrl(): string {
 
 export async function sendAttachmentArchiveRebuildRequest(
   message: AttachmentArchiveRebuildMessage,
-  options: { delaySeconds?: number } = {},
 ) {
   await sqsClient.send(
     new SendMessageCommand({
@@ -37,7 +36,6 @@ export async function sendAttachmentArchiveRebuildRequest(
       MessageGroupId: buildAttachmentArchiveMessageGroupId(message.packageId, {
         preferDraft: message.preferDraft,
       }),
-      ...(typeof options.delaySeconds === "number" ? { DelaySeconds: options.delaySeconds } : {}),
     }),
   );
 }

@@ -825,6 +825,36 @@ describe("Package Activity", () => {
     ).toBeGreaterThan(0);
   });
 
+  it("renders active attachment scanning as a status instead of an error", async () => {
+    const pendingMessage =
+      "Attachments are being scanned. Your download will start automatically when scanning is complete.";
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
+      archiveWarningMessage: pendingMessage,
+      loading: true,
+      onArchive: vi.fn(),
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    const pendingMessages = screen.getAllByText(pendingMessage);
+    expect(pendingMessages.length).toBeGreaterThan(0);
+    pendingMessages.forEach((message) => {
+      expect(message).toHaveAttribute("role", "status");
+      expect(message).toHaveClass("text-gray-700");
+      expect(message).not.toHaveClass("text-red-700");
+    });
+  });
+
   it("uses consistent typography for attachment and archive status messages", async () => {
     vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
       attachmentErrorMessage: "This attachment is no longer available.",

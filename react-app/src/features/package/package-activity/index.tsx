@@ -93,6 +93,7 @@ const getDraftPackageActivities = (
 };
 
 const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
+const attachmentPendingMessageClassName = "text-sm font-normal text-gray-700";
 
 type AttachmentDetailsProps = {
   id: string;
@@ -154,6 +155,7 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     preferDraft: packageActivity.isSyntheticDraft,
   });
   const archiveMessage = archiveErrorMessage || archiveWarningMessage;
+  const archiveIsPending = loading && Boolean(archiveWarningMessage) && !archiveErrorMessage;
   const hasAdditionalInformation = Boolean(additionalInformation?.trim());
 
   if (detailMessage && attachments.length === 0 && !hasAdditionalInformation) {
@@ -211,7 +213,14 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
             Download section attachments
           </Button>
           {archiveMessage && (
-            <p role="alert" className={attachmentStatusMessageClassName}>
+            <p
+              role={archiveIsPending ? "status" : "alert"}
+              className={
+                archiveIsPending
+                  ? attachmentPendingMessageClassName
+                  : attachmentStatusMessageClassName
+              }
+            >
               {archiveMessage}
             </p>
           )}
@@ -270,6 +279,7 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
     preferDraft,
   });
   const archiveMessage = archiveErrorMessage || archiveWarningMessage;
+  const archiveIsPending = loading && Boolean(archiveWarningMessage) && !archiveErrorMessage;
 
   if (attachmentsAggregate.length === 0) {
     return null;
@@ -302,7 +312,12 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
         Download all attachments
       </Button>
       {archiveMessage && (
-        <p role="alert" className={`justify-self-end ${attachmentStatusMessageClassName}`}>
+        <p
+          role={archiveIsPending ? "status" : "alert"}
+          className={`justify-self-end ${
+            archiveIsPending ? attachmentPendingMessageClassName : attachmentStatusMessageClassName
+          }`}
+        >
           {archiveMessage}
         </p>
       )}

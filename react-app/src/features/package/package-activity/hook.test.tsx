@@ -135,7 +135,8 @@ describe("useAttachmentService", () => {
       const pendingResponses = Array.from({ length: 21 }, () => ({
         status: "PENDING" as const,
         reason: "SOURCE_SCAN_PENDING" as const,
-        message: "Attachments are still being scanned. Please try again shortly.",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
         pollAfterSeconds: 1,
       }));
       const getAttachmentArchiveSpy = vi.spyOn(api, "getAttachmentArchive");
@@ -156,7 +157,7 @@ describe("useAttachmentService", () => {
 
       await vi.advanceTimersByTimeAsync(0);
       expect(result.current.archiveWarningMessage).toBe(
-        "Attachments are still being scanned. Please try again shortly.",
+        "Attachments are being scanned. Your download will start automatically when scanning is complete.",
       );
 
       for (let i = 0; i < pendingResponses.length; i += 1) {

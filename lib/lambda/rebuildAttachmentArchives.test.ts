@@ -190,15 +190,12 @@ describe("rebuildAttachmentArchives handler", () => {
       {} as any,
     );
 
-    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
-      {
-        packageId: "MD-26-9999-P",
-        source: "sink-changelog",
-        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
-        sourceScanRetryCount: 3,
-      },
-      { delaySeconds: 30 },
-    );
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith({
+      packageId: "MD-26-9999-P",
+      source: "sink-changelog",
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 3,
+    });
   });
 
   it("does not requeue source-scan pending rebuilds after the retry cap", async () => {

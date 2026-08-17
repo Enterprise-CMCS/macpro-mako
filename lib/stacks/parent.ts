@@ -39,6 +39,7 @@ export class ParentStack extends cdk.Stack {
         encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
         fifo: true,
         contentBasedDeduplication: true,
+        deliveryDelay: cdk.Duration.seconds(30),
         visibilityTimeout: cdk.Duration.minutes(5),
         deadLetterQueue: {
           maxReceiveCount: 3,
