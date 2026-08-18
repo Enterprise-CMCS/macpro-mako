@@ -3,11 +3,11 @@ import { afterEach, describe, expect, it, vi } from "vitest";
 const {
   buildDraftAttachmentChangelog,
   rebuildPackageAttachmentArchives,
-  sendAttachmentArchiveRebuildRequest,
+  sendAttachmentArchiveRetryRequest,
 } = vi.hoisted(() => ({
   buildDraftAttachmentChangelog: vi.fn(),
   rebuildPackageAttachmentArchives: vi.fn(),
-  sendAttachmentArchiveRebuildRequest: vi.fn(),
+  sendAttachmentArchiveRetryRequest: vi.fn(),
 }));
 
 vi.mock("../attachment-archive/draft-package", () => ({
@@ -15,7 +15,7 @@ vi.mock("../attachment-archive/draft-package", () => ({
 }));
 
 vi.mock("../attachment-archive/rebuild-queue", () => ({
-  sendAttachmentArchiveRebuildRequest,
+  sendAttachmentArchiveRetryRequest,
 }));
 
 vi.mock("./attachmentArchive-lib", () => ({
@@ -30,7 +30,7 @@ describe("rebuildAttachmentArchives handler", () => {
     vi.restoreAllMocks();
     buildDraftAttachmentChangelog.mockReset();
     rebuildPackageAttachmentArchives.mockReset();
-    sendAttachmentArchiveRebuildRequest.mockReset();
+    sendAttachmentArchiveRetryRequest.mockReset();
   });
 
   it("rebuilds draft archives from synthetic draft changelog when preferDraft is true", async () => {
@@ -190,7 +190,7 @@ describe("rebuildAttachmentArchives handler", () => {
       {} as any,
     );
 
-    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith({
+    expect(sendAttachmentArchiveRetryRequest).toHaveBeenCalledWith({
       packageId: "MD-26-9999-P",
       source: "sink-changelog",
       sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
@@ -235,6 +235,6 @@ describe("rebuildAttachmentArchives handler", () => {
         sourceScanRetryCount: 20,
       }),
     );
-    expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
+    expect(sendAttachmentArchiveRetryRequest).not.toHaveBeenCalled();
   });
 });

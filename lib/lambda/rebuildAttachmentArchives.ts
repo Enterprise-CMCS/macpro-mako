@@ -3,7 +3,7 @@ import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import { buildDraftAttachmentChangelog } from "../attachment-archive/draft-package";
 import type { AttachmentArchiveChangelogItem } from "../attachment-archive/package-activity";
-import { sendAttachmentArchiveRebuildRequest } from "../attachment-archive/rebuild-queue";
+import { sendAttachmentArchiveRetryRequest } from "../attachment-archive/rebuild-queue";
 import { AttachmentArchiveRebuildMessage } from "../attachment-archive/types";
 import { getDraftPackage, getPackageChangelog } from "../libs/api/package";
 import { rebuildPackageAttachmentArchives } from "./attachmentArchive-lib";
@@ -60,7 +60,7 @@ export const handler: SQSHandler = async (event) => {
     });
 
     if (result.sourceScanPending && !sourceScanRetriesExceeded) {
-      await sendAttachmentArchiveRebuildRequest({
+      await sendAttachmentArchiveRetryRequest({
         ...message,
         sourceScanPendingAt: message.sourceScanPendingAt || new Date().toISOString(),
         sourceScanRetryCount: sourceScanRetryCount + 1,

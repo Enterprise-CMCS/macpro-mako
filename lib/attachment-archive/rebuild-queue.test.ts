@@ -20,19 +20,24 @@ vi.mock("@aws-sdk/client-sqs", () => ({
 import {
   buildAttachmentArchiveMessageGroupId,
   sendAttachmentArchiveRebuildRequest,
+  sendAttachmentArchiveRetryRequest,
 } from "./rebuild-queue";
 
 describe("attachment archive rebuild queue", () => {
   const originalQueueUrl = process.env.ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL;
+  const originalRetryQueueUrl = process.env.ATTACHMENT_ARCHIVE_RETRY_QUEUE_URL;
 
   beforeEach(() => {
     process.env.ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL =
       "https://sqs.us-east-1.amazonaws.com/123456789012/archive-rebuild.fifo";
+    process.env.ATTACHMENT_ARCHIVE_RETRY_QUEUE_URL =
+      "https://sqs.us-east-1.amazonaws.com/123456789012/archive-retry.fifo";
     send.mockResolvedValue({});
   });
 
   afterEach(() => {
     process.env.ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL = originalQueueUrl;
+    process.env.ATTACHMENT_ARCHIVE_RETRY_QUEUE_URL = originalRetryQueueUrl;
     send.mockReset();
   });
 
@@ -79,6 +84,23 @@ describe("attachment archive rebuild queue", () => {
         source: "request",
         sourceScanRetryCount: 2,
       }),
+    });
+  });
+
+  it("sends source-scan retries to the dedicated delayed queue", async () => {
+    const message = {
+      packageId: "MD-1",
+      source: "request" as const,
+      sourceScanRetryCount: 2,
+    };
+
+    await sendAttachmentArchiveRetryRequest(message);
+
+    const command = send.mock.calls[0]?.[0] as { input: Record<string, unknown> };
+    expect(command.input).not.toHaveProperty("DelaySeconds");
+    expect(command.input).toMatchObject({
+      QueueUrl: process.env.ATTACHMENT_ARCHIVE_RETRY_QUEUE_URL,
+      MessageBody: JSON.stringify(message),
     });
   });
 });
