@@ -1085,6 +1085,15 @@ export class Api extends cdk.NestedStack {
         timeoutSeconds: 300,
       },
       {
+        id: "forwardAttachmentArchiveRetries",
+        entry: join(__dirname, "../lambda/forwardAttachmentArchiveRetries.ts"),
+        environment: {
+          ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
+        },
+        role: attachmentArchiveRequestRole,
+        timeoutSeconds: 60,
+      },
+      {
         id: "backfillAttachmentArchives",
         entry: join(__dirname, "../lambda/backfillAttachmentArchives.ts"),
         environment: {
@@ -1236,7 +1245,7 @@ export class Api extends cdk.NestedStack {
         maxConcurrency: 2,
       }),
     );
-    lambdas.rebuildAttachmentArchives.addEventSource(
+    lambdas.forwardAttachmentArchiveRetries.addEventSource(
       new SqsEventSource(attachmentArchiveRetryQueue, {
         batchSize: 1,
         maxConcurrency: 2,

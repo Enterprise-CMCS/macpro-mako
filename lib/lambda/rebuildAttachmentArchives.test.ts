@@ -160,7 +160,7 @@ describe("rebuildAttachmentArchives handler", () => {
     });
   });
 
-  it("requeues source-scan pending rebuilds with bounded backoff", async () => {
+  it("requeues source-scan pending rebuilds on the delayed retry queue", async () => {
     vi.spyOn(packageApi, "getPackageChangelog").mockResolvedValue({
       hits: {
         hits: [],

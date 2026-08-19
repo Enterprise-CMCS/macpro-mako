@@ -46,6 +46,7 @@ import {
   AttachmentArchiveManifestAttachment,
   AttachmentArchiveNamespace,
   AttachmentArchivePackageManifest,
+  AttachmentArchiveRebuildMessage,
   AttachmentArchiveScope,
   AttachmentArchiveSectionManifest,
   AttachmentArchiveSourceAttachment,
@@ -812,8 +813,7 @@ async function ensureArchiveArtifact({
   }
 
   const shouldRecheckSourceScan =
-    resolution.action === "in_progress" &&
-    resolution.current?.pendingReason === "SOURCE_SCAN_PENDING";
+    resolution.action === "in_progress" && resolution.pendingReason === "SOURCE_SCAN_PENDING";
 
   if (resolution.action === "in_progress" && !shouldRecheckSourceScan) {
     return {
@@ -1018,6 +1018,10 @@ export async function getRequestedAttachmentArchiveDownload({
 }): Promise<{
   response: AttachmentArchiveDownloadResponse;
   needsRebuild: boolean;
+  rebuildRequest?: Pick<
+    AttachmentArchiveRebuildMessage,
+    "sourceScanPendingAt" | "sourceScanRetryCount"
+  >;
 }> {
   const artifact = getRequestedArtifact({
     packageId,
@@ -1044,6 +1048,10 @@ export async function getRequestedAttachmentArchiveDownload({
   }
 
   if (resolution.action === "in_progress") {
+    const needsSourceScanRecovery =
+      resolution.pendingReason === "SOURCE_SCAN_PENDING" &&
+      typeof resolution.current?.sourceScanRetryCount !== "number";
+
     return {
       response: {
         status: "PENDING",
@@ -1054,7 +1062,17 @@ export async function getRequestedAttachmentArchiveDownload({
             ? SOURCE_SCAN_PENDING_POLL_AFTER_SECONDS
             : DEFAULT_POLL_AFTER_SECONDS,
       },
-      needsRebuild: resolution.pendingReason === "SOURCE_SCAN_PENDING",
+      needsRebuild: needsSourceScanRecovery,
+      ...(needsSourceScanRecovery
+        ? {
+            rebuildRequest: {
+              ...(resolution.current?.sourceScanPendingAt
+                ? { sourceScanPendingAt: resolution.current.sourceScanPendingAt }
+                : {}),
+              sourceScanRetryCount: 0,
+            },
+          }
+        : {}),
     };
   }
 

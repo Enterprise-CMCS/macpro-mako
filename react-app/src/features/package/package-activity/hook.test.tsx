@@ -129,6 +129,39 @@ describe("useAttachmentService", () => {
     }
   });
 
+  it("ignores a second archive request while polling is already in progress", async () => {
+    vi.useFakeTimers();
+    try {
+      const getAttachmentArchiveSpy = vi
+        .spyOn(api, "getAttachmentArchive")
+        .mockResolvedValueOnce({
+          status: "PENDING",
+          pollAfterSeconds: 1,
+        })
+        .mockResolvedValueOnce({
+          status: "READY",
+          filename: "testPackage - Mon Mar 23 2026.zip",
+          url: "http://example.com/archive.zip",
+        });
+
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
+      });
+
+      const firstRequest = result.current.onArchive({ scope: "all" });
+      const secondRequest = result.current.onArchive({ scope: "all" });
+
+      await expect(secondRequest).resolves.toBeUndefined();
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(1);
+
+      await vi.advanceTimersByTimeAsync(1000);
+      await expect(firstRequest).resolves.toBe("http://example.com/archive.zip");
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(2);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("continues polling source-scan pending archives longer than archive-build pending archives", async () => {
     vi.useFakeTimers();
     try {
@@ -244,6 +277,38 @@ describe("useAttachmentService", () => {
       });
       expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(20);
       expect(consoleErrorSpy).toHaveBeenCalled();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("uses the timeout message after source-scan polling stops", async () => {
+    vi.useFakeTimers();
+    try {
+      vi.spyOn(console, "error").mockImplementation(() => undefined);
+      const getAttachmentArchiveSpy = vi.spyOn(api, "getAttachmentArchive").mockResolvedValue({
+        status: "PENDING",
+        reason: "SOURCE_SCAN_PENDING",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+        pollAfterSeconds: 1,
+      });
+
+      const { result } = renderHook(() => useAttachmentService({ packageId: "testPackage" }), {
+        wrapper,
+      });
+
+      const archivePromise = result.current.onArchive({ scope: "all" });
+      await vi.runAllTimersAsync();
+      await expect(archivePromise).resolves.toBeUndefined();
+
+      vi.useRealTimers();
+      await waitFor(() => {
+        expect(result.current.archiveErrorMessage).toBe(
+          "Attachment archive is taking longer than expected. Please try again in a few moments.",
+        );
+      });
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(60);
     } finally {
       vi.useRealTimers();
     }

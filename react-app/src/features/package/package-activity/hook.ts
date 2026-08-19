@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { opensearch } from "shared-types";
 
 import { getAttachmentArchive, getAttachmentUrl } from "@/api";
@@ -66,6 +66,7 @@ export const useAttachmentService = ({
   const [archiveErrorMessage, setArchiveErrorMessage] = useState<string | undefined>();
   const [archiveWarningMessage, setArchiveWarningMessage] = useState<string | undefined>();
   const [attachmentErrorMessage, setAttachmentErrorMessage] = useState<string | undefined>();
+  const archiveInFlightRef = useRef(false);
 
   const onUrl = async (attachment: Attachments[number]) => {
     setAttachmentErrorMessage(undefined);
@@ -84,6 +85,11 @@ export const useAttachmentService = ({
     scope,
     sectionId,
   }: AttachmentArchiveRequest): Promise<string | undefined> => {
+    if (archiveInFlightRef.current) {
+      return undefined;
+    }
+
+    archiveInFlightRef.current = true;
     setArchiveErrorMessage(undefined);
     setArchiveWarningMessage(undefined);
     setArchiveLoading(true);
@@ -113,7 +119,7 @@ export const useAttachmentService = ({
           sourceScanAttempts += 1;
           setArchiveWarningMessage(response.message || DEFAULT_SOURCE_SCAN_PENDING_MESSAGE);
           if (sourceScanAttempts >= MAX_SOURCE_SCAN_POLL_ATTEMPTS) {
-            throw new Error(response.message || DEFAULT_SOURCE_SCAN_PENDING_MESSAGE);
+            throw new Error(DEFAULT_ARCHIVE_TIMEOUT_MESSAGE);
           }
         } else {
           archiveBuildAttempts += 1;
@@ -130,6 +136,7 @@ export const useAttachmentService = ({
       console.error(archiveError);
       return undefined;
     } finally {
+      archiveInFlightRef.current = false;
       setArchiveLoading(false);
     }
   };
