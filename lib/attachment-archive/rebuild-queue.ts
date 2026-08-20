@@ -26,18 +26,36 @@ export function getAttachmentArchiveRebuildQueueUrl(): string {
   return queueUrl;
 }
 
-export async function sendAttachmentArchiveRebuildRequest(
+export function getAttachmentArchiveRetryQueueUrl(): string {
+  const queueUrl = process.env.ATTACHMENT_ARCHIVE_RETRY_QUEUE_URL;
+  if (!queueUrl) {
+    throw new Error("ATTACHMENT_ARCHIVE_RETRY_QUEUE_URL must be defined");
+  }
+
+  return queueUrl;
+}
+
+async function sendAttachmentArchiveQueueRequest(
+  queueUrl: string,
   message: AttachmentArchiveRebuildMessage,
-  options: { delaySeconds?: number } = {},
 ) {
   await sqsClient.send(
     new SendMessageCommand({
-      QueueUrl: getAttachmentArchiveRebuildQueueUrl(),
+      QueueUrl: queueUrl,
       MessageBody: JSON.stringify(message),
       MessageGroupId: buildAttachmentArchiveMessageGroupId(message.packageId, {
         preferDraft: message.preferDraft,
       }),
-      ...(typeof options.delaySeconds === "number" ? { DelaySeconds: options.delaySeconds } : {}),
     }),
   );
+}
+
+export async function sendAttachmentArchiveRebuildRequest(
+  message: AttachmentArchiveRebuildMessage,
+) {
+  await sendAttachmentArchiveQueueRequest(getAttachmentArchiveRebuildQueueUrl(), message);
+}
+
+export async function sendAttachmentArchiveRetryRequest(message: AttachmentArchiveRebuildMessage) {
+  await sendAttachmentArchiveQueueRequest(getAttachmentArchiveRetryQueueUrl(), message);
 }

@@ -291,6 +291,10 @@ describe("getExternalAttachmentUrl handler", () => {
   it("returns PENDING archive responses and queues a rebuild when needed", async () => {
     getRequestedAttachmentArchiveDownload.mockResolvedValueOnce({
       needsRebuild: true,
+      rebuildRequest: {
+        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+        sourceScanRetryCount: 0,
+      },
       response: {
         status: "PENDING",
         pollAfterSeconds: 3,
@@ -316,6 +320,8 @@ describe("getExternalAttachmentUrl handler", () => {
     expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith({
       packageId: "MD-10-6772",
       latestTimestamp: 25,
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 0,
       source: "request",
     });
     expect(generatePresignedDownloadUrl).not.toHaveBeenCalled();
