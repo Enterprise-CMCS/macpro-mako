@@ -515,6 +515,37 @@ describe("Package Activity", () => {
     });
   });
 
+  it("keeps a visible archive link when the browser blocks the automatic download", async () => {
+    const onArchive = vi.fn(() => Promise.resolve("http://example.com/all.zip"));
+    vi.spyOn(window, "open").mockReturnValue(null);
+
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
+      archiveWarningMessage: undefined,
+      loading: false,
+      onArchive,
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    const user = userEvent.setup();
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={WITHDRAW_APPK_ITEM._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    await user.click(screen.getByText("Download all attachments"));
+
+    const downloadLink = await screen.findByRole("link", {
+      name: "Download the attachment archive",
+    });
+    expect(downloadLink).toHaveAttribute("href", "http://example.com/all.zip");
+  });
+
   it("requests the section archive and opens the returned url", async () => {
     const onArchive = vi.fn(() => Promise.resolve("http://example.com/section.zip"));
     const openSpy = vi.spyOn(window, "open").mockImplementation(vi.fn());
@@ -818,11 +849,48 @@ describe("Package Activity", () => {
       WITHDRAWN_CHANGELOG_ITEM_ID,
     );
 
-    expect(
-      screen.getAllByText(
-        "One or more files are unavailable and were not included as part of the .zip file download.",
-      ).length,
-    ).toBeGreaterThan(0);
+    const warningMessages = screen.getAllByText(
+      "One or more files are unavailable and were not included as part of the .zip file download.",
+    );
+    expect(warningMessages.length).toBeGreaterThan(0);
+    warningMessages.forEach((message) => {
+      expect(message).toHaveAttribute("role", "status");
+      expect(message).toHaveClass("text-gray-700");
+      expect(message).not.toHaveClass("text-red-700");
+    });
+  });
+
+  it("renders active attachment scanning as a status instead of an error", async () => {
+    const pendingMessage =
+      "Attachments are being scanned. Your download will start automatically when scanning is complete.";
+    vi.spyOn(packageActivityHooks, "useAttachmentService").mockImplementation(() => ({
+      attachmentErrorMessage: undefined,
+      archiveErrorMessage: undefined,
+      archiveWarningMessage: pendingMessage,
+      loading: true,
+      onArchive: vi.fn(),
+      onUrl: vi.fn(),
+      error: null,
+    }));
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities
+        id={WITHDRAWN_CHANGELOG_ITEM_ID}
+        changelog={TEST_ITEM_WITH_CHANGELOG._source.changelog}
+      />,
+      WITHDRAWN_CHANGELOG_ITEM_ID,
+    );
+
+    const pendingMessages = screen.getAllByText(pendingMessage);
+    expect(pendingMessages.length).toBeGreaterThan(0);
+    pendingMessages.forEach((message) => {
+      expect(message).toHaveAttribute("role", "status");
+      expect(message).toHaveClass("text-gray-700");
+      expect(message).not.toHaveClass("text-red-700");
+    });
+
+    expect(screen.getByRole("button", { name: "Download all attachments" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Download section attachments" })).toBeDisabled();
   });
 
   it("uses consistent typography for attachment and archive status messages", async () => {

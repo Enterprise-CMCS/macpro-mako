@@ -237,6 +237,51 @@ describe("attachmentArchive-lib", () => {
     });
   });
 
+  it("queues one recovery for legacy source-scan pending state without retry metadata", async () => {
+    getObjectText.mockResolvedValue(
+      JSON.stringify(
+        buildAttachmentArchiveCurrent({
+          scope: "section",
+          hash: manifest.hash,
+          status: "PENDING",
+          artifactKey,
+          manifestKey,
+          attachmentCount: 1,
+          pendingReason: "SOURCE_SCAN_PENDING",
+          pendingMessage:
+            "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+          sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+          sectionId: sectionDescriptor.sectionId,
+          sectionNumber: sectionDescriptor.sectionNumber,
+          sectionLabel: sectionDescriptor.sectionLabel,
+          sectionFolderName: sectionDescriptor.sectionFolderName,
+        }),
+      ),
+    );
+
+    const result = await getRequestedAttachmentArchiveStatus({
+      packageId: "MD-10-6772",
+      scope: "section",
+      sectionId: sectionDescriptor.sectionId,
+      changelog: [],
+    });
+
+    expect(result).toEqual({
+      needsRebuild: true,
+      rebuildRequest: {
+        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+        sourceScanRetryCount: 0,
+      },
+      response: {
+        status: "PENDING",
+        reason: "SOURCE_SCAN_PENDING",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+        pollAfterSeconds: 5,
+      },
+    });
+  });
+
   it("returns source-scan pending details from current archive state", async () => {
     getObjectText.mockResolvedValue(
       JSON.stringify(
@@ -248,7 +293,8 @@ describe("attachmentArchive-lib", () => {
           manifestKey,
           attachmentCount: 1,
           pendingReason: "SOURCE_SCAN_PENDING",
-          pendingMessage: "Attachments are still being scanned. Please try again shortly.",
+          pendingMessage:
+            "Attachments are being scanned. Your download will start automatically when scanning is complete.",
           sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
           sourceScanRetryCount: 2,
           sectionId: sectionDescriptor.sectionId,
@@ -271,7 +317,8 @@ describe("attachmentArchive-lib", () => {
       response: {
         status: "PENDING",
         reason: "SOURCE_SCAN_PENDING",
-        message: "Attachments are still being scanned. Please try again shortly.",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
         pollAfterSeconds: 5,
       },
     });
@@ -623,12 +670,133 @@ describe("attachmentArchive-lib", () => {
         body: expect.objectContaining({
           status: "PENDING",
           pendingReason: "SOURCE_SCAN_PENDING",
-          pendingMessage: "Attachments are still being scanned. Please try again shortly.",
+          pendingMessage:
+            "Attachments are being scanned. Your download will start automatically when scanning is complete.",
           sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
           sourceScanRetryCount: 2,
         }),
       }),
     );
+  });
+
+  it("rechecks source attachments after a source-scan pending rebuild", async () => {
+    const sectionCurrent = buildAttachmentArchiveCurrent({
+      scope: "section",
+      hash: manifest.hash,
+      status: "PENDING",
+      artifactKey,
+      manifestKey,
+      attachmentCount: 1,
+      pendingReason: "SOURCE_SCAN_PENDING",
+      pendingMessage:
+        "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 1,
+      sectionId: sectionDescriptor.sectionId,
+      sectionNumber: sectionDescriptor.sectionNumber,
+      sectionLabel: sectionDescriptor.sectionLabel,
+      sectionFolderName: sectionDescriptor.sectionFolderName,
+    });
+    const packageCurrent = buildAttachmentArchiveCurrent({
+      scope: "all",
+      hash: packageManifest.hash,
+      status: "PENDING",
+      artifactKey: packageArtifactKey,
+      manifestKey: packageManifestKey,
+      attachmentCount: 1,
+      pendingReason: "SOURCE_SCAN_PENDING",
+      pendingMessage:
+        "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 1,
+    });
+    getObjectText.mockImplementation(async ({ key }) =>
+      JSON.stringify(key.includes("/all/") ? packageCurrent : sectionCurrent),
+    );
+    getObjectTags.mockResolvedValue({ virusScanStatus: "CLEAN" });
+    stepFunctionsSpy.mockResolvedValue({} as never);
+
+    const result = await rebuildPackageAttachmentArchives({
+      packageId: "MD-10-6772",
+      changelog: [],
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 2,
+    });
+
+    expect(result).toMatchObject({
+      packageId: "MD-10-6772",
+      packageStatus: "PENDING",
+      sourceScanPending: false,
+      startedArtifactCount: 2,
+      sectionResults: [
+        {
+          sectionId: "section-a",
+          started: true,
+          status: "PENDING",
+        },
+      ],
+    });
+    expect(getObjectTags).toHaveBeenCalled();
+    expect(stepFunctionsSpy).toHaveBeenCalledTimes(2);
+  });
+
+  it("keeps source-scan pending rebuilds queued when source tags are still pending", async () => {
+    const sectionCurrent = buildAttachmentArchiveCurrent({
+      scope: "section",
+      hash: manifest.hash,
+      status: "PENDING",
+      artifactKey,
+      manifestKey,
+      attachmentCount: 1,
+      pendingReason: "SOURCE_SCAN_PENDING",
+      pendingMessage:
+        "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 1,
+      sectionId: sectionDescriptor.sectionId,
+      sectionNumber: sectionDescriptor.sectionNumber,
+      sectionLabel: sectionDescriptor.sectionLabel,
+      sectionFolderName: sectionDescriptor.sectionFolderName,
+    });
+    const packageCurrent = buildAttachmentArchiveCurrent({
+      scope: "all",
+      hash: packageManifest.hash,
+      status: "PENDING",
+      artifactKey: packageArtifactKey,
+      manifestKey: packageManifestKey,
+      attachmentCount: 1,
+      pendingReason: "SOURCE_SCAN_PENDING",
+      pendingMessage:
+        "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 1,
+    });
+    getObjectText.mockImplementation(async ({ key }) =>
+      JSON.stringify(key.includes("/all/") ? packageCurrent : sectionCurrent),
+    );
+    getObjectTags.mockResolvedValue({});
+
+    const result = await rebuildPackageAttachmentArchives({
+      packageId: "MD-10-6772",
+      changelog: [],
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 2,
+    });
+
+    expect(result).toMatchObject({
+      packageId: "MD-10-6772",
+      packageStatus: "PENDING",
+      sourceScanPending: true,
+      startedArtifactCount: 0,
+      sectionResults: [
+        {
+          sectionId: "section-a",
+          started: false,
+          status: "PENDING",
+        },
+      ],
+    });
+    expect(stepFunctionsSpy).not.toHaveBeenCalled();
   });
 
   it("marks rebuilds failed when source attachment scanning reaches a non-clean status", async () => {
