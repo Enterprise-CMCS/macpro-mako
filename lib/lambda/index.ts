@@ -6,6 +6,7 @@ export * as deleteIndex from "./deleteIndex";
 export * as deleteDraft from "./deleteDraft";
 export * as externalAttachmentAuthorizer from "./externalAttachmentAuthorizer";
 export * as externalToken from "./externalToken";
+export * as forwardAttachmentArchiveRetries from "./forwardAttachmentArchiveRetries";
 export * as getAttachmentUrl from "./getAttachmentUrl";
 export * as getAttachmentArchive from "./getAttachmentArchive";
 export * as getCpocs from "./getCpocs";

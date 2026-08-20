@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { opensearch, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/changelog";
 import { formatDateToET, getDraftAttachments, getPackageActivityLabel } from "shared-utils";
@@ -93,6 +93,18 @@ const getDraftPackageActivities = (
 };
 
 const attachmentStatusMessageClassName = "text-sm font-normal text-red-700";
+const attachmentPendingMessageClassName = "text-sm font-normal text-gray-700";
+
+const ArchiveDownloadFallback = ({ url }: { url?: string }) =>
+  url ? (
+    <p role="status" className={attachmentPendingMessageClassName}>
+      Your archive is ready, but the browser did not open it automatically.{" "}
+      <a className="underline" href={url} target="_blank" rel="noreferrer">
+        Download the attachment archive
+      </a>
+      .
+    </p>
+  ) : null;
 
 type AttachmentDetailsProps = {
   id: string;
@@ -154,7 +166,26 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
     preferDraft: packageActivity.isSyntheticDraft,
   });
   const archiveMessage = archiveErrorMessage || archiveWarningMessage;
+  const archiveIsWarning = !archiveErrorMessage && Boolean(archiveWarningMessage);
+  const [archiveDownloadUrl, setArchiveDownloadUrl] = useState<string | undefined>();
   const hasAdditionalInformation = Boolean(additionalInformation?.trim());
+
+  const onDownloadSection = () => {
+    if (loading) {
+      return;
+    }
+
+    setArchiveDownloadUrl(undefined);
+    onArchive({ scope: "section", sectionId: id }).then((url) => {
+      if (url && !window.open(url)) {
+        setArchiveDownloadUrl(url);
+      }
+    });
+    sendGAEvent("section_attachments_download", {
+      number_attachments: attachments.length,
+      package_id: packageId,
+    });
+  };
 
   if (detailMessage && attachments.length === 0 && !hasAdditionalInformation) {
     return <p className="text-gray-700">{detailMessage}</p>;
@@ -196,25 +227,24 @@ const Submission = ({ packageActivity }: SubmissionProps) => {
             variant="outline"
             className="w-max"
             loading={loading}
-            onClick={() => {
-              onArchive({ scope: "section", sectionId: id }).then((url) => {
-                if (url) {
-                  window.open(url);
-                }
-              });
-              sendGAEvent("section_attachments_download", {
-                number_attachments: attachments.length,
-                package_id: packageId,
-              });
-            }}
+            disabled={loading}
+            onClick={onDownloadSection}
           >
             Download section attachments
           </Button>
           {archiveMessage && (
-            <p role="alert" className={attachmentStatusMessageClassName}>
+            <p
+              role={archiveIsWarning ? "status" : "alert"}
+              className={
+                archiveIsWarning
+                  ? attachmentPendingMessageClassName
+                  : attachmentStatusMessageClassName
+              }
+            >
               {archiveMessage}
             </p>
           )}
+          <ArchiveDownloadFallback url={archiveDownloadUrl} />
         </>
       )}
       <div>
@@ -270,19 +300,22 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
     preferDraft,
   });
   const archiveMessage = archiveErrorMessage || archiveWarningMessage;
+  const archiveIsWarning = !archiveErrorMessage && Boolean(archiveWarningMessage);
+  const [archiveDownloadUrl, setArchiveDownloadUrl] = useState<string | undefined>();
 
   if (attachmentsAggregate.length === 0) {
     return null;
   }
 
   const onDownloadAll = () => {
-    if (attachmentsAggregate.length === 0) {
+    if (attachmentsAggregate.length === 0 || loading) {
       return;
     }
 
+    setArchiveDownloadUrl(undefined);
     onArchive({ scope: "all" }).then((url) => {
-      if (url) {
-        window.open(url);
+      if (url && !window.open(url)) {
+        setArchiveDownloadUrl(url);
       }
     });
     sendGAEvent("all_attachments_download", {
@@ -295,6 +328,7 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
     <>
       <Button
         loading={loading}
+        disabled={loading}
         onClick={onDownloadAll}
         variant="outline"
         className="max-w-fit min-h-fit justify-self-end"
@@ -302,10 +336,16 @@ const DownloadAllButton = ({ packageId, packageActivities }: DownloadAllButtonPr
         Download all attachments
       </Button>
       {archiveMessage && (
-        <p role="alert" className={`justify-self-end ${attachmentStatusMessageClassName}`}>
+        <p
+          role={archiveIsWarning ? "status" : "alert"}
+          className={`justify-self-end ${
+            archiveIsWarning ? attachmentPendingMessageClassName : attachmentStatusMessageClassName
+          }`}
+        >
           {archiveMessage}
         </p>
       )}
+      <ArchiveDownloadFallback url={archiveDownloadUrl} />
     </>
   );
 };

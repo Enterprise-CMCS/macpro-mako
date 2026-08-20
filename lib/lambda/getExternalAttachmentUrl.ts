@@ -300,6 +300,7 @@ async function handleArchiveRequest({
       await sendAttachmentArchiveRebuildRequest({
         packageId: request.packageId,
         latestTimestamp: getLatestChangelogTimestamp(changelog),
+        ...archiveResult.rebuildRequest,
         source: "request",
       });
     }
