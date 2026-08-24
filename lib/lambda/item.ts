@@ -68,6 +68,14 @@ export const handler = authenticatedMiddy({
 
     const isActiveMainNonDraft = isActiveMainNonDraftPackage(packageResult);
 
+    // U2 locked: SMART-origin packages stay out of UI lists and package detail.
+    if (packageResult?._source?.origin === "SMART") {
+      return response({
+        statusCode: 404,
+        body: { message: "No record found for the given id" },
+      });
+    }
+
     if (isActiveMainNonDraft) {
       return response({
         statusCode: 200,

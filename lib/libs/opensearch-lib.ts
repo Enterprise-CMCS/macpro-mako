@@ -87,6 +87,91 @@ interface Document {
   [key: string]: any;
 }
 
+export type CreateItemResult = { created: true } | { created: false; reason: "version_conflict" };
+
+const getOpenSearchStatusCode = (error: unknown): number | undefined => {
+  if (error instanceof OpensearchErrors.ResponseError) {
+    return error.statusCode;
+  }
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "statusCode" in error &&
+    typeof error.statusCode === "number"
+  ) {
+    return error.statusCode;
+  }
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "meta" in error &&
+    typeof error.meta === "object" &&
+    error.meta !== null &&
+    "statusCode" in error.meta
+  ) {
+    return error.meta.statusCode as number | undefined;
+  }
+
+  return undefined;
+};
+
+const isVersionConflictError = (error: unknown): boolean => {
+  if (getOpenSearchStatusCode(error) === 409) {
+    return true;
+  }
+
+  if (error && typeof error === "object") {
+    const osType = (error as { meta?: { body?: { error?: { type?: string } } } }).meta?.body?.error
+      ?.type;
+    if (osType === "version_conflict_engine_exception") {
+      return true;
+    }
+  }
+
+  return error instanceof Error && error.message.includes("version_conflict_engine_exception");
+};
+
+export async function updateItem(
+  host: string,
+  index: string,
+  id: string,
+  fields: Record<string, unknown>,
+): Promise<void> {
+  client = client || (await getClient(host));
+  await client.update({
+    index,
+    id,
+    body: { doc: fields },
+    refresh: true,
+  });
+}
+
+export async function createItem(
+  host: string,
+  index: string,
+  document: Document,
+): Promise<CreateItemResult> {
+  client = client || (await getClient(host));
+
+  try {
+    await client.create({
+      index,
+      id: document.id,
+      body: document,
+      refresh: true,
+    });
+    return { created: true };
+  } catch (error) {
+    if (isVersionConflictError(error)) {
+      return { created: false, reason: "version_conflict" };
+    }
+
+    throw error;
+  }
+}
+
 export async function bulkUpdateData(
   host: string,
   index: string,

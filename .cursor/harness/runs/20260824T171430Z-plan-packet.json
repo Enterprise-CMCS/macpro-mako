@@ -1,0 +1,423 @@
+{
+  "goal": "Implement isolated SMART outbound Kafka ingestion on `aws.mulesoft.onemac.events` using a dedicated Lambda and dedicated LATEST event source mapping, plus `MSP_MANUAL_RECORD_CREATED` validation, transformation, hidden ID reservation, and non-mutating collision logging for OY2-40481 and OY2-41233.",
+  "topology": "hierarchical",
+  "source": "jira:OY2-40481",
+  "spec": ".cursor/harness/specs/oy2-40481-smart-outbound-events.md",
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "TDD envelope validation and dispatch",
+      "specialist": "test_author",
+      "depends_on": [],
+      "acceptance_criteria": [
+        "Creates `lib/lambda/sinkSmart.test.ts` using base64 Kafka records from `mocks/helpers/kafka.utils.ts`, without adding SMART cases to CDC sink tests.",
+        "Tests successful base64 decoding when the Kafka key equals `payload.id`.",
+        "Tests that malformed key/value encoding, invalid JSON, and key/id mismatch are logged and skipped without rejecting the batch.",
+        "Tests every required field: `spaWaiverId`, `id`, `correlationId`, `origin`, `authority`, `status`, `createdAt`, `createdByUserId`, `createdByName`, and `createdByEmail`.",
+        "Tests exact `origin: \"SMART\"`; alternate casing and `source` in place of `origin` fail validation.",
+        "Tests extra properties are accepted and remain available after parsing.",
+        "Tests `MSP_MANUAL_RECORD_CREATED` dispatch and unknown or absent `operationType` validation-log-skip behavior without throwing.",
+        "Tests one invalid record does not prevent another valid batch record from being processed.",
+        "Tests the SMART code path does not invoke CDC, changelog, or email processors.",
+        "`./run test --run lib/lambda/sinkSmart.test.ts` is red only because the production implementation is absent."
+      ],
+      "verification_commands": ["./run test --run lib/lambda/sinkSmart.test.ts", "bun run lint"],
+      "risk": "low"
+    },
+    {
+      "id": "T2",
+      "title": "Implement SMART envelope dispatcher",
+      "specialist": "implementer",
+      "depends_on": ["T1"],
+      "acceptance_criteria": [
+        "Adds `lib/lambda/sinkSmart.ts` and validation/dispatch helpers under `lib/lambda/smart/`.",
+        "Decodes Kafka keys and values from base64 before validating or parsing them.",
+        "Requires the locked envelope fields, exact `origin: \"SMART\"`, and key equal to `payload.id`, while permitting extra properties.",
+        "Handles malformed records independently by logging and skipping them rather than poisoning the batch.",
+        "Dispatches only `MSP_MANUAL_RECORD_CREATED`; all other operation types are validated, logged, and skipped without throwing.",
+        "Imports and invokes none of `processEmails`, `sinkChangelog`, `sinkMainProcessors`, or `insertOneMacRecordsFromKafkaIntoMako`.",
+        "`./run test --run lib/lambda/sinkSmart.test.ts`, `bun run lint`, and `bun run test-tsc` exit 0."
+      ],
+      "verification_commands": [
+        "./run test --run lib/lambda/sinkSmart.test.ts",
+        "bun run lint",
+        "bun run test-tsc",
+        "rg -n \"processEmails|sinkChangelog|sinkMainProcessors|insertOneMacRecordsFromKafkaIntoMako\" lib/lambda/sinkSmart.ts lib/lambda/smart"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "T3",
+      "title": "TDD manual-record transformation",
+      "specialist": "test_author",
+      "depends_on": ["T2"],
+      "acceptance_criteria": [
+        "Creates `lib/lambda/smart/mspManualRecordCreated.test.ts` with the documented `AL-26-0817-0001` payload.",
+        "Tests `id`, exact `origin: \"SMART\"`, `authority`, and `deleted: false`.",
+        "Tests the working U1 default `SEATOOL_STATUS.SUBMITTED` and verifies through the real `isActiveMainNonDraftPackage` helper that the reservation blocks reuse.",
+        "Tests state derives from the normalized ID using the existing `id.slice(0, 2)` and uppercase pattern, producing `AL` rather than `Alabama`.",
+        "Tests `createdAt` maps to the main-index ISO timestamp fields identified in the spec and leaves `proposedDate` unset.",
+        "Tests `createdByName` maps to `submitterName` and `createdByEmail` maps to `submitterEmail`.",
+        "Tests `spaWaiverId`, `correlationId`, `operationType`, `creationContext`, and `createdByUserId` are retained.",
+        "Tests the transform is pure and performs no OpenSearch or CloudWatch operation.",
+        "`./run test --run lib/lambda/smart/mspManualRecordCreated.test.ts` is red only because the transform is absent."
+      ],
+      "verification_commands": [
+        "./run test --run lib/lambda/smart/mspManualRecordCreated.test.ts",
+        "bun run lint"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "T4",
+      "title": "Implement manual-record transformation",
+      "specialist": "implementer",
+      "depends_on": ["T3"],
+      "acceptance_criteria": [
+        "Adds a pure transform in `lib/lambda/smart/mspManualRecordCreated.ts` using only mappings supported by the spec evidence.",
+        "Sets `seatoolStatus` to `SEATOOL_STATUS.SUBMITTED` as the working default and includes an inline U1 comment stating that product confirmation is still required.",
+        "Derives `state` with the existing uppercase ID-prefix pattern and includes an inline U8 comment stating that the mapping remains a proposal.",
+        "Does not invent a renamed field for the incoming full state name while U8 remains unresolved.",
+        "Retains the required identifiers and documented event metadata needed by later SMART handlers.",
+        "`./run test --run lib/lambda/smart/mspManualRecordCreated.test.ts`, `bun run lint`, and `bun run test-tsc` exit 0."
+      ],
+      "verification_commands": [
+        "./run test --run lib/lambda/smart/mspManualRecordCreated.test.ts",
+        "bun run lint",
+        "bun run test-tsc"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "T5",
+      "title": "TDD reservation and collision handling",
+      "specialist": "test_author",
+      "depends_on": ["T4"],
+      "acceptance_criteria": [
+        "Creates `lib/lambda/smart/reservePackageId.test.ts` with mocked OpenSearch and CloudWatch Logs clients.",
+        "Tests that a missing main-index `_id` causes exactly one reservation write keyed by the event ID and no collision-log write.",
+        "Tests that any existing main-index document with the same ID, regardless of origin, causes zero OpenSearch mutations.",
+        "Tests collision handling calls `CreateLogStream` before `PutLogEvents` and tolerates `ResourceAlreadyExistsException`.",
+        "Tests the collision event contains `id`, `spaWaiverId`, `correlationId`, `operationType`, existing origin, and incoming payload context.",
+        "Tests log group and stream names come from environment configuration using the U3 proposed defaults.",
+        "Tests CloudWatch logging failures are reported but do not reject the Kafka batch.",
+        "`./run test --run lib/lambda/smart/reservePackageId.test.ts` is red only because the writer and logger are absent."
+      ],
+      "verification_commands": [
+        "./run test --run lib/lambda/smart/reservePackageId.test.ts",
+        "bun run lint"
+      ],
+      "risk": "low"
+    },
+    {
+      "id": "T6",
+      "title": "Implement reservation collision writer",
+      "specialist": "implementer",
+      "depends_on": ["T5"],
+      "acceptance_criteria": [
+        "Adds an exists/get-by-ID reservation writer under `lib/lambda/smart/` targeting the main index.",
+        "On a miss, writes the transformed reservation with `_id` equal to `id`; on a hit, performs no update, bulk upsert, or overwrite.",
+        "Adds `@aws-sdk/client-cloudwatch-logs` to `lib/lambda/package.json` and implements `CreateLogStream` followed by `PutLogEvents`.",
+        "Treats `ResourceAlreadyExistsException` as successful stream initialization.",
+        "Reads collision group and stream names from environment variables with U3-proposal defaults and an inline unresolved-U3 comment.",
+        "Connects `MSP_MANUAL_RECORD_CREATED` dispatch to the transform and reservation writer.",
+        "`./run test --run lib/lambda/smart/reservePackageId.test.ts`, `./run test --run lib/lambda/smart/mspManualRecordCreated.test.ts`, and `./run test --run lib/lambda/sinkSmart.test.ts` exit 0.",
+        "`bun run lint` and `bun run test-tsc` exit 0."
+      ],
+      "verification_commands": [
+        "./run test --run lib/lambda/smart/reservePackageId.test.ts",
+        "./run test --run lib/lambda/smart/mspManualRecordCreated.test.ts",
+        "./run test --run lib/lambda/sinkSmart.test.ts",
+        "bun run lint",
+        "bun run test-tsc"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "T7",
+      "title": "Verify ID blocking and list hiding",
+      "specialist": "test_author",
+      "depends_on": ["T6"],
+      "acceptance_criteria": [
+        "Adds regression coverage to the existing `itemExists`, `checkIdentifierUsage`, and search test suites using a transformed SMART reservation fixture.",
+        "Tests `itemExists` treats the SMART reservation as active and blocks reuse because its `seatoolStatus` is non-draft.",
+        "Tests `checkIdentifierUsage` blocks the same non-deleted SMART ID.",
+        "Tests the existing `origin.keyword` allowlist excludes SMART from package-list search results without adding a hide flag.",
+        "Makes no production changes to `itemExists.ts`, `checkIdentifierUsage.ts`, or `search.ts`; a failure is reported as a U1/default defect.",
+        "All three focused regression suites exit 0."
+      ],
+      "verification_commands": [
+        "./run test --run lib/lambda/itemExists.test.ts",
+        "./run test --run lib/lambda/checkIdentifierUsage.test.ts",
+        "./run test --run lib/lambda/search.test.ts",
+        "git diff --name-only -- lib/lambda/itemExists.ts lib/lambda/checkIdentifierUsage.ts lib/lambda/search.ts",
+        "bun run lint"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "T8",
+      "title": "TDD SMART package-detail hiding",
+      "specialist": "test_author",
+      "depends_on": ["T6"],
+      "acceptance_criteria": [
+        "Adds cases to `lib/lambda/item.test.ts` showing SMART reservation details are not returned to at least one state-user role and one CMS/admin role.",
+        "Adds a control proving an otherwise equivalent `OneMAC` document remains visible.",
+        "Expressly marks this behavior as the U2 planner recommendation rather than a confirmed product decision.",
+        "`./run test --run lib/lambda/item.test.ts` is red only for the new SMART cases."
+      ],
+      "verification_commands": ["./run test --run lib/lambda/item.test.ts", "bun run lint"],
+      "risk": "low"
+    },
+    {
+      "id": "T9",
+      "title": "Implement SMART package-detail hiding",
+      "specialist": "implementer",
+      "depends_on": ["T8"],
+      "acceptance_criteria": [
+        "Updates `lib/lambda/item.ts` so `origin === \"SMART\"` reservations return the existing not-found/denied response instead of package details.",
+        "Leaves non-SMART detail behavior unchanged.",
+        "Includes an inline U2 comment stating that the exclusion is a planner recommendation awaiting product confirmation.",
+        "`./run test --run lib/lambda/item.test.ts`, `./run test --run lib/lambda/search.test.ts`, `bun run lint`, and `bun run test-tsc` exit 0."
+      ],
+      "verification_commands": [
+        "./run test --run lib/lambda/item.test.ts",
+        "./run test --run lib/lambda/search.test.ts",
+        "bun run lint",
+        "bun run test-tsc"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "T10",
+      "title": "TDD dedicated SMART infrastructure",
+      "specialist": "test_author",
+      "depends_on": ["T6"],
+      "acceptance_criteria": [
+        "Creates `lib/stacks/data.smart-events.test.ts` using `Template.fromStack` and the repository's configured stage fixtures.",
+        "Uses `describe.each` or an equivalent loop covering every configured environment that consumes the CDC topic, including every non-production environment.",
+        "Tests creation/consumption of the correctly namespaced `aws.mulesoft.onemac.events` topic wherever CDC is consumed.",
+        "Tests a dedicated SMART Lambda and standalone event source mapping with `StartingPosition: LATEST` and a SMART-only consumer group.",
+        "Tests SMART is absent from CDC, changelog, email, and reindex `createTriggers` mappings.",
+        "Tests a dedicated collision log group and least-privilege `logs:CreateLogStream` and `logs:PutLogEvents` permissions.",
+        "Tests the Lambda receives collision group/stream environment variables and receives no SES permission.",
+        "`./run test --run lib/stacks/data.smart-events.test.ts` is red only for absent SMART infrastructure."
+      ],
+      "verification_commands": [
+        "./run test --run lib/stacks/data.smart-events.test.ts",
+        "bun run lint"
+      ],
+      "risk": "medium"
+    },
+    {
+      "id": "T11",
+      "title": "Implement dedicated SMART infrastructure",
+      "specialist": "implementer",
+      "depends_on": ["T10"],
+      "acceptance_criteria": [
+        "Exports `sinkSmart` from `lib/lambda/index.ts` and creates its dedicated Lambda in `lib/stacks/data.ts`.",
+        "Adds the namespaced SMART topic alongside CDC topic creation and development cleanup wherever those mechanisms apply.",
+        "Adds an email-style standalone `CfnEventSourceMapping` with `LATEST`, isolated from reindex `createTriggers`, CDC, changelog, and email mappings.",
+        "Uses a distinct consumer group ID and documents inline that an offset reset requires recreating the mapping with a new group ID.",
+        "Creates the proposed U3 collision log group, passes group/stream names to the Lambda, and grants scoped CloudWatch Logs permissions.",
+        "Grants the SMART Lambda required OpenSearch access and no SES permissions.",
+        "Makes no behavioral change to `lib/stacks/email.ts`, CDC processors, or existing CDC/changelog mappings.",
+        "`./run test --run lib/stacks/data.smart-events.test.ts`, `bun run lint`, and `bun run test-tsc` exit 0."
+      ],
+      "verification_commands": [
+        "./run test --run lib/stacks/data.smart-events.test.ts",
+        "bun run lint",
+        "bun run test-tsc",
+        "rg -n \"aws.mulesoft.onemac.events|sinkSmart|LATEST\" lib/stacks/data.ts lib/lambda/index.ts",
+        "git diff --stat -- lib/stacks/email.ts"
+      ],
+      "risk": "high"
+    },
+    {
+      "id": "T12",
+      "title": "Register operations and verify slice",
+      "specialist": "implementer",
+      "depends_on": ["T7", "T9", "T11"],
+      "acceptance_criteria": [
+        "Registers the new Lambda in `.github/skills/splunk/references/source-mapping.md` using the existing table format.",
+        "Adds a concise repo-local runbook note explaining that normal deployment starts at LATEST and offset reset requires recreating the mapping with a new consumer group ID.",
+        "The runbook limits `TRIM_HORIZON` or `AT_TIMESTAMP` to deliberate replay and states that reusing a consumer group resumes committed offsets.",
+        "The runbook identifies U1, U2, U3, U8, and U11 as unresolved assumptions requiring confirmation before production rollout.",
+        "Focused SMART Lambda, ID-blocking, search/detail, and stack tests all exit 0.",
+        "`bun run lint` and `bun run test-tsc` exit 0.",
+        "No secrets, credentials, or account IDs are added."
+      ],
+      "verification_commands": [
+        "rg -n \"sinkSmart\" lib/lambda/index.ts .github/skills/splunk/references/source-mapping.md",
+        "rg -n \"consumer group|LATEST|TRIM_HORIZON|AT_TIMESTAMP\" .github lib AGENTS.md",
+        "./run test --run lib/lambda/sinkSmart.test.ts",
+        "./run test --run lib/lambda/smart",
+        "./run test --run lib/lambda/itemExists.test.ts",
+        "./run test --run lib/lambda/checkIdentifierUsage.test.ts",
+        "./run test --run lib/lambda/search.test.ts",
+        "./run test --run lib/lambda/item.test.ts",
+        "./run test --run lib/stacks/data.smart-events.test.ts",
+        "bun run lint",
+        "bun run test-tsc"
+      ],
+      "risk": "medium"
+    }
+  ],
+  "routing": [
+    {
+      "task_id": "T1",
+      "difficulty_score": 4,
+      "confidence": 0.8,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "test_author",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Default test_author tier."
+    },
+    {
+      "task_id": "T2",
+      "difficulty_score": 5,
+      "confidence": 0.75,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "implementer",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Scoped handler; medium risk."
+    },
+    {
+      "task_id": "T3",
+      "difficulty_score": 4,
+      "confidence": 0.8,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "test_author",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Default test_author tier."
+    },
+    {
+      "task_id": "T4",
+      "difficulty_score": 5,
+      "confidence": 0.75,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "implementer",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Pure transform; U1/U8 comments only."
+    },
+    {
+      "task_id": "T5",
+      "difficulty_score": 4,
+      "confidence": 0.8,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "test_author",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Default test_author tier."
+    },
+    {
+      "task_id": "T6",
+      "difficulty_score": 7,
+      "confidence": 0.7,
+      "model_tier": "frontier",
+      "model": "claude-opus-5-thinking-high",
+      "specialist": "implementer",
+      "subagent_type": "generalPurpose",
+      "escalate": true,
+      "reason": "PlanPacket risk=high (OpenSearch write + CloudWatch Logs SDK). Roster frontier slug unavailable; using latest available Claude thinking."
+    },
+    {
+      "task_id": "T7",
+      "difficulty_score": 5,
+      "confidence": 0.75,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "test_author",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Regression tests against existing helpers."
+    },
+    {
+      "task_id": "T8",
+      "difficulty_score": 4,
+      "confidence": 0.8,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "test_author",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Default test_author tier."
+    },
+    {
+      "task_id": "T9",
+      "difficulty_score": 5,
+      "confidence": 0.75,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "implementer",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Small origin filter in item.ts."
+    },
+    {
+      "task_id": "T10",
+      "difficulty_score": 5,
+      "confidence": 0.7,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "test_author",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "CDK test authoring; parallel after T6."
+    },
+    {
+      "task_id": "T11",
+      "difficulty_score": 7,
+      "confidence": 0.7,
+      "model_tier": "frontier",
+      "model": "claude-opus-5-thinking-high",
+      "specialist": "implementer",
+      "subagent_type": "generalPurpose",
+      "escalate": true,
+      "reason": "PlanPacket risk=high (Kafka ESM, IAM, topic create). Roster frontier slug unavailable; using latest available Claude thinking."
+    },
+    {
+      "task_id": "T12",
+      "difficulty_score": 3,
+      "confidence": 0.85,
+      "model_tier": "standard",
+      "model": "gpt-5.6-sol-medium",
+      "specialist": "implementer",
+      "subagent_type": "generalPurpose",
+      "escalate": false,
+      "reason": "Exports, Splunk map, runbook. Standard implementer is enough."
+    }
+  ],
+  "assumptions": [
+    "U1 UNRESOLVED: use `SEATOOL_STATUS.SUBMITTED` as the working implementation default because it is non-draft and maps to CMS `Submitted - Intake Needed`; retain an inline U1 comment and confirm before deployment.",
+    "U2 UNRESOLVED: hiding SMART reservations from `lib/lambda/item.ts` detail responses is a planner recommendation. Existing list hiding in `lib/lambda/search.ts` is already confirmed.",
+    "U3 UNRESOLVED: use environment-driven defaults `/aws/mako/${stage}/smart-onemac-collisions` and `msp-manual-record-created`; retention and final operational names remain unconfirmed.",
+    "U8 UNRESOLVED: derive the indexed two-letter state from the uppercased package ID with the existing `id.slice(0, 2)` pattern; do not invent a renamed field for the full SMART state while this remains open.",
+    "U11 UNRESOLVED: use an email-style standalone `CfnEventSourceMapping` at LATEST and exclude SMART from reindex `createTriggers`; this is the preferred implementation, not a confirmed product decision.",
+    "Unknown operation types are validated, logged, and skipped. They are not persisted outside Kafka in this slice.",
+    "`createdAt` supplies the documented ISO timestamp fields and `proposedDate` remains unset.",
+    "`spaWaiverId` is retained pending OY2-39746 and may be renamed by that later schema work.",
+    "The accepted exists-then-write reservation flow has a race window; atomic `op_type=create` hardening is deferred.",
+    "A verifier running `./run install` may dirty `bun.lockb`; unrelated lockfile churn must not be staged.",
+    "The pre-push hook runs ESLint and detect-secrets."
+  ],
+  "out_of_scope": [
+    "Handlers for `MSP_ADMINISTRATIVE_FIELD_UPDATED`, `MSP_STATUS_UPDATED`, `MSP_SPLIT_SPA_CREATED`, `MSP_RAI_WITHDRAWAL_TOGGLED`, `MSP_ASSIGNMENT_UPDATED`, or any other operation type.",
+    "Changes to SMART or MuleSoft producers.",
+    "Routing SMART events through CDC, changelog, migration, or email processors.",
+    "Showing SMART reservations as submissions in package lists or detail workflows.",
+    "Mutating or merging fields into an existing document when a collision occurs.",
+    "Completing OY2-39746 beyond retaining `spaWaiverId`.",
+    "Persisting unknown operation types to another index or dead-letter store.",
+    "Deploying infrastructure, resetting real Kafka offsets, committing, pushing, or opening a pull request."
+  ]
+}
