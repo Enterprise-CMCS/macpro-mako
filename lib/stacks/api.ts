@@ -9,7 +9,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
-import { awsLambdaFunctionName } from "../config/lambda-function-name";
+import { awsLambdaFunctionName, awsS3AccountBucketName } from "../config/lambda-function-name";
 import {
   getArchiveBaseReadBucket,
   getArchiveOverlayPrefix,
@@ -123,7 +123,10 @@ export class Api extends cdk.NestedStack {
     const managedArchiveBucket = usesSharedArchiveOverlay
       ? undefined
       : new Bucket(this, "AttachmentArchiveBucket", {
-          bucketName: `${project}-${stage}-attachment-archives-${this.account}`,
+          bucketName: awsS3AccountBucketName(
+            `${project}-${stage}-attachment-archives`,
+            this.account,
+          ),
           versioned: true,
           encryption: BucketEncryption.S3_MANAGED,
           blockPublicAccess: BlockPublicAccess.BLOCK_ALL,

@@ -1,6 +1,19 @@
 import { createHash } from "crypto";
 
 export const AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH = 64;
+export const AWS_S3_BUCKET_NAME_MAX_LENGTH = 63;
+export const AWS_ACCOUNT_ID_LENGTH = 12;
+export const AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH = 64;
+
+export function truncateAwsName(name: string, maxLength: number): string {
+  if (name.length <= maxLength) {
+    return name;
+  }
+
+  const hash = createHash("sha256").update(name).digest("hex").slice(0, 8);
+  const suffix = `-${hash}`;
+  return `${name.slice(0, maxLength - suffix.length)}${suffix}`;
+}
 
 export function awsLambdaFunctionName(
   project: string,
@@ -8,12 +21,10 @@ export function awsLambdaFunctionName(
   stack: string,
   id: string,
 ): string {
-  const fullName = `${project}-${stage}-${stack}-${id}`;
-  if (fullName.length <= AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH) {
-    return fullName;
-  }
+  return truncateAwsName(`${project}-${stage}-${stack}-${id}`, AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH);
+}
 
-  const hash = createHash("sha256").update(fullName).digest("hex").slice(0, 8);
-  const suffix = `-${hash}`;
-  return `${fullName.slice(0, AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH - suffix.length)}${suffix}`;
+export function awsS3AccountBucketName(prefix: string, accountId: string): string {
+  const maxPrefix = AWS_S3_BUCKET_NAME_MAX_LENGTH - 1 - AWS_ACCOUNT_ID_LENGTH;
+  return `${truncateAwsName(prefix, maxPrefix)}-${accountId}`;
 }

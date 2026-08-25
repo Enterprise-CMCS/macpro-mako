@@ -6,7 +6,11 @@ import { DeploymentConfigProperties } from "lib/config/deployment-config";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
-import { awsLambdaFunctionName } from "../config/lambda-function-name";
+import {
+  AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH,
+  awsLambdaFunctionName,
+  truncateAwsName,
+} from "../config/lambda-function-name";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -77,9 +81,14 @@ export class Email extends cdk.NestedStack {
       throw new Error("Invalid broker string format");
     }
 
+    const configurationSetName = truncateAwsName(
+      `${project}-${stage}-${stack}-email-configuration-set`,
+      AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH,
+    );
+
     // SES Configuration Set
     new cdk.aws_ses.CfnConfigurationSet(this, "ConfigurationSet", {
-      name: `${project}-${stage}-${stack}-email-configuration-set`,
+      name: configurationSetName,
       reputationOptions: {
         reputationMetricsEnabled: true,
       },
@@ -195,7 +204,7 @@ export class Email extends cdk.NestedStack {
       securityGroups: [lambdaSecurityGroup],
       environment: {
         region: cdk.Stack.of(this).region,
-        configurationSetName: `${project}-${stage}-${stack}-email-configuration-set`,
+        configurationSetName,
         stage,
         isDev: isDev.toString(),
         indexNamespace,

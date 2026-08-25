@@ -1,6 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH, awsLambdaFunctionName } from "./lambda-function-name";
+import {
+  AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH,
+  AWS_S3_BUCKET_NAME_MAX_LENGTH,
+  AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH,
+  awsLambdaFunctionName,
+  awsS3AccountBucketName,
+  truncateAwsName,
+} from "./lambda-function-name";
 
 describe("awsLambdaFunctionName", () => {
   it("keeps short names unchanged so existing stages stay stable", () => {
@@ -40,5 +47,35 @@ describe("awsLambdaFunctionName", () => {
     expect(left).not.toBe(right);
     expect(left.length).toBeLessThanOrEqual(AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH);
     expect(right.length).toBeLessThanOrEqual(AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH);
+  });
+});
+
+describe("awsS3AccountBucketName", () => {
+  it("keeps short account-suffixed bucket names unchanged", () => {
+    expect(awsS3AccountBucketName("mako-val-cloudfront-logs", "123456789012")).toBe(
+      "mako-val-cloudfront-logs-123456789012",
+    );
+  });
+
+  it("truncates long CloudFront log bucket prefixes to the S3 limit", () => {
+    const name = awsS3AccountBucketName(
+      "mako-oy2-40481-smart-outbound-events-cloudfront-logs",
+      "635052997545",
+    );
+
+    expect(name.length).toBeLessThanOrEqual(AWS_S3_BUCKET_NAME_MAX_LENGTH);
+    expect(name.endsWith("-635052997545")).toBe(true);
+    expect(name).not.toBe("mako-oy2-40481-smart-outbound-events-cloudfront-logs-635052997545");
+  });
+});
+
+describe("truncateAwsName", () => {
+  it("truncates SES configuration set names to 64 characters", () => {
+    const name = truncateAwsName(
+      "mako-oy2-40481-smart-outbound-events-email-email-configuration-set",
+      AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH,
+    );
+
+    expect(name.length).toBe(AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH);
   });
 });
