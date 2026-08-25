@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { isActiveMainNonDraftPackage } from "libs/api/package/packageStatus";
-import { SEATOOL_STATUS } from "shared-types";
+import { getStatus, SEATOOL_STATUS } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 import { describe, expect, it } from "vitest";
 
@@ -27,8 +27,10 @@ const event = Object.freeze({
   initialSubmissionDate: "2026-08-17",
 } satisfies SmartOnemacEvent);
 
+const { cmsStatus, stateStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
+
 describe("transformMspManualRecordCreated", () => {
-  it("creates a SMART main-index reservation with retained event identifiers", () => {
+  it("creates a OneMAC-shaped SMART main-index reservation", () => {
     const transformed = transformMspManualRecordCreated(event);
 
     expect(transformed).toMatchObject({
@@ -37,6 +39,9 @@ describe("transformMspManualRecordCreated", () => {
       authority: "Medicaid SPA",
       deleted: false,
       seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+      cmsStatus,
+      stateStatus,
+      initialIntakeNeeded: true,
       spaWaiverId: "a0ncp000006Wdh7AAC",
       correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
       operationType: "MSP_MANUAL_RECORD_CREATED",
@@ -66,7 +71,22 @@ describe("transformMspManualRecordCreated", () => {
       state: "AL",
     });
     expect(transformed?.state).not.toBe(event.state);
-    expect(transformed?.proposedDate).toBeUndefined();
+    expect(transformed).not.toHaveProperty("proposedDate");
+  });
+
+  it("defaults submitter fields to empty strings when Kafka omits them", () => {
+    const transformed = transformMspManualRecordCreated({
+      ...event,
+      createdByName: undefined,
+      createdByEmail: undefined,
+      createdByUserId: undefined,
+    });
+
+    expect(transformed).toMatchObject({
+      submitterName: "",
+      submitterEmail: "",
+    });
+    expect(transformed).not.toHaveProperty("createdByUserId");
   });
 
   it("requires the ID prefix to be a known two-letter state code", () => {

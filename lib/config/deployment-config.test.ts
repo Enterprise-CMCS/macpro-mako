@@ -34,6 +34,8 @@ describe("DeploymentConfig", () => {
     idmEnable: "true",
     idmHomeUrl: "idmHomeUrl",
     legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+    bigmacErrorQueueUrl: "https://sqs.us-east-1.amazonaws.com/123456789012/bigmac-master-queue",
+    bigmacErrorQueueArn: "arn:aws:sqs:us-east-1:123456789012:bigmac-master-queue",
     useSharedOpenSearch: "true",
     vpcName: "vpcName",
     iamPath: "/my/path/",
@@ -102,6 +104,8 @@ describe("DeploymentConfig", () => {
       idmEnable: true, // Converted to boolean
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      bigmacErrorQueueUrl: "https://sqs.us-east-1.amazonaws.com/123456789012/bigmac-master-queue",
+      bigmacErrorQueueArn: "arn:aws:sqs:us-east-1:123456789012:bigmac-master-queue",
       externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true, // Converted to boolean
       vpcName: "vpcName",
@@ -170,6 +174,8 @@ describe("DeploymentConfig", () => {
       idmEnable: true,
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      bigmacErrorQueueUrl: "https://sqs.us-east-1.amazonaws.com/123456789012/bigmac-master-queue",
+      bigmacErrorQueueArn: "arn:aws:sqs:us-east-1:123456789012:bigmac-master-queue",
       externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true,
       vpcName: "vpcName",

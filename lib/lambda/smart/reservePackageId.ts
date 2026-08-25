@@ -6,46 +6,26 @@ import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 
 type SmartReservationDocument = NonNullable<ReturnType<typeof transformMspManualRecordCreated>>;
 
-const getMissingSmartIdentityFields = (
-  existingPackage: Awaited<ReturnType<typeof os.getItem>>,
-  incomingEvent: SmartOnemacEvent,
-): Partial<{ correlationId: string; spaWaiverId: string }> => {
-  const existing = existingPackage?._source;
-  const fields: Partial<{ correlationId: string; spaWaiverId: string }> = {};
+const smartIdentityFields = (incomingEvent: SmartOnemacEvent) => ({
+  spaWaiverId: incomingEvent.spaWaiverId,
+  correlationId: incomingEvent.correlationId,
+});
 
-  if (!existing?.correlationId) {
-    fields.correlationId = incomingEvent.correlationId;
-  }
-
-  if (!existing?.spaWaiverId) {
-    fields.spaWaiverId = incomingEvent.spaWaiverId;
-  }
-
-  return fields;
-};
-
-const mergeMissingSmartIdentityFields = async (
+const overwriteSmartIdentityFields = async (
   domain: string,
   index: string,
-  document: SmartReservationDocument,
+  documentId: string,
   incomingEvent: SmartOnemacEvent,
-  existingPackage: Awaited<ReturnType<typeof os.getItem>>,
 ): Promise<void> => {
-  const missingFields = getMissingSmartIdentityFields(existingPackage, incomingEvent);
-
-  if (Object.keys(missingFields).length === 0) {
-    return;
-  }
-
-  await os.updateItem(domain, index, document.id, missingFields);
+  await os.updateItem(domain, index, documentId, smartIdentityFields(incomingEvent));
 };
 
 /**
  * Reserves a package ID in the main index so OneMAC cannot reuse it.
  *
  * The OpenSearch `_id` is the business `id`, so any existing document is a collision
- * regardless of its origin. Collisions add only missing `correlationId` and `spaWaiverId`
- * values. Status, origin, and every other existing field stay unchanged.
+ * regardless of its origin. Collisions always overwrite `spaWaiverId` and `correlationId`.
+ * Status, origin, submitter, and every other existing field stay unchanged.
  */
 export const reservePackageId = async (
   document: SmartReservationDocument,
@@ -55,7 +35,7 @@ export const reservePackageId = async (
   const existingPackage = await os.getItem(domain, index, document.id);
 
   if (existingPackage) {
-    await mergeMissingSmartIdentityFields(domain, index, document, incomingEvent, existingPackage);
+    await overwriteSmartIdentityFields(domain, index, document.id, incomingEvent);
     return;
   }
 
@@ -64,6 +44,5 @@ export const reservePackageId = async (
     return;
   }
 
-  const racedPackage = await os.getItem(domain, index, document.id);
-  await mergeMissingSmartIdentityFields(domain, index, document, incomingEvent, racedPackage);
+  await overwriteSmartIdentityFields(domain, index, document.id, incomingEvent);
 };

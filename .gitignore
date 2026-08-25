@@ -37,7 +37,6 @@ graphify-out/cache/
 graphify-out/manifest.json
 graphify-out/cost.json
 .cursor/*
-!.cursor/harness/
 /graphify-out/.graphify_detect.json
 .codex/
 .agents.md

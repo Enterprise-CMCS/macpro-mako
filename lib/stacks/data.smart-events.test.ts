@@ -24,7 +24,20 @@ const STAGE_FIXTURES: StageFixture[] = [
 ];
 
 const BROKER_STRING = "broker-one.example.com:9092,broker-two.example.com:9092";
+const BIGMAC_ACCOUNT_ID = "999888777666";
 const templates = new Map<string, Template>();
+
+function getBigmacQueueFixture(stage: string): {
+  bigmacErrorQueueUrl: string;
+  bigmacErrorQueueArn: string;
+} {
+  const bigmacStage = stage === "val" || stage === "production" ? stage : "master";
+
+  return {
+    bigmacErrorQueueUrl: `https://sqs.us-east-1.amazonaws.com/${BIGMAC_ACCOUNT_ID}/bigmac-${bigmacStage}-queue`,
+    bigmacErrorQueueArn: `arn:aws:sqs:us-east-1:${BIGMAC_ACCOUNT_ID}:bigmac-${bigmacStage}-queue`,
+  };
+}
 
 function buildDataTemplate({ stage, isDev }: StageFixture): Template {
   const cachedTemplate = templates.get(stage);
@@ -69,6 +82,7 @@ function buildDataTemplate({ stage, isDev }: StageFixture): Template {
     devPasswordArn: "arn:aws:secretsmanager:us-east-1:123456789012:secret:mako-test-password",
     sharedOpenSearchDomainArn: "arn:aws:es:us-east-1:123456789012:domain/mako-shared-opensearch",
     sharedOpenSearchDomainEndpoint: "search-mako-shared-opensearch.us-east-1.es.amazonaws.com",
+    ...getBigmacQueueFixture(stage),
   });
   const template = Template.fromStack(dataStack);
 
@@ -220,6 +234,37 @@ describe.each(STAGE_FIXTURES)("Data SMART events infrastructure for $stage", ({ 
         statements,
       }).toLowerCase(),
     ).not.toContain("ses:");
+  });
+
+  it("resolves the BigMAC primary error queue URL from deploy secrets and grants sinkSmart SendMessage", () => {
+    const template = buildDataTemplate({ stage, isDev });
+    const [, smartLambda] = getSmartLambda(template, stage);
+    const environment = smartLambda.Properties?.Environment as {
+      Variables?: Record<string, unknown>;
+    };
+    const roleLogicalId = getRoleLogicalId(smartLambda);
+    const statements = getRolePolicyStatements(template, roleLogicalId);
+    const serializedTemplate = JSON.stringify(template.toJSON());
+    const { bigmacErrorQueueUrl, bigmacErrorQueueArn } = getBigmacQueueFixture(stage);
+
+    expect(environment?.Variables?.BIGMAC_ERROR_QUEUE_URL).toBe(bigmacErrorQueueUrl);
+    expect(serializedTemplate).toContain(bigmacErrorQueueArn);
+    expect(serializedTemplate).not.toMatch(/bigmac-.*-dlq/);
+    expect(JSON.stringify(environment?.Variables)).not.toMatch(/dlq/i);
+    expect(serializedTemplate).not.toContain("Fn::ImportValue");
+
+    const sendMessageStatement = statements.find((statement) => {
+      const actions = (statement as { Action?: string | string[] }).Action;
+      const actionList = Array.isArray(actions) ? actions : [actions];
+      const resources = JSON.stringify((statement as { Resource?: unknown }).Resource ?? "");
+      return (
+        actionList.includes("sqs:SendMessage") &&
+        resources.includes(bigmacErrorQueueArn) &&
+        !resources.toLowerCase().includes("dlq")
+      );
+    });
+
+    expect(sendMessageStatement, "sqs:SendMessage on the BigMAC primary queue").toBeDefined();
   });
 
   it("grants sinkSmart the VPC ENI managed policies required to create the function", () => {

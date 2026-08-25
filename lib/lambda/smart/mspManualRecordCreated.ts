@@ -1,26 +1,36 @@
-import { SEATOOL_STATUS, STATE_CODES, type StateCode } from "shared-types";
+import { getStatus, SEATOOL_STATUS, STATE_CODES, type StateCode } from "shared-types";
 
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 
-interface MspManualRecordCreated {
+const EMPTY_DISPLAY_TEXT = "";
+
+const isNonEmptyString = (value: unknown): value is string =>
+  typeof value === "string" && value.trim().length > 0;
+
+/**
+ * OneMAC-shaped main-index document for a new SMART package reservation.
+ */
+export interface MspManualRecordCreated {
   id: string;
   origin: "SMART";
-  authority: string;
   deleted: false;
   seatoolStatus: typeof SEATOOL_STATUS.SUBMITTED;
+  cmsStatus: string;
+  stateStatus: string;
   state: StateCode;
+  authority: string;
+  submitterName: string;
+  submitterEmail: string;
   submissionDate: string;
   makoChangedDate: string;
   changedDate: string;
   statusDate: string;
-  submitterName: string;
-  submitterEmail: string;
   spaWaiverId: string;
   correlationId: string;
-  operationType: unknown;
-  creationContext: unknown;
-  createdByUserId: string;
-  proposedDate?: string;
+  initialIntakeNeeded: true;
+  operationType?: string;
+  creationContext?: string;
+  createdByUserId?: string;
 }
 
 export const getStateFromPackageId = (id: string): StateCode | undefined => {
@@ -38,25 +48,31 @@ export const transformMspManualRecordCreated = (
     return undefined;
   }
 
+  const { cmsStatus, stateStatus } = getStatus(SEATOOL_STATUS.SUBMITTED);
+  const createdAt = event.createdAt;
+
   return {
     id: normalizedId,
-    origin: "SMART" as const,
-    authority: event.authority,
+    origin: "SMART",
     deleted: false,
-    // U1 locked: do not remap SMART status onto a different OneMAC status in this slice.
     seatoolStatus: SEATOOL_STATUS.SUBMITTED,
-    // U8 locked: two-letter state comes from the uppercased ID prefix and must be a known code.
+    cmsStatus,
+    stateStatus,
     state,
-    submissionDate: event.createdAt,
-    makoChangedDate: event.createdAt,
-    changedDate: event.createdAt,
-    statusDate: event.createdAt,
-    submitterName: event.createdByName,
-    submitterEmail: event.createdByEmail,
+    authority: event.authority,
+    submissionDate: createdAt,
+    makoChangedDate: createdAt,
+    changedDate: createdAt,
+    statusDate: createdAt,
+    submitterName: isNonEmptyString(event.createdByName) ? event.createdByName : EMPTY_DISPLAY_TEXT,
+    submitterEmail: isNonEmptyString(event.createdByEmail)
+      ? event.createdByEmail
+      : EMPTY_DISPLAY_TEXT,
     spaWaiverId: event.spaWaiverId,
     correlationId: event.correlationId,
-    operationType: event.operationType,
-    creationContext: event.creationContext,
-    createdByUserId: event.createdByUserId,
+    initialIntakeNeeded: true,
+    ...(isNonEmptyString(event.operationType) ? { operationType: event.operationType } : {}),
+    ...(isNonEmptyString(event.creationContext) ? { creationContext: event.creationContext } : {}),
+    ...(isNonEmptyString(event.createdByUserId) ? { createdByUserId: event.createdByUserId } : {}),
   };
 };

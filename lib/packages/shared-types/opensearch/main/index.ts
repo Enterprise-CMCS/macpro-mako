@@ -94,6 +94,7 @@ export type Document = AppkDocument &
     event?: string;
     correlationId?: string;
     spaWaiverId?: string;
+    createdByUserId?: string;
     draft?: {
       savedAt: string;
       createdAt?: string;

@@ -71,7 +71,7 @@ describe("reservePackageId", () => {
   });
 
   it.each(["OneMAC", "SEATool"])(
-    "adds only missing SMART identity fields when a package from %s already uses the ID",
+    "always overwrites SMART identity fields when a package from %s already uses the ID",
     async (existingOrigin) => {
       getItemSpy.mockResolvedValueOnce({
         found: true,
@@ -97,10 +97,11 @@ describe("reservePackageId", () => {
       expect(updateItemSpy.mock.calls[0][3]).toEqual(smartIdentityFields);
       expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("origin");
       expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("seatoolStatus");
+      expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("createdByUserId");
     },
   );
 
-  it("does not overwrite identity fields that already exist on the package", async () => {
+  it("overwrites identity fields that already exist on the package", async () => {
     getItemSpy.mockResolvedValueOnce({
       found: true,
       _id: incomingEvent.id,
@@ -115,43 +116,19 @@ describe("reservePackageId", () => {
 
     await reservePackageId(reservationDocument, incomingEvent);
 
-    expect(updateItemSpy).not.toHaveBeenCalled();
-    expect(createItemSpy).not.toHaveBeenCalled();
-    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
-  });
-
-  it("adds only the identity field that is missing", async () => {
-    getItemSpy.mockResolvedValueOnce({
-      found: true,
-      _id: incomingEvent.id,
-      _source: {
-        id: incomingEvent.id,
-        origin: "OneMAC",
-        spaWaiverId: "existing-spa-waiver",
-      },
-    } as Awaited<ReturnType<typeof os.getItem>>);
-
-    await reservePackageId(reservationDocument, incomingEvent);
-
     expect(updateItemSpy).toHaveBeenCalledOnce();
     expect(updateItemSpy).toHaveBeenCalledWith(
       "https://search.example.test",
       "test-main",
       incomingEvent.id,
-      { correlationId: incomingEvent.correlationId },
+      smartIdentityFields,
     );
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 
-  it("merges missing identity fields when create reports a version conflict", async () => {
+  it("overwrites identity fields when create reports a version conflict", async () => {
     createItemSpy.mockResolvedValueOnce({ created: false, reason: "version_conflict" });
-    getItemSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
-      found: true,
-      _id: incomingEvent.id,
-      _source: {
-        id: incomingEvent.id,
-        origin: "OneMAC",
-      },
-    } as Awaited<ReturnType<typeof os.getItem>>);
 
     await reservePackageId(reservationDocument, incomingEvent);
 
@@ -174,7 +151,7 @@ describe("reservePackageId", () => {
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 
-  it("rethrows identity-field merge failures on an existing package", async () => {
+  it("rethrows identity-field overwrite failures on an existing package", async () => {
     const outage = new Error("OpenSearch update failed");
     getItemSpy.mockResolvedValueOnce({
       found: true,

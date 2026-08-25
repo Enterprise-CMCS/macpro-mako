@@ -47,6 +47,7 @@ describe("handler", () => {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
         correlationId: { type: "keyword" },
+        createdByUserId: { type: "keyword" },
         deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },

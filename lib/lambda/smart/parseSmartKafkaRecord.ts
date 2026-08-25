@@ -1,6 +1,8 @@
 import { ErrorType, logError } from "libs/sink-lib";
 import { KafkaRecord } from "shared-types";
 
+import type { SmartIngestFailure } from "./publishSmartIngestError";
+
 const decodeBase64 = (encodedValue: string): string => {
   const unpaddedValue = encodedValue.replace(/=+$/, "");
   const hasValidCharacters = /^[A-Za-z0-9+/]*={0,2}$/.test(encodedValue);
@@ -19,23 +21,37 @@ const decodeBase64 = (encodedValue: string): string => {
   return decodedValue.toString("utf8");
 };
 
-export const parseSmartKafkaRecord = (
+export type SmartKafkaRecordParseResult =
+  | { success: true; data: Record<string, unknown>; kafkaKey: string }
+  | { success: false; failure: Omit<SmartIngestFailure, "topicPartition"> };
+
+export const interpretSmartKafkaRecord = (
   kafkaRecord: KafkaRecord,
   topicPartition: string,
-): Record<string, unknown> | undefined => {
+): SmartKafkaRecordParseResult => {
+  let key: string | undefined;
+  let payload: string | undefined;
   let record: unknown;
-  let key: string;
 
   try {
     key = decodeBase64(kafkaRecord.key);
-    record = JSON.parse(decodeBase64(kafkaRecord.value));
+    payload = decodeBase64(kafkaRecord.value);
+    record = JSON.parse(payload);
   } catch (error) {
     logError({
       type: ErrorType.BADPARSE,
       error,
       metadata: { topicPartition, kafkaRecord },
     });
-    return undefined;
+    return {
+      success: false,
+      failure: {
+        errorCode: "BADPARSE",
+        error,
+        kafkaKey: key,
+        payload,
+      },
+    };
   }
 
   if (
@@ -48,8 +64,27 @@ export const parseSmartKafkaRecord = (
       type: ErrorType.VALIDATION,
       metadata: { topicPartition, kafkaRecord, record },
     });
-    return undefined;
+    return {
+      success: false,
+      failure: {
+        errorCode: "VALIDATION",
+        kafkaKey: key,
+        payload: record,
+      },
+    };
   }
 
-  return record as Record<string, unknown>;
+  return {
+    success: true,
+    data: record as Record<string, unknown>,
+    kafkaKey: key,
+  };
+};
+
+export const parseSmartKafkaRecord = (
+  kafkaRecord: KafkaRecord,
+  topicPartition: string,
+): Record<string, unknown> | undefined => {
+  const result = interpretSmartKafkaRecord(kafkaRecord, topicPartition);
+  return result.success ? result.data : undefined;
 };

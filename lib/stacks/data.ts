@@ -24,6 +24,8 @@ interface DataStackProps extends cdk.NestedStackProps {
   sharedOpenSearchDomainEndpoint: string;
   sharedOpenSearchDomainArn: string;
   devPasswordArn: string;
+  bigmacErrorQueueUrl: string;
+  bigmacErrorQueueArn: string;
 }
 
 export class Data extends cdk.NestedStack {
@@ -57,6 +59,8 @@ export class Data extends cdk.NestedStack {
       sharedOpenSearchDomainEndpoint,
       sharedOpenSearchDomainArn,
       devPasswordArn,
+      bigmacErrorQueueUrl,
+      bigmacErrorQueueArn,
     } = props;
     const consumerGroupPrefix = `--${project}--${stage}--`;
     const smartOnemacTopic = `${topicNamespace}aws.mulesoft.onemac.events`;
@@ -499,6 +503,9 @@ export class Data extends cdk.NestedStack {
 
     attachmentArchiveRebuildQueue.grantSendMessages(sharedLambdaRole);
 
+    // BigMAC queue URL/ARN come from mako-default / mako-{stage} secrets (cross-account).
+    // OneMAC val/production map to matching BigMAC stages; other stages use bigmac-master-queue.
+
     // sinkSmart gets its own role instead of sharedLambdaRole: it must never hold SES
     // permissions. Collision handling only writes missing identity fields to OpenSearch.
     const sinkSmartRole = new cdk.aws_iam.Role(this, "SinkSmartExecutionRole", {
@@ -547,6 +554,11 @@ export class Data extends cdk.NestedStack {
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["sqs:SendMessage"],
+              resources: [bigmacErrorQueueArn],
+            }),
           ],
         }),
       },
@@ -560,6 +572,7 @@ export class Data extends cdk.NestedStack {
         osDomain: `https://${openSearchDomainEndpoint}`,
         indexNamespace,
         stage,
+        BIGMAC_ERROR_QUEUE_URL: bigmacErrorQueueUrl,
       },
     });
 
