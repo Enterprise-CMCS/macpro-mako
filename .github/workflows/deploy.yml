@@ -85,6 +85,34 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
 
+      - name: Remove leftover unused Lambda security group
+        run: |
+          SG_NAME="${PROJECT}-${STAGE_NAME}-lambda-sg"
+          GROUP_IDS=$(aws ec2 describe-security-groups \
+            --filters "Name=group-name,Values=${SG_NAME}" \
+            --query "SecurityGroups[].GroupId" \
+            --output text)
+
+          if [[ -z "${GROUP_IDS}" || "${GROUP_IDS}" == "None" ]]; then
+            echo "No leftover security group named ${SG_NAME}"
+            exit 0
+          fi
+
+          for group_id in ${GROUP_IDS}; do
+            IN_USE=$(aws ec2 describe-network-interfaces \
+              --filters "Name=group-id,Values=${group_id}" \
+              --query "NetworkInterfaces[].NetworkInterfaceId" \
+              --output text)
+
+            if [[ -n "${IN_USE}" && "${IN_USE}" != "None" ]]; then
+              echo "Security group ${group_id} (${SG_NAME}) is still attached to ENIs; leaving it in place"
+              continue
+            fi
+
+            echo "Deleting unused leftover security group ${group_id} (${SG_NAME})"
+            aws ec2 delete-security-group --group-id "${group_id}"
+          done
+
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
 

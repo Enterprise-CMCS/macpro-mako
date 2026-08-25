@@ -18,7 +18,7 @@ export class Networking extends cdk.NestedStack {
   }
 
   private initializeResources(props: NetworkingStackProps): cdk.aws_ec2.SecurityGroup {
-    const { project, stage, vpc } = props;
+    const { project, stage, vpc, isDev } = props;
 
     const lambdaSecurityGroup = new cdk.aws_ec2.SecurityGroup(this, `LambdaSecurityGroup`, {
       vpc,
@@ -27,7 +27,9 @@ export class Networking extends cdk.NestedStack {
       securityGroupName: `${project}-${stage}-lambda-sg`,
     });
 
-    lambdaSecurityGroup.applyRemovalPolicy(cdk.RemovalPolicy.RETAIN);
+    lambdaSecurityGroup.applyRemovalPolicy(
+      isDev ? cdk.RemovalPolicy.DESTROY : cdk.RemovalPolicy.RETAIN,
+    );
 
     return lambdaSecurityGroup;
   }
