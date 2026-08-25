@@ -284,3 +284,52 @@ describe.each(STAGE_FIXTURES)("Data SMART events infrastructure for $stage", ({ 
     expect(describeStatement, "self-managed Kafka ESM subnet lookup").toBeDefined();
   });
 });
+
+describe("SMART Kafka consumer without BigMAC secrets", () => {
+  it("omits the error-queue URL and SendMessage grant when queue secrets are not loaded", () => {
+    const app = new cdk.App();
+    const parent = new cdk.Stack(app, "DataSmartEventsParent-no-bigmac", {
+      env: { account: "123456789012", region: "us-east-1" },
+    });
+    const vpc = cdk.aws_ec2.Vpc.fromVpcAttributes(parent, "Vpc-no-bigmac", {
+      availabilityZones: ["us-east-1a", "us-east-1b", "us-east-1c"],
+      privateSubnetIds: ["subnet-00000001", "subnet-00000002", "subnet-00000003"],
+      vpcId: "vpc-00000001",
+    });
+    const dataStack = new Data(parent, "data-no-bigmac", {
+      project: "mako",
+      stage: "feature-no-bigmac",
+      stack: "data",
+      isDev: true,
+      attachmentArchiveRebuildQueue: new cdk.aws_sqs.Queue(parent, "RebuildQueue-no-bigmac"),
+      vpc,
+      privateSubnets: vpc.privateSubnets,
+      brokerString: BROKER_STRING,
+      lambdaSecurityGroup: cdk.aws_ec2.SecurityGroup.fromSecurityGroupId(
+        parent,
+        "LambdaSecurityGroup-no-bigmac",
+        "sg-00000001",
+      ),
+      topicNamespace: "--mako--feature-no-bigmac--",
+      indexNamespace: "feature-no-bigmac",
+      devPasswordArn: "arn:aws:secretsmanager:us-east-1:123456789012:secret:mako-test-password",
+      sharedOpenSearchDomainArn: "arn:aws:es:us-east-1:123456789012:domain/mako-shared-opensearch",
+      sharedOpenSearchDomainEndpoint: "search-mako-shared-opensearch.us-east-1.es.amazonaws.com",
+    });
+    const template = Template.fromStack(dataStack);
+    const [, smartLambda] = getSmartLambda(template, "feature-no-bigmac");
+    const environment = smartLambda.Properties?.Environment as {
+      Variables?: Record<string, unknown>;
+    };
+    const roleLogicalId = getRoleLogicalId(smartLambda);
+    const statements = getRolePolicyStatements(template, roleLogicalId);
+    const sendMessageStatement = statements.find((statement) => {
+      const actions = (statement as { Action?: string | string[] }).Action;
+      const actionList = Array.isArray(actions) ? actions : [actions];
+      return actionList.includes("sqs:SendMessage");
+    });
+
+    expect(environment?.Variables).not.toHaveProperty("BIGMAC_ERROR_QUEUE_URL");
+    expect(sendMessageStatement).toBeUndefined();
+  });
+});

@@ -24,8 +24,8 @@ interface DataStackProps extends cdk.NestedStackProps {
   sharedOpenSearchDomainEndpoint: string;
   sharedOpenSearchDomainArn: string;
   devPasswordArn: string;
-  bigmacErrorQueueUrl: string;
-  bigmacErrorQueueArn: string;
+  bigmacErrorQueueUrl?: string;
+  bigmacErrorQueueArn?: string;
 }
 
 export class Data extends cdk.NestedStack {
@@ -554,11 +554,15 @@ export class Data extends cdk.NestedStack {
               actions: ["logs:CreateLogGroup"],
               resources: ["*"],
             }),
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["sqs:SendMessage"],
-              resources: [bigmacErrorQueueArn],
-            }),
+            ...(bigmacErrorQueueArn
+              ? [
+                  new cdk.aws_iam.PolicyStatement({
+                    effect: cdk.aws_iam.Effect.ALLOW,
+                    actions: ["sqs:SendMessage"],
+                    resources: [bigmacErrorQueueArn],
+                  }),
+                ]
+              : []),
           ],
         }),
       },
@@ -572,7 +576,7 @@ export class Data extends cdk.NestedStack {
         osDomain: `https://${openSearchDomainEndpoint}`,
         indexNamespace,
         stage,
-        BIGMAC_ERROR_QUEUE_URL: bigmacErrorQueueUrl,
+        ...(bigmacErrorQueueUrl ? { BIGMAC_ERROR_QUEUE_URL: bigmacErrorQueueUrl } : {}),
       },
     });
 

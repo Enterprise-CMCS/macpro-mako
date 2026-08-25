@@ -212,4 +212,22 @@ describe("DeploymentConfig", () => {
     expect(deploymentConfig.config.isDev).toBe(true);
     expect(deploymentConfig.config.terminationProtection).toBe(true);
   });
+
+  it("accepts a default secret that omits BigMAC queue keys", async () => {
+    const secretWithoutBigmac = JSON.parse(defaultSecret) as Record<string, unknown>;
+    delete secretWithoutBigmac.bigmacErrorQueueUrl;
+    delete secretWithoutBigmac.bigmacErrorQueueArn;
+    vi.spyOn(sharedUtils, "getSecret").mockImplementation((secretName) => {
+      if (secretName === `${project}-default`) {
+        return Promise.resolve(JSON.stringify(secretWithoutBigmac));
+      }
+      return Promise.reject(new Error(`Secret not found: ${secretName}`));
+    });
+
+    const deploymentConfig = await DeploymentConfig.fetch({ project, stage: "feature" });
+
+    expect(deploymentConfig.config.bigmacErrorQueueUrl).toBeUndefined();
+    expect(deploymentConfig.config.bigmacErrorQueueArn).toBeUndefined();
+    expect(deploymentConfig.config.brokerString).toBe("brokerString");
+  });
 });
