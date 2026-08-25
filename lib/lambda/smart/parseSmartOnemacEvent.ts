@@ -13,7 +13,7 @@ const isoDateTime = z
   });
 
 const requiredString = z.string().min(1);
-const optionalString = z.string().optional();
+const optionalString = z.string().nullish();
 
 const smartOnemacEventSchema = z
   .object({

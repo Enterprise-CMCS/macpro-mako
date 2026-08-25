@@ -90,6 +90,41 @@ describe("publishSmartIngestError", () => {
     expect(String(body.message)).toContain("origin");
   });
 
+  it("redacts creator PII from the payload while preserving ingest details", async () => {
+    await publishSmartIngestError({
+      errorCode: "VALIDATION",
+      error: new Error("authority: Required"),
+      topic: "aws.mulesoft.onemac.events",
+      topicPartition: "aws.mulesoft.onemac.events-0",
+      kafkaKey: "AL-26-0817-0001",
+      correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+      payload: {
+        id: "AL-26-0817-0001",
+        createdByEmail: "alice@example.com",
+        createdByName: "Alice Jones",
+        createdByUserId: "005cp00000Jqq9HAAR",
+      },
+    });
+
+    const command = send.mock.calls[0]?.[0] as { input: Record<string, unknown> };
+    const body = JSON.parse(String(command.input.MessageBody)) as {
+      message: string;
+      details: Record<string, unknown>;
+    };
+
+    expect(body.message).toContain("authority: Required");
+    expect(body.details).toMatchObject({
+      errorCode: "VALIDATION",
+      topic: "aws.mulesoft.onemac.events",
+      kafkaKey: "AL-26-0817-0001",
+      correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+      payload: { id: "AL-26-0817-0001" },
+    });
+    expect(body.details.payload).not.toHaveProperty("createdByEmail");
+    expect(body.details.payload).not.toHaveProperty("createdByName");
+    expect(body.details.payload).not.toHaveProperty("createdByUserId");
+  });
+
   it("maps BADPARSE to an unparseable-record nature while keeping errorType=validation", async () => {
     await publishSmartIngestError({
       errorCode: "BADPARSE",
@@ -150,8 +185,9 @@ describe("publishSmartIngestError", () => {
     expect(send).not.toHaveBeenCalled();
   });
 
-  it("skips SendMessage without throwing when SQS publish fails", async () => {
-    send.mockRejectedValueOnce(new Error("SQS unavailable"));
+  it("rethrows when SQS publish fails", async () => {
+    const outage = new Error("SQS unavailable");
+    send.mockRejectedValueOnce(outage);
 
     await expect(
       publishSmartIngestError({
@@ -159,6 +195,6 @@ describe("publishSmartIngestError", () => {
         topicPartition: "aws.mulesoft.onemac.events-0",
         payload: { id: "AL-26-0817-0001" },
       }),
-    ).resolves.toBeUndefined();
+    ).rejects.toThrow(outage);
   });
 });

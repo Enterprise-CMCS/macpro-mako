@@ -227,6 +227,33 @@ describe("SMART Kafka envelope parsing", () => {
       }),
     );
   });
+
+  it.each(["authority", "createdAt"])(
+    "rejects null required field %s and publishes VALIDATION",
+    async (requiredField) => {
+      const payload = { ...smartEvent, [requiredField]: null };
+
+      expect(parseSmartOnemacEvent(payload)).toBeUndefined();
+      expect(logErrorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: sink.ErrorType.VALIDATION,
+        }),
+      );
+
+      await expect(
+        invokeHandler(createSmartEvent(createSmartRecord(payload))),
+      ).resolves.toBeUndefined();
+      expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          errorCode: "VALIDATION",
+          topic: TOPIC,
+          topicPartition: TOPIC_PARTITION,
+          kafkaKey: smartEvent.id,
+          payload,
+        }),
+      );
+    },
+  );
 });
 
 describe("SMART operation dispatch", () => {
@@ -244,6 +271,22 @@ describe("SMART operation dispatch", () => {
         type: sink.ErrorType.VALIDATION,
       }),
     );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("accepts null optional creator fields and dispatches a manual record creation", async () => {
+    const payload = {
+      ...smartEvent,
+      createdByName: null,
+      createdByEmail: null,
+    };
+
+    expect(parseSmartOnemacEvent(payload)).toEqual(expect.objectContaining(payload));
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalled();
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
@@ -343,6 +386,20 @@ describe("SMART operation dispatch", () => {
     getItemSpy.mockRejectedValueOnce(outage);
 
     await expect(invokeHandler()).rejects.toThrow(outage);
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.UNKNOWN,
+        error: outage,
+      }),
+    );
+  });
+
+  it("rethrows BigMAC publish failures so the event source mapping can retry", async () => {
+    const outage = new Error("SQS unavailable");
+    publishSmartIngestErrorSpy.mockRejectedValueOnce(outage);
+    const invalidRecord = createSmartRecord({ ...smartEvent, origin: "smart" });
+
+    await expect(invokeHandler(createSmartEvent(invalidRecord))).rejects.toThrow(outage);
     expect(logErrorSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         type: sink.ErrorType.UNKNOWN,

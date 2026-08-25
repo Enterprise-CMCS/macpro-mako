@@ -391,6 +391,13 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     const mainResult = await getPackage(normalizedId);
+    if (mainResult?._source?.origin === "SMART") {
+      return response({
+        statusCode: 404,
+        body: { message: "No record found for the given id" },
+      });
+    }
+
     const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
     const draftResult = await getDraftPackage(normalizedId);
     const hasActiveDraft = isActiveDraftPackage(draftResult);

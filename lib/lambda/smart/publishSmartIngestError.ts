@@ -83,6 +83,18 @@ const resolveTopic = (failure: SmartIngestFailure): string => {
   return failure.topic ?? getTopic(failure.topicPartition) ?? SMART_ONEMAC_TOPIC;
 };
 
+const redactCreatorPii = (payload: unknown): unknown => {
+  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
+    return payload;
+  }
+
+  const redactedPayload = { ...(payload as Record<string, unknown>) };
+  delete redactedPayload.createdByEmail;
+  delete redactedPayload.createdByName;
+  delete redactedPayload.createdByUserId;
+  return redactedPayload;
+};
+
 const stringAttribute = (value: string) => ({
   DataType: "String",
   StringValue: value,
@@ -114,7 +126,7 @@ export const publishSmartIngestError = async (failure: SmartIngestFailure): Prom
       topicPartition: failure.topicPartition,
       kafkaKey: failure.kafkaKey,
       correlationId: failure.correlationId,
-      payload: failure.payload,
+      payload: redactCreatorPii(failure.payload),
     },
   };
 
@@ -141,5 +153,6 @@ export const publishSmartIngestError = async (failure: SmartIngestFailure): Prom
       },
       "Failed to publish SMART ingest error to the BigMAC queue",
     );
+    throw error;
   }
 };

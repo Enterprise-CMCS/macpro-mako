@@ -270,7 +270,7 @@ async function handleArchiveRequest({
   request: ParsedArchiveRequest;
 }) {
   const mainResult = await getPackage(request.packageId);
-  if (!mainResult || !mainResult.found) {
+  if (!mainResult || !mainResult.found || mainResult._source?.origin === "SMART") {
     return response({
       statusCode: 404,
       body: { message: "No record found for the given packageId" },

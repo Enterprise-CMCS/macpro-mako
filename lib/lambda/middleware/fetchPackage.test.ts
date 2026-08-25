@@ -146,6 +146,64 @@ describe("fetchPackage", () => {
     expect(res.body).toEqual("OK");
   });
 
+  it("should return 404 for a SMART package when allowNotFound is false", async () => {
+    const event = {
+      body: JSON.stringify({ id: "AL-26-0817-0001" }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+    const smartPackage = {
+      found: true,
+      _id: "AL-26-0817-0001",
+      _source: {
+        id: "AL-26-0817-0001",
+        origin: "SMART",
+        seatoolStatus: "Intake Needed",
+      },
+    } as main.ItemResult;
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce(smartPackage);
+
+    const handler = setupHandler({ expectedPackage: smartPackage });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
+    getPackageSpy.mockRestore();
+  });
+
+  it("should store a SMART package when allowNotFound is true", async () => {
+    const event = {
+      body: JSON.stringify({ id: "AL-26-0817-0001" }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+    const smartPackage = {
+      found: true,
+      _id: "AL-26-0817-0001",
+      _source: {
+        id: "AL-26-0817-0001",
+        origin: "SMART",
+        seatoolStatus: "Intake Needed",
+      },
+    } as main.ItemResult;
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce(smartPackage);
+    const handler = setupHandler({
+      expectedPackage: smartPackage,
+      options: { allowNotFound: true },
+    });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual("OK");
+    getPackageSpy.mockRestore();
+  });
+
   it("should treat malformed main shell docs as not found when allowNotFound is true", async () => {
     const event = {
       body: JSON.stringify({ id: "MD-26-9100-P" }),
