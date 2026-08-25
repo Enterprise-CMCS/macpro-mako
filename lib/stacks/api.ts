@@ -9,6 +9,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
+import { awsLambdaFunctionName } from "../config/lambda-function-name";
 import {
   getArchiveBaseReadBucket,
   getArchiveOverlayPrefix,
@@ -688,14 +689,15 @@ export class Api extends cdk.NestedStack {
         }
       }
 
+      const functionName = awsLambdaFunctionName(project, stage, stack, id);
       const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
+        logGroupName: `/aws/lambda/${functionName}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
 
       const fn = new NodejsFunction(this, id, {
         runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
-        functionName: `${project}-${stage}-${stack}-${id}`,
+        functionName,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
         handler: "handler",

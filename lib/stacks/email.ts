@@ -6,6 +6,7 @@ import { DeploymentConfigProperties } from "lib/config/deployment-config";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
+import { awsLambdaFunctionName } from "../config/lambda-function-name";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -177,7 +178,7 @@ export class Email extends cdk.NestedStack {
     });
 
     const processEmailsLambda = new NodejsFunction(this, "ProcessEmailsLambda", {
-      functionName: `${project}-${stage}-${stack}-processEmails`,
+      functionName: awsLambdaFunctionName(project, stage, stack, "processEmails"),
       deadLetterQueue: dlq,
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       entry: join(__dirname, "../lambda/processEmails.ts"),

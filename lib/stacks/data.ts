@@ -8,6 +8,7 @@ import * as LC from "local-constructs";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
+import { awsLambdaFunctionName } from "../config/lambda-function-name";
 
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
@@ -266,7 +267,7 @@ export class Data extends cdk.NestedStack {
       );
 
       const mapRole = new NodejsFunction(this, "MapRoleLambdaFunction", {
-        functionName: `${project}-${stage}-${stack}-mapRole`,
+        functionName: awsLambdaFunctionName(project, stage, stack, "mapRole"),
         timeout: cdk.Duration.minutes(2),
         entry: join(__dirname, "../lambda/mapRole.ts"),
         handler: "handler",
@@ -385,12 +386,13 @@ export class Data extends cdk.NestedStack {
       memorySize?: number;
       provisionedConcurrency?: number;
     }) => {
+      const functionName = awsLambdaFunctionName(project, stage, stack, id);
       const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
+        logGroupName: `/aws/lambda/${functionName}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
       const fn = new NodejsFunction(this, id, {
-        functionName: `${project}-${stage}-${stack}-${id}`,
+        functionName,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, `../lambda/${entry}`),
         handler: "handler",
@@ -948,13 +950,14 @@ export class Data extends cdk.NestedStack {
       },
     );
 
+    const runReindexFunctionName = awsLambdaFunctionName(project, stage, stack, "runReindex");
     const runReindexLogGroup = new cdk.aws_logs.LogGroup(this, `runReindexLogGroup`, {
-      logGroupName: `/aws/lambda/${project}-${stage}-${stack}-runReindex`,
+      logGroupName: `/aws/lambda/${runReindexFunctionName}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     const runReindexLambda = new NodejsFunction(this, "runReindexLambdaFunction", {
-      functionName: `${project}-${stage}-${stack}-runReindex`,
+      functionName: runReindexFunctionName,
       entry: join(__dirname, "../lambda/runReindex.ts"),
       handler: "handler",
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
