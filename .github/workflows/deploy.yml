@@ -94,11 +94,69 @@ jobs:
               ;;
           esac
 
+          stack_status() {
+            aws cloudformation describe-stacks \
+              --stack-name "$1" \
+              --query "Stacks[0].StackStatus" \
+              --output text 2>/dev/null || echo NONE
+          }
+
+          delete_stack() {
+            local stack="$1"
+            local status
+            status="$(stack_status "${stack}")"
+
+            if [[ "${status}" == "NONE" ]]; then
+              echo "Stack ${stack} is already gone"
+              return 0
+            fi
+
+            if [[ "${status}" != "ROLLBACK_FAILED" && "${status}" != "DELETE_FAILED" && "${status}" != "UPDATE_ROLLBACK_FAILED" ]]; then
+              echo "Stack ${stack} status is ${status}; skipping"
+              return 0
+            fi
+
+            if [[ "${status}" == "DELETE_FAILED" ]]; then
+              local retain
+              retain=$(aws cloudformation list-stack-resources \
+                --stack-name "${stack}" \
+                --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
+                --output text)
+              if [[ -n "${retain}" && "${retain}" != "None" ]]; then
+                echo "Deleting ${stack} retaining ${retain}"
+                aws cloudformation delete-stack --stack-name "${stack}" --retain-resources ${retain}
+              else
+                echo "Deleting ${stack}"
+                aws cloudformation delete-stack --stack-name "${stack}"
+              fi
+            else
+              echo "Deleting ${stack} from ${status} without retain-resources"
+              aws cloudformation delete-stack --stack-name "${stack}"
+            fi
+
+            if aws cloudformation wait stack-delete-complete --stack-name "${stack}"; then
+              echo "Deleted ${stack}"
+              return 0
+            fi
+
+            status="$(stack_status "${stack}")"
+            if [[ "${status}" != "DELETE_FAILED" ]]; then
+              echo "Failed to delete ${stack}; status is ${status}"
+              return 1
+            fi
+
+            local retain
+            retain=$(aws cloudformation list-stack-resources \
+              --stack-name "${stack}" \
+              --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
+              --output text)
+            echo "Retrying delete of ${stack} retaining ${retain}"
+            aws cloudformation delete-stack --stack-name "${stack}" --retain-resources ${retain}
+            aws cloudformation wait stack-delete-complete --stack-name "${stack}"
+          }
+
           STACK_NAME="${PROJECT}-${STAGE_NAME}"
-          STATUS=$(aws cloudformation describe-stacks \
-            --stack-name "${STACK_NAME}" \
-            --query "Stacks[0].StackStatus" \
-            --output text 2>/dev/null || echo NONE)
+          STATUS="$(stack_status "${STACK_NAME}")"
 
           if [[ "${STATUS}" != "ROLLBACK_FAILED" && "${STATUS}" != "DELETE_FAILED" && "${STATUS}" != "UPDATE_ROLLBACK_FAILED" ]]; then
             echo "Stack ${STACK_NAME} status is ${STATUS}; no failed-stack cleanup needed"
@@ -116,44 +174,10 @@ jobs:
             if [[ -z "${nested_stack}" || "${nested_stack}" == "None" ]]; then
               continue
             fi
-
-            NESTED_STATUS=$(aws cloudformation describe-stacks \
-              --stack-name "${nested_stack}" \
-              --query "Stacks[0].StackStatus" \
-              --output text 2>/dev/null || echo NONE)
-
-            if [[ "${NESTED_STATUS}" != "DELETE_FAILED" && "${NESTED_STATUS}" != "ROLLBACK_FAILED" ]]; then
-              continue
-            fi
-
-            RETAIN=$(aws cloudformation list-stack-resources \
-              --stack-name "${nested_stack}" \
-              --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
-              --output text)
-
-            if [[ -n "${RETAIN}" && "${RETAIN}" != "None" ]]; then
-              echo "Deleting nested stack ${nested_stack} retaining ${RETAIN}"
-              aws cloudformation delete-stack --stack-name "${nested_stack}" --retain-resources ${RETAIN}
-            else
-              echo "Deleting nested stack ${nested_stack}"
-              aws cloudformation delete-stack --stack-name "${nested_stack}"
-            fi
-            aws cloudformation wait stack-delete-complete --stack-name "${nested_stack}"
+            delete_stack "${nested_stack}"
           done
 
-          RETAIN_PARENT=$(aws cloudformation list-stack-resources \
-            --stack-name "${STACK_NAME}" \
-            --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
-            --output text)
-
-          if [[ -n "${RETAIN_PARENT}" && "${RETAIN_PARENT}" != "None" ]]; then
-            echo "Deleting ${STACK_NAME} retaining ${RETAIN_PARENT}"
-            aws cloudformation delete-stack --stack-name "${STACK_NAME}" --retain-resources ${RETAIN_PARENT}
-          else
-            echo "Deleting ${STACK_NAME}"
-            aws cloudformation delete-stack --stack-name "${STACK_NAME}"
-          fi
-          aws cloudformation wait stack-delete-complete --stack-name "${STACK_NAME}"
+          delete_stack "${STACK_NAME}"
 
       - name: Remove leftover unused Lambda security group
         run: |
