@@ -193,18 +193,32 @@ jobs:
           fi
 
           for group_id in ${GROUP_IDS}; do
-            IN_USE=$(aws ec2 describe-network-interfaces \
-              --filters "Name=group-id,Values=${group_id}" \
-              --query "NetworkInterfaces[].NetworkInterfaceId" \
-              --output text)
+            for attempt in $(seq 1 20); do
+              AVAILABLE=$(aws ec2 describe-network-interfaces \
+                --filters "Name=group-id,Values=${group_id}" "Name=status,Values=available" \
+                --query "NetworkInterfaces[].NetworkInterfaceId" \
+                --output text)
+              if [[ -n "${AVAILABLE}" && "${AVAILABLE}" != "None" ]]; then
+                for eni in ${AVAILABLE}; do
+                  echo "Deleting leftover available ENI ${eni} on ${group_id}"
+                  aws ec2 delete-network-interface --network-interface-id "${eni}" || true
+                done
+              fi
 
-            if [[ -n "${IN_USE}" && "${IN_USE}" != "None" ]]; then
-              echo "Security group ${group_id} (${SG_NAME}) is still attached to ENIs; leaving it in place"
-              continue
-            fi
+              IN_USE=$(aws ec2 describe-network-interfaces \
+                --filters "Name=group-id,Values=${group_id}" \
+                --query "NetworkInterfaces[].NetworkInterfaceId" \
+                --output text)
 
-            echo "Deleting unused leftover security group ${group_id} (${SG_NAME})"
-            aws ec2 delete-security-group --group-id "${group_id}"
+              if [[ -z "${IN_USE}" || "${IN_USE}" == "None" ]]; then
+                echo "Deleting unused leftover security group ${group_id} (${SG_NAME})"
+                aws ec2 delete-security-group --group-id "${group_id}"
+                break
+              fi
+
+              echo "Security group ${group_id} still has ENIs (${IN_USE}); waiting 30s (${attempt}/20)"
+              sleep 30
+            done
           done
 
       - name: Deploy
