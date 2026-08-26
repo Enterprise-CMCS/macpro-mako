@@ -1,9 +1,12 @@
 import { describe, expect, it } from "vitest";
 
 import {
+  AWS_COGNITO_DOMAIN_PREFIX_MAX_LENGTH,
   AWS_LAMBDA_FUNCTION_NAME_MAX_LENGTH,
   AWS_S3_BUCKET_NAME_MAX_LENGTH,
   AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH,
+  awsCognitoDomainPrefix,
+  awsCognitoDomainPrefixWithClientId,
   awsLambdaFunctionName,
   awsS3AccountBucketName,
   truncateAwsName,
@@ -77,5 +80,30 @@ describe("truncateAwsName", () => {
     );
 
     expect(name.length).toBe(AWS_SES_CONFIGURATION_SET_NAME_MAX_LENGTH);
+  });
+});
+
+describe("awsCognitoDomainPrefixWithClientId", () => {
+  it("keeps short hosted-UI prefixes unchanged for existing stages", () => {
+    expect(awsCognitoDomainPrefixWithClientId("main-login", "abcdefghijklmnopqrstuvwxyz")).toBe(
+      "main-login-abcdefghijklmnopqrstuvwxyz",
+    );
+  });
+
+  it("truncates long stage prefixes so the resolved domain stays within 63 characters", () => {
+    const name = awsCognitoDomainPrefixWithClientId(
+      "oy2-40481-smart-outbound-events-login",
+      "abcdefghijklmnopqrstuvwxyz",
+    );
+
+    expect(name.length).toBeLessThanOrEqual(AWS_COGNITO_DOMAIN_PREFIX_MAX_LENGTH);
+    expect(name.endsWith("-abcdefghijklmnopqrstuvwxyz")).toBe(true);
+    expect(name).not.toBe("oy2-40481-smart-outbound-events-login-abcdefghijklmnopqrstuvwxyz");
+  });
+});
+
+describe("awsCognitoDomainPrefix", () => {
+  it("keeps short search domain prefixes unchanged", () => {
+    expect(awsCognitoDomainPrefix("mako-main-search")).toBe("mako-main-search");
   });
 });

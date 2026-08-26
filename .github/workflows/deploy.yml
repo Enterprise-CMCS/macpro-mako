@@ -85,6 +85,76 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
 
+      - name: Delete leftover failed feature-stage stack
+        run: |
+          case "${STAGE_NAME}" in
+            main|val|production|datasink)
+              echo "Skipping failed-stack cleanup for protected stage ${STAGE_NAME}"
+              exit 0
+              ;;
+          esac
+
+          STACK_NAME="${PROJECT}-${STAGE_NAME}"
+          STATUS=$(aws cloudformation describe-stacks \
+            --stack-name "${STACK_NAME}" \
+            --query "Stacks[0].StackStatus" \
+            --output text 2>/dev/null || echo NONE)
+
+          if [[ "${STATUS}" != "ROLLBACK_FAILED" && "${STATUS}" != "DELETE_FAILED" && "${STATUS}" != "UPDATE_ROLLBACK_FAILED" ]]; then
+            echo "Stack ${STACK_NAME} status is ${STATUS}; no failed-stack cleanup needed"
+            exit 0
+          fi
+
+          echo "Stack ${STACK_NAME} is ${STATUS}; deleting leftover failed stack"
+
+          NESTED_STACKS=$(aws cloudformation list-stack-resources \
+            --stack-name "${STACK_NAME}" \
+            --query "StackResourceSummaries[?ResourceType=='AWS::CloudFormation::Stack'].PhysicalResourceId" \
+            --output text)
+
+          for nested_stack in ${NESTED_STACKS}; do
+            if [[ -z "${nested_stack}" || "${nested_stack}" == "None" ]]; then
+              continue
+            fi
+
+            NESTED_STATUS=$(aws cloudformation describe-stacks \
+              --stack-name "${nested_stack}" \
+              --query "Stacks[0].StackStatus" \
+              --output text 2>/dev/null || echo NONE)
+
+            if [[ "${NESTED_STATUS}" != "DELETE_FAILED" && "${NESTED_STATUS}" != "ROLLBACK_FAILED" ]]; then
+              continue
+            fi
+
+            RETAIN=$(aws cloudformation list-stack-resources \
+              --stack-name "${nested_stack}" \
+              --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
+              --output text)
+
+            if [[ -n "${RETAIN}" && "${RETAIN}" != "None" ]]; then
+              echo "Deleting nested stack ${nested_stack} retaining ${RETAIN}"
+              aws cloudformation delete-stack --stack-name "${nested_stack}" --retain-resources ${RETAIN}
+            else
+              echo "Deleting nested stack ${nested_stack}"
+              aws cloudformation delete-stack --stack-name "${nested_stack}"
+            fi
+            aws cloudformation wait stack-delete-complete --stack-name "${nested_stack}"
+          done
+
+          RETAIN_PARENT=$(aws cloudformation list-stack-resources \
+            --stack-name "${STACK_NAME}" \
+            --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
+            --output text)
+
+          if [[ -n "${RETAIN_PARENT}" && "${RETAIN_PARENT}" != "None" ]]; then
+            echo "Deleting ${STACK_NAME} retaining ${RETAIN_PARENT}"
+            aws cloudformation delete-stack --stack-name "${STACK_NAME}" --retain-resources ${RETAIN_PARENT}
+          else
+            echo "Deleting ${STACK_NAME}"
+            aws cloudformation delete-stack --stack-name "${STACK_NAME}"
+          fi
+          aws cloudformation wait stack-delete-complete --stack-name "${STACK_NAME}"
+
       - name: Remove leftover unused Lambda security group
         run: |
           SG_NAME="${PROJECT}-${STAGE_NAME}-lambda-sg"

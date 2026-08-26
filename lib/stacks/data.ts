@@ -8,7 +8,7 @@ import * as LC from "local-constructs";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
-import { awsLambdaFunctionName } from "../config/lambda-function-name";
+import { awsCognitoDomainPrefix, awsLambdaFunctionName } from "../config/lambda-function-name";
 
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
@@ -87,7 +87,7 @@ export class Data extends cdk.NestedStack {
       new cdk.aws_cognito.UserPoolDomain(this, "UserPoolDomain", {
         userPool,
         cognitoDomain: {
-          domainPrefix: `${project}-${stage}-search`,
+          domainPrefix: awsCognitoDomainPrefix(`${project}-${stage}-search`),
         },
       });
 
