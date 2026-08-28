@@ -1,24 +1,10 @@
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
 
-import { getStateFromPackageId, transformMspManualRecordCreated } from "./mspManualRecordCreated";
+import { SmartPackageExistence } from "./evaluateSmartPackageExistence";
+import { getStateFromPackageId } from "./mspManualRecordCreated";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
-
-type SmartReservationDocument = NonNullable<ReturnType<typeof transformMspManualRecordCreated>>;
-
-const smartIdentityFields = (incomingEvent: SmartOnemacEvent) => ({
-  spaWaiverId: incomingEvent.spaWaiverId,
-  correlationId: incomingEvent.correlationId,
-});
-
-const overwriteSmartIdentityFields = async (
-  domain: string,
-  index: string,
-  documentId: string,
-  incomingEvent: SmartOnemacEvent,
-): Promise<void> => {
-  await os.updateItem(domain, index, documentId, smartIdentityFields(incomingEvent));
-};
+import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
 
 /**
  * Reserves a package ID in the main index so OneMAC cannot reuse it.
@@ -35,23 +21,15 @@ export const reservePackageId = async (incomingEvent: SmartOnemacEvent): Promise
 
   const { domain, index } = getDomainAndNamespace("main");
   const existingPackage = await os.getItem(domain, index, documentId);
+  const existence: SmartPackageExistence = {
+    mainById: existingPackage,
+    mainBySpaWaiverId: undefined,
+    changelogById: undefined,
+  };
 
-  if (existingPackage) {
-    await overwriteSmartIdentityFields(domain, index, documentId, incomingEvent);
-    return true;
-  }
-
-  const document: SmartReservationDocument | undefined =
-    transformMspManualRecordCreated(incomingEvent);
-  if (!document) {
-    return false;
-  }
-
-  const createResult = await os.createItem(domain, index, document);
-  if (createResult.created) {
-    return true;
-  }
-
-  await overwriteSmartIdentityFields(domain, index, documentId, incomingEvent);
-  return true;
+  return persistSmartOnemacEvent({
+    event: incomingEvent,
+    existence,
+    topicPartition: "",
+  });
 };

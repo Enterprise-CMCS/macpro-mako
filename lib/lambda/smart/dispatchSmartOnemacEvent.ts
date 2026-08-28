@@ -1,31 +1,77 @@
-import { ErrorType, logError } from "libs/sink-lib";
-
+import { handleDefaultSmartOnemacEvent } from "./defaultSmartOnemacEvent";
+import { evaluateSmartPackageExistence } from "./evaluateSmartPackageExistence";
+import { handleMspAdministrativeFieldUpdated } from "./mspAdministrativeFieldUpdated";
+import { handleMspAssignmentUpdated } from "./mspAssignmentUpdated";
+import { getStateFromPackageId, handleMspManualRecordCreated } from "./mspManualRecordCreated";
+import { handleMspRaiWithdrawalToggled } from "./mspRaiWithdrawalToggled";
+import { handleMspSplitSpaCreated } from "./mspSplitSpaCreated";
+import { handleMspStatusUpdated } from "./mspStatusUpdated";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
-import { publishSmartIngestError } from "./publishSmartIngestError";
-import { reservePackageId } from "./reservePackageId";
+import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
+
+const SMART_OPERATION_TYPES = [
+  "MSP_MANUAL_RECORD_CREATED",
+  "MSP_STATUS_UPDATED",
+  "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+  "MSP_SPLIT_SPA_CREATED",
+  "MSP_ASSIGNMENT_UPDATED",
+  "MSP_RAI_WITHDRAWAL_TOGGLED",
+] as const;
+
+type SmartOperationType = (typeof SMART_OPERATION_TYPES)[number];
+
+const isSmartOperationType = (operationType: unknown): operationType is SmartOperationType =>
+  SMART_OPERATION_TYPES.some((knownOperationType) => knownOperationType === operationType);
 
 export const dispatchSmartOnemacEvent = async (
   event: SmartOnemacEvent,
   topicPartition: string,
 ): Promise<void> => {
-  const persisted = await reservePackageId(event);
-  if (persisted) {
+  // Skip existence lookups for unknown state prefixes; persist publishes VALIDATION.
+  if (!getStateFromPackageId(event.id)) {
+    await persistSmartOnemacEvent({
+      event,
+      existence: {
+        mainById: undefined,
+        mainBySpaWaiverId: undefined,
+        changelogById: undefined,
+      },
+      topicPartition,
+    });
     return;
   }
 
-  logError({
-    type: ErrorType.VALIDATION,
-    metadata: {
-      topicPartition,
-      id: event.id,
-      reason: "package ID does not start with a known two-letter state code",
-    },
-  });
-  await publishSmartIngestError({
-    errorCode: "VALIDATION",
-    topicPartition,
-    kafkaKey: event.id,
-    correlationId: event.correlationId,
-    payload: event,
-  });
+  const existence = await evaluateSmartPackageExistence(event);
+  const context = { event, existence, topicPartition };
+  const { operationType } = event;
+
+  if (!isSmartOperationType(operationType)) {
+    await handleDefaultSmartOnemacEvent(context);
+    return;
+  }
+
+  switch (operationType) {
+    case "MSP_MANUAL_RECORD_CREATED":
+      await handleMspManualRecordCreated(context);
+      return;
+    case "MSP_STATUS_UPDATED":
+      await handleMspStatusUpdated(context);
+      return;
+    case "MSP_ADMINISTRATIVE_FIELD_UPDATED":
+      await handleMspAdministrativeFieldUpdated(context);
+      return;
+    case "MSP_SPLIT_SPA_CREATED":
+      await handleMspSplitSpaCreated(context);
+      return;
+    case "MSP_ASSIGNMENT_UPDATED":
+      await handleMspAssignmentUpdated(context);
+      return;
+    case "MSP_RAI_WITHDRAWAL_TOGGLED":
+      await handleMspRaiWithdrawalToggled(context);
+      return;
+    default: {
+      const _exhaustive: never = operationType;
+      return _exhaustive;
+    }
+  }
 };

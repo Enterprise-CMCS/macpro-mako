@@ -1,6 +1,8 @@
 import { getStatus, SEATOOL_STATUS, STATE_CODES, type StateCode } from "shared-types";
 
+import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
+import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
 
 const EMPTY_DISPLAY_TEXT = "";
 
@@ -88,4 +90,13 @@ export const transformMspManualRecordCreated = (
     ...(isNonEmptyString(event.subject) ? { subject: event.subject } : {}),
     ...(isNonEmptyString(event.description) ? { description: event.description } : {}),
   };
+};
+
+export const handleMspManualRecordCreated = async (
+  context: SmartOnemacEventContext,
+): Promise<void> => {
+  if (!(await persistSmartOnemacEvent(context))) {
+    return;
+  }
+  // Reviewer hook: add OneMAC manual-record-created writes here.
 };

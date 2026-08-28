@@ -1,9 +1,9 @@
 import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
 import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
 
-export const handleMspSplitSpaCreated = async (context: SmartOnemacEventContext): Promise<void> => {
+export const handleMspStatusUpdated = async (context: SmartOnemacEventContext): Promise<void> => {
   if (!(await persistSmartOnemacEvent(context))) {
     return;
   }
-  // Reviewer hook: add OneMAC split-parent-link writes here.
+  // Reviewer hook: add OneMAC package-status writes here.
 };

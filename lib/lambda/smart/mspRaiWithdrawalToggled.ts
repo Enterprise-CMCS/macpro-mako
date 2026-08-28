@@ -1,21 +1,11 @@
-import { ErrorType, logError } from "libs/sink-lib";
-
-import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
+import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
+import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
 
 export const handleMspRaiWithdrawalToggled = async (
-  event: SmartOnemacEvent,
-  topicPartition: string,
+  context: SmartOnemacEventContext,
 ): Promise<void> => {
-  logError({
-    type: ErrorType.VALIDATION,
-    metadata: {
-      topicPartition,
-      operationType: "MSP_RAI_WITHDRAWAL_TOGGLED",
-      reason: "handler not implemented",
-      raiId: event.raiId,
-      raiName: event.raiName,
-      raiWithdrawnToggle: event.raiWithdrawnToggle,
-      raiWithdrawnToggleDate: event.raiWithdrawnToggleDate,
-    },
-  });
+  if (!(await persistSmartOnemacEvent(context))) {
+    return;
+  }
+  // Reviewer hook: add OneMAC RAI withdrawal-toggle writes here.
 };

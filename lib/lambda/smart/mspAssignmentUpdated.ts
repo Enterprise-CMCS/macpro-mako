@@ -1,19 +1,11 @@
-import { ErrorType, logError } from "libs/sink-lib";
-
-import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
+import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
+import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
 
 export const handleMspAssignmentUpdated = async (
-  event: SmartOnemacEvent,
-  topicPartition: string,
+  context: SmartOnemacEventContext,
 ): Promise<void> => {
-  logError({
-    type: ErrorType.VALIDATION,
-    metadata: {
-      topicPartition,
-      operationType: "MSP_ASSIGNMENT_UPDATED",
-      reason: "handler not implemented",
-      srtAssignmentId: event.srtAssignmentId,
-      srtMember: event.srtMember,
-    },
-  });
+  if (!(await persistSmartOnemacEvent(context))) {
+    return;
+  }
+  // Reviewer hook: add OneMAC SRT roster assignment writes here.
 };

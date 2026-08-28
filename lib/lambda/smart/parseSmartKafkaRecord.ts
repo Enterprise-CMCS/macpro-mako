@@ -22,7 +22,7 @@ const decodeBase64 = (encodedValue: string): string => {
 };
 
 export type SmartKafkaRecordParseResult =
-  | { success: true; data: Record<string, unknown>; kafkaKey: string }
+  | { success: true; data: Record<string, unknown>; kafkaKey?: string }
   | { success: false; failure: Omit<SmartIngestFailure, "topicPartition"> };
 
 export const interpretSmartKafkaRecord = (
@@ -35,6 +35,11 @@ export const interpretSmartKafkaRecord = (
 
   try {
     key = decodeBase64(kafkaRecord.key);
+  } catch {
+    key = undefined;
+  }
+
+  try {
     payload = decodeBase64(kafkaRecord.value);
     record = JSON.parse(payload);
   } catch (error) {
@@ -54,12 +59,7 @@ export const interpretSmartKafkaRecord = (
     };
   }
 
-  if (
-    typeof record !== "object" ||
-    record === null ||
-    Array.isArray(record) ||
-    key !== (record as Record<string, unknown>).id
-  ) {
+  if (typeof record !== "object" || record === null || Array.isArray(record)) {
     logError({
       type: ErrorType.VALIDATION,
       metadata: { topicPartition, kafkaRecord, record },
