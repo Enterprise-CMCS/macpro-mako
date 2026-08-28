@@ -52,7 +52,7 @@ describe("reservePackageId", () => {
   });
 
   it("writes one reservation keyed by the event ID when the main-index ID is missing", async () => {
-    await reservePackageId(reservationDocument, incomingEvent);
+    await reservePackageId(incomingEvent);
 
     expect(getItemSpy).toHaveBeenCalledOnce();
     expect(getItemSpy).toHaveBeenCalledWith(
@@ -83,7 +83,7 @@ describe("reservePackageId", () => {
         },
       } as Awaited<ReturnType<typeof os.getItem>>);
 
-      await reservePackageId(reservationDocument, incomingEvent);
+      await reservePackageId(incomingEvent);
 
       expect(createItemSpy).not.toHaveBeenCalled();
       expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
@@ -114,7 +114,7 @@ describe("reservePackageId", () => {
       },
     } as Awaited<ReturnType<typeof os.getItem>>);
 
-    await reservePackageId(reservationDocument, incomingEvent);
+    await reservePackageId(incomingEvent);
 
     expect(updateItemSpy).toHaveBeenCalledOnce();
     expect(updateItemSpy).toHaveBeenCalledWith(
@@ -130,7 +130,7 @@ describe("reservePackageId", () => {
   it("overwrites identity fields when create reports a version conflict", async () => {
     createItemSpy.mockResolvedValueOnce({ created: false, reason: "version_conflict" });
 
-    await reservePackageId(reservationDocument, incomingEvent);
+    await reservePackageId(incomingEvent);
 
     expect(createItemSpy).toHaveBeenCalledOnce();
     expect(updateItemSpy).toHaveBeenCalledOnce();
@@ -147,7 +147,7 @@ describe("reservePackageId", () => {
     const outage = new Error("OpenSearch unavailable");
     createItemSpy.mockRejectedValueOnce(outage);
 
-    await expect(reservePackageId(reservationDocument, incomingEvent)).rejects.toThrow(outage);
+    await expect(reservePackageId(incomingEvent)).rejects.toThrow(outage);
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 
@@ -163,7 +163,7 @@ describe("reservePackageId", () => {
     } as Awaited<ReturnType<typeof os.getItem>>);
     updateItemSpy.mockRejectedValueOnce(outage);
 
-    await expect(reservePackageId(reservationDocument, incomingEvent)).rejects.toThrow(outage);
+    await expect(reservePackageId(incomingEvent)).rejects.toThrow(outage);
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 });

@@ -29,6 +29,10 @@ const smartOnemacEventSchema = z
     createdByEmail: optionalString,
     operationType: optionalString,
     creationContext: optionalString,
+    proposedEffectiveDate: z.union([z.string(), z.number()]).optional(),
+    approvedEffectiveDate: z.union([z.string(), z.number()]).optional(),
+    subject: optionalString,
+    description: optionalString,
   })
   .passthrough();
 

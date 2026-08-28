@@ -1,7 +1,7 @@
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
 
-import type { transformMspManualRecordCreated } from "./mspManualRecordCreated";
+import { getStateFromPackageId, transformMspManualRecordCreated } from "./mspManualRecordCreated";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 
 type SmartReservationDocument = NonNullable<ReturnType<typeof transformMspManualRecordCreated>>;
@@ -27,22 +27,31 @@ const overwriteSmartIdentityFields = async (
  * regardless of its origin. Collisions always overwrite `spaWaiverId` and `correlationId`.
  * Status, origin, submitter, and every other existing field stay unchanged.
  */
-export const reservePackageId = async (
-  document: SmartReservationDocument,
-  incomingEvent: SmartOnemacEvent,
-): Promise<void> => {
+export const reservePackageId = async (incomingEvent: SmartOnemacEvent): Promise<boolean> => {
+  const documentId = incomingEvent.id.toUpperCase();
+  if (!getStateFromPackageId(documentId)) {
+    return false;
+  }
+
   const { domain, index } = getDomainAndNamespace("main");
-  const existingPackage = await os.getItem(domain, index, document.id);
+  const existingPackage = await os.getItem(domain, index, documentId);
 
   if (existingPackage) {
-    await overwriteSmartIdentityFields(domain, index, document.id, incomingEvent);
-    return;
+    await overwriteSmartIdentityFields(domain, index, documentId, incomingEvent);
+    return true;
+  }
+
+  const document: SmartReservationDocument | undefined =
+    transformMspManualRecordCreated(incomingEvent);
+  if (!document) {
+    return false;
   }
 
   const createResult = await os.createItem(domain, index, document);
   if (createResult.created) {
-    return;
+    return true;
   }
 
-  await overwriteSmartIdentityFields(domain, index, document.id, incomingEvent);
+  await overwriteSmartIdentityFields(domain, index, documentId, incomingEvent);
+  return true;
 };

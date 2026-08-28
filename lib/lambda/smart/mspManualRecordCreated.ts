@@ -31,6 +31,10 @@ export interface MspManualRecordCreated {
   operationType?: string;
   creationContext?: string;
   createdByUserId?: string;
+  proposedDate?: string | number;
+  approvedEffectiveDate?: string | number;
+  subject?: string;
+  description?: string;
 }
 
 export const getStateFromPackageId = (id: string): StateCode | undefined => {
@@ -74,5 +78,14 @@ export const transformMspManualRecordCreated = (
     ...(isNonEmptyString(event.operationType) ? { operationType: event.operationType } : {}),
     ...(isNonEmptyString(event.creationContext) ? { creationContext: event.creationContext } : {}),
     ...(isNonEmptyString(event.createdByUserId) ? { createdByUserId: event.createdByUserId } : {}),
+    ...(event.proposedEffectiveDate !== undefined
+      ? { proposedDate: event.proposedEffectiveDate }
+      : {}),
+    ...(typeof event.approvedEffectiveDate === "number" ||
+    isNonEmptyString(event.approvedEffectiveDate)
+      ? { approvedEffectiveDate: event.approvedEffectiveDate }
+      : {}),
+    ...(isNonEmptyString(event.subject) ? { subject: event.subject } : {}),
+    ...(isNonEmptyString(event.description) ? { description: event.description } : {}),
   };
 };

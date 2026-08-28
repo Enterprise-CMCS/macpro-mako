@@ -4,12 +4,14 @@ import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
 import { convertObjToBase64, createKafkaEvent, createKafkaRecord } from "mocks/helpers/kafka.utils";
+import { SEATOOL_STATUS } from "shared-types";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as processEmails from "./processEmails";
 import * as sinkChangelog from "./sinkChangelog";
 import * as sinkMainProcessors from "./sinkMainProcessors";
 import { handler, parseSmartKafkaRecord, parseSmartOnemacEvent } from "./sinkSmart";
+import * as mspManualRecordCreatedModule from "./smart/mspManualRecordCreated";
 import * as publishSmartIngestErrorModule from "./smart/publishSmartIngestError";
 
 const TOPIC = "aws.mulesoft.onemac.events";
@@ -55,6 +57,10 @@ const publishSmartIngestErrorSpy = vi
 const getItemSpy = vi.spyOn(os, "getItem");
 const createItemSpy = vi.spyOn(os, "createItem");
 const updateItemSpy = vi.spyOn(os, "updateItem");
+const transformMspManualRecordCreatedSpy = vi.spyOn(
+  mspManualRecordCreatedModule,
+  "transformMspManualRecordCreated",
+);
 
 afterEach(() => {
   vi.clearAllMocks();
@@ -120,6 +126,8 @@ describe("SMART Kafka envelope parsing", () => {
           topic: TOPIC,
         }),
       );
+      expect(createItemSpy).not.toHaveBeenCalled();
+      expect(updateItemSpy).not.toHaveBeenCalled();
     },
   );
 
@@ -148,6 +156,8 @@ describe("SMART Kafka envelope parsing", () => {
           payload,
         }),
       );
+      expect(createItemSpy).not.toHaveBeenCalled();
+      expect(updateItemSpy).not.toHaveBeenCalled();
     },
   );
 
@@ -170,6 +180,8 @@ describe("SMART Kafka envelope parsing", () => {
           topic: TOPIC,
         }),
       );
+      expect(createItemSpy).not.toHaveBeenCalled();
+      expect(updateItemSpy).not.toHaveBeenCalled();
     },
   );
 
@@ -192,6 +204,8 @@ describe("SMART Kafka envelope parsing", () => {
         topic: TOPIC,
       }),
     );
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
   });
 
   it("rejects an empty id", () => {
@@ -252,12 +266,17 @@ describe("SMART Kafka envelope parsing", () => {
           payload,
         }),
       );
+      expect(createItemSpy).not.toHaveBeenCalled();
+      expect(updateItemSpy).not.toHaveBeenCalled();
     },
   );
 });
 
 describe("SMART operation dispatch", () => {
   beforeEach(() => {
+    getItemSpy.mockReset();
+    createItemSpy.mockReset();
+    updateItemSpy.mockReset();
     getItemSpy.mockResolvedValue(undefined);
     createItemSpy.mockResolvedValue({ created: true });
     updateItemSpy.mockResolvedValue(undefined);
@@ -290,44 +309,99 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it.each(["MSP_STATUS_UPDATED", "NOT_A_REAL_TYPE"])(
-    "logs and skips unknown operationType %s",
+  it.each([
+    "MSP_MANUAL_RECORD_CREATED",
+    "MSP_STATUS_UPDATED",
+    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+    "MSP_SPLIT_SPA_CREATED",
+    "MSP_ASSIGNMENT_UPDATED",
+    "MSP_RAI_WITHDRAWAL_TOGGLED",
+    "NOT_A_REAL_TYPE",
+    undefined,
+  ])(
+    "creates a default OneMAC-shaped document for operationType %s when the ID is missing",
     async (operationType) => {
+      const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
+
       await expect(
-        invokeHandler(createSmartEvent(createSmartRecord({ ...smartEvent, operationType }))),
+        invokeHandler(createSmartEvent(createSmartRecord(payload))),
       ).resolves.toBeUndefined();
 
-      expect(logErrorSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: sink.ErrorType.VALIDATION,
-        }),
+      expect(getItemSpy).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.stringMatching(/main$/),
+        smartEvent.id,
       );
-      expect(createItemSpy).not.toHaveBeenCalled();
+      expect(createItemSpy).toHaveBeenCalledOnce();
+      expect(createItemSpy.mock.calls[0][2]).toMatchObject({
+        id: smartEvent.id,
+        origin: "SMART",
+        seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        state: "AL",
+        spaWaiverId: smartEvent.spaWaiverId,
+        correlationId: smartEvent.correlationId,
+      });
       expect(updateItemSpy).not.toHaveBeenCalled();
     },
   );
 
-  it.each(["MSP_RAI_WITHDRAWAL_TOGGLED", "MSP_SPLIT_SPA_CREATED", "MSP_ASSIGNMENT_UPDATED"])(
-    "logs and skips stub operationType %s without OpenSearch writes",
+  it.each([
+    "MSP_MANUAL_RECORD_CREATED",
+    "MSP_STATUS_UPDATED",
+    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+    "MSP_SPLIT_SPA_CREATED",
+    "MSP_ASSIGNMENT_UPDATED",
+    "MSP_RAI_WITHDRAWAL_TOGGLED",
+    "NOT_A_REAL_TYPE",
+    undefined,
+  ])(
+    "updates only SMART identity fields for operationType %s when the ID exists",
     async (operationType) => {
+      const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
+      getItemSpy.mockResolvedValueOnce({
+        found: true,
+        _id: smartEvent.id,
+        _source: {
+          id: smartEvent.id,
+          origin: "OneMAC",
+          seatoolStatus: "Under Review",
+          submitterName: "Existing Submitter",
+        },
+      } as Awaited<ReturnType<typeof os.getItem>>);
+
       await expect(
-        invokeHandler(createSmartEvent(createSmartRecord({ ...smartEvent, operationType }))),
+        invokeHandler(createSmartEvent(createSmartRecord(payload))),
       ).resolves.toBeUndefined();
 
-      expect(logErrorSpy).toHaveBeenCalledWith(
-        expect.objectContaining({
-          type: sink.ErrorType.VALIDATION,
-          metadata: expect.objectContaining({
-            operationType,
-            reason: "handler not implemented",
-          }),
-        }),
+      expect(getItemSpy).toHaveBeenCalledWith(
+        expect.anything(),
+        expect.stringMatching(/main$/),
+        smartEvent.id,
       );
       expect(createItemSpy).not.toHaveBeenCalled();
-      expect(updateItemSpy).not.toHaveBeenCalled();
-      expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+      expect(transformMspManualRecordCreatedSpy).not.toHaveBeenCalled();
+      expect(updateItemSpy).toHaveBeenCalledOnce();
+      expect(updateItemSpy.mock.calls[0][3]).toEqual({
+        spaWaiverId: smartEvent.spaWaiverId,
+        correlationId: smartEvent.correlationId,
+      });
     },
   );
+
+  it("checks for an existing ID before mapping or creating a new document", async () => {
+    const payload = { ...smartEvent, id: smartEvent.id.toLowerCase() };
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(getItemSpy.mock.invocationCallOrder[0]).toBeLessThan(
+      transformMspManualRecordCreatedSpy.mock.invocationCallOrder[0],
+    );
+    expect(getItemSpy.mock.invocationCallOrder[0]).toBeLessThan(
+      createItemSpy.mock.invocationCallOrder[0],
+    );
+  });
 
   it("logs and publishes BigMAC for a package ID that does not start with a known state code", async () => {
     await expect(
@@ -349,19 +423,41 @@ describe("SMART operation dispatch", () => {
       }),
     );
     expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
   });
 
-  it("logs and skips a missing operationType", async () => {
-    const { operationType: _operationType, ...payload } = smartEvent;
+  it("publishes BigMAC without reading or updating an existing invalid package ID", async () => {
+    getItemSpy.mockResolvedValueOnce({
+      found: true,
+      _id: "XX-26-0817-0001",
+      _source: {
+        id: "XX-26-0817-0001",
+        origin: "OneMAC",
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>);
 
     await expect(
-      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+      invokeHandler(
+        createSmartEvent(
+          createSmartRecord({ ...smartEvent, id: "XX-26-0817-0001" }, "XX-26-0817-0001"),
+        ),
+      ),
     ).resolves.toBeUndefined();
+
     expect(logErrorSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         type: sink.ErrorType.VALIDATION,
       }),
     );
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorCode: "VALIDATION",
+        kafkaKey: "XX-26-0817-0001",
+      }),
+    );
+    expect(getItemSpy).not.toHaveBeenCalled();
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
   });
 
   it("continues processing a valid record after an invalid record", async () => {

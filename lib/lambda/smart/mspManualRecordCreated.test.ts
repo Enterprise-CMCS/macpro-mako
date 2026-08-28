@@ -89,6 +89,44 @@ describe("transformMspManualRecordCreated", () => {
     expect(transformed).not.toHaveProperty("createdByUserId");
   });
 
+  it("maps proposedEffectiveDate to proposedDate when provided", () => {
+    const proposedEffectiveDate = 1786924800000;
+
+    const transformed = transformMspManualRecordCreated({
+      ...event,
+      proposedEffectiveDate,
+    });
+
+    expect(transformed).toHaveProperty("proposedDate", proposedEffectiveDate);
+  });
+
+  it("maps optional Confluence fields when provided", () => {
+    const transformed = transformMspManualRecordCreated({
+      ...event,
+      approvedEffectiveDate: 1786924800000,
+      subject: "Coverage amendment",
+      description: "Adds coverage for a new eligibility group.",
+    });
+
+    expect(transformed).toMatchObject({
+      approvedEffectiveDate: 1786924800000,
+      subject: "Coverage amendment",
+      description: "Adds coverage for a new eligibility group.",
+    });
+  });
+
+  it("omits optional Confluence fields when absent or empty", () => {
+    const transformed = transformMspManualRecordCreated({
+      ...event,
+      subject: "",
+      description: "   ",
+    });
+
+    expect(transformed).not.toHaveProperty("approvedEffectiveDate");
+    expect(transformed).not.toHaveProperty("subject");
+    expect(transformed).not.toHaveProperty("description");
+  });
+
   it("requires the ID prefix to be a known two-letter state code", () => {
     expect(getStateFromPackageId("al-26-0817-0001")).toBe("AL");
     expect(getStateFromPackageId("XX-26-0817-0001")).toBeUndefined();
