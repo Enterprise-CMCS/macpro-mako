@@ -33,6 +33,11 @@ const smartOnemacEventSchema = z
     approvedEffectiveDate: z.union([z.string(), z.number()]).optional(),
     subject: optionalString,
     description: optionalString,
+    splitSpaId: optionalString,
+    splitSpaWaiverId: optionalString,
+    originalSpaId: optionalString,
+    originalSpaWaiverId: optionalString,
+    splitReason: optionalString,
   })
   .passthrough();
 

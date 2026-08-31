@@ -52,6 +52,7 @@ describe("handler", () => {
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
         spaWaiverId: { type: "keyword" },
+        smartRecordType: { type: "keyword" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
       },

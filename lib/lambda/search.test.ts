@@ -1,6 +1,7 @@
 import { APIGatewayEvent, APIGatewayProxyEventPathParameters } from "aws-lambda";
 import * as osLib from "libs/opensearch-lib";
 import { getRequestContext, helpDeskUser, testStateSubmitter } from "mocks";
+import { SMART_RECORD_TYPE } from "shared-types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./search";
@@ -87,7 +88,7 @@ describe("getSearchData Handler", () => {
     ).toBeFalsy();
   });
 
-  it("should exclude SMART reservations through the existing origin allowlist", async () => {
+  it("should include completed SMART packages while excluding SMART reservations", async () => {
     const searchSpy = vi.spyOn(osLib, "search");
     const event = {
       body: JSON.stringify({ query: { match_all: {} } }),
@@ -108,6 +109,14 @@ describe("getSearchData Handler", () => {
           {
             bool: {
               must: [
+                { term: { "origin.keyword": "SMART" } },
+                { term: { smartRecordType: SMART_RECORD_TYPE.PACKAGE } },
+              ],
+            },
+          },
+          {
+            bool: {
+              must: [
                 { term: { "origin.keyword": "SEATool" } },
                 { term: { "event.keyword": "NOSO" } },
               ],
@@ -118,6 +127,7 @@ describe("getSearchData Handler", () => {
     };
     expect(query).toBeDefined();
     expect(query.query.bool.must).toContainEqual(originAllowlist);
-    expect(JSON.stringify(originAllowlist)).not.toContain("SMART");
+    expect(JSON.stringify(originAllowlist)).toContain(SMART_RECORD_TYPE.PACKAGE);
+    expect(JSON.stringify(originAllowlist)).not.toContain(SMART_RECORD_TYPE.RESERVATION);
   });
 });

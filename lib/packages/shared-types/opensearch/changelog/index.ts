@@ -66,6 +66,8 @@ export type Document = Omit<AppkDocument, "event"> &
   Omit<UploadSubsequentDocuments, "event"> &
   Omit<WithdrawPackageDocument, "event"> &
   Omit<WithdrawRaiDocument, "event"> & {
+    correlationId?: string;
+    createdByUserId?: string | null;
     event:
       | "app-k"
       | "capitated-amendment"
@@ -90,6 +92,9 @@ export type Document = Omit<AppkDocument, "event"> &
       | "delete"
       | "split-spa"
       | "NOSO";
+    originalSpaId?: string;
+    originalSpaWaiverId?: string;
+    spaWaiverId?: string;
   };
 
 export type Response = Res<Document>;

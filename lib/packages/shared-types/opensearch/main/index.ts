@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { SeaTool } from "../../events";
+import type { SmartRecordType } from "../../smart";
 import { ItemResult as Changelog } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
@@ -94,7 +95,13 @@ export type Document = AppkDocument &
     event?: string;
     correlationId?: string;
     spaWaiverId?: string;
+    smartRecordType?: SmartRecordType;
     createdByUserId?: string;
+    splitSpaId?: string;
+    splitSpaWaiverId?: string;
+    originalSpaId?: string;
+    originalSpaWaiverId?: string;
+    splitReason?: string;
     draft?: {
       savedAt: string;
       createdAt?: string;

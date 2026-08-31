@@ -4,7 +4,7 @@ import { Context } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
 import { convertObjToBase64, createKafkaEvent, createKafkaRecord } from "mocks/helpers/kafka.utils";
-import { SEATOOL_STATUS } from "shared-types";
+import { SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as processEmails from "./processEmails";
@@ -58,6 +58,7 @@ const getItemSpy = vi.spyOn(os, "getItem");
 const searchSpy = vi.spyOn(os, "search").mockResolvedValue({ hits: { hits: [] } });
 const createItemSpy = vi.spyOn(os, "createItem");
 const updateItemSpy = vi.spyOn(os, "updateItem");
+const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
 const transformMspManualRecordCreatedSpy = vi.spyOn(
   mspManualRecordCreatedModule,
   "transformMspManualRecordCreated",
@@ -128,6 +129,7 @@ describe("SMART Kafka envelope parsing", () => {
     ],
   ])("processes a valid payload with %s", async (_caseName, record) => {
     expect(parseSmartKafkaRecord(record, TOPIC_PARTITION)).toEqual(smartEvent);
+    createItemSpy.mockResolvedValueOnce({ created: true });
 
     await expect(invokeHandler(createSmartEvent(record))).resolves.toBeUndefined();
 
@@ -316,10 +318,12 @@ describe("SMART operation dispatch", () => {
     searchSpy.mockReset();
     createItemSpy.mockReset();
     updateItemSpy.mockReset();
+    bulkUpdateDataSpy.mockReset();
     getItemSpy.mockResolvedValue(undefined);
     searchSpy.mockResolvedValue({ hits: { hits: [] } });
     createItemSpy.mockResolvedValue({ created: true });
     updateItemSpy.mockResolvedValue(undefined);
+    bulkUpdateDataSpy.mockResolvedValue(undefined);
   });
 
   it("processes MSP_MANUAL_RECORD_CREATED without rejecting or publishing to BigMAC", async () => {
@@ -349,11 +353,101 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("consumes MSP_SPLIT_SPA_CREATED using the parent external identifier", async () => {
+    const originalSpaId = "AL-26-1111";
+    const splitSpaId = "AL-26-1111-TEST";
+    const originalSpaWaiverId = "a0ncp000006UfblAAC";
+    const splitSpaWaiverId = "a0ncp000006WdfVAAS";
+    const splitPayload = {
+      ...smartEvent,
+      spaWaiverId: splitSpaWaiverId,
+      id: splitSpaId,
+      status: "Intake Needed",
+      createdAt: "2026-08-17T16:37:12.000Z",
+      splitSpaId,
+      splitSpaWaiverId,
+      originalSpaWaiverId,
+      originalSpaId,
+      splitReason: "Testing Split for Allie",
+      operationType: "MSP_SPLIT_SPA_CREATED",
+    };
+    const parentDocument = {
+      id: originalSpaId,
+      origin: "OneMAC",
+      authority: "Medicaid SPA",
+      state: "AL",
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      cmsStatus: "Pending",
+      stateStatus: "Under Review",
+      submissionDate: "2026-07-01T12:00:00.000Z",
+      makoChangedDate: "2026-07-02T12:00:00.000Z",
+      changedDate: "2026-07-02T12:00:00.000Z",
+      statusDate: "2026-07-02T12:00:00.000Z",
+      spaWaiverId: originalSpaWaiverId,
+      deleted: false,
+    };
+    searchSpy.mockImplementation(async (_domain, index, query) => {
+      const serializedQuery = JSON.stringify(query);
+      if (String(index).endsWith("main") && serializedQuery.includes(originalSpaWaiverId)) {
+        return { hits: { hits: [{ _id: originalSpaId, _source: parentDocument }] } };
+      }
+      if (String(index).endsWith("changelog") && serializedQuery.includes(originalSpaId)) {
+        return {
+          hits: {
+            hits: [
+              {
+                _id: `${originalSpaId}-0001`,
+                _source: {
+                  id: `${originalSpaId}-0001`,
+                  packageId: originalSpaId,
+                  event: "new-medicaid-submission",
+                  timestamp: 1782907200000,
+                },
+              },
+            ],
+          },
+        };
+      }
+      return { hits: { hits: [] } };
+    });
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(splitPayload, originalSpaId))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({
+        id: splitSpaId,
+        origin: "SMART",
+        smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+        spaWaiverId: splitSpaWaiverId,
+        originalSpaId,
+        originalSpaWaiverId,
+        seatoolStatus: SEATOOL_STATUS.PENDING,
+      }),
+    );
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/changelog$/),
+      expect.arrayContaining([
+        expect.objectContaining({
+          packageId: splitSpaId,
+          event: "split-spa",
+          timestamp: Date.parse(splitPayload.createdAt),
+          isAdminChange: true,
+        }),
+      ]),
+      { throwOnBulkError: true },
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it.each([
     "MSP_MANUAL_RECORD_CREATED",
     "MSP_STATUS_UPDATED",
     "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_SPLIT_SPA_CREATED",
     "MSP_ASSIGNMENT_UPDATED",
     "MSP_RAI_WITHDRAWAL_TOGGLED",
     "NOT_A_REAL_TYPE",
@@ -389,7 +483,6 @@ describe("SMART operation dispatch", () => {
     "MSP_MANUAL_RECORD_CREATED",
     "MSP_STATUS_UPDATED",
     "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_SPLIT_SPA_CREATED",
     "MSP_ASSIGNMENT_UPDATED",
     "MSP_RAI_WITHDRAWAL_TOGGLED",
     "NOT_A_REAL_TYPE",

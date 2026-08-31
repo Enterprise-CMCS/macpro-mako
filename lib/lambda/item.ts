@@ -5,7 +5,7 @@ import {
 } from "libs/api/package";
 import { response } from "libs/handler-lib";
 import { APIGatewayEvent } from "shared-types";
-import { isCmsUser, isHelpDeskUser } from "shared-utils";
+import { isCmsUser, isHelpDeskUser, isHiddenSmartReservation } from "shared-utils";
 import { z } from "zod";
 
 import {
@@ -68,8 +68,8 @@ export const handler = authenticatedMiddy({
 
     const isActiveMainNonDraft = isActiveMainNonDraftPackage(packageResult);
 
-    // U2 locked: SMART-origin packages stay out of UI lists and package detail.
-    if (packageResult?._source?.origin === "SMART") {
+    // SMART reservations stay hidden; completed SMART packages use the normal detail flow.
+    if (isHiddenSmartReservation(packageResult?._source)) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },
