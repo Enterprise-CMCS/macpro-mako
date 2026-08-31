@@ -15,6 +15,7 @@
     "repair:attachment-scan-status": "tsx scripts/repair-attachment-scan-status.ts",
     "bootstrap:bigmac-error-queue": "tsx scripts/bootstrap-bigmac-error-queue.ts",
     "export:opensearch": "tsx scripts/export-opensearch-to-s3.ts",
+    "report:draft-conversions": "tsx scripts/draft-conversion-report.ts",
     "watch": "tsc -w",
     "cdk": "cdk",
     "build:cli": "turbo build:cli",
