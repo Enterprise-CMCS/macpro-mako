@@ -32,6 +32,7 @@ export * as checkConsumerLag from "./checkConsumerLag";
 export * as cfnNotify from "./cfnNotify";
 export * as deleteTriggers from "./deleteTriggers";
 export * as sinkChangelog from "./sinkChangelog";
+export * as sinkSmart from "./sinkSmart";
 export * as item from "./item";
 export * as postAuth from "./postAuth";
 export * as checkIdentifierUsage from "./checkIdentifierUsage";

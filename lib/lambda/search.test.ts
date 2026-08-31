@@ -86,4 +86,38 @@ describe("getSearchData Handler", () => {
       searchSpy.mock.calls.some(([, , query]) => JSON.stringify(query).includes("includeDrafts")),
     ).toBeFalsy();
   });
+
+  it("should exclude SMART reservations through the existing origin allowlist", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} } }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(testStateSubmitter),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    const query = searchSpy.mock.calls
+      .map(([, , searchQuery]) => searchQuery)
+      .find((searchQuery) => JSON.stringify(searchQuery).includes("origin.keyword")) as any;
+    const originAllowlist = {
+      bool: {
+        should: [
+          { terms: { "origin.keyword": ["OneMAC", "OneMACLegacy"] } },
+          {
+            bool: {
+              must: [
+                { term: { "origin.keyword": "SEATool" } },
+                { term: { "event.keyword": "NOSO" } },
+              ],
+            },
+          },
+        ],
+      },
+    };
+    expect(query).toBeDefined();
+    expect(query.query.bool.must).toContainEqual(originAllowlist);
+    expect(JSON.stringify(originAllowlist)).not.toContain("SMART");
+  });
 });

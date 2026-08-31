@@ -14,6 +14,24 @@ import { SEATOOL_STATUS } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./itemExists";
+import { transformMspManualRecordCreated } from "./smart/mspManualRecordCreated";
+
+const smartReservation = transformMspManualRecordCreated({
+  spaWaiverId: "a0ncp000006Wdh7AAC",
+  id: "AL-26-0817-0001",
+  correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+  origin: "SMART",
+  authority: "Medicaid SPA",
+  status: "Intake Needed",
+  createdAt: "2026-08-17T16:54:33.000Z",
+  createdByUserId: "005cp00000Jqq9HAAR",
+  createdByName: "Alice Jones",
+  createdByEmail: "alice.j@globalalliantinc.com",
+  operationType: "MSP_MANUAL_RECORD_CREATED",
+  creationContext: "MANUAL",
+  state: "Alabama",
+  initialSubmissionDate: "2026-08-17",
+})!;
 
 describe("Handler for checking if record exists", () => {
   it("should return 400 if event body is missing", async () => {
@@ -110,6 +128,26 @@ describe("Handler for checking if record exists", () => {
     expect(res.body).toEqual(
       JSON.stringify({ message: "Record found for the given id", exists: true }),
     );
+  });
+
+  it("should return exists: true for an active non-draft SMART reservation", async () => {
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+      found: true,
+      _id: smartReservation.id,
+      _source: smartReservation,
+    } as any);
+    const event = {
+      body: JSON.stringify({ id: smartReservation.id }),
+      requestContext: getRequestContext(helpDeskUser),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "Record found for the given id", exists: true }),
+    );
+    getPackageSpy.mockRestore();
   });
 
   it("should return 200 and exists: false if no record is found", async () => {

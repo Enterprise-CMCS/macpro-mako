@@ -92,6 +92,9 @@ export type Document = AppkDocument &
     withdrawEmailSent?: boolean;
     fullName?: string;
     event?: string;
+    correlationId?: string;
+    spaWaiverId?: string;
+    createdByUserId?: string;
     draft?: {
       savedAt: string;
       createdAt?: string;

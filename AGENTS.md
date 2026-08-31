@@ -22,6 +22,18 @@
 - Run `bun run build` ahead of CDK commands to ensure Lambda bundles (and `bun.lockb`) are up to date.
 - Amplify is **not** provisioned in CDK; the React app only imports the Amplify JS client to talk to the Cognito user pool and API Gateway described above.
 
+### SMART Kafka consumer operations
+
+- A normal deploy starts the SMART event source mapping at `LATEST`.
+- To reset offsets, delete the SMART event source mapping and recreate it with a new consumer group ID.
+- Reusing the same consumer group resumes its committed offsets; `StartingPosition` is ignored.
+- Use `TRIM_HORIZON` or `AT_TIMESTAMP` only for a deliberate replay.
+- U1 is locked: do not remap or overwrite package status in this slice.
+- U2 is locked: SMART-origin packages stay out of every list and package detail.
+- U8 is locked: derive the two-letter state from the uppercased ID prefix and require a known `STATE_CODES` value.
+- U11 is locked: do not add SMART to reindex or `createTriggers`. Replay is manual.
+- Collision handling adds only missing `spaWaiverId` and `correlationId`. There is no collision log group.
+
 ## Backend Lambdas
 
 - `lib/lambda/index.ts` exports all handlers so the stacks can bundle them; domains are grouped under subfolders like `submit/`, `update/`, and `user-management/`.

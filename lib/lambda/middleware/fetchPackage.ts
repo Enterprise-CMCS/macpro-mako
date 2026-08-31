@@ -52,7 +52,12 @@ export const fetchPackage = (opts: FetchPackageOptions = {}): MiddlewareObj => {
         }
       }
 
-      if (!options.allowNotFound && (packageResult === undefined || !packageResult.found)) {
+      if (
+        !options.allowNotFound &&
+        (packageResult === undefined ||
+          !packageResult.found ||
+          packageResult._source?.origin === "SMART")
+      ) {
         throw createError(404, JSON.stringify({ message: "No record found for the given id" }));
       }
 

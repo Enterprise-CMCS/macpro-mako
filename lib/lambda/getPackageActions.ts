@@ -54,6 +54,13 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
       });
     }
 
+    if (result._source.origin === "SMART") {
+      return response({
+        statusCode: 404,
+        body: { message: "No record found for the given id" },
+      });
+    }
+
     const authDetails = getAuthDetails(event);
     const userAttr = await lookupUserAttributes(authDetails.userId, authDetails.poolId);
     const activeRole = await getLatestActiveRoleByEmail(userAttr.email);
