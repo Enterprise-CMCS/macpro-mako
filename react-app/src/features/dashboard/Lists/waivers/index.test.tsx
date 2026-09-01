@@ -1,5 +1,5 @@
-import { cleanup, screen, waitForElementToBeRemoved, within } from "@testing-library/react";
-import userEvent, { UserEvent } from "@testing-library/user-event";
+import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   DEFAULT_CMS_USER,
   HELP_DESK_USER,
@@ -9,7 +9,7 @@ import {
 } from "mocks";
 import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatActionType } from "shared-utils";
-import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
 import * as exportUtils from "@/components/Opensearch/main/Filtering/Export/export.utils";
@@ -31,7 +31,6 @@ import {
   RAI_WITHDRAW_ENABLED_ITEM,
   RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
   renderDashboard,
-  skipCleanup,
   Storage,
   verifyChips,
   verifyFiltering,
@@ -260,8 +259,12 @@ describe("WaiversList", () => {
     queryString: string,
     oneMacUser: FullUser,
     isCms: boolean,
+    showAllColumns = false,
   ) => {
     global.localStorage = new Storage();
+    if (showAllColumns) {
+      global.localStorage.setItem("osColumns", JSON.stringify({ spas: [], waivers: [] }));
+    }
     const user = userEvent.setup();
     const rendered = renderDashboard(
       <WaiversList oneMacUser={{ user: oneMacUser, isCms }} />,
@@ -313,44 +316,32 @@ describe("WaiversList", () => {
     ["Default CMS User", DEFAULT_CMS_USER, true, true],
     ["CMS Help Desk User", HELP_DESK_USER, false, false],
   ])("as a %s", (_title, oneMacUser, hasActions, useCmsStatus) => {
-    let user: UserEvent;
-    beforeAll(async () => {
-      skipCleanup();
-
-      setMockUsername(oneMacUser.username);
-
-      ({ user } = await setup(
+    const setupForUser = (showAllColumns = false) =>
+      setup(
         defaultHits,
         getDashboardQueryString({
           tab: "spas",
         }),
         oneMacUser,
         useCmsStatus,
-      ));
-    });
+        showAllColumns,
+      );
 
     beforeEach(() => {
       setMockUsername(oneMacUser.username);
     });
 
-    afterAll(() => {
-      cleanup();
-    });
-
     it("should display the dashboard as expected", async () => {
+      await setupForUser();
+
       verifyFiltering(3); // 3 hidden columns by default
       verifyChips([]); // no filters by default
       verifyColumns(hasActions);
       verifyPagination(hitCount);
     });
 
-    it("should handle showing all of the columns", async () => {
-      // show all the hidden columns
-      await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
-      const columns = screen.getByTestId("columns-menu");
-      await user.click(within(columns).getByText("Final Disposition"));
-      await user.click(within(columns).getByText("Formal RAI Requested"));
-      await user.click(within(columns).getByText("CPOC Name"));
+    it("should display all columns from persisted visibility settings", async () => {
+      await setupForUser(true);
 
       const table = screen.getByTestId("os-table");
       expect(
@@ -439,22 +430,15 @@ describe("WaiversList", () => {
           status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
         },
       ],
-    ])("should display the correct values for a row with %s", (title, doc, expected) => {
+    ])("should display the correct values for a row with %s", async (_title, doc, expected) => {
+      await setupForUser(true);
+
       verifyRow(doc, expected);
     });
 
     it("should handle export", async () => {
       const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
-
-      if (!screen.queryByText("Final Disposition", { selector: "th>div" })) {
-        await user.click(screen.getByRole("button", { name: "Columns (3 hidden)" }));
-        const columns = screen.getByTestId("columns-menu");
-        await user.click(within(columns).getByText("Final Disposition"));
-        await user.click(within(columns).getByText("Formal RAI Requested"));
-        await user.click(within(columns).getByText("CPOC Name"));
-      }
-
-      await user.keyboard("{Escape}");
+      const { user } = await setupForUser(true);
 
       await user.click(screen.queryByTestId("export-csv-btn"));
 
@@ -485,7 +469,7 @@ describe("WaiversList", () => {
       },
     } as opensearch.main.Document;
 
-    const { user } = await setup(
+    await setup(
       {
         hits: [
           {
@@ -502,13 +486,8 @@ describe("WaiversList", () => {
       getDashboardQueryString({ tab: "waivers" }),
       TEST_STATE_SUBMITTER_USER,
       false,
+      true,
     );
-
-    await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
-    const columns = screen.getByTestId("columns-menu");
-    await user.click(within(columns).getByText("Final Disposition"));
-    await user.click(within(columns).getByText("Formal RAI Requested"));
-    await user.click(within(columns).getByText("CPOC Name"));
 
     verifyRow(draftDoc, {
       hasActions: true,
