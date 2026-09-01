@@ -1,29 +1,24 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { setMockUsername, TEST_REVIEWER_USERNAME, TEST_SPA_ITEM_ID } from "mocks";
-import { beforeAll, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 
-import {
-  mockApiRefinements,
-  renderFormWithPackageSectionAsync,
-  skipCleanup,
-} from "@/utils/test-helpers";
+import { mockApiRefinements, renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
 
 import { SplitSpaForm } from "./index";
 
 describe("SplitSpaForm", () => {
-  let user;
+  let user: ReturnType<typeof userEvent.setup>;
 
   const selectSplitCount = async (value: string) => {
-    if (!screen.queryByRole("option", { name: value })) {
-      await user.click(screen.getByLabelText(/Select number of splits/));
-    }
-
-    await user.click(screen.getByRole("option", { name: value }));
+    await user.click(screen.getByLabelText(/Select number of splits/));
+    await user.click(await screen.findByRole("option", { name: value }));
+    await waitFor(() =>
+      expect(screen.queryByRole("option", { name: value })).not.toBeInTheDocument(),
+    );
   };
 
-  beforeAll(async () => {
-    skipCleanup();
+  beforeEach(async () => {
     mockApiRefinements();
 
     user = userEvent.setup();
@@ -73,6 +68,8 @@ describe("SplitSpaForm", () => {
     expect(screen.getByRole("option", { name: "7" })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "8" })).toBeInTheDocument();
     expect(screen.queryByRole("option", { name: "9" })).toBeNull();
+
+    await user.click(screen.getByRole("option", { name: "2" }));
   });
 
   it("should display the split spa ids and request when a splitCount is selected", async () => {
@@ -89,6 +86,7 @@ describe("SplitSpaForm", () => {
   });
 
   it("should handle changing the splitCount", async () => {
+    await selectSplitCount("3");
     await selectSplitCount("5");
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
@@ -114,8 +112,7 @@ describe("SplitSpaForm", () => {
     expect(screen.getByTestId(`4. ${TEST_SPA_ITEM_ID}-C`)).toBeInTheDocument();
     expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument();
 
-    await user.click(screen.getByLabelText(/Select number of splits/));
-    await user.click(screen.getByRole("option", { name: "3" }));
+    await selectSplitCount("3");
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
     expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
@@ -124,10 +121,13 @@ describe("SplitSpaForm", () => {
   });
 
   it("submit button should be disabled before requestor is set", async () => {
+    await selectSplitCount("3");
+
     expect(screen.getByRole("button", { name: "Confirm & Split SPA" })).toBeDisabled();
   });
 
   it("should handle changing the requestor", async () => {
+    await selectSplitCount("3");
     await user.type(
       screen.getByLabelText(/These packages were added to OneMAC per request from/),
       "Jane Doe",
@@ -139,6 +139,12 @@ describe("SplitSpaForm", () => {
   });
 
   it("submit button should be enabled after requestor is set", async () => {
+    await selectSplitCount("3");
+    await user.type(
+      screen.getByLabelText(/These packages were added to OneMAC per request from/),
+      "Jane Doe",
+    );
+
     expect(screen.getByRole("button", { name: "Confirm & Split SPA" })).toBeEnabled();
   });
 });

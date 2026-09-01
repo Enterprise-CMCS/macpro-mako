@@ -250,6 +250,7 @@ afterEach(() => {
 
 afterAll(() => {
   // Clean up after the tests are finished.
+  cleanup();
   mockedServer.close();
 
   delete process.env.SKIP_CLEANUP;

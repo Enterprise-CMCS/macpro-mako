@@ -11,14 +11,13 @@ import {
   VALID_ITEM_TEMPORARY_EXTENSION_ID,
 } from "mocks";
 import { SEATOOL_STATUS } from "shared-types";
-import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
 
 import * as api from "@/api";
 import * as components from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
-import { skipCleanup } from "@/utils/test-helpers";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -578,46 +577,48 @@ describe("Temporary Extension", () => {
   });
 
   describe("New Temporary Extension", () => {
-    const user = userEvent.setup();
-    beforeAll(async () => {
-      skipCleanup();
+    let user: ReturnType<typeof userEvent.setup>;
 
+    beforeEach(async () => {
+      user = userEvent.setup();
       await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
     });
 
+    const selectTemporaryExtensionType = async (type: "1915(b)" | "1915(c)") => {
+      await user.click(screen.getByRole("combobox"));
+      await user.click(await screen.findByRole("option", { name: type }));
+      await waitFor(() =>
+        expect(screen.queryByRole("option", { name: type })).not.toBeInTheDocument(),
+      );
+    };
+
+    const enterValidPackageDetails = async () => {
+      await selectTemporaryExtensionType("1915(b)");
+      await user.type(
+        screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+        EXISTING_ITEM_APPROVED_NEW_ID,
+      );
+      await user.type(
+        screen.getByLabelText(/Temporary Extension Request Number/),
+        VALID_ITEM_TEMPORARY_EXTENSION_ID,
+      );
+    };
+
     test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
-      const teTypeDropdown = screen.getByRole("combobox");
-
-      await user.click(teTypeDropdown); // open dropdown
-
-      const teOptionToClick = screen.getByRole("option", {
-        name: "1915(c)",
-      });
-
-      await user.click(teOptionToClick); // click option
-
-      await user.click(teTypeDropdown); // close dropdown
+      await selectTemporaryExtensionType("1915(c)");
 
       expect(screen.getByRole("combobox")).toHaveTextContent("1915(c)");
     });
 
     test("TEMPORARY EXTENSION TYPE 1915(b)", async () => {
-      const teTypeDropdown = screen.getByRole("combobox");
-
-      await user.click(teTypeDropdown); // open dropdown
-
-      const teOptionToClick = screen.getByRole("option", {
-        name: "1915(b)",
-      });
-
-      await user.click(teOptionToClick); // click option
-
-      await user.click(teTypeDropdown); // close dropdown
+      await selectTemporaryExtensionType("1915(b)");
 
       expect(screen.getByRole("combobox")).toHaveTextContent("1915(b)");
     });
 
     test("APPROVED INITIAL OR RENEWAL WAIVER NUMBER", async () => {
+      await selectTemporaryExtensionType("1915(b)");
+
       const waiverNumberInput = screen.getByLabelText(/Approved Initial or Renewal Waiver Number/);
       const waiverNumberLabel = screen.getByTestId("waiverNumber-label");
 
@@ -643,6 +644,12 @@ describe("Temporary Extension", () => {
     });
 
     test("TEMPORARY EXTENSION REQUEST NUMBER", async () => {
+      await selectTemporaryExtensionType("1915(b)");
+      await user.type(
+        screen.getByLabelText(/Approved Initial or Renewal Waiver Number/),
+        EXISTING_ITEM_APPROVED_NEW_ID,
+      );
+
       const requestNumberInput = screen.getByLabelText(/Temporary Extension Request Number/);
       const requestNumberLabel = screen.getByTestId("requestNumber-label");
 
@@ -660,11 +667,16 @@ describe("Temporary Extension", () => {
     });
 
     test("WAIVER EXTENSION REQUEST", async () => {
+      await enterValidPackageDetails();
+
       const cmsForm179PlanLabel = await upload("waiverExtensionRequest");
       expect(cmsForm179PlanLabel).not.toHaveClass("text-destructive");
     });
 
     test("submit button is enabled", async () => {
+      await enterValidPackageDetails();
+      await upload("waiverExtensionRequest");
+
       expect(screen.getByTestId("submit-action-form")).toBeEnabled();
     });
   });
