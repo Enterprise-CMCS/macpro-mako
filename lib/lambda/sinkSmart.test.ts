@@ -112,6 +112,7 @@ describe("SMART Kafka envelope parsing", () => {
           topic: TOPIC,
         }),
       );
+      expect(publishSmartIngestErrorSpy.mock.calls[0]?.[0]).not.toHaveProperty("payload");
       expect(createItemSpy).not.toHaveBeenCalled();
       expect(updateItemSpy).not.toHaveBeenCalled();
     },
@@ -214,6 +215,28 @@ describe("SMART Kafka envelope parsing", () => {
     expect(updateItemSpy).not.toHaveBeenCalled();
   });
 
+  it.each(["2026-13-40T25:61:61Z", "2026-02-31T16:54:33.000Z"])(
+    "rejects semantically invalid createdAt %s and publishes VALIDATION",
+    async (createdAt) => {
+      const payload = { ...smartEvent, createdAt };
+
+      expect(parseSmartOnemacEvent(payload)).toBeUndefined();
+      await expect(
+        invokeHandler(createSmartEvent(createSmartRecord(payload))),
+      ).resolves.toBeUndefined();
+
+      expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          errorCode: "VALIDATION",
+          topic: TOPIC,
+          payload,
+        }),
+      );
+      expect(createItemSpy).not.toHaveBeenCalled();
+      expect(updateItemSpy).not.toHaveBeenCalled();
+    },
+  );
+
   it.each(["spaWaiverId", "id", "authority", "status"])(
     "rejects empty required field %s and publishes VALIDATION",
     async (requiredField) => {
@@ -241,6 +264,49 @@ describe("SMART Kafka envelope parsing", () => {
       expect(updateItemSpy).not.toHaveBeenCalled();
     },
   );
+
+  it.each(["spaWaiverId", "id", "authority", "status"])(
+    "rejects whitespace-only required field %s and publishes VALIDATION",
+    async (requiredField) => {
+      const payload = { ...smartEvent, [requiredField]: "   " };
+
+      expect(parseSmartOnemacEvent(payload)).toBeUndefined();
+      await expect(
+        invokeHandler(createSmartEvent(createSmartRecord(payload, smartEvent.id))),
+      ).resolves.toBeUndefined();
+
+      expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          errorCode: "VALIDATION",
+          topic: TOPIC,
+          payload,
+        }),
+      );
+      expect(createItemSpy).not.toHaveBeenCalled();
+      expect(updateItemSpy).not.toHaveBeenCalled();
+    },
+  );
+
+  it("trims required envelope strings before dispatch", () => {
+    expect(
+      parseSmartOnemacEvent({
+        ...smartEvent,
+        spaWaiverId: ` ${smartEvent.spaWaiverId} `,
+        id: ` ${smartEvent.id} `,
+        authority: ` ${smartEvent.authority} `,
+        status: ` ${smartEvent.status} `,
+        createdAt: ` ${smartEvent.createdAt} `,
+      }),
+    ).toEqual(
+      expect.objectContaining({
+        spaWaiverId: smartEvent.spaWaiverId,
+        id: smartEvent.id,
+        authority: smartEvent.authority,
+        status: smartEvent.status,
+        createdAt: smartEvent.createdAt,
+      }),
+    );
+  });
 
   it("accepts a required correlationId with a blank value", async () => {
     const payload = { ...smartEvent, correlationId: "" };

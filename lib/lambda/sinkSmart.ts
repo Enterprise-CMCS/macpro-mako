@@ -58,7 +58,13 @@ export const handler: Handler<KafkaEvent> = async (event) => {
         logError({
           type: ErrorType.UNKNOWN,
           error,
-          metadata: { topicPartition, kafkaRecord },
+          metadata: {
+            topicPartition,
+            topic: kafkaRecord.topic,
+            partition: kafkaRecord.partition,
+            offset: kafkaRecord.offset,
+            timestamp: kafkaRecord.timestamp,
+          },
         });
         throw error;
       }

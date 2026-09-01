@@ -85,17 +85,26 @@ const resolveTopic = (failure: SmartIngestFailure): string => {
   return failure.topic ?? getTopic(failure.topicPartition) ?? SMART_ONEMAC_TOPIC;
 };
 
-const redactCreatorPii = (payload: unknown): unknown => {
-  if (!payload || typeof payload !== "object" || Array.isArray(payload)) {
-    return payload;
+const CREATOR_PII_FIELDS = new Set(["createdByEmail", "createdByName", "createdByUserId"]);
+
+const redactStructuredCreatorPii = (value: unknown): unknown => {
+  if (Array.isArray(value)) {
+    return value.map(redactStructuredCreatorPii);
   }
 
-  const redactedPayload = { ...(payload as Record<string, unknown>) };
-  delete redactedPayload.createdByEmail;
-  delete redactedPayload.createdByName;
-  delete redactedPayload.createdByUserId;
-  return redactedPayload;
+  if (!value || typeof value !== "object") {
+    return value;
+  }
+
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>)
+      .filter(([field]) => !CREATOR_PII_FIELDS.has(field))
+      .map(([field, nestedValue]) => [field, redactStructuredCreatorPii(nestedValue)]),
+  );
 };
+
+const redactCreatorPii = (payload: unknown): unknown =>
+  typeof payload === "string" ? undefined : redactStructuredCreatorPii(payload);
 
 const stringAttribute = (value: string) => ({
   DataType: "String",
@@ -130,7 +139,9 @@ export const publishSmartIngestError = async (failure: SmartIngestFailure): Prom
       kafkaOffset: failure.kafkaOffset,
       kafkaTimestamp: failure.kafkaTimestamp,
       correlationId: failure.correlationId,
-      payload: redactCreatorPii(failure.payload),
+      // An unparseable value has no trustworthy field boundaries, so it cannot
+      // be safely redacted. Omit it rather than forwarding raw submitter PII.
+      payload: failure.errorCode === "BADPARSE" ? undefined : redactCreatorPii(failure.payload),
     },
   };
 
