@@ -9,7 +9,9 @@ import { publishSmartIngestError } from "./publishSmartIngestError";
 
 const smartIdentityFields = (event: SmartOnemacEvent) => ({
   spaWaiverId: event.spaWaiverId,
-  correlationId: event.correlationId,
+  // A blank SMART correlation ID is valid, but it should not erase an
+  // identifier previously associated with an existing OneMAC package.
+  ...(event.correlationId ? { correlationId: event.correlationId } : {}),
 });
 
 const updateSmartIdentityFields = async (
@@ -25,6 +27,9 @@ export const persistSmartOnemacEvent = async ({
   event,
   existence,
   topicPartition,
+  kafkaKey,
+  kafkaOffset,
+  kafkaTimestamp,
 }: SmartOnemacEventContext): Promise<boolean> => {
   const documentId = event.id.toUpperCase();
   if (!getStateFromPackageId(documentId)) {
@@ -39,7 +44,9 @@ export const persistSmartOnemacEvent = async ({
     await publishSmartIngestError({
       errorCode: "VALIDATION",
       topicPartition,
-      kafkaKey: event.id,
+      kafkaKey: kafkaKey ?? event.id,
+      kafkaOffset,
+      kafkaTimestamp,
       correlationId: event.correlationId,
       payload: event,
     });

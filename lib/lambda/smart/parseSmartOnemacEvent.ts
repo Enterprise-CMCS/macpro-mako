@@ -13,13 +13,15 @@ const isoDateTime = z
   });
 
 const requiredString = z.string().min(1);
+// SMART requires this field in the envelope but may intentionally send it blank.
+const requiredCorrelationId = z.string().trim();
 const optionalString = z.string().nullish();
 
 const smartOnemacEventSchema = z
   .object({
     spaWaiverId: requiredString,
     id: requiredString,
-    correlationId: requiredString,
+    correlationId: requiredCorrelationId,
     origin: z.literal("SMART"),
     authority: requiredString,
     status: requiredString,

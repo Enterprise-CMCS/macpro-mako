@@ -54,6 +54,8 @@ describe("publishSmartIngestError", () => {
       topic: "aws.mulesoft.onemac.events",
       topicPartition: "aws.mulesoft.onemac.events-0",
       kafkaKey: "AL-26-0817-0001",
+      kafkaOffset: 42,
+      kafkaTimestamp: 1786995273000,
       correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
       payload: { origin: "smart" },
     });
@@ -83,6 +85,8 @@ describe("publishSmartIngestError", () => {
         topic: "aws.mulesoft.onemac.events",
         topicPartition: "aws.mulesoft.onemac.events-0",
         kafkaKey: "AL-26-0817-0001",
+        kafkaOffset: 42,
+        kafkaTimestamp: 1786995273000,
         correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
         payload: { origin: "smart" },
       },

@@ -10,11 +10,12 @@ import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
 import { publishSmartIngestError } from "./publishSmartIngestError";
 
 const requiredString = z.string().trim().min(1);
+const requiredCorrelationId = z.string().trim();
 
 const smartSplitSpaCreatedSchema = z
   .object({
     authority: z.literal("Medicaid SPA"),
-    correlationId: requiredString,
+    correlationId: requiredCorrelationId,
     createdAt: requiredString.refine((value) => !Number.isNaN(Date.parse(value)), {
       message: "createdAt must be a valid datetime",
     }),
@@ -76,6 +77,31 @@ interface SplitPackageDocument extends Record<string, unknown> {
 const getSplitChangeMade = (splitSpaId: string, originalSpaId: string): string =>
   `Created split SPA ${splitSpaId} from ${originalSpaId}`;
 
+const hasConflictingCorrelationId = (
+  document: opensearch.main.Document,
+  event: SmartSplitSpaCreatedEvent,
+): boolean => {
+  const storedCorrelationId = document.correlationId?.trim();
+  return Boolean(
+    storedCorrelationId && event.correlationId && storedCorrelationId !== event.correlationId,
+  );
+};
+
+const isMatchingCompletedSplit = (
+  document: opensearch.main.Document,
+  event: SmartSplitSpaCreatedEvent,
+): boolean =>
+  document.origin === "SMART" &&
+  document.smartRecordType === SMART_RECORD_TYPE.PACKAGE &&
+  document.id.toUpperCase() === event.splitSpaId.toUpperCase() &&
+  document.splitSpaId?.toUpperCase() === event.splitSpaId.toUpperCase() &&
+  document.spaWaiverId === event.splitSpaWaiverId &&
+  document.splitSpaWaiverId === event.splitSpaWaiverId &&
+  document.originalSpaId?.toUpperCase() === event.originalSpaId.toUpperCase() &&
+  document.originalSpaWaiverId === event.originalSpaWaiverId &&
+  document.operationType === event.operationType &&
+  !hasConflictingCorrelationId(document, event);
+
 const getSearchHits = <TDocument>(result: unknown): SearchHit<TDocument>[] => {
   const hits = (result as { hits?: { hits?: unknown } } | undefined)?.hits?.hits;
   return Array.isArray(hits) ? (hits as SearchHit<TDocument>[]) : [];
@@ -85,7 +111,7 @@ const reportValidationFailure = async (
   context: SmartOnemacEventContext,
   error: Error | z.ZodError,
 ): Promise<void> => {
-  const { event, topicPartition } = context;
+  const { event, topicPartition, kafkaKey, kafkaOffset, kafkaTimestamp } = context;
   logError({
     type: ErrorType.VALIDATION,
     error,
@@ -98,7 +124,9 @@ const reportValidationFailure = async (
   await publishSmartIngestError({
     errorCode: "VALIDATION",
     topicPartition,
-    kafkaKey: event.id,
+    kafkaKey: kafkaKey ?? event.id,
+    kafkaOffset,
+    kafkaTimestamp,
     correlationId: event.correlationId,
     error,
     payload: event,
@@ -219,11 +247,8 @@ const validateTargetAvailability = (
     existingTarget._source.smartRecordType === SMART_RECORD_TYPE.PACKAGE &&
     existingTarget._source.origin === "SMART"
   ) {
-    if (
-      existingTarget._source.originalSpaId?.toUpperCase() !== event.originalSpaId.toUpperCase() ||
-      existingTarget._source.originalSpaWaiverId !== event.originalSpaWaiverId
-    ) {
-      return new Error("splitSpaId is already associated with another original package");
+    if (!isMatchingCompletedSplit(existingTarget._source, event)) {
+      return new Error("splitSpaId is already associated with a different SMART split event");
     }
     return undefined;
   }
@@ -244,10 +269,7 @@ const persistSplitPackage = async (
   const existingTarget = context.existence.mainById;
 
   if (existingTarget) {
-    if (
-      existingTarget._source?.origin === "SMART" &&
-      existingTarget._source.smartRecordType === SMART_RECORD_TYPE.PACKAGE
-    ) {
+    if (isMatchingCompletedSplit(existingTarget._source, event)) {
       return undefined;
     }
 
@@ -261,18 +283,18 @@ const persistSplitPackage = async (
   }
 
   const racedTarget = await os.getItem(domain, index, event.splitSpaId.toUpperCase());
-  if (
-    racedTarget?._source?.origin === "SMART" &&
-    racedTarget._source.spaWaiverId === event.splitSpaWaiverId &&
-    (isHiddenSmartReservation(racedTarget._source) ||
-      (racedTarget._source.smartRecordType === SMART_RECORD_TYPE.PACKAGE &&
-        racedTarget._source.originalSpaId?.toUpperCase() === event.originalSpaId.toUpperCase() &&
-        racedTarget._source.originalSpaWaiverId === event.originalSpaWaiverId))
-  ) {
-    if (isHiddenSmartReservation(racedTarget._source)) {
+  if (racedTarget?._source) {
+    if (
+      isHiddenSmartReservation(racedTarget._source) &&
+      racedTarget._source.spaWaiverId === event.splitSpaWaiverId
+    ) {
       await os.updateItem(domain, index, event.splitSpaId.toUpperCase(), document);
+      return undefined;
     }
-    return undefined;
+
+    if (isMatchingCompletedSplit(racedTarget._source, event)) {
+      return undefined;
+    }
   }
 
   return new Error("splitSpaId was claimed by another package during processing");
@@ -320,7 +342,7 @@ const persistSplitActivity = async (
     }));
   const changeMade = getSplitChangeMade(splitSpaId, originalSpaId);
   const adminActivity = {
-    id: `${splitSpaId}-smart-split-${event.correlationId}`,
+    id: `${splitSpaId}-smart-split-${event.splitSpaWaiverId}`,
     packageId: splitSpaId,
     event: "split-spa",
     timestamp,

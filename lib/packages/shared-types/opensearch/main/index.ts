@@ -94,6 +94,7 @@ export type Document = AppkDocument &
     fullName?: string;
     event?: string;
     correlationId?: string;
+    operationType?: string;
     spaWaiverId?: string;
     smartRecordType?: SmartRecordType;
     createdByUserId?: string;

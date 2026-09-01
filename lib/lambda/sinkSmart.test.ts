@@ -214,7 +214,7 @@ describe("SMART Kafka envelope parsing", () => {
     expect(updateItemSpy).not.toHaveBeenCalled();
   });
 
-  it.each(["spaWaiverId", "id", "correlationId", "authority", "status"])(
+  it.each(["spaWaiverId", "id", "authority", "status"])(
     "rejects empty required field %s and publishes VALIDATION",
     async (requiredField) => {
       const payload = { ...smartEvent, [requiredField]: "" };
@@ -241,6 +241,23 @@ describe("SMART Kafka envelope parsing", () => {
       expect(updateItemSpy).not.toHaveBeenCalled();
     },
   );
+
+  it("accepts a required correlationId with a blank value", async () => {
+    const payload = { ...smartEvent, correlationId: "" };
+    createItemSpy.mockResolvedValueOnce({ created: true });
+
+    expect(parseSmartOnemacEvent(payload)).toEqual(expect.objectContaining(payload));
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({ correlationId: "" }),
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
 
   it("rejects source in place of origin and publishes VALIDATION", async () => {
     const { origin: _origin, ...payload } = smartEvent;
@@ -360,6 +377,7 @@ describe("SMART operation dispatch", () => {
     const splitSpaWaiverId = "a0ncp000006WdfVAAS";
     const splitPayload = {
       ...smartEvent,
+      correlationId: "",
       spaWaiverId: splitSpaWaiverId,
       id: splitSpaId,
       status: "Intake Needed",
@@ -444,6 +462,38 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("preserves the actual Kafka key and record metadata for Split SPA business failures", async () => {
+    const originalSpaId = "AL-26-1111";
+    const splitSpaId = "AL-26-1111-TEST";
+    const kafkaKey = "PARENT-KAFKA-KEY";
+    const record = createSmartRecord(
+      {
+        ...smartEvent,
+        correlationId: "",
+        spaWaiverId: "a0ncp000006WdfVAAS",
+        id: splitSpaId,
+        splitSpaId,
+        splitSpaWaiverId: "a0ncp000006WdfVAAS",
+        originalSpaWaiverId: "a0ncp000006UfblAAC",
+        originalSpaId,
+        splitReason: "Testing Split for Allie",
+        operationType: "MSP_SPLIT_SPA_CREATED",
+      },
+      kafkaKey,
+    );
+
+    await expect(invokeHandler(createSmartEvent(record))).resolves.toBeUndefined();
+
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorCode: "VALIDATION",
+        kafkaKey,
+        kafkaOffset: record.offset,
+        kafkaTimestamp: record.timestamp,
+      }),
+    );
+  });
+
   it.each([
     "MSP_MANUAL_RECORD_CREATED",
     "MSP_STATUS_UPDATED",
@@ -520,6 +570,30 @@ describe("SMART operation dispatch", () => {
       });
     },
   );
+
+  it("does not erase an existing correlation ID when SMART sends a blank value", async () => {
+    const payload = { ...smartEvent, correlationId: "" };
+    getItemSpy.mockResolvedValueOnce({
+      found: true,
+      _id: smartEvent.id,
+      _source: {
+        id: smartEvent.id,
+        origin: "OneMAC",
+        correlationId: "existing-correlation-id",
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      smartEvent.id,
+      { spaWaiverId: smartEvent.spaWaiverId },
+    );
+  });
 
   it("checks for an existing ID before mapping or creating a new document", async () => {
     const payload = { ...smartEvent, id: smartEvent.id.toLowerCase() };

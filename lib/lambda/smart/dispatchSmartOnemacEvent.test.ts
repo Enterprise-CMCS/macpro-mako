@@ -41,6 +41,12 @@ import { dispatchSmartOnemacEvent } from "./dispatchSmartOnemacEvent";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 
 const TOPIC_PARTITION = "aws.mulesoft.onemac.events-0";
+const metadata = Object.freeze({
+  topicPartition: TOPIC_PARTITION,
+  kafkaKey: "AL-26-0817-0001",
+  kafkaOffset: 42,
+  kafkaTimestamp: 1786995273000,
+});
 const baseEvent = Object.freeze({
   spaWaiverId: "a0ncp000006Wdh7AAC",
   id: "AL-26-0817-0001",
@@ -79,7 +85,7 @@ describe("dispatchSmartOnemacEvent", () => {
   it("evaluates existence exactly once before invoking a handler", async () => {
     const event = { ...baseEvent, operationType: "MSP_MANUAL_RECORD_CREATED" };
 
-    await dispatchSmartOnemacEvent(event, TOPIC_PARTITION);
+    await dispatchSmartOnemacEvent(event, metadata);
 
     expect(handlers.evaluateExistence).toHaveBeenCalledOnce();
     expect(handlers.evaluateExistence).toHaveBeenCalledWith(event);
@@ -91,10 +97,10 @@ describe("dispatchSmartOnemacEvent", () => {
   it.each(knownOperations)("routes %s to its dedicated handler", async (operationType, handler) => {
     const event = { ...baseEvent, operationType };
 
-    await dispatchSmartOnemacEvent(event, TOPIC_PARTITION);
+    await dispatchSmartOnemacEvent(event, metadata);
 
     expect(handler).toHaveBeenCalledOnce();
-    expect(handler).toHaveBeenCalledWith({ event, existence, topicPartition: TOPIC_PARTITION });
+    expect(handler).toHaveBeenCalledWith({ event, existence, ...metadata });
     for (const [, otherHandler] of knownOperations) {
       if (otherHandler !== handler) {
         expect(otherHandler).not.toHaveBeenCalled();
@@ -108,13 +114,13 @@ describe("dispatchSmartOnemacEvent", () => {
     async (operationType) => {
       const event = { ...baseEvent, operationType };
 
-      await dispatchSmartOnemacEvent(event, TOPIC_PARTITION);
+      await dispatchSmartOnemacEvent(event, metadata);
 
       expect(handlers.defaultEvent).toHaveBeenCalledOnce();
       expect(handlers.defaultEvent).toHaveBeenCalledWith({
         event,
         existence,
-        topicPartition: TOPIC_PARTITION,
+        ...metadata,
       });
       for (const [, handler] of knownOperations) {
         expect(handler).not.toHaveBeenCalled();

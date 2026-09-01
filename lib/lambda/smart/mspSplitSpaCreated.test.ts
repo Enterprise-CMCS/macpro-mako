@@ -20,7 +20,7 @@ const CREATED_AT_EPOCH = Date.parse(CREATED_AT);
 const event = Object.freeze({
   spaWaiverId: SPLIT_EXTERNAL_ID,
   id: SPLIT_ID,
-  correlationId: "605d17ad-14de-421d-9567-57dbb1fdc913",
+  correlationId: "",
   origin: "SMART",
   authority: "Medicaid SPA",
   status: "Intake Needed",
@@ -35,6 +35,27 @@ const event = Object.freeze({
   splitReason: "Testing Split for Allie",
   operationType: "MSP_SPLIT_SPA_CREATED",
 } satisfies SmartOnemacEvent);
+
+const completedSplitDocument = (
+  overrides: Partial<opensearch.main.Document> = {},
+): Awaited<ReturnType<typeof os.getItem>> =>
+  ({
+    found: true,
+    _id: SPLIT_ID,
+    _source: {
+      id: SPLIT_ID,
+      origin: "SMART",
+      smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+      spaWaiverId: SPLIT_EXTERNAL_ID,
+      splitSpaId: SPLIT_ID,
+      splitSpaWaiverId: SPLIT_EXTERNAL_ID,
+      originalSpaId: ORIGINAL_ID,
+      originalSpaWaiverId: ORIGINAL_EXTERNAL_ID,
+      operationType: "MSP_SPLIT_SPA_CREATED",
+      correlationId: "",
+      ...overrides,
+    },
+  }) as Awaited<ReturnType<typeof os.getItem>>;
 
 const parentDocument = {
   id: ORIGINAL_ID,
@@ -187,7 +208,7 @@ describe("handleMspSplitSpaCreated", () => {
           timestamp: 1782907200000,
         }),
         expect.objectContaining({
-          id: `${SPLIT_ID}-smart-split-${event.correlationId}`,
+          id: `${SPLIT_ID}-smart-split-${SPLIT_EXTERNAL_ID}`,
           packageId: SPLIT_ID,
           event: "split-spa",
           timestamp: CREATED_AT_EPOCH,
@@ -245,18 +266,7 @@ describe("handleMspSplitSpaCreated", () => {
   });
 
   it("does not overwrite a completed split package when Kafka retries", async () => {
-    const completedPackage = {
-      found: true,
-      _id: SPLIT_ID,
-      _source: {
-        id: SPLIT_ID,
-        origin: "SMART",
-        smartRecordType: SMART_RECORD_TYPE.PACKAGE,
-        spaWaiverId: SPLIT_EXTERNAL_ID,
-        originalSpaId: ORIGINAL_ID,
-        originalSpaWaiverId: ORIGINAL_EXTERNAL_ID,
-      },
-    } as Awaited<ReturnType<typeof os.getItem>>;
+    const completedPackage = completedSplitDocument();
 
     await handleMspSplitSpaCreated(
       createContext({
@@ -273,19 +283,65 @@ describe("handleMspSplitSpaCreated", () => {
     expect(bulkUpdateDataSpy).toHaveBeenCalledOnce();
   });
 
+  it("accepts a stable replay when only the stored correlation ID is populated", async () => {
+    const completedPackage = completedSplitDocument({ correlationId: "previous-correlation-id" });
+
+    await handleMspSplitSpaCreated(
+      createContext({
+        existence: {
+          mainById: completedPackage,
+          mainBySpaWaiverId: emptySearch,
+          changelogById: emptySearch,
+        },
+      }),
+    );
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).toHaveBeenCalledOnce();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("rejects a stable replay when both nonempty correlation IDs conflict", async () => {
+    const correlatedEvent = { ...event, correlationId: "incoming-correlation-id" };
+    const completedPackage = completedSplitDocument({ correlationId: "different-correlation-id" });
+
+    await handleMspSplitSpaCreated(
+      createContext({
+        event: correlatedEvent,
+        existence: {
+          mainById: completedPackage,
+          mainBySpaWaiverId: emptySearch,
+          changelogById: emptySearch,
+        },
+      }),
+    );
+
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ errorCode: "VALIDATION" }),
+    );
+    expect(searchSpy).not.toHaveBeenCalled();
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
+  });
+
+  it("accepts a matching completed split that wins a create race", async () => {
+    createItemSpy.mockResolvedValueOnce({ created: false, reason: "version_conflict" });
+    getItemSpy.mockResolvedValueOnce(completedSplitDocument());
+
+    await handleMspSplitSpaCreated(createContext());
+
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).toHaveBeenCalledOnce();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("rejects a completed split ID that is linked to another original package", async () => {
-    const completedPackage = {
-      found: true,
-      _id: SPLIT_ID,
-      _source: {
-        id: SPLIT_ID,
-        origin: "SMART",
-        smartRecordType: SMART_RECORD_TYPE.PACKAGE,
-        spaWaiverId: SPLIT_EXTERNAL_ID,
-        originalSpaId: "AL-26-2222",
-        originalSpaWaiverId: "a0ncp000006Different",
-      },
-    } as Awaited<ReturnType<typeof os.getItem>>;
+    const completedPackage = completedSplitDocument({
+      originalSpaId: "AL-26-2222",
+      originalSpaWaiverId: "a0ncp000006Different",
+    });
 
     await handleMspSplitSpaCreated(
       createContext({

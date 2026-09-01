@@ -24,6 +24,8 @@ export interface SmartIngestFailure {
   topic?: string;
   topicPartition: string;
   kafkaKey?: string;
+  kafkaOffset?: number;
+  kafkaTimestamp?: number;
   correlationId?: string;
   payload?: unknown;
 }
@@ -125,6 +127,8 @@ export const publishSmartIngestError = async (failure: SmartIngestFailure): Prom
       topic,
       topicPartition: failure.topicPartition,
       kafkaKey: failure.kafkaKey,
+      kafkaOffset: failure.kafkaOffset,
+      kafkaTimestamp: failure.kafkaTimestamp,
       correlationId: failure.correlationId,
       payload: redactCreatorPii(failure.payload),
     },
