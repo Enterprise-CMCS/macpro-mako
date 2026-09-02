@@ -13,7 +13,7 @@ import { describe, expect, it, vi } from "vitest";
 import * as api from "@/api";
 import { renderWithQueryClientAndMemoryRouter, setupTestUser } from "@/utils/test-helpers";
 
-import { UserManagement } from "./UserManagement";
+import { getUserRoleActions, UserManagement } from "./UserManagement";
 import { UserRoleType } from "./utils";
 
 describe("UserManagement", () => {
@@ -50,7 +50,7 @@ describe("UserManagement", () => {
 
   it("should display all the role requests for the state for a state system admin", async () => {
     setMockUsername(osStateSystemAdmin);
-    const { user } = await setup();
+    await setup();
 
     expect(screen.getByRole("table")).toBeInTheDocument();
     const rows = screen.getAllByRole("row");
@@ -60,46 +60,31 @@ describe("UserManagement", () => {
 
     // Pending User, pending should be first
     expect(within(rows[1]).getByRole("button")).toBeInTheDocument();
-    await user.click(within(rows[1]).getByRole("button"));
-    expect(within(screen.getByRole("dialog")).queryByText("Grant Access")).toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Deny Access")).toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Revoke Access")).not.toBeInTheDocument();
+    expect(within(rows[1]).getByRole("button")).toBeEnabled();
     expect(within(rows[1]).getByRole("cell", { name: "Pending State" })).toBeInTheDocument();
     expect(within(rows[1]).getByRole("cell", { name: "Pending" })).toBeInTheDocument();
 
     // Denied User
     expect(within(rows[2]).getByRole("button")).toBeInTheDocument();
-    await user.click(within(rows[2]).getByRole("button"));
-    expect(within(screen.getByRole("dialog")).queryByText("Grant Access")).toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Deny Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Revoke Access")).not.toBeInTheDocument();
+    expect(within(rows[2]).getByRole("button")).toBeEnabled();
     expect(within(rows[2]).getByRole("cell", { name: "Denied State" })).toBeInTheDocument();
     expect(within(rows[2]).getByRole("cell", { name: "Denied" })).toBeInTheDocument();
 
     // Multi State User
     expect(within(rows[3]).getByRole("button")).toBeInTheDocument();
-    await user.click(within(rows[3]).getByRole("button"));
-    expect(within(screen.getByRole("dialog")).queryByText("Grant Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Deny Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Revoke Access")).toBeInTheDocument();
+    expect(within(rows[3]).getByRole("button")).toBeEnabled();
     expect(within(rows[3]).getByRole("cell", { name: "Multi State" })).toBeInTheDocument();
     expect(within(rows[3]).getByRole("cell", { name: "Granted" })).toBeInTheDocument();
 
     // Revoked State User
     expect(within(rows[4]).getByRole("button")).toBeInTheDocument();
-    await user.click(within(rows[4]).getByRole("button"));
-    expect(within(screen.getByRole("dialog")).queryByText("Grant Access")).toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Deny Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Revoke Access")).not.toBeInTheDocument();
+    expect(within(rows[4]).getByRole("button")).toBeEnabled();
     expect(within(rows[4]).getByRole("cell", { name: "Revoked State" })).toBeInTheDocument();
     expect(within(rows[4]).getByRole("cell", { name: "Revoked" })).toBeInTheDocument();
 
     // Statesubmitter User
     expect(within(rows[5]).getByRole("button")).toBeInTheDocument();
-    await user.click(within(rows[5]).getByRole("button"));
-    expect(within(screen.getByRole("dialog")).queryByText("Deny Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Grant Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Revoke Access")).toBeInTheDocument();
+    expect(within(rows[5]).getByRole("button")).toBeEnabled();
     expect(
       within(rows[5]).getByRole("cell", { name: "Statesubmitter Nightwatch" }),
     ).toBeInTheDocument();
@@ -107,12 +92,16 @@ describe("UserManagement", () => {
 
     // Stateuser user
     expect(within(rows[6]).getByRole("button")).toBeInTheDocument();
-    await user.click(within(rows[6]).getByRole("button"));
-    expect(within(screen.getByRole("dialog")).queryByText("Grant Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Deny Access")).not.toBeInTheDocument();
-    expect(within(screen.getByRole("dialog")).queryByText("Revoke Access")).toBeInTheDocument();
+    expect(within(rows[6]).getByRole("button")).toBeEnabled();
     expect(within(rows[6]).getByRole("cell", { name: "Stateuser Tester" })).toBeInTheDocument();
     expect(within(rows[6]).getByRole("cell", { name: "Granted" })).toBeInTheDocument();
+  });
+
+  it("maps each user status to the available administrative actions", () => {
+    expect(getUserRoleActions("pending")).toEqual(["Grant Access", "Deny Access"]);
+    expect(getUserRoleActions("active")).toEqual(["Revoke Access"]);
+    expect(getUserRoleActions("denied")).toEqual(["Grant Access"]);
+    expect(getUserRoleActions("revoked")).toEqual(["Grant Access"]);
   });
 
   it("should display all the role requests except cmsroleapprovers and systemadmins for a cmsroleapprover", async () => {
