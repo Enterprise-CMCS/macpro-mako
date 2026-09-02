@@ -245,7 +245,6 @@ describe("SpasList", () => {
     if (showAllColumns) {
       global.localStorage.setItem("osColumns", JSON.stringify({ spas: [], waivers: [] }));
     }
-    const user = userEvent.setup();
     const rendered = renderDashboard(
       <SpasList oneMacUser={{ user: oneMacUser, isCms }} />,
       {
@@ -258,10 +257,7 @@ describe("SpasList", () => {
     if (screen.queryAllByLabelText("three-dots-loading")?.length > 0) {
       await waitForElementToBeRemoved(() => screen.queryAllByLabelText("three-dots-loading"));
     }
-    return {
-      user,
-      ...rendered,
-    };
+    return rendered;
   };
 
   // most of the tests are using MSW to get a set of generic items,
@@ -320,7 +316,7 @@ describe("SpasList", () => {
       verifyPagination(hitCount);
     });
 
-    it("should display all columns from persisted visibility settings", async () => {
+    it("should display and export all columns with the correct row values", async () => {
       await setupForUser(true);
 
       const table = screen.getByTestId("os-table");
@@ -331,94 +327,85 @@ describe("SpasList", () => {
         within(table).getByText("Formal RAI Requested", { selector: "th>div" }),
       ).toBeInTheDocument();
       expect(within(table).getByText("CPOC Name", { selector: "th>div" })).toBeInTheDocument();
-    });
 
-    it.each([
-      [
-        "a new item that is pending without RAI",
-        pendingDoc,
-        {
-          hasActions,
-          status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-          submissionDate: "12/31/2023",
-          makoChangedDate: "01/31/2024",
-        },
-      ],
-      [
-        "an item that has requested an RAI",
-        raiRequestDoc,
-        {
-          hasActions,
-          status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-          submissionDate: "12/31/2023",
-          makoChangedDate: "01/31/2024",
-          raiRequestedDate: "03/01/2024",
-        },
-      ],
-      [
-        "an item that has received an RAI",
-        raiReceivedDoc,
-        {
-          hasActions,
-          status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-          submissionDate: "12/31/2023",
-          makoChangedDate: "01/31/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "03/31/2024",
-        },
-      ],
-      [
-        "an item that has RAI Withdraw enabled",
-        withdrawEnabledDoc,
-        {
-          hasActions,
-          status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
-          submissionDate: "12/31/2023",
-          makoChangedDate: "01/31/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "03/31/2024",
-        },
-      ],
-      [
-        "an item with RAI Withdraw disabled",
-        withdrawDisabledDoc,
-        {
-          hasActions,
-          status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-          submissionDate: "12/31/2023",
-          makoChangedDate: "01/31/2024",
-          raiRequestedDate: "03/01/2024",
-          raiReceivedDate: "03/31/2024",
-        },
-      ],
-      [
-        "an item that is approved",
-        approvedDoc,
-        {
-          hasActions,
-          status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-          submissionDate: "12/31/2023",
-          makoChangedDate: "01/31/2024",
-          finalDispositionDate: "05/01/2024",
-        },
-      ],
-      [
-        "a blank item",
-        blankDoc,
-        {
-          hasActions,
-          status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
-        },
-      ],
-    ])("should display the correct values for a row with %s", async (_title, doc, expected) => {
-      await setupForUser(true);
+      const rowCases = [
+        [
+          pendingDoc,
+          {
+            hasActions,
+            status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
+            submissionDate: "12/31/2023",
+            makoChangedDate: "01/31/2024",
+          },
+        ],
+        [
+          raiRequestDoc,
+          {
+            hasActions,
+            status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
+            submissionDate: "12/31/2023",
+            makoChangedDate: "01/31/2024",
+            raiRequestedDate: "03/01/2024",
+          },
+        ],
+        [
+          raiReceivedDoc,
+          {
+            hasActions,
+            status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
+            submissionDate: "12/31/2023",
+            makoChangedDate: "01/31/2024",
+            raiRequestedDate: "03/01/2024",
+            raiReceivedDate: "03/31/2024",
+          },
+        ],
+        [
+          withdrawEnabledDoc,
+          {
+            hasActions,
+            status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
+            submissionDate: "12/31/2023",
+            makoChangedDate: "01/31/2024",
+            raiRequestedDate: "03/01/2024",
+            raiReceivedDate: "03/31/2024",
+          },
+        ],
+        [
+          withdrawDisabledDoc,
+          {
+            hasActions,
+            status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
+            submissionDate: "12/31/2023",
+            makoChangedDate: "01/31/2024",
+            raiRequestedDate: "03/01/2024",
+            raiReceivedDate: "03/31/2024",
+          },
+        ],
+        [
+          approvedDoc,
+          {
+            hasActions,
+            status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
+            submissionDate: "12/31/2023",
+            makoChangedDate: "01/31/2024",
+            finalDispositionDate: "05/01/2024",
+          },
+        ],
+        [
+          blankDoc,
+          {
+            hasActions,
+            status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
+          },
+        ],
+      ] as const;
 
-      verifyRow(doc, expected);
-    });
+      for (const [doc, expected] of rowCases) {
+        verifyRow(doc, expected);
+      }
 
-    it("should handle export", async () => {
       const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
-      const { user } = await setupForUser(true);
+      const user = userEvent.setup();
 
       await user.click(screen.getByTestId("export-csv-btn"));
 
