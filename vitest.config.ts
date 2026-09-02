@@ -4,6 +4,16 @@ import { configDefaults, defineConfig } from "vitest/config";
 
 const projectTestTimeout = 15000;
 
+// Keep the CDK-heavy Node tests from competing with jsdom projects on the
+// smaller GitHub Actions runners. Tests within each project still run in
+// parallel, while the projects themselves run in this order.
+const projectGroupOrder = {
+  lib: 0,
+  email: 1,
+  ui: 2,
+  storybook: 2,
+} as const;
+
 export default defineConfig({
   test: {
     globals: true,
@@ -18,6 +28,7 @@ export default defineConfig({
           exclude: ["**/node_modules/**", "./libs/email/**"],
           environment: "node",
           testTimeout: projectTestTimeout,
+          sequence: { groupOrder: projectGroupOrder.lib },
         },
       },
       {
@@ -28,6 +39,7 @@ export default defineConfig({
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
           testTimeout: projectTestTimeout,
+          sequence: { groupOrder: projectGroupOrder.email },
         },
       },
       {
@@ -39,6 +51,7 @@ export default defineConfig({
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
           testTimeout: projectTestTimeout,
+          sequence: { groupOrder: projectGroupOrder.ui },
         },
       },
       {
@@ -56,6 +69,7 @@ export default defineConfig({
           root: "./react-app",
           setupFiles: "./.storybook/vitest.setup.ts",
           testTimeout: projectTestTimeout,
+          sequence: { groupOrder: projectGroupOrder.storybook },
         },
       },
     ],
