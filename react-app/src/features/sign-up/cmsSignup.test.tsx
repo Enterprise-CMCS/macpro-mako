@@ -1,5 +1,4 @@
 import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import {
   cmsRoleApprover,
   defaultCMSUser,
@@ -10,13 +9,13 @@ import {
 import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
-import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
+import { renderWithQueryClientAndMemoryRouter, setupTestUser } from "@/utils/test-helpers";
 
 import { CMSSignup } from "./cmsSignup";
 
 describe("CMSSignup", () => {
   const setup = async () => {
-    const user = userEvent.setup();
+    const user = setupTestUser();
     const rendered = renderWithQueryClientAndMemoryRouter(
       <CMSSignup />,
       [

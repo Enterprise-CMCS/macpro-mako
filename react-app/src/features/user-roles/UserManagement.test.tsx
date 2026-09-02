@@ -1,5 +1,4 @@
 import { screen, waitFor, waitForElementToBeRemoved, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import {
   CMS_ROLE_APPROVER_EMAIL,
   cmsRoleApprover,
@@ -12,14 +11,14 @@ import {
 import { describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
-import { renderWithQueryClientAndMemoryRouter } from "@/utils/test-helpers";
+import { renderWithQueryClientAndMemoryRouter, setupTestUser } from "@/utils/test-helpers";
 
 import { UserManagement } from "./UserManagement";
 import { UserRoleType } from "./utils";
 
 describe("UserManagement", () => {
   const setup = async () => {
-    const user = userEvent.setup();
+    const user = setupTestUser();
     const rendered = renderWithQueryClientAndMemoryRouter(
       <UserManagement />,
       [

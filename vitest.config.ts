@@ -4,11 +4,11 @@ import { configDefaults, defineConfig } from "vitest/config";
 
 const projectTestTimeout = 15000;
 const ciUiTestTimeout = process.env.CI ? 60000 : projectTestTimeout;
-const ciUiMaxWorkers = process.env.CI ? 1 : undefined;
+const ciUiMaxWorkers = process.env.CI ? 2 : undefined;
 
 // Keep the CDK-heavy Node tests from competing with jsdom projects on the
-// smaller GitHub Actions runners. Projects run in this order, and CI runs UI
-// files on one worker so user-event timers are not starved by parallel jsdom.
+// smaller GitHub Actions runners. Projects run in this order, and CI bounds UI
+// concurrency so jsdom workers do not oversubscribe the runner.
 const projectGroupOrder = {
   lib: 0,
   email: 1,

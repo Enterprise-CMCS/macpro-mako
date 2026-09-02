@@ -1,11 +1,11 @@
 import { screen, waitFor, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { setMockUsername, TEST_REVIEWER_USERNAME, TEST_SPA_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import {
   mockApiRefinements,
   renderFormWithPackageSectionAsync,
+  setupTestUser,
   skipCleanup,
 } from "@/utils/test-helpers";
 
@@ -26,7 +26,7 @@ describe("SplitSpaForm", () => {
     skipCleanup();
     mockApiRefinements();
 
-    user = userEvent.setup();
+    user = setupTestUser();
     setMockUsername(TEST_REVIEWER_USERNAME);
     await renderFormWithPackageSectionAsync(<SplitSpaForm />, TEST_SPA_ITEM_ID, "Medicaid SPA");
   });
