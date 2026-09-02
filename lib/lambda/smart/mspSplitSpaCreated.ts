@@ -70,6 +70,11 @@ interface ParentPackage extends SearchHit<opensearch.main.Document> {
   found: true;
 }
 
+interface ParentPackageResolution {
+  parent: ParentPackage;
+  shouldBackfillSpaWaiverId: boolean;
+}
+
 interface SplitPackageDocument extends Record<string, unknown> {
   id: string;
 }
@@ -135,9 +140,11 @@ const reportValidationFailure = async (
 
 const findParentPackage = async (
   event: SmartSplitSpaCreatedEvent,
-): Promise<ParentPackage | undefined> => {
+): Promise<ParentPackageResolution | undefined> => {
   // The Kafka key is intentionally not used here because SMART may send either
-  // the original or split package ID. The external identifier is authoritative.
+  // the original or split package ID. Prefer the external identifier, then use
+  // the original package ID to link a legacy OneMAC parent that SMART has not
+  // touched yet.
   const { domain, index } = getDomainAndNamespace("main");
   const result = await os.search(domain, index, {
     size: 3,
@@ -154,14 +161,41 @@ const findParentPackage = async (
     (hit) => (hit._source.id ?? hit._id).toUpperCase() === originalSpaId,
   );
 
-  if (hits.length !== 1 || matchingHits.length !== 1) {
+  if (hits.length > 0) {
+    if (hits.length !== 1 || matchingHits.length !== 1) {
+      return undefined;
+    }
+
+    const [parent] = matchingHits;
+    return {
+      parent: {
+        ...parent,
+        found: true,
+      },
+      shouldBackfillSpaWaiverId: false,
+    };
+  }
+
+  const parentById = await os.getItem(domain, index, originalSpaId);
+  if (!parentById?._source) {
     return undefined;
   }
 
-  const [parent] = matchingHits;
+  const parentId = (parentById._source.id ?? parentById._id).toUpperCase();
+  const storedSpaWaiverId = parentById._source.spaWaiverId?.trim();
+  if (
+    parentId !== originalSpaId ||
+    (storedSpaWaiverId && storedSpaWaiverId !== event.originalSpaWaiverId)
+  ) {
+    return undefined;
+  }
+
   return {
-    ...parent,
-    found: true,
+    parent: {
+      ...parentById,
+      found: true,
+    },
+    shouldBackfillSpaWaiverId: !storedSpaWaiverId,
   };
 };
 
@@ -380,20 +414,31 @@ export const handleMspSplitSpaCreated = async (context: SmartOnemacEventContext)
     return;
   }
 
-  const [parent, parentChangelog] = await Promise.all([
+  const [parentResolution, parentChangelog] = await Promise.all([
     findParentPackage(event),
     getPackageChangelog(event.originalSpaId.toUpperCase()),
   ]);
   if (
-    !parent ||
-    parent._source.authority !== "Medicaid SPA" ||
-    isHiddenSmartReservation(parent._source)
+    !parentResolution ||
+    parentResolution.parent._source.deleted === true ||
+    parentResolution.parent._source.authority !== "Medicaid SPA" ||
+    isHiddenSmartReservation(parentResolution.parent._source)
   ) {
     await reportValidationFailure(
       context,
-      new Error("originalSpaWaiverId did not resolve to the requested visible Medicaid SPA"),
+      new Error(
+        "originalSpaWaiverId/originalSpaId did not resolve to the requested visible Medicaid SPA",
+      ),
     );
     return;
+  }
+
+  const { parent, shouldBackfillSpaWaiverId } = parentResolution;
+  if (shouldBackfillSpaWaiverId) {
+    const { domain, index } = getDomainAndNamespace("main");
+    await os.updateItem(domain, index, event.originalSpaId.toUpperCase(), {
+      spaWaiverId: event.originalSpaWaiverId,
+    });
   }
 
   const splitPackage = buildSplitPackage(event, parent);

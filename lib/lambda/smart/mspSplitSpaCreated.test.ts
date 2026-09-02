@@ -192,6 +192,88 @@ describe("handleMspSplitSpaCreated", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("finds an untouched OneMAC parent by ID and backfills its external identifier", async () => {
+    const untouchedParent = {
+      found: true,
+      _id: ORIGINAL_ID,
+      _source: {
+        ...parentDocument,
+        spaWaiverId: undefined,
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>;
+    searchSpy.mockResolvedValueOnce(emptySearch);
+    getItemSpy.mockResolvedValueOnce(untouchedParent);
+
+    await handleMspSplitSpaCreated(createContext());
+
+    expect(getItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      ORIGINAL_ID,
+    );
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      ORIGINAL_ID,
+      { spaWaiverId: ORIGINAL_EXTERNAL_ID },
+    );
+    expect(createItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      expect.objectContaining({
+        id: SPLIT_ID,
+        originalSpaId: ORIGINAL_ID,
+        originalSpaWaiverId: ORIGINAL_EXTERNAL_ID,
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not overwrite a conflicting external identifier on an ID-resolved parent", async () => {
+    const conflictingParent = {
+      found: true,
+      _id: ORIGINAL_ID,
+      _source: {
+        ...parentDocument,
+        spaWaiverId: "a0ncp000006Different",
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>;
+    searchSpy.mockResolvedValueOnce(emptySearch);
+    getItemSpy.mockResolvedValueOnce(conflictingParent);
+
+    await handleMspSplitSpaCreated(createContext());
+
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ errorCode: "VALIDATION" }),
+    );
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not split a deleted parent found by the ID fallback", async () => {
+    const deletedParent = {
+      found: true,
+      _id: ORIGINAL_ID,
+      _source: {
+        ...parentDocument,
+        deleted: true,
+        spaWaiverId: undefined,
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>;
+    searchSpy.mockResolvedValueOnce(emptySearch);
+    getItemSpy.mockResolvedValueOnce(deletedParent);
+
+    await handleMspSplitSpaCreated(createContext());
+
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ errorCode: "VALIDATION" }),
+    );
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
+  });
+
   it("copies the split-time activity snapshot and adds a deterministic administrative event", async () => {
     await handleMspSplitSpaCreated(createContext());
 
@@ -381,7 +463,7 @@ describe("handleMspSplitSpaCreated", () => {
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 
-  it("publishes validation when the external parent identifier is missing or ambiguous", async () => {
+  it("publishes validation when neither parent identifier resolves", async () => {
     searchSpy.mockResolvedValueOnce(emptySearch);
 
     await handleMspSplitSpaCreated(createContext());
@@ -392,6 +474,32 @@ describe("handleMspSplitSpaCreated", () => {
         payload: event,
       }),
     );
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not fall back by ID when another package owns the parent external identifier", async () => {
+    searchSpy.mockResolvedValueOnce({
+      hits: {
+        hits: [
+          {
+            _id: "AL-26-2222",
+            _source: {
+              ...parentDocument,
+              id: "AL-26-2222",
+            },
+          },
+        ],
+      },
+    });
+
+    await handleMspSplitSpaCreated(createContext());
+
+    expect(getItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ errorCode: "VALIDATION" }),
+    );
+    expect(updateItemSpy).not.toHaveBeenCalled();
     expect(createItemSpy).not.toHaveBeenCalled();
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
