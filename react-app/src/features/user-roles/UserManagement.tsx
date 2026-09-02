@@ -49,7 +49,20 @@ export const renderCellActions = (
   setSelectedUserRole: React.Dispatch<React.SetStateAction<object>>,
   isPopoverDisabled: boolean,
 ) => {
-  const actions = getUserRoleActions(userRole.status);
+  const actions = (function () {
+    switch (userRole.status) {
+      case "pending":
+        return ["Grant Access", "Deny Access"];
+      case "active":
+        return ["Revoke Access"];
+      case "denied":
+        return ["Grant Access"];
+      case "revoked":
+        return ["Grant Access"];
+      default:
+        return [];
+    }
+  })();
 
   const actionChosen = (action: string) => {
     const modalAction: Record<string, string> = {
@@ -111,20 +124,6 @@ export const renderCellActions = (
       )}
     </Popover>
   );
-};
-
-export const getUserRoleActions = (status: UserRoleType["status"]): string[] => {
-  switch (status) {
-    case "pending":
-      return ["Grant Access", "Deny Access"];
-    case "active":
-      return ["Revoke Access"];
-    case "denied":
-    case "revoked":
-      return ["Grant Access"];
-    default:
-      return [];
-  }
 };
 
 export const UserManagement = () => {
@@ -366,6 +365,7 @@ export const UserManagement = () => {
 
           <TableBody>
             {visibleUserRoles.map((userRole) => {
+              console.log(userDetails, userRole);
               const isPopoverDisabled =
                 !canManageUsers ||
                 (!["systemadmin", "cmsroleapprover"].includes(userDetails.role) &&

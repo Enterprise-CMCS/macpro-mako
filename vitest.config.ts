@@ -3,18 +3,6 @@ import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
 const projectTestTimeout = 15000;
-const ciUiTestTimeout = process.env.CI ? 60000 : projectTestTimeout;
-const ciUiMaxWorkers = process.env.CI ? 1 : undefined;
-
-// Keep the CDK-heavy Node tests from competing with jsdom projects on the
-// smaller GitHub Actions runners. Projects run in this order, and CI bounds UI
-// concurrency so jsdom workers do not oversubscribe the runner.
-const projectGroupOrder = {
-  lib: 0,
-  email: 1,
-  ui: 2,
-  storybook: 2,
-} as const;
 
 export default defineConfig({
   test: {
@@ -30,7 +18,6 @@ export default defineConfig({
           exclude: ["**/node_modules/**", "./libs/email/**"],
           environment: "node",
           testTimeout: projectTestTimeout,
-          sequence: { groupOrder: projectGroupOrder.lib },
         },
       },
       {
@@ -41,7 +28,6 @@ export default defineConfig({
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
           testTimeout: projectTestTimeout,
-          sequence: { groupOrder: projectGroupOrder.email },
         },
       },
       {
@@ -52,9 +38,7 @@ export default defineConfig({
           setupFiles: "vitest.setup.ts",
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
-          testTimeout: ciUiTestTimeout,
-          maxWorkers: ciUiMaxWorkers,
-          sequence: { groupOrder: projectGroupOrder.ui },
+          testTimeout: projectTestTimeout,
         },
       },
       {
@@ -72,7 +56,6 @@ export default defineConfig({
           root: "./react-app",
           setupFiles: "./.storybook/vitest.setup.ts",
           testTimeout: projectTestTimeout,
-          sequence: { groupOrder: projectGroupOrder.storybook },
         },
       },
     ],

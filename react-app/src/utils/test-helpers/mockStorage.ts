@@ -20,6 +20,7 @@ export class Storage<Key extends string = string> {
    * Returns the current value associated with the given key, or null if the given key does not exist.
    */
   public getItem(key: Key): string | null {
+    console.log(`getting item for key: ${key} value: ${this[STORAGE_MAP_SYMBOL].get(key) || null}`);
     return this[STORAGE_MAP_SYMBOL].get(key) || null;
   }
 
@@ -27,6 +28,7 @@ export class Storage<Key extends string = string> {
    * Returns the name of the nth key, or null if n is greater than or equal to the number of key/value pairs.
    */
   public key(index: number): string | null {
+    console.log(`looking for key index: ${index}`);
     const keys = Array.from(this[STORAGE_MAP_SYMBOL].keys());
     return keys[index] || null;
   }
@@ -39,6 +41,7 @@ export class Storage<Key extends string = string> {
    * event on Window because there's no window.
    */
   public setItem(key: Key, value: string): void {
+    console.log(`setting ${key}: ${value}`);
     this[STORAGE_MAP_SYMBOL].set(key, value);
   }
 
@@ -48,6 +51,7 @@ export class Storage<Key extends string = string> {
    * Does not dispatch the storage event on Window.
    */
   public removeItem(key: Key): void {
+    console.log(`removing item for key: ${key}`);
     this[STORAGE_MAP_SYMBOL].delete(key);
   }
 

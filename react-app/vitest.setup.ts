@@ -16,26 +16,6 @@ import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from "vitest";
 
 import { Storage as MockStorage } from "./src/utils/test-helpers/mockStorage";
 
-// user-event's default pointer check repeatedly walks computed styles through
-// deeply nested Radix portals. That is useful in a browser, but prohibitively
-// expensive in jsdom on GitHub runners; Playwright retains browser-level
-// pointer interaction coverage.
-vi.mock("@testing-library/user-event", async (importOriginal) => {
-  const original = await importOriginal<typeof import("@testing-library/user-event")>();
-  const ciOptions = process.env.CI
-    ? { pointerEventsCheck: original.PointerEventsCheckLevel.Never }
-    : {};
-
-  return {
-    ...original,
-    default: {
-      ...original.default,
-      setup: (options?: Parameters<typeof original.default.setup>[0]) =>
-        original.default.setup({ ...ciOptions, ...options }),
-    },
-  };
-});
-
 // TODO to mock
 // [MSW] Warning: intercepted a request without a matching request handler:
 //   • GET http://example.com/file1.md

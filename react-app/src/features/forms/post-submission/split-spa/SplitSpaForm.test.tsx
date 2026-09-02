@@ -1,11 +1,11 @@
-import { screen, waitFor } from "@testing-library/react";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { setMockUsername, TEST_REVIEWER_USERNAME, TEST_SPA_ITEM_ID } from "mocks";
 import { beforeAll, describe, expect, it } from "vitest";
 
 import {
   mockApiRefinements,
   renderFormWithPackageSectionAsync,
-  setupTestUser,
   skipCleanup,
 } from "@/utils/test-helpers";
 
@@ -26,7 +26,7 @@ describe("SplitSpaForm", () => {
     skipCleanup();
     mockApiRefinements();
 
-    user = setupTestUser();
+    user = userEvent.setup();
     setMockUsername(TEST_REVIEWER_USERNAME);
     await renderFormWithPackageSectionAsync(<SplitSpaForm />, TEST_SPA_ITEM_ID, "Medicaid SPA");
   });
@@ -97,6 +97,30 @@ describe("SplitSpaForm", () => {
     expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-B`)).toBeInTheDocument();
     expect(screen.getByTestId(`4. ${TEST_SPA_ITEM_ID}-C`)).toBeInTheDocument();
     expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument();
+  });
+
+  it("should keep the edited suffices when changing the splitCount", async () => {
+    await selectSplitCount("5");
+    await waitFor(() => expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument());
+
+    const spaId3 = screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-B`);
+    await user.click(within(spaId3).getByRole("button", { name: "Edit" }));
+    await user.type(within(spaId3).getByLabelText(`${TEST_SPA_ITEM_ID} split number 3`), "anana");
+    await user.click(within(spaId3).getByRole("button", { name: "Save" }));
+
+    expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
+    expect(screen.getByTestId(`2. ${TEST_SPA_ITEM_ID}-A`)).toBeInTheDocument();
+    expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-Banana`)).toBeInTheDocument();
+    expect(screen.getByTestId(`4. ${TEST_SPA_ITEM_ID}-C`)).toBeInTheDocument();
+    expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument();
+
+    await user.click(screen.getByLabelText(/Select number of splits/));
+    await user.click(screen.getByRole("option", { name: "3" }));
+
+    await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
+    expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
+    expect(screen.getByTestId(`2. ${TEST_SPA_ITEM_ID}-A`)).toBeInTheDocument();
+    expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-Banana`)).toBeInTheDocument();
   });
 
   it("submit button should be disabled before requestor is set", async () => {

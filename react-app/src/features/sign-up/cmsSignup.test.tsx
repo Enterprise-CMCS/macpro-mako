@@ -1,4 +1,5 @@
-import { fireEvent, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import { screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import {
   cmsRoleApprover,
   defaultCMSUser,
@@ -15,6 +16,7 @@ import { CMSSignup } from "./cmsSignup";
 
 describe("CMSSignup", () => {
   const setup = async () => {
+    const user = userEvent.setup();
     const rendered = renderWithQueryClientAndMemoryRouter(
       <CMSSignup />,
       [
@@ -52,21 +54,8 @@ describe("CMSSignup", () => {
     }
     return {
       ...rendered,
+      user,
     };
-  };
-
-  const selectGroupAndDivision = async () => {
-    const submitButton = screen.getByRole("button", { name: "Submit" });
-
-    fireEvent.click(screen.getByRole("combobox", { name: /Select group/ }));
-    fireEvent.click(await screen.findByText("Disabled & Elderly Health Programs Group"));
-    expect(submitButton).toBeDisabled();
-
-    fireEvent.click(await screen.findByRole("combobox", { name: /Select division/ }));
-    fireEvent.click(await screen.findByText("Div of Health Homes, PACE & COB/TPL"));
-    await waitFor(() => expect(submitButton).toBeEnabled());
-
-    return submitButton;
   };
 
   it("should navigate to / if the user is not logged in", async () => {
@@ -98,10 +87,30 @@ describe("CMSSignup", () => {
 
   it("should handle filling out the form", async () => {
     setMockUsername(defaultCMSUser);
-    await setup();
+    const { user } = await setup();
 
-    const submitButton = await selectGroupAndDivision();
-    fireEvent.click(submitButton);
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+    expect(submitButton).toBeDisabled();
+
+    await user.click(screen.getByRole("combobox", { name: /Select group/ }));
+    expect(submitButton).toBeDisabled();
+
+    await waitFor(() =>
+      expect(screen.getByText("Disabled & Elderly Health Programs Group")).toBeInTheDocument(),
+    );
+    await user.click(screen.getByText("Disabled & Elderly Health Programs Group"));
+    expect(submitButton).toBeDisabled();
+
+    await user.click(screen.getByRole("combobox", { name: /Select division/ }));
+    expect(submitButton).toBeDisabled();
+
+    await waitFor(() =>
+      expect(screen.getByText("Div of Health Homes, PACE & COB/TPL")).toBeInTheDocument(),
+    );
+    await user.click(screen.getByText("Div of Health Homes, PACE & COB/TPL"));
+    expect(submitButton).toBeEnabled();
+
+    await user.click(submitButton);
 
     await waitFor(() => expect(screen.getByText("Dashboard")).toBeInTheDocument());
   });
@@ -109,12 +118,31 @@ describe("CMSSignup", () => {
   it("should show an error if there was an error submitting the request", async () => {
     mockedServer.use(errorApiSubmitRoleRequestsHandler);
     setMockUsername(defaultCMSUser);
-    await setup();
+    const { user } = await setup();
 
-    fireEvent.click(await selectGroupAndDivision());
+    const submitButton = screen.getByRole("button", { name: "Submit" });
+    expect(submitButton).toBeDisabled();
+
+    await user.click(screen.getByRole("combobox", { name: /Select group/ }));
+    expect(submitButton).toBeDisabled();
 
     await waitFor(() =>
-      expect(screen.getByText("Registration: CMS Role Approver Access")).toBeInTheDocument(),
+      expect(screen.getByText("Disabled & Elderly Health Programs Group")).toBeInTheDocument(),
     );
+    await user.click(screen.getByText("Disabled & Elderly Health Programs Group"));
+    expect(submitButton).toBeDisabled();
+
+    await user.click(screen.getByRole("combobox", { name: /Select division/ }));
+    expect(submitButton).toBeDisabled();
+
+    await waitFor(() =>
+      expect(screen.getByText("Div of Health Homes, PACE & COB/TPL")).toBeInTheDocument(),
+    );
+    await user.click(screen.getByText("Div of Health Homes, PACE & COB/TPL"));
+    expect(submitButton).toBeEnabled();
+
+    await user.click(submitButton);
+
+    expect(screen.getByText("Registration: CMS Role Approver Access")).toBeInTheDocument();
   });
 });
