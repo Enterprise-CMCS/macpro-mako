@@ -1,3 +1,5 @@
+import { pathToFileURL } from "node:url";
+
 import {
   CloudFormationClient,
   DescribeStacksCommand,
@@ -51,6 +53,16 @@ const INTEGRATION_PAIRS: Record<IntegrationPair, IntegrationPairConfig> = {
 interface BigmacQueueOutputs {
   queueUrl: string;
   queueArn: string;
+}
+
+export function mergeProducerAccounts(
+  existingAccounts: Record<string, unknown>,
+  onemacAccountId: string,
+): Record<string, unknown> {
+  return {
+    ...existingAccounts,
+    onemac: onemacAccountId,
+  };
 }
 
 function parseArgs(argv: string[]): ScriptOptions {
@@ -176,6 +188,16 @@ async function readBigmacQueueOutputs(
   return { queueUrl: exportedUrl, queueArn: exportedArn };
 }
 
+function isResourceNotFoundError(error: unknown): boolean {
+  return (
+    (typeof error === "object" &&
+      error !== null &&
+      "name" in error &&
+      error.name === "ResourceNotFoundException") ||
+    (error instanceof Error && error.message.includes("ResourceNotFoundException"))
+  );
+}
+
 async function readSecretJson(
   client: SecretsManagerClient,
   secretName: string,
@@ -193,6 +215,9 @@ async function readSecretJson(
 
     return parsed as Record<string, unknown>;
   } catch (error) {
+    if (isResourceNotFoundError(error)) {
+      throw error;
+    }
     const message = error instanceof Error ? error.message : String(error);
     throw new Error(`Failed to read secret ${secretName}: ${message}`);
   }
@@ -229,8 +254,7 @@ async function writeSecretJson(
       }),
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (!message.includes("ResourceNotFoundException")) {
+    if (!isResourceNotFoundError(error)) {
       throw error;
     }
 
@@ -257,11 +281,22 @@ async function ensureBigmacProducerSecret(
     throw new Error("Unable to resolve a 12-digit OneMAC account id from STS");
   }
 
-  const secretPayload = JSON.stringify({ onemac: onemacAccountId }, null, 2);
+  let existingAccounts: Record<string, unknown> = {};
+  try {
+    existingAccounts = await readSecretJson(bigmacSecretsClient, secretId);
+  } catch (error) {
+    if (!isResourceNotFoundError(error)) {
+      throw error;
+    }
+  }
+
+  const mergedAccounts = mergeProducerAccounts(existingAccounts, onemacAccountId);
+  const secretPayload = JSON.stringify(mergedAccounts, null, 2);
 
   if (dryRun) {
-    console.log(`[dry-run] Would upsert BigMAC secret ${secretId}:`);
-    console.log(secretPayload);
+    console.log(
+      `[dry-run] Would merge onemac account ${onemacAccountId} into BigMAC secret ${secretId} while preserving ${Object.keys(existingAccounts).length} existing entries.`,
+    );
     return;
   }
 
@@ -273,8 +308,7 @@ async function ensureBigmacProducerSecret(
       }),
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    if (!message.includes("ResourceNotFoundException")) {
+    if (!isResourceNotFoundError(error)) {
       throw error;
     }
 
@@ -365,7 +399,9 @@ async function main(): Promise<void> {
   );
 }
 
-main().catch((error) => {
-  console.error(error);
-  process.exitCode = 1;
-});
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+  });
+}

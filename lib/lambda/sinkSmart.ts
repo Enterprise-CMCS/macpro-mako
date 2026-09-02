@@ -20,6 +20,8 @@ const reportSmartIngestFailure = async (
     ...failure,
     topicPartition,
     topic: failure.topic ?? getTopic(topicPartition) ?? kafkaRecord.topic ?? SMART_ONEMAC_TOPIC,
+    kafkaOffset: kafkaRecord.offset,
+    kafkaTimestamp: kafkaRecord.timestamp,
   });
 };
 
@@ -46,12 +48,23 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           continue;
         }
 
-        await dispatchSmartOnemacEvent(parsedEvent.data, topicPartition);
+        await dispatchSmartOnemacEvent(parsedEvent.data, {
+          topicPartition,
+          kafkaKey: parsedRecord.kafkaKey,
+          kafkaOffset: kafkaRecord.offset,
+          kafkaTimestamp: kafkaRecord.timestamp,
+        });
       } catch (error) {
         logError({
           type: ErrorType.UNKNOWN,
           error,
-          metadata: { topicPartition, kafkaRecord },
+          metadata: {
+            topicPartition,
+            topic: kafkaRecord.topic,
+            partition: kafkaRecord.partition,
+            offset: kafkaRecord.offset,
+            timestamp: kafkaRecord.timestamp,
+          },
         });
         throw error;
       }

@@ -5,6 +5,7 @@ import { APIGatewayEvent, APIGatewayProxyEventHeaders, Context } from "aws-lambd
 import * as packageApi from "libs/api/package";
 import { GET_ERROR_ITEM_ID, NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import items from "mocks/data/items";
+import { SMART_RECORD_TYPE } from "shared-types";
 import { main } from "shared-types/opensearch";
 import { describe, expect, it, vi } from "vitest";
 
@@ -174,7 +175,7 @@ describe("fetchPackage", () => {
     getPackageSpy.mockRestore();
   });
 
-  it("should store a SMART package when allowNotFound is true", async () => {
+  it("should return 404 for a hidden SMART reservation even when allowNotFound is true", async () => {
     const event = {
       body: JSON.stringify({ id: "AL-26-0817-0001" }),
       headers: {
@@ -188,6 +189,66 @@ describe("fetchPackage", () => {
         id: "AL-26-0817-0001",
         origin: "SMART",
         seatoolStatus: "Intake Needed",
+      },
+    } as main.ItemResult;
+    const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce(smartPackage);
+    const handler = setupHandler({ options: { allowNotFound: true } });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
+    getPackageSpy.mockRestore();
+  });
+
+  it("should store a hidden SMART reservation when explicitly allowed for occupancy checks", async () => {
+    const event = {
+      body: JSON.stringify({ id: "AL-26-0817-0001" }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+    const smartReservation = {
+      found: true,
+      _id: "AL-26-0817-0001",
+      _source: {
+        id: "AL-26-0817-0001",
+        origin: "SMART",
+        seatoolStatus: "Intake Needed",
+      },
+    } as main.ItemResult;
+    const getPackageSpy = vi
+      .spyOn(packageApi, "getPackage")
+      .mockResolvedValueOnce(smartReservation);
+    const handler = setupHandler({
+      expectedPackage: smartReservation,
+      options: { allowNotFound: true, allowHiddenSmartReservations: true },
+    });
+
+    const res = await handler(event, {} as Context);
+
+    expect(res).toBeTruthy();
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toEqual("OK");
+    getPackageSpy.mockRestore();
+  });
+
+  it("should store a completed SMART package", async () => {
+    const event = {
+      body: JSON.stringify({ id: "AL-26-0817-0001-TEST" }),
+      headers: {
+        "Content-Type": "application/json",
+      } as APIGatewayProxyEventHeaders,
+    } as APIGatewayEvent;
+    const smartPackage = {
+      found: true,
+      _id: "AL-26-0817-0001-TEST",
+      _source: {
+        id: "AL-26-0817-0001-TEST",
+        origin: "SMART",
+        smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+        seatoolStatus: "Pending",
       },
     } as main.ItemResult;
     const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce(smartPackage);

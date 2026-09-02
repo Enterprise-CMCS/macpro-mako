@@ -1,5 +1,5 @@
 import { handleDefaultSmartOnemacEvent } from "./defaultSmartOnemacEvent";
-import { evaluateSmartPackageExistence } from "./evaluateSmartPackageExistence";
+import { evaluateSmartPackageExistence, SmartKafkaMetadata } from "./evaluateSmartPackageExistence";
 import { handleMspAdministrativeFieldUpdated } from "./mspAdministrativeFieldUpdated";
 import { handleMspAssignmentUpdated } from "./mspAssignmentUpdated";
 import { getStateFromPackageId, handleMspManualRecordCreated } from "./mspManualRecordCreated";
@@ -25,24 +25,24 @@ const isSmartOperationType = (operationType: unknown): operationType is SmartOpe
 
 export const dispatchSmartOnemacEvent = async (
   event: SmartOnemacEvent,
-  topicPartition: string,
+  metadata: SmartKafkaMetadata,
 ): Promise<void> => {
   // Skip existence lookups for unknown state prefixes; persist publishes VALIDATION.
   if (!getStateFromPackageId(event.id)) {
     await persistSmartOnemacEvent({
       event,
+      ...metadata,
       existence: {
         mainById: undefined,
         mainBySpaWaiverId: undefined,
         changelogById: undefined,
       },
-      topicPartition,
     });
     return;
   }
 
   const existence = await evaluateSmartPackageExistence(event);
-  const context = { event, existence, topicPartition };
+  const context = { event, existence, ...metadata };
   const { operationType } = event;
 
   if (!isSmartOperationType(operationType)) {

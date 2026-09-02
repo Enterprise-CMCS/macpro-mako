@@ -54,6 +54,8 @@ describe("publishSmartIngestError", () => {
       topic: "aws.mulesoft.onemac.events",
       topicPartition: "aws.mulesoft.onemac.events-0",
       kafkaKey: "AL-26-0817-0001",
+      kafkaOffset: 42,
+      kafkaTimestamp: 1786995273000,
       correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
       payload: { origin: "smart" },
     });
@@ -83,6 +85,8 @@ describe("publishSmartIngestError", () => {
         topic: "aws.mulesoft.onemac.events",
         topicPartition: "aws.mulesoft.onemac.events-0",
         kafkaKey: "AL-26-0817-0001",
+        kafkaOffset: 42,
+        kafkaTimestamp: 1786995273000,
         correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
         payload: { origin: "smart" },
       },
@@ -125,6 +129,34 @@ describe("publishSmartIngestError", () => {
     expect(body.details.payload).not.toHaveProperty("createdByUserId");
   });
 
+  it("redacts creator PII recursively from arrays and nested objects", async () => {
+    await publishSmartIngestError({
+      errorCode: "VALIDATION",
+      topicPartition: "aws.mulesoft.onemac.events-0",
+      payload: [
+        {
+          id: "AL-26-0817-0001",
+          createdByEmail: "alice@example.com",
+          nested: {
+            createdByName: "Alice Jones",
+            keep: "diagnostic-value",
+          },
+        },
+        { createdByUserId: "005cp00000Jqq9HAAR", status: "Intake Needed" },
+      ],
+    });
+
+    const command = send.mock.calls[0]?.[0] as { input: Record<string, unknown> };
+    const body = JSON.parse(String(command.input.MessageBody)) as {
+      details: Record<string, unknown>;
+    };
+
+    expect(body.details.payload).toEqual([
+      { id: "AL-26-0817-0001", nested: { keep: "diagnostic-value" } },
+      { status: "Intake Needed" },
+    ]);
+  });
+
   it("maps BADPARSE to an unparseable-record nature while keeping errorType=validation", async () => {
     await publishSmartIngestError({
       errorCode: "BADPARSE",
@@ -149,6 +181,23 @@ describe("publishSmartIngestError", () => {
     );
     expect(String(body.message)).toContain("invalid base64");
     expect(body.details).toMatchObject({ errorCode: "BADPARSE" });
+    expect(body.details).not.toHaveProperty("payload");
+  });
+
+  it("omits a raw malformed JSON string from the BigMAC payload", async () => {
+    await publishSmartIngestError({
+      errorCode: "BADPARSE",
+      topicPartition: "aws.mulesoft.onemac.events-0",
+      payload: '{"createdByEmail":"alice@example.com"',
+    });
+
+    const command = send.mock.calls[0]?.[0] as { input: Record<string, unknown> };
+    const body = JSON.parse(String(command.input.MessageBody)) as {
+      details: Record<string, unknown>;
+    };
+
+    expect(body.details).not.toHaveProperty("payload");
+    expect(String(command.input.MessageBody)).not.toContain("alice@example.com");
   });
 
   it.each([

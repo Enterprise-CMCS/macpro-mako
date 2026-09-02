@@ -15,7 +15,7 @@ import {
   TEST_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks/data/items";
-import { Action, SEATOOL_STATUS } from "shared-types";
+import { Action, SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./getPackageActions";
@@ -173,6 +173,28 @@ describe("getPackageActions Handler", () => {
         _source: {
           ...smartReservation,
           origin: "OneMAC",
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event);
+
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toEqual(JSON.stringify({ actions: [] }));
+    });
+
+    it("returns no actions for a completed Submitted SMART package", async () => {
+      setMockUsername(testStateSubmitter);
+      vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+          seatoolStatus: SEATOOL_STATUS.SUBMITTED,
         },
       } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
       const event = {

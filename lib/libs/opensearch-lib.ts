@@ -172,10 +172,24 @@ export async function createItem(
   }
 }
 
+export interface BulkUpdateOptions {
+  throwOnBulkError?: boolean;
+}
+
+export const assertBulkUpdateSucceeded = (
+  result: { errors?: boolean },
+  options: BulkUpdateOptions = {},
+): void => {
+  if (result.errors && options.throwOnBulkError) {
+    throw new Error("OpenSearch bulk update completed with item errors");
+  }
+};
+
 export async function bulkUpdateData(
   host: string,
   index: string,
   arrayOfDocuments: Document[],
+  options: BulkUpdateOptions = {},
 ): Promise<void> {
   if (arrayOfDocuments.length === 0) {
     console.log("No documents to update. Skipping bulk update operation.");
@@ -209,10 +223,9 @@ export async function bulkUpdateData(
           await sleep(delay);
           return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
         }
-        if (!hasRateLimitErrors) {
-          // Handle or throw other errors normally
-          console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
-        }
+
+        console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
+        assertBulkUpdateSucceeded(response.body, options);
       } else {
         console.log("Bulk update successful.");
       }

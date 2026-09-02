@@ -9,10 +9,16 @@ export interface SmartPackageExistence {
   changelogById: Awaited<ReturnType<typeof os.search>>;
 }
 
-export interface SmartOnemacEventContext {
+export interface SmartKafkaMetadata {
+  topicPartition: string;
+  kafkaKey?: string;
+  kafkaOffset?: number;
+  kafkaTimestamp?: number;
+}
+
+export interface SmartOnemacEventContext extends SmartKafkaMetadata {
   event: SmartOnemacEvent;
   existence: SmartPackageExistence;
-  topicPartition: string;
 }
 
 export const evaluateSmartPackageExistence = async (

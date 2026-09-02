@@ -29,7 +29,7 @@
 - Reusing the same consumer group resumes its committed offsets; `StartingPosition` is ignored.
 - Use `TRIM_HORIZON` or `AT_TIMESTAMP` only for a deliberate replay.
 - U1 is locked: do not remap or overwrite package status in this slice.
-- U2 is locked: SMART-origin packages stay out of every list and package detail.
+- SMART reservations stay out of every list and package detail. Completed SMART packages use the normal visibility rules.
 - U8 is locked: derive the two-letter state from the uppercased ID prefix and require a known `STATE_CODES` value.
 - U11 is locked: do not add SMART to reindex or `createTriggers`. Replay is manual.
 - Collision handling adds only missing `spaWaiverId` and `correlationId`. There is no collision log group.

@@ -10,7 +10,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomain } from "libs/utils";
 import { SEATOOL_STATUS } from "shared-types";
-import { getDraftAttachments } from "shared-utils";
+import { getDraftAttachments, isHiddenSmartReservation } from "shared-utils";
 
 import {
   getAttachmentErrorMessage,
@@ -391,7 +391,7 @@ export const handler = async (event: APIGatewayEvent) => {
     }
 
     const mainResult = await getPackage(normalizedId);
-    if (mainResult?._source?.origin === "SMART") {
+    if (isHiddenSmartReservation(mainResult?._source)) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },

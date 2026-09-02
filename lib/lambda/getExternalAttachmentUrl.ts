@@ -1,6 +1,7 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { opensearch } from "shared-types";
+import { isHiddenSmartReservation } from "shared-utils";
 
 import { sendAttachmentArchiveRebuildRequest } from "../attachment-archive/rebuild-queue";
 import { getPackage, getPackageChangelog } from "../libs/api/package";
@@ -270,7 +271,7 @@ async function handleArchiveRequest({
   request: ParsedArchiveRequest;
 }) {
   const mainResult = await getPackage(request.packageId);
-  if (!mainResult || !mainResult.found || mainResult._source?.origin === "SMART") {
+  if (!mainResult || !mainResult.found || isHiddenSmartReservation(mainResult._source)) {
     return response({
       statusCode: 404,
       body: { message: "No record found for the given packageId" },

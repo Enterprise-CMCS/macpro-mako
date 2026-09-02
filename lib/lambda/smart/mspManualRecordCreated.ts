@@ -1,4 +1,10 @@
-import { getStatus, SEATOOL_STATUS, STATE_CODES, type StateCode } from "shared-types";
+import {
+  getStatus,
+  SEATOOL_STATUS,
+  SMART_RECORD_TYPE,
+  STATE_CODES,
+  type StateCode,
+} from "shared-types";
 
 import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
@@ -15,6 +21,7 @@ const isNonEmptyString = (value: unknown): value is string =>
 export interface MspManualRecordCreated {
   id: string;
   origin: "SMART";
+  smartRecordType: typeof SMART_RECORD_TYPE.RESERVATION;
   deleted: false;
   seatoolStatus: typeof SEATOOL_STATUS.SUBMITTED;
   cmsStatus: string;
@@ -60,6 +67,7 @@ export const transformMspManualRecordCreated = (
   return {
     id: normalizedId,
     origin: "SMART",
+    smartRecordType: SMART_RECORD_TYPE.RESERVATION,
     deleted: false,
     seatoolStatus: SEATOOL_STATUS.SUBMITTED,
     cmsStatus,
