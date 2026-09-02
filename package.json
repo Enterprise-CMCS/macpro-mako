@@ -25,7 +25,7 @@
     "e2e": "turbo e2e",
     "e2e:ui": "turbo e2e:ui",
     "test-tsc": "tsc --skipLibCheck --noEmit",
-    "test": "vitest --project=lib --project=email --project=ui",
+    "test": "vitest --project=lib --project=email --project=ui --pool=forks",
     "test:coverage": "bun run test --coverage --pool=forks",
     "test:ui": "bun run test --ui",
     "test:storybook": "cd react-app && bun run test-storybook",

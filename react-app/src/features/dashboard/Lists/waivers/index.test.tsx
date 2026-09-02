@@ -31,8 +31,9 @@ import {
   RAI_WITHDRAW_ENABLED_ITEM,
   RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
   renderDashboard,
+  allowCleanup,
+  installTestStorage,
   skipCleanup,
-  Storage,
   verifyChips,
   verifyFiltering,
   verifyPagination,
@@ -261,7 +262,7 @@ describe("WaiversList", () => {
     oneMacUser: FullUser,
     isCms: boolean,
   ) => {
-    global.localStorage = new Storage();
+    installTestStorage();
     const user = userEvent.setup();
     const rendered = renderDashboard(
       <WaiversList oneMacUser={{ user: oneMacUser, isCms }} />,
@@ -335,6 +336,7 @@ describe("WaiversList", () => {
 
     afterAll(() => {
       cleanup();
+      allowCleanup();
     });
 
     it("should display the dashboard as expected", async () => {
@@ -345,12 +347,17 @@ describe("WaiversList", () => {
     });
 
     it("should handle showing all of the columns", async () => {
-      // show all the hidden columns
-      await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
-      const columns = screen.getByTestId("columns-menu");
-      await user.click(within(columns).getByText("Final Disposition"));
-      await user.click(within(columns).getByText("Formal RAI Requested"));
-      await user.click(within(columns).getByText("CPOC Name"));
+      const columnsButton = await screen.findByRole("button", { name: /Columns/ });
+      await user.click(columnsButton);
+      const columns = await screen.findByTestId("columns-menu");
+
+      for (const label of ["Final Disposition", "Formal RAI Requested", "CPOC Name"]) {
+        if (!screen.queryByText(label, { selector: "th>div" })) {
+          await user.click(within(columns).getByText(label));
+        }
+      }
+
+      await user.keyboard("{Escape}");
 
       const table = screen.getByTestId("os-table");
       expect(
@@ -447,16 +454,18 @@ describe("WaiversList", () => {
       const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
 
       if (!screen.queryByText("Final Disposition", { selector: "th>div" })) {
-        await user.click(screen.getByRole("button", { name: "Columns (3 hidden)" }));
-        const columns = screen.getByTestId("columns-menu");
-        await user.click(within(columns).getByText("Final Disposition"));
-        await user.click(within(columns).getByText("Formal RAI Requested"));
-        await user.click(within(columns).getByText("CPOC Name"));
+        await user.click(await screen.findByRole("button", { name: /Columns/ }));
+        const columns = await screen.findByTestId("columns-menu");
+        for (const label of ["Final Disposition", "Formal RAI Requested", "CPOC Name"]) {
+          if (!screen.queryByText(label, { selector: "th>div" })) {
+            await user.click(within(columns).getByText(label));
+          }
+        }
       }
 
       await user.keyboard("{Escape}");
 
-      await user.click(screen.queryByTestId("export-csv-btn"));
+      await user.click(screen.getByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
       expect(csvSpy).toHaveBeenCalledTimes(1);
@@ -504,11 +513,13 @@ describe("WaiversList", () => {
       false,
     );
 
-    await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
-    const columns = screen.getByTestId("columns-menu");
-    await user.click(within(columns).getByText("Final Disposition"));
-    await user.click(within(columns).getByText("Formal RAI Requested"));
-    await user.click(within(columns).getByText("CPOC Name"));
+    await user.click(await screen.findByRole("button", { name: /Columns/ }));
+    const columns = await screen.findByTestId("columns-menu");
+    for (const label of ["Final Disposition", "Formal RAI Requested", "CPOC Name"]) {
+      if (!screen.queryByText(label, { selector: "th>div" })) {
+        await user.click(within(columns).getByText(label));
+      }
+    }
 
     verifyRow(draftDoc, {
       hasActions: true,

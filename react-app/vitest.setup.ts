@@ -14,7 +14,8 @@ import { mockedApiServer as mockedServer } from "mocks/server";
 import * as React from "react";
 import { afterAll, afterEach, beforeAll, beforeEach, expect, vi } from "vitest";
 
-import { Storage as MockStorage } from "./src/utils/test-helpers/mockStorage";
+import { installTestStorage } from "./src/utils/test-helpers/mockStorage";
+import { resetSkipCleanup, shouldSkipCleanup } from "./src/utils/test-helpers/skipCleanup";
 
 // TODO to mock
 // [MSW] Warning: intercepted a request without a matching request handler:
@@ -49,29 +50,7 @@ window.HTMLElement.prototype.releasePointerCapture = vi.fn();
 window.HTMLElement.prototype.hasPointerCapture = vi.fn();
 
 const installStorageMocks = () => {
-  const localStorage = new MockStorage();
-  const sessionStorage = new MockStorage();
-
-  Object.defineProperty(window, "localStorage", {
-    configurable: true,
-    writable: true,
-    value: localStorage,
-  });
-  Object.defineProperty(globalThis, "localStorage", {
-    configurable: true,
-    writable: true,
-    value: localStorage,
-  });
-  Object.defineProperty(window, "sessionStorage", {
-    configurable: true,
-    writable: true,
-    value: sessionStorage,
-  });
-  Object.defineProperty(globalThis, "sessionStorage", {
-    configurable: true,
-    writable: true,
-    value: sessionStorage,
-  });
+  installTestStorage();
 };
 
 const syncWebApiConstructors = () => {
@@ -244,7 +223,7 @@ afterEach(() => {
   // so they don't affect other tests.
   mockedServer.resetHandlers();
 
-  if (process.env.SKIP_CLEANUP) return;
+  if (shouldSkipCleanup()) return;
   cleanup();
 });
 
@@ -252,7 +231,7 @@ afterAll(() => {
   // Clean up after the tests are finished.
   mockedServer.close();
 
-  delete process.env.SKIP_CLEANUP;
+  resetSkipCleanup();
 
   vi.clearAllMocks();
 });

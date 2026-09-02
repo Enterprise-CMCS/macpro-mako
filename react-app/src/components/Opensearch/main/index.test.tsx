@@ -11,8 +11,8 @@ import {
   getDashboardQueryString,
   getFilteredHits,
   HIDDEN_COLUMN,
+  installTestStorage,
   renderDashboard,
-  Storage,
   URL_CODE,
   verifyChips,
   verifyFiltering,
@@ -29,8 +29,6 @@ const verifyTable = (recordCount: number) => {
 };
 
 describe("OsMainView", () => {
-  global.localStorage = new Storage();
-
   const setup = (
     columns: OsTableColumn[],
     hits: opensearch.Hits<opensearch.main.Document>,
@@ -53,7 +51,7 @@ describe("OsMainView", () => {
   };
 
   beforeEach(() => {
-    global.localStorage.clear();
+    installTestStorage();
   });
   describe("SPAs", () => {
     it("should display without filters", async () => {

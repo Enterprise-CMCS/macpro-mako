@@ -23,6 +23,7 @@ import {
   createTestQueryClient,
   getFilteredHits,
   renderWithQueryClientAndMemoryRouter,
+  allowCleanup,
   skipCleanup,
   verifyChips,
   verifyFiltering,
@@ -155,6 +156,7 @@ describe("Dashboard", () => {
 
     afterAll(() => {
       cleanup();
+      allowCleanup();
     });
 
     it("should display the dashboard correctly", async () => {
@@ -244,6 +246,7 @@ describe("Dashboard", () => {
 
     afterAll(() => {
       cleanup();
+      allowCleanup();
     });
 
     it("should display the dashboard correctly", async () => {

@@ -11,14 +11,14 @@ import {
   VALID_ITEM_TEMPORARY_EXTENSION_ID,
 } from "mocks";
 import { SEATOOL_STATUS } from "shared-types";
-import { afterEach, beforeAll, describe, expect, test, vi } from "vitest";
+import { afterEach, beforeAll, afterAll, describe, expect, test, vi } from "vitest";
 
 import * as api from "@/api";
 import * as components from "@/components";
 import { formSchemas } from "@/formSchemas";
 import { DataPoller } from "@/utils/Poller/DataPoller";
 import * as documentPoller from "@/utils/Poller/documentPoller";
-import { skipCleanup } from "@/utils/test-helpers";
+import { skipCleanup, allowCleanup } from "@/utils/test-helpers";
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 import { uploadFiles } from "@/utils/test-helpers/uploadFiles";
 
@@ -583,6 +583,10 @@ describe("Temporary Extension", () => {
       skipCleanup();
 
       await renderFormWithPackageSectionAsync(<TemporaryExtensionForm />);
+    });
+
+    afterAll(() => {
+      allowCleanup();
     });
 
     test("TEMPORARY EXTENSION TYPE 1915(c)", async () => {
