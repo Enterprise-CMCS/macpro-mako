@@ -1,5 +1,5 @@
-import { screen, waitForElementToBeRemoved, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { cleanup, screen, waitForElementToBeRemoved, within } from "@testing-library/react";
+import userEvent, { UserEvent } from "@testing-library/user-event";
 import {
   DEFAULT_CMS_USER,
   HELP_DESK_USER,
@@ -9,7 +9,7 @@ import {
 } from "mocks";
 import { FullUser, opensearch, SEATOOL_STATUS } from "shared-types";
 import { formatActionType } from "shared-utils";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import * as api from "@/api";
 import * as exportUtils from "@/components/Opensearch/main/Filtering/Export/export.utils";
@@ -31,6 +31,7 @@ import {
   RAI_WITHDRAW_ENABLED_ITEM,
   RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
   renderDashboard,
+  skipCleanup,
   Storage,
   verifyChips,
   verifyFiltering,
@@ -259,12 +260,9 @@ describe("WaiversList", () => {
     queryString: string,
     oneMacUser: FullUser,
     isCms: boolean,
-    showAllColumns = false,
   ) => {
     global.localStorage = new Storage();
-    if (showAllColumns) {
-      global.localStorage.setItem("osColumns", JSON.stringify({ spas: [], waivers: [] }));
-    }
+    const user = userEvent.setup();
     const rendered = renderDashboard(
       <WaiversList oneMacUser={{ user: oneMacUser, isCms }} />,
       {
@@ -277,7 +275,10 @@ describe("WaiversList", () => {
     if (screen.queryAllByLabelText("three-dots-loading")?.length > 0) {
       await waitForElementToBeRemoved(() => screen.queryAllByLabelText("three-dots-loading"));
     }
-    return rendered;
+    return {
+      user,
+      ...rendered,
+    };
   };
 
   // most of the tests are using MSW to get a set of generic items,
@@ -312,32 +313,44 @@ describe("WaiversList", () => {
     ["Default CMS User", DEFAULT_CMS_USER, true, true],
     ["CMS Help Desk User", HELP_DESK_USER, false, false],
   ])("as a %s", (_title, oneMacUser, hasActions, useCmsStatus) => {
-    const setupForUser = (showAllColumns = false) =>
-      setup(
+    let user: UserEvent;
+    beforeAll(async () => {
+      skipCleanup();
+
+      setMockUsername(oneMacUser.username);
+
+      ({ user } = await setup(
         defaultHits,
         getDashboardQueryString({
           tab: "spas",
         }),
         oneMacUser,
         useCmsStatus,
-        showAllColumns,
-      );
+      ));
+    });
 
     beforeEach(() => {
       setMockUsername(oneMacUser.username);
     });
 
-    it("should display the dashboard as expected", async () => {
-      await setupForUser();
+    afterAll(() => {
+      cleanup();
+    });
 
+    it("should display the dashboard as expected", async () => {
       verifyFiltering(3); // 3 hidden columns by default
       verifyChips([]); // no filters by default
       verifyColumns(hasActions);
       verifyPagination(hitCount);
     });
 
-    it("should display and export all columns with the correct row values", async () => {
-      await setupForUser(true);
+    it("should handle showing all of the columns", async () => {
+      // show all the hidden columns
+      await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
+      const columns = screen.getByTestId("columns-menu");
+      await user.click(within(columns).getByText("Final Disposition"));
+      await user.click(within(columns).getByText("Formal RAI Requested"));
+      await user.click(within(columns).getByText("CPOC Name"));
 
       const table = screen.getByTestId("os-table");
       expect(
@@ -347,87 +360,103 @@ describe("WaiversList", () => {
         within(table).getByText("Formal RAI Requested", { selector: "th>div" }),
       ).toBeInTheDocument();
       expect(within(table).getByText("CPOC Name", { selector: "th>div" })).toBeInTheDocument();
+    });
 
-      const rowCases = [
-        [
-          pendingDoc,
-          {
-            hasActions,
-            status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
-            submissionDate: "12/31/2023",
-            makoChangedDate: "01/31/2024",
-          },
-        ],
-        [
-          raiRequestDoc,
-          {
-            hasActions,
-            status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
-            submissionDate: "12/31/2023",
-            makoChangedDate: "01/31/2024",
-            raiRequestedDate: "03/01/2024",
-          },
-        ],
-        [
-          raiReceivedDoc,
-          {
-            hasActions,
-            status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
-            submissionDate: "12/31/2023",
-            makoChangedDate: "01/31/2024",
-            raiRequestedDate: "03/01/2024",
-            raiReceivedDate: "03/31/2024",
-          },
-        ],
-        [
-          withdrawEnabledDoc,
-          {
-            hasActions,
-            status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
-            submissionDate: "12/31/2023",
-            makoChangedDate: "01/31/2024",
-            raiRequestedDate: "03/01/2024",
-            raiReceivedDate: "03/31/2024",
-          },
-        ],
-        [
-          withdrawDisabledDoc,
-          {
-            hasActions,
-            status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
-            submissionDate: "12/31/2023",
-            makoChangedDate: "01/31/2024",
-            raiRequestedDate: "03/01/2024",
-            raiReceivedDate: "03/31/2024",
-          },
-        ],
-        [
-          approvedDoc,
-          {
-            hasActions,
-            status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
-            submissionDate: "12/31/2023",
-            makoChangedDate: "01/31/2024",
-            finalDispositionDate: "05/01/2024",
-          },
-        ],
-        [
-          blankDoc,
-          {
-            hasActions,
-            status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
-          },
-        ],
-      ] as const;
+    it.each([
+      [
+        "a new item that is pending without RAI",
+        pendingDoc,
+        {
+          hasActions,
+          status: useCmsStatus ? pendingDoc.cmsStatus : pendingDoc.stateStatus,
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+        },
+      ],
+      [
+        "an item that has requested an RAI",
+        raiRequestDoc,
+        {
+          hasActions,
+          status: useCmsStatus ? raiRequestDoc.cmsStatus : raiRequestDoc.stateStatus,
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "03/01/2024",
+        },
+      ],
+      [
+        "an item that has received an RAI",
+        raiReceivedDoc,
+        {
+          hasActions,
+          status: useCmsStatus ? raiReceivedDoc.cmsStatus : raiReceivedDoc.stateStatus,
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "03/01/2024",
+          raiReceivedDate: "03/31/2024",
+        },
+      ],
+      [
+        "an item that has RAI Withdraw enabled",
+        withdrawEnabledDoc,
+        {
+          hasActions,
+          status: `${useCmsStatus ? withdrawEnabledDoc.cmsStatus : withdrawEnabledDoc.stateStatus}· Withdraw Formal RAI Response - Enabled`,
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "03/01/2024",
+          raiReceivedDate: "03/31/2024",
+        },
+      ],
+      [
+        "an item with RAI Withdraw disabled",
+        withdrawDisabledDoc,
+        {
+          hasActions,
+          status: useCmsStatus ? withdrawDisabledDoc.cmsStatus : withdrawDisabledDoc.stateStatus,
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          raiRequestedDate: "03/01/2024",
+          raiReceivedDate: "03/31/2024",
+        },
+      ],
+      [
+        "an item that is approved",
+        approvedDoc,
+        {
+          hasActions,
+          status: useCmsStatus ? approvedDoc.cmsStatus : approvedDoc.stateStatus,
+          submissionDate: "12/31/2023",
+          makoChangedDate: "01/31/2024",
+          finalDispositionDate: "05/01/2024",
+        },
+      ],
+      [
+        "a blank item",
+        blankDoc,
+        {
+          hasActions,
+          status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
+        },
+      ],
+    ])("should display the correct values for a row with %s", (title, doc, expected) => {
+      verifyRow(doc, expected);
+    });
 
-      for (const [doc, expected] of rowCases) {
-        verifyRow(doc, expected);
+    it("should handle export", async () => {
+      const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
+
+      if (!screen.queryByText("Final Disposition", { selector: "th>div" })) {
+        await user.click(screen.getByRole("button", { name: "Columns (3 hidden)" }));
+        const columns = screen.getByTestId("columns-menu");
+        await user.click(within(columns).getByText("Final Disposition"));
+        await user.click(within(columns).getByText("Formal RAI Requested"));
+        await user.click(within(columns).getByText("CPOC Name"));
       }
 
-      const csvSpy = vi.spyOn(exportUtils, "exportCsvRows").mockImplementation(() => {});
-      const user = userEvent.setup();
+      await user.keyboard("{Escape}");
 
-      await user.click(screen.getByTestId("export-csv-btn"));
+      await user.click(screen.queryByTestId("export-csv-btn"));
 
       const expectedData = getExpectedExportData(useCmsStatus);
       expect(csvSpy).toHaveBeenCalledTimes(1);
@@ -456,7 +485,7 @@ describe("WaiversList", () => {
       },
     } as opensearch.main.Document;
 
-    await setup(
+    const { user } = await setup(
       {
         hits: [
           {
@@ -473,8 +502,13 @@ describe("WaiversList", () => {
       getDashboardQueryString({ tab: "waivers" }),
       TEST_STATE_SUBMITTER_USER,
       false,
-      true,
     );
+
+    await user.click(screen.queryByRole("button", { name: "Columns (3 hidden)" }));
+    const columns = screen.getByTestId("columns-menu");
+    await user.click(within(columns).getByText("Final Disposition"));
+    await user.click(within(columns).getByText("Formal RAI Requested"));
+    await user.click(within(columns).getByText("CPOC Name"));
 
     verifyRow(draftDoc, {
       hasActions: true,

@@ -1,24 +1,29 @@
 import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { setMockUsername, TEST_REVIEWER_USERNAME, TEST_SPA_ITEM_ID } from "mocks";
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
 
-import { mockApiRefinements, renderFormWithPackageSectionAsync } from "@/utils/test-helpers";
+import {
+  mockApiRefinements,
+  renderFormWithPackageSectionAsync,
+  skipCleanup,
+} from "@/utils/test-helpers";
 
 import { SplitSpaForm } from "./index";
 
 describe("SplitSpaForm", () => {
-  let user: ReturnType<typeof userEvent.setup>;
+  let user;
 
   const selectSplitCount = async (value: string) => {
-    await user.click(screen.getByLabelText(/Select number of splits/));
-    await user.click(await screen.findByRole("option", { name: value }));
-    await waitFor(() =>
-      expect(screen.queryByRole("option", { name: value })).not.toBeInTheDocument(),
-    );
+    if (!screen.queryByRole("option", { name: value })) {
+      await user.click(screen.getByLabelText(/Select number of splits/));
+    }
+
+    await user.click(screen.getByRole("option", { name: value }));
   };
 
-  beforeEach(async () => {
+  beforeAll(async () => {
+    skipCleanup();
     mockApiRefinements();
 
     user = userEvent.setup();
@@ -26,9 +31,11 @@ describe("SplitSpaForm", () => {
     await renderFormWithPackageSectionAsync(<SplitSpaForm />, TEST_SPA_ITEM_ID, "Medicaid SPA");
   });
 
-  it("should display the initial split SPA form", async () => {
+  it("should display `breadcrumbText`", async () => {
     expect(screen.getByText("Create new split SPA(s)")).toBeInTheDocument();
+  });
 
+  it("should display the original SPA ID and Authority Type", () => {
     const spaIdHeader = screen.getByText("SPA ID");
     expect(spaIdHeader).toBeInTheDocument();
     expect(spaIdHeader.nextSibling).toHaveTextContent(TEST_SPA_ITEM_ID);
@@ -36,17 +43,26 @@ describe("SplitSpaForm", () => {
     const authorityTypeHeader = screen.getByText("Type");
     expect(authorityTypeHeader).toBeInTheDocument();
     expect(authorityTypeHeader.nextElementSibling).toHaveTextContent("Medicaid SPA");
+  });
 
+  it("should allow user to select split count", () => {
     const splitCountSelect = screen.getByLabelText(/Select number of splits/);
     expect(splitCountSelect).toBeInTheDocument();
     expect(splitCountSelect).not.toHaveValue();
+  });
 
+  it("should not display the split spa ids or requestor fields if there is no splitCount", () => {
     expect(screen.queryByText(/SPAs after split/)).toBeNull();
     expect(
       screen.queryByLabelText(/These packages were added to OneMAC per request from/),
     ).toBeNull();
-    expect(screen.getByRole("button", { name: "Confirm & Split SPA" })).toBeDisabled();
+  });
 
+  it("submit button should be disabled before splitCount is set", async () => {
+    expect(screen.getByRole("button", { name: "Confirm & Split SPA" })).toBeDisabled();
+  });
+
+  it("should only display options 2-8 for splits", async () => {
     await user.click(screen.getByLabelText(/Select number of splits/));
     expect(screen.queryByRole("option", { name: "1" })).toBeNull();
     expect(screen.getByRole("option", { name: "2" })).toBeInTheDocument();
@@ -57,11 +73,9 @@ describe("SplitSpaForm", () => {
     expect(screen.getByRole("option", { name: "7" })).toBeInTheDocument();
     expect(screen.getByRole("option", { name: "8" })).toBeInTheDocument();
     expect(screen.queryByRole("option", { name: "9" })).toBeNull();
-
-    await user.click(screen.getByRole("option", { name: "2" }));
   });
 
-  it("should display and update generated split SPA IDs", async () => {
+  it("should display the split spa ids and request when a splitCount is selected", async () => {
     await selectSplitCount("3");
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
@@ -72,7 +86,9 @@ describe("SplitSpaForm", () => {
     expect(
       screen.getByLabelText(/These packages were added to OneMAC per request from/),
     ).toBeInTheDocument();
+  });
 
+  it("should handle changing the splitCount", async () => {
     await selectSplitCount("5");
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
@@ -81,6 +97,11 @@ describe("SplitSpaForm", () => {
     expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-B`)).toBeInTheDocument();
     expect(screen.getByTestId(`4. ${TEST_SPA_ITEM_ID}-C`)).toBeInTheDocument();
     expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument();
+  });
+
+  it("should keep the edited suffices when changing the splitCount", async () => {
+    await selectSplitCount("5");
+    await waitFor(() => expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument());
 
     const spaId3 = screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-B`);
     await user.click(within(spaId3).getByRole("button", { name: "Edit" }));
@@ -93,7 +114,8 @@ describe("SplitSpaForm", () => {
     expect(screen.getByTestId(`4. ${TEST_SPA_ITEM_ID}-C`)).toBeInTheDocument();
     expect(screen.getByTestId(`5. ${TEST_SPA_ITEM_ID}-D`)).toBeInTheDocument();
 
-    await selectSplitCount("3");
+    await user.click(screen.getByLabelText(/Select number of splits/));
+    await user.click(screen.getByRole("option", { name: "3" }));
 
     await waitFor(() => expect(screen.getByText(/SPAs after split/)).toBeInTheDocument());
     expect(screen.getByTestId(`1. ${TEST_SPA_ITEM_ID} (Base SPA)`)).toBeInTheDocument();
@@ -101,10 +123,11 @@ describe("SplitSpaForm", () => {
     expect(screen.getByTestId(`3. ${TEST_SPA_ITEM_ID}-Banana`)).toBeInTheDocument();
   });
 
-  it("should require a requestor before enabling submission", async () => {
-    await selectSplitCount("3");
-
+  it("submit button should be disabled before requestor is set", async () => {
     expect(screen.getByRole("button", { name: "Confirm & Split SPA" })).toBeDisabled();
+  });
+
+  it("should handle changing the requestor", async () => {
     await user.type(
       screen.getByLabelText(/These packages were added to OneMAC per request from/),
       "Jane Doe",
@@ -113,7 +136,9 @@ describe("SplitSpaForm", () => {
     expect(
       screen.getByLabelText(/These packages were added to OneMAC per request from/),
     ).toHaveValue("Jane Doe");
+  });
 
+  it("submit button should be enabled after requestor is set", async () => {
     expect(screen.getByRole("button", { name: "Confirm & Split SPA" })).toBeEnabled();
   });
 });

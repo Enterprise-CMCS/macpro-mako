@@ -30,6 +30,7 @@ jobs:
           ref: main
       - uses: ./.github/actions/setup
       - name: Test
+        id: test
         continue-on-error: true
         run: run test --coverage
       - name: Report coverage to Qlty
@@ -56,3 +57,8 @@ jobs:
           path: coverage/html-report/*
           overwrite: true
           retention-days: 90
+      - name: Fail when tests fail
+        if: ${{ always() && steps.test.outcome == 'failure' }}
+        run: |
+          echo "Tests failed; coverage artifacts were uploaded for diagnosis."
+          exit 1

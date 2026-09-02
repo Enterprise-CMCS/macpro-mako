@@ -19,7 +19,7 @@ jobs:
   coverage-report:
     runs-on: ubuntu-latest
     outputs:
-      actualResult: ${{ steps.test.conclusion }}
+      actualResult: ${{ steps.test.outcome }}
     steps:
       - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
@@ -71,3 +71,8 @@ jobs:
         uses: davelosert/vitest-coverage-report-action@v2
         with:
           file-coverage-mode: changes
+      - name: Fail when tests fail
+        if: ${{ always() && steps.test.outcome == 'failure' }}
+        run: |
+          echo "Tests failed; coverage reporting completed where possible."
+          exit 1
