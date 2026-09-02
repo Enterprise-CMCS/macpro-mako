@@ -15,11 +15,13 @@ import * as api from "@/api";
 import * as exportUtils from "@/components/Opensearch/main/Filtering/Export/export.utils";
 import { BLANK_VALUE } from "@/consts";
 import {
+  allowCleanup,
   APPROVED_ITEM,
   APPROVED_ITEM_EXPORT,
   BLANK_ITEM,
   BLANK_ITEM_EXPORT,
   getDashboardQueryString,
+  installTestStorage,
   PENDING_RAI_RECEIVED_ITEM,
   PENDING_RAI_RECEIVED_ITEM_EXPORT,
   PENDING_RAI_REQUEST_ITEM,
@@ -31,8 +33,6 @@ import {
   RAI_WITHDRAW_ENABLED_ITEM,
   RAI_WITHDRAW_ENABLED_ITEM_EXPORT,
   renderDashboard,
-  allowCleanup,
-  installTestStorage,
   skipCleanup,
   verifyChips,
   verifyFiltering,

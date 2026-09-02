@@ -20,10 +20,10 @@ import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it, vi } 
 
 import * as ReactGA from "@/utils/ReactGA/SendGAEvent";
 import {
+  allowCleanup,
   createTestQueryClient,
   getFilteredHits,
   renderWithQueryClientAndMemoryRouter,
-  allowCleanup,
   skipCleanup,
   verifyChips,
   verifyFiltering,
