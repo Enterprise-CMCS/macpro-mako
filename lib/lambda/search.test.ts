@@ -1,6 +1,7 @@
 import { APIGatewayEvent, APIGatewayProxyEventPathParameters } from "aws-lambda";
 import * as osLib from "libs/opensearch-lib";
 import { getRequestContext, helpDeskUser, testStateSubmitter } from "mocks";
+import { SMART_RECORD_TYPE } from "shared-types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./search";
@@ -85,5 +86,48 @@ describe("getSearchData Handler", () => {
     expect(
       searchSpy.mock.calls.some(([, , query]) => JSON.stringify(query).includes("includeDrafts")),
     ).toBeFalsy();
+  });
+
+  it("should include completed SMART packages while excluding SMART reservations", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} } }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(testStateSubmitter),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    const query = searchSpy.mock.calls
+      .map(([, , searchQuery]) => searchQuery)
+      .find((searchQuery) => JSON.stringify(searchQuery).includes("origin.keyword")) as any;
+    const originAllowlist = {
+      bool: {
+        should: [
+          { terms: { "origin.keyword": ["OneMAC", "OneMACLegacy"] } },
+          {
+            bool: {
+              must: [
+                { term: { "origin.keyword": "SMART" } },
+                { term: { smartRecordType: SMART_RECORD_TYPE.PACKAGE } },
+              ],
+            },
+          },
+          {
+            bool: {
+              must: [
+                { term: { "origin.keyword": "SEATool" } },
+                { term: { "event.keyword": "NOSO" } },
+              ],
+            },
+          },
+        ],
+      },
+    };
+    expect(query).toBeDefined();
+    expect(query.query.bool.must).toContainEqual(originAllowlist);
+    expect(JSON.stringify(originAllowlist)).toContain(SMART_RECORD_TYPE.PACKAGE);
+    expect(JSON.stringify(originAllowlist)).not.toContain(SMART_RECORD_TYPE.RESERVATION);
   });
 });

@@ -14,9 +14,13 @@ export const handler: Handler = async (event, __, callback) => {
       update: {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
+        correlationId: { type: "keyword" },
+        createdByUserId: { type: "keyword" },
         deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
+        spaWaiverId: { type: "keyword" },
+        smartRecordType: { type: "keyword" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
       },

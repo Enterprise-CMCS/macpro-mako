@@ -43,6 +43,33 @@ describe("Package Activity", () => {
     expect(screen.queryByText("Download all attachments")).not.toBeInTheDocument();
   });
 
+  it("shows a SMART split event with its creator, timestamp, and reason", async () => {
+    const splitActivity = [
+      {
+        _id: "AL-26-1111-TEST-smart-split-correlation-id",
+        _source: {
+          id: "AL-26-1111-TEST-smart-split-correlation-id",
+          packageId: "AL-26-1111-TEST",
+          event: "split-spa",
+          timestamp: 1786984632000,
+          submitterName: "Todd Gooch",
+          isAdminChange: true,
+          originalSpaId: "AL-26-1111",
+          changeReason: "Testing Split for Allie",
+        },
+      },
+    ] as unknown as opensearch.changelog.ItemResult[];
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id="AL-26-1111-TEST" changelog={splitActivity} />,
+      "AL-26-1111-TEST",
+    );
+
+    expect(screen.getByText("Package Activity (1)")).toBeInTheDocument();
+    expect(screen.getByText("Split SPA Created By Todd Gooch")).toBeInTheDocument();
+    expect(screen.getByText("Testing Split for Allie")).toBeInTheDocument();
+  });
+
   it("shows a single draft package activity when a draft has saved attachments and no changelog", async () => {
     const draftSubmission = {
       id: "MD-26-0001-P",

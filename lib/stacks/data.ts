@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import { CfnEventSourceMapping } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import * as cr from "aws-cdk-lib/custom-resources";
 import { Construct } from "constructs";
@@ -7,6 +8,7 @@ import * as LC from "local-constructs";
 import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
+import { awsCognitoDomainPrefix, awsLambdaFunctionName } from "../config/lambda-function-name";
 
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
@@ -23,6 +25,8 @@ interface DataStackProps extends cdk.NestedStackProps {
   sharedOpenSearchDomainEndpoint: string;
   sharedOpenSearchDomainArn: string;
   devPasswordArn: string;
+  bigmacErrorQueueUrl?: string;
+  bigmacErrorQueueArn?: string;
 }
 
 export class Data extends cdk.NestedStack {
@@ -56,8 +60,11 @@ export class Data extends cdk.NestedStack {
       sharedOpenSearchDomainEndpoint,
       sharedOpenSearchDomainArn,
       devPasswordArn,
+      bigmacErrorQueueUrl,
+      bigmacErrorQueueArn,
     } = props;
     const consumerGroupPrefix = `--${project}--${stage}--`;
+    const smartOnemacTopic = `${topicNamespace}aws.mulesoft.onemac.events`;
 
     let openSearchDomainEndpoint;
     let openSearchDomainArn;
@@ -80,7 +87,7 @@ export class Data extends cdk.NestedStack {
       new cdk.aws_cognito.UserPoolDomain(this, "UserPoolDomain", {
         userPool,
         cognitoDomain: {
-          domainPrefix: `${project}-${stage}-search`,
+          domainPrefix: awsCognitoDomainPrefix(`${project}-${stage}-search`),
         },
       });
 
@@ -260,7 +267,7 @@ export class Data extends cdk.NestedStack {
       );
 
       const mapRole = new NodejsFunction(this, "MapRoleLambdaFunction", {
-        functionName: `${project}-${stage}-${stack}-mapRole`,
+        functionName: awsLambdaFunctionName(project, stage, stack, "mapRole"),
         timeout: cdk.Duration.minutes(2),
         entry: join(__dirname, "../lambda/mapRole.ts"),
         handler: "handler",
@@ -343,6 +350,9 @@ export class Data extends cdk.NestedStack {
         {
           topic: `${topicNamespace}aws.onemac.migration.cdc`,
         },
+        {
+          topic: smartOnemacTopic,
+        },
       ],
       vpc,
     });
@@ -353,7 +363,7 @@ export class Data extends cdk.NestedStack {
         privateSubnets: privateSubnets,
         securityGroups: [lambdaSecurityGroup],
         brokerString,
-        topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`],
+        topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`, smartOnemacTopic],
       });
     }
 
@@ -376,12 +386,13 @@ export class Data extends cdk.NestedStack {
       memorySize?: number;
       provisionedConcurrency?: number;
     }) => {
+      const functionName = awsLambdaFunctionName(project, stage, stack, id);
       const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
+        logGroupName: `/aws/lambda/${functionName}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
       const fn = new NodejsFunction(this, id, {
-        functionName: `${project}-${stage}-${stack}-${id}`,
+        functionName,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry: join(__dirname, `../lambda/${entry}`),
         handler: "handler",
@@ -493,6 +504,111 @@ export class Data extends cdk.NestedStack {
     );
 
     attachmentArchiveRebuildQueue.grantSendMessages(sharedLambdaRole);
+
+    // BigMAC queue URL/ARN come from mako-default / mako-{stage} secrets (cross-account).
+    // OneMAC val/production map to matching BigMAC stages; other stages use bigmac-master-queue.
+
+    // sinkSmart gets its own role instead of sharedLambdaRole: it must never hold SES
+    // permissions. Collision handling only writes missing identity fields to OpenSearch.
+    const sinkSmartRole = new cdk.aws_iam.Role(this, "SinkSmartExecutionRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+      managedPolicies: [
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole",
+        ),
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaVPCAccessExecutionRole",
+        ),
+      ],
+      inlinePolicies: {
+        SinkSmartLambdaRole: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: [
+                "es:ESHttpHead",
+                "es:ESHttpPost",
+                "es:ESHttpGet",
+                "es:ESHttpPatch",
+                "es:ESHttpDelete",
+                "es:ESHttpPut",
+              ],
+              resources: [`${openSearchDomainArn}/*`],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["logs:CreateLogStream", "logs:PutLogEvents"],
+              resources: [
+                `arn:aws:logs:${cdk.Stack.of(this).region}:${
+                  cdk.Stack.of(this).account
+                }:log-group:/aws/lambda/${project}-${stage}-${stack}-sinkSmart:*`,
+              ],
+            }),
+            // Self-managed Kafka event source mappings resolve the VPC source access
+            // configurations with the function's execution role.
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeSubnets", "ec2:DescribeVpcs"],
+              resources: ["*"],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.DENY,
+              actions: ["logs:CreateLogGroup"],
+              resources: ["*"],
+            }),
+            ...(bigmacErrorQueueArn
+              ? [
+                  new cdk.aws_iam.PolicyStatement({
+                    effect: cdk.aws_iam.Effect.ALLOW,
+                    actions: ["sqs:SendMessage"],
+                    resources: [bigmacErrorQueueArn],
+                  }),
+                ]
+              : []),
+          ],
+        }),
+      },
+    });
+
+    const sinkSmart = createLambda({
+      id: "sinkSmart",
+      role: sinkSmartRole,
+      useVpc: true,
+      environment: {
+        osDomain: `https://${openSearchDomainEndpoint}`,
+        indexNamespace,
+        stage,
+        ...(bigmacErrorQueueUrl ? { BIGMAC_ERROR_QUEUE_URL: bigmacErrorQueueUrl } : {}),
+      },
+    });
+
+    // U11 locked: standalone mapping so reindex / createTriggers never rebuilds SMART at
+    // TRIM_HORIZON. Replay is a manual offset reset with a NEW ConsumerGroupId.
+    new CfnEventSourceMapping(this, "SinkSmartTriggerOnemacEvents", {
+      batchSize: 1,
+      enabled: true,
+      selfManagedEventSource: {
+        endpoints: {
+          kafkaBootstrapServers: brokerString.split(","),
+        },
+      },
+      selfManagedKafkaEventSourceConfig: {
+        consumerGroupId: `${consumerGroupPrefix}smart-onemac-events`,
+      },
+      functionName: sinkSmart.functionName,
+      sourceAccessConfigurations: [
+        ...privateSubnets.map((subnet) => ({
+          type: "VPC_SUBNET",
+          uri: subnet.subnetId,
+        })),
+        {
+          type: "VPC_SECURITY_GROUP",
+          uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
+        },
+      ],
+      startingPosition: "LATEST",
+      topics: [smartOnemacTopic],
+    });
 
     const stateMachineRole = new cdk.aws_iam.Role(this, "StateMachineRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("states.amazonaws.com"),
@@ -834,13 +950,14 @@ export class Data extends cdk.NestedStack {
       },
     );
 
+    const runReindexFunctionName = awsLambdaFunctionName(project, stage, stack, "runReindex");
     const runReindexLogGroup = new cdk.aws_logs.LogGroup(this, `runReindexLogGroup`, {
-      logGroupName: `/aws/lambda/${project}-${stage}-${stack}-runReindex`,
+      logGroupName: `/aws/lambda/${runReindexFunctionName}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
     const runReindexLambda = new NodejsFunction(this, "runReindexLambdaFunction", {
-      functionName: `${project}-${stage}-${stack}-runReindex`,
+      functionName: runReindexFunctionName,
       entry: join(__dirname, "../lambda/runReindex.ts"),
       handler: "handler",
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
