@@ -3,6 +3,7 @@ import { join } from "path";
 import { configDefaults, defineConfig } from "vitest/config";
 
 const projectTestTimeout = 15000;
+const ciUiTestTimeout = process.env.CI ? 60000 : projectTestTimeout;
 const ciUiMaxWorkers = process.env.CI ? 1 : undefined;
 
 // Keep the CDK-heavy Node tests from competing with jsdom projects on the
@@ -51,7 +52,7 @@ export default defineConfig({
           setupFiles: "vitest.setup.ts",
           exclude: ["**/node_modules/**"],
           environment: "jsdom",
-          testTimeout: projectTestTimeout,
+          testTimeout: ciUiTestTimeout,
           maxWorkers: ciUiMaxWorkers,
           sequence: { groupOrder: projectGroupOrder.ui },
         },

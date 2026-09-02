@@ -197,7 +197,6 @@ export const setMockUsername = async (
     } else {
       delete process.env.MOCK_USER_USERNAME;
     }
-    console.log("process.env.MOCK_USER_USERNAME", username);
     // @ts-ignore ignore window being undefined because this is a check for that
   } else if (typeof window !== "undefined" && window?.localStorage?.setItem) {
     if (username) {
