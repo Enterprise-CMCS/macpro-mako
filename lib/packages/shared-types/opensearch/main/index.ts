@@ -103,6 +103,9 @@ export type Document = AppkDocument &
     originalSpaId?: string;
     originalSpaWaiverId?: string;
     splitReason?: string;
+    raiId?: string;
+    raiName?: string;
+    raiWithdrawnToggleDate?: string | number;
     draft?: {
       savedAt: string;
       createdAt?: string;
