@@ -118,6 +118,41 @@ describe("SMART Kafka envelope parsing", () => {
     },
   );
 
+  it("rejects a JSON-string Kafka value as VALIDATION and publishes to the BigMAC error queue", async () => {
+    const stringifiedJsonValue = Buffer.from(JSON.stringify(JSON.stringify(smartEvent))).toString(
+      "base64",
+    );
+    const invalidRecord = createKafkaRecord({
+      topic: TOPIC,
+      key: Buffer.from(smartEvent.id).toString("base64"),
+      value: stringifiedJsonValue,
+    });
+
+    expect(parseSmartKafkaRecord(invalidRecord, TOPIC_PARTITION)).toBeUndefined();
+    await expect(invokeHandler(createSmartEvent(invalidRecord))).resolves.toBeUndefined();
+
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.VALIDATION,
+        metadata: expect.objectContaining({
+          topicPartition: TOPIC_PARTITION,
+          record: expect.any(String),
+        }),
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledTimes(1);
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorCode: "VALIDATION",
+        topic: TOPIC,
+        topicPartition: TOPIC_PARTITION,
+        payload: expect.any(String),
+      }),
+    );
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+  });
+
   it.each([
     ["a key that differs from payload.id", createSmartRecord(smartEvent, "AL-26-0817-9999")],
     [
