@@ -3,23 +3,21 @@ import { z } from "zod";
 
 import type { SmartIngestFailure } from "./publishSmartIngestError";
 
-const ISO_DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/;
-
 const isoDateTime = z
   .string()
-  .min(1)
-  .refine((value) => ISO_DATE_TIME.test(value), {
-    message: "createdAt must be an ISO-8601 datetime",
-  });
+  .trim()
+  .datetime({ offset: true, message: "createdAt must be a valid ISO-8601 datetime" });
 
-const requiredString = z.string().min(1);
+const requiredString = z.string().trim().min(1);
+// SMART requires this field in the envelope but may intentionally send it blank.
+const requiredCorrelationId = z.string().trim();
 const optionalString = z.string().nullish();
 
 const smartOnemacEventSchema = z
   .object({
     spaWaiverId: requiredString,
     id: requiredString,
-    correlationId: requiredString,
+    correlationId: requiredCorrelationId,
     origin: z.literal("SMART"),
     authority: requiredString,
     status: requiredString,
@@ -33,6 +31,11 @@ const smartOnemacEventSchema = z
     approvedEffectiveDate: z.union([z.string(), z.number()]).optional(),
     subject: optionalString,
     description: optionalString,
+    splitSpaId: optionalString,
+    splitSpaWaiverId: optionalString,
+    originalSpaId: optionalString,
+    originalSpaWaiverId: optionalString,
+    splitReason: optionalString,
   })
   .passthrough();
 

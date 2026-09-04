@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { isActiveMainNonDraftPackage } from "libs/api/package/packageStatus";
-import { getStatus, SEATOOL_STATUS } from "shared-types";
+import { getStatus, SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 import { describe, expect, it } from "vitest";
 
@@ -36,6 +36,7 @@ describe("transformMspManualRecordCreated", () => {
     expect(transformed).toMatchObject({
       id: "AL-26-0817-0001",
       origin: "SMART",
+      smartRecordType: SMART_RECORD_TYPE.RESERVATION,
       authority: "Medicaid SPA",
       deleted: false,
       seatoolStatus: SEATOOL_STATUS.SUBMITTED,

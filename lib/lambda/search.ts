@@ -1,7 +1,7 @@
 import { APIGatewayEvent } from "aws-lambda";
 import { response } from "libs/handler-lib";
 import { getDomainAndNamespace, getOsNamespace } from "libs/utils";
-import { SEATOOL_STATUS } from "shared-types";
+import { SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { BaseIndex } from "shared-types/opensearch";
 import { ONEMAC_LEGACY_ORIGIN } from "shared-types/opensearch/main/transforms/legacy-transforms";
 import { validateEnvVariable } from "shared-utils";
@@ -99,6 +99,14 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       bool: {
         should: [
           { terms: { "origin.keyword": ["OneMAC", ONEMAC_LEGACY_ORIGIN] } },
+          {
+            bool: {
+              must: [
+                { term: { "origin.keyword": "SMART" } },
+                { term: { smartRecordType: SMART_RECORD_TYPE.PACKAGE } },
+              ],
+            },
+          },
           {
             bool: {
               must: [

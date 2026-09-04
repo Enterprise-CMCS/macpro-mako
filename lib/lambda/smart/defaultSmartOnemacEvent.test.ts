@@ -18,6 +18,7 @@ import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 import * as publishSmartIngestErrorModule from "./publishSmartIngestError";
 
 const TOPIC_PARTITION = "aws.mulesoft.onemac.events-0";
+const KAFKA_KEY = "actual-kafka-key";
 const event = Object.freeze({
   spaWaiverId: "a0ncp000006Wdh7AAC",
   id: "al-26-0817-0001",
@@ -140,6 +141,9 @@ describe("handleDefaultSmartOnemacEvent", () => {
       event: invalidEvent,
       existence: emptyExistence,
       topicPartition: TOPIC_PARTITION,
+      kafkaKey: KAFKA_KEY,
+      kafkaOffset: 42,
+      kafkaTimestamp: 1786995273000,
     });
 
     expect(logErrorSpy).toHaveBeenCalledWith(
@@ -151,7 +155,9 @@ describe("handleDefaultSmartOnemacEvent", () => {
       expect.objectContaining({
         errorCode: "VALIDATION",
         topicPartition: TOPIC_PARTITION,
-        kafkaKey: invalidEvent.id,
+        kafkaKey: KAFKA_KEY,
+        kafkaOffset: 42,
+        kafkaTimestamp: 1786995273000,
         correlationId: invalidEvent.correlationId,
         payload: invalidEvent,
       }),

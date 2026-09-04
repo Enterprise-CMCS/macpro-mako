@@ -46,7 +46,13 @@ export const interpretSmartKafkaRecord = (
     logError({
       type: ErrorType.BADPARSE,
       error,
-      metadata: { topicPartition, kafkaRecord },
+      metadata: {
+        topicPartition,
+        topic: kafkaRecord.topic,
+        partition: kafkaRecord.partition,
+        offset: kafkaRecord.offset,
+        timestamp: kafkaRecord.timestamp,
+      },
     });
     return {
       success: false,
@@ -54,7 +60,6 @@ export const interpretSmartKafkaRecord = (
         errorCode: "BADPARSE",
         error,
         kafkaKey: key,
-        payload,
       },
     };
   }

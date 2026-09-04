@@ -6,7 +6,12 @@ import {
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { decodeUtf8, getAwsSdkLogger, updateFieldMapping } from "./opensearch-lib";
+import {
+  assertBulkUpdateSucceeded,
+  decodeUtf8,
+  getAwsSdkLogger,
+  updateFieldMapping,
+} from "./opensearch-lib";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 
@@ -88,6 +93,23 @@ describe("opensearch-lib tests", () => {
           throw: "error",
         }),
       ).rejects.toThrowError("Response Error");
+    });
+  });
+
+  describe("bulkUpdateData tests", () => {
+    it("throws on bulk item errors when requested by a retryable consumer", () => {
+      expect(() =>
+        assertBulkUpdateSucceeded(
+          { errors: true },
+          {
+            throwOnBulkError: true,
+          },
+        ),
+      ).toThrow("OpenSearch bulk update completed with item errors");
+    });
+
+    it("retains the existing log-and-continue behavior by default", () => {
+      expect(() => assertBulkUpdateSucceeded({ errors: true })).not.toThrow();
     });
   });
 

@@ -12,7 +12,7 @@ import {
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
 import items from "mocks/data/items";
-import { SEATOOL_STATUS } from "shared-types";
+import { SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./item";
@@ -172,6 +172,56 @@ describe("getItemData Handler", () => {
           state: "MD",
         },
       });
+    });
+
+    it("returns a completed SMART package", async () => {
+      setMockUsername(testStateSubmitter);
+      const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event, {} as Context);
+      getPackageSpy.mockRestore();
+
+      expect(res.statusCode).toEqual(200);
+      expect(JSON.parse(res.body)).toMatchObject({
+        _source: {
+          origin: "SMART",
+          smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+        },
+      });
+    });
+
+    it("returns 404 before authorization for an out-of-state SMART reservation", async () => {
+      setMockUsername(testStateSubmitter);
+      const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: HI_TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          id: HI_TEST_ITEM_ID,
+          state: "HI",
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: HI_TEST_ITEM_ID, includeDraft: true, preferDraft: true }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event, {} as Context);
+      getPackageSpy.mockRestore();
+
+      expect(res.statusCode).toEqual(404);
+      expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
     });
   });
 
