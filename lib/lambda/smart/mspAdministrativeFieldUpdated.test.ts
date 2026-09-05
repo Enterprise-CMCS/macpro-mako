@@ -154,8 +154,10 @@ describe("handleMspAdministrativeFieldUpdated", () => {
 
   it("does not create admin history when the owned values are unchanged", async () => {
     const unchanged = {
-      submissionDate: "2026-09-03T04:00:00.000Z",
-      proposedDate: "2027-01-31T05:00:00.000Z",
+      // SMART sends calendar dates. Existing OneMAC timestamps on the same
+      // displayed date must not become false administrative changes.
+      submissionDate: "2026-09-03T18:05:00.000Z",
+      proposedDate: "2027-01-31T00:00:00.000Z",
     };
     await handleMspAdministrativeFieldUpdated(
       createContext({

@@ -52,8 +52,31 @@ interface FieldChange {
   to: unknown;
 }
 
-const sameDate = (left: unknown, right: string): boolean =>
-  getTimestampInMilliseconds(left) === Date.parse(right);
+const getCalendarDate = (value: unknown, timeZone: string): string | undefined => {
+  const timestamp = getTimestampInMilliseconds(value);
+  if (timestamp === undefined) return undefined;
+
+  const parts = new Intl.DateTimeFormat("en-US", {
+    day: "2-digit",
+    month: "2-digit",
+    timeZone,
+    year: "numeric",
+  }).formatToParts(new Date(timestamp));
+  const part = (type: Intl.DateTimeFormatPartTypes): string | undefined =>
+    parts.find((datePart) => datePart.type === type)?.value;
+  const year = part("year");
+  const month = part("month");
+  const day = part("day");
+  return year && month && day ? `${year}-${month}-${day}` : undefined;
+};
+
+const sameDate = (left: unknown, eventValue: string, timeZone: string): boolean => {
+  if (/^\d{4}-\d{2}-\d{2}$/.test(eventValue)) {
+    return getCalendarDate(left, timeZone) === eventValue;
+  }
+
+  return getTimestampInMilliseconds(left) === Date.parse(eventValue);
+};
 
 const displayValue = (value: unknown): string => {
   if (value === undefined || value === null || value === "") return "not set";
@@ -119,7 +142,7 @@ const buildAdministrativeUpdates = (
   const derivedState = getStateFromPackageId(event.id);
   if (!derivedState) throw new Error("package ID does not start with a known state code");
 
-  if (!sameDate(document.submissionDate, normalizedSubmissionDate)) {
+  if (!sameDate(document.submissionDate, event.initialSubmissionDate, "America/New_York")) {
     changes.push({
       field: "Initial Submission Date",
       from: document.submissionDate,
@@ -134,7 +157,7 @@ const buildAdministrativeUpdates = (
 
   if (event.approvedEffectiveDate != null) {
     const approvedEffectiveDate = normalizeSmartDate(event.approvedEffectiveDate);
-    if (!sameDate(document.approvedEffectiveDate, approvedEffectiveDate)) {
+    if (!sameDate(document.approvedEffectiveDate, event.approvedEffectiveDate, "UTC")) {
       changes.push({
         field: "Approved Effective Date",
         from: document.approvedEffectiveDate,
@@ -145,7 +168,7 @@ const buildAdministrativeUpdates = (
   }
   if (event.proposedEffectiveDate != null) {
     const proposedDate = normalizeSmartDate(event.proposedEffectiveDate);
-    if (!sameDate(document.proposedDate, proposedDate)) {
+    if (!sameDate(document.proposedDate, event.proposedEffectiveDate, "UTC")) {
       changes.push({
         field: "Proposed Effective Date",
         from: document.proposedDate,
@@ -311,7 +334,13 @@ const createAdministrativeReservation = async (
     administrativeReservation as unknown as opensearch.main.Document,
   );
   const { domain, index } = getDomainAndNamespace("main");
-  const result = await os.createItem(domain, index, { ...administrativeReservation, ...updates });
+  const result = await os.createItem(domain, index, {
+    ...administrativeReservation,
+    ...updates,
+    // The base reservation uses createdAt as a fallback. This event explicitly
+    // owns Initial Submission Date, even when both values fall on the same day.
+    submissionDate: normalizeSmartDate(event.initialSubmissionDate),
+  });
   return result.created
     ? undefined
     : new Error("package ID was claimed by another record during processing");
