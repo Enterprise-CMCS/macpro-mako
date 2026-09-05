@@ -7,7 +7,13 @@ export class LoginPage {
   }
 
   private async waitForAuthenticatedAppReady() {
-    await this.page.waitForURL(/\/(?:dashboard)?(?:[/?#]|$)/, { timeout: 30_000 });
+    await this.page.waitForURL(
+      (url) => {
+        const { pathname } = new URL(url);
+        return pathname === "/dashboard" || pathname.startsWith("/dashboard/");
+      },
+      { timeout: 30_000 },
+    );
 
     const dashboardHeading = this.page.getByRole("heading", { name: "Dashboard" });
     const deadline = Date.now() + 90_000;
