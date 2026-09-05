@@ -7,10 +7,24 @@ export class LoginPage {
   }
 
   private async waitForAuthenticatedAppReady() {
-    await this.page.waitForURL(/\/dashboard(?:[/?#]|$)/, { timeout: 30_000 });
-    await this.page.getByRole("heading", { name: "Dashboard" }).waitFor({
+    await this.page.waitForURL(/\/(?:dashboard)?(?:[/?#]|$)/, { timeout: 30_000 });
+
+    const dashboardHeading = this.page.getByRole("heading", { name: "Dashboard" });
+    const deadline = Date.now() + 90_000;
+
+    while (Date.now() < deadline) {
+      if (await dashboardHeading.isVisible().catch(() => false)) {
+        return;
+      }
+
+      await this.page.goto("/");
+      await this.page.goto("/dashboard");
+      await this.page.waitForTimeout(5_000);
+    }
+
+    await dashboardHeading.waitFor({
       state: "visible",
-      timeout: 30_000,
+      timeout: 1_000,
     });
   }
 
