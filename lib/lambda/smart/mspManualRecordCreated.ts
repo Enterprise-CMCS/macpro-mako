@@ -88,9 +88,7 @@ export const transformMspManualRecordCreated = (
     ...(isNonEmptyString(event.operationType) ? { operationType: event.operationType } : {}),
     ...(isNonEmptyString(event.creationContext) ? { creationContext: event.creationContext } : {}),
     ...(isNonEmptyString(event.createdByUserId) ? { createdByUserId: event.createdByUserId } : {}),
-    ...(event.proposedEffectiveDate !== undefined
-      ? { proposedDate: event.proposedEffectiveDate }
-      : {}),
+    ...(event.proposedEffectiveDate != null ? { proposedDate: event.proposedEffectiveDate } : {}),
     ...(typeof event.approvedEffectiveDate === "number" ||
     isNonEmptyString(event.approvedEffectiveDate)
       ? { approvedEffectiveDate: event.approvedEffectiveDate }

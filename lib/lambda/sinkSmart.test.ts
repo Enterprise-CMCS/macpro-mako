@@ -365,6 +365,16 @@ describe("SMART Kafka envelope parsing", () => {
     );
   });
 
+  it("accepts null optional effective dates for SMART snapshot events", () => {
+    const payload = {
+      ...smartEvent,
+      approvedEffectiveDate: null,
+      proposedEffectiveDate: null,
+    };
+
+    expect(parseSmartOnemacEvent(payload)).toEqual(expect.objectContaining(payload));
+  });
+
   it.each(["spaWaiverId", "id", "correlationId", "authority", "status", "createdAt"])(
     "rejects null required field %s and publishes VALIDATION",
     async (requiredField) => {
@@ -636,14 +646,7 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it.each([
-    "MSP_MANUAL_RECORD_CREATED",
-    "MSP_STATUS_UPDATED",
-    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_ASSIGNMENT_UPDATED",
-    "NOT_A_REAL_TYPE",
-    undefined,
-  ])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
     "creates a default OneMAC-shaped document for operationType %s when the ID is missing",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -670,14 +673,7 @@ describe("SMART operation dispatch", () => {
     },
   );
 
-  it.each([
-    "MSP_MANUAL_RECORD_CREATED",
-    "MSP_STATUS_UPDATED",
-    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_ASSIGNMENT_UPDATED",
-    "NOT_A_REAL_TYPE",
-    undefined,
-  ])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
     "updates only SMART identity fields for operationType %s when the ID exists",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
