@@ -78,15 +78,29 @@ const sameDate = (left: unknown, eventValue: string, timeZone: string): boolean 
   return getTimestampInMilliseconds(left) === Date.parse(eventValue);
 };
 
-const displayValue = (value: unknown): string => {
+const ADMINISTRATIVE_DATE_TIME_ZONES: Record<string, string> = {
+  "Initial Submission Date": "America/New_York",
+  "Approved Effective Date": "UTC",
+  "Proposed Effective Date": "UTC",
+};
+
+const displayValue = (field: string, value: unknown): string => {
   if (value === undefined || value === null || value === "") return "not set";
+
+  const timeZone = ADMINISTRATIVE_DATE_TIME_ZONES[field];
+  if (timeZone) {
+    if (typeof value === "string" && /^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
+    return getCalendarDate(value, timeZone) ?? String(value);
+  }
+
   return String(value);
 };
 
 const getChangeMade = (changes: FieldChange[]): string =>
   changes
     .map(
-      ({ field, from, to }) => `${field} changed from ${displayValue(from)} to ${displayValue(to)}`,
+      ({ field, from, to }) =>
+        `${field} changed from ${displayValue(field, from)} to ${displayValue(field, to)}`,
     )
     .join("; ");
 

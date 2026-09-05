@@ -129,6 +129,8 @@ describe("handleMspAdministrativeFieldUpdated", () => {
           packageId: PACKAGE_ID,
           event: "update-values",
           isAdminChange: true,
+          changeMade:
+            "Initial Submission Date changed from 2026-09-01 to 2026-09-03; Proposed Effective Date changed from 2027-01-01 to 2027-01-31",
           submitterName: event.createdByName,
         }),
       ],
