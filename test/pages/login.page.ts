@@ -15,22 +15,10 @@ export class LoginPage {
       { timeout: 30_000 },
     );
 
-    const dashboardHeading = this.page.getByRole("heading", { name: "Dashboard" });
-    const deadline = Date.now() + 90_000;
-
-    while (Date.now() < deadline) {
-      if (await dashboardHeading.isVisible().catch(() => false)) {
-        return;
-      }
-
-      await this.page.goto("/");
-      await this.page.goto("/dashboard");
-      await this.page.waitForTimeout(5_000);
-    }
-
-    await dashboardHeading.waitFor({
+    // Stay on the OAuth callback URL so Amplify can exchange `code`.
+    await this.page.getByRole("heading", { name: "Dashboard" }).waitFor({
       state: "visible",
-      timeout: 1_000,
+      timeout: 90_000,
     });
   }
 

@@ -39,11 +39,11 @@ const wasRoleJustGranted = (accessResult: unknown) =>
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
+const isOAuthCallback = () =>
+  typeof window !== "undefined" && new URLSearchParams(window.location.search).has("code");
+
 const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
   return async () => {
-    const accessResult = await requestBaseCMSAccess();
-    await createUserProfile();
-
     const fetchUser = async () => {
       await queryClient.invalidateQueries({ queryKey: ["user"] });
       return queryClient.fetchQuery({
@@ -54,16 +54,30 @@ const loader = (queryClient: QueryClient, loginFlag?: boolean) => {
 
     let isUser = await fetchUser();
 
-    if (wasRoleJustGranted(accessResult) && !hasUsableRole(isUser)) {
-      const deadline = Date.now() + ROLE_INDEX_WAIT_MS;
-      while (Date.now() < deadline && !hasUsableRole(isUser)) {
-        await wait(ROLE_INDEX_POLL_MS);
+    // Amplify exchanges the hosted-UI `code` asynchronously. Redirecting first
+    // drops the callback URL and leaves the user signed out.
+    if (!isUser.user && isOAuthCallback()) {
+      const deadline = Date.now() + 15_000;
+      while (Date.now() < deadline && !isUser.user) {
+        await wait(500);
         isUser = await fetchUser();
       }
     }
 
     if (!isUser.user) {
       return redirect(loginFlag ? "/" : "/login");
+    }
+
+    const accessResult = await requestBaseCMSAccess();
+    await createUserProfile();
+    isUser = await fetchUser();
+
+    if (wasRoleJustGranted(accessResult) && !hasUsableRole(isUser)) {
+      const deadline = Date.now() + ROLE_INDEX_WAIT_MS;
+      while (Date.now() < deadline && !hasUsableRole(isUser)) {
+        await wait(ROLE_INDEX_POLL_MS);
+        isUser = await fetchUser();
+      }
     }
 
     return isUser;
@@ -83,9 +97,10 @@ export const Dashboard = () => {
   });
 
   const isAbleToAccessDashboard = () => {
-    return (
-      (oneMacUser.user["custom:cms-roles"] || oneMacUser.user["custom:ismemberof"]) &&
-      Object.values(UserRoles).some((role) => oneMacUser.user.role === role)
+    return Boolean(
+      oneMacUser?.user &&
+        (oneMacUser.user["custom:cms-roles"] || oneMacUser.user["custom:ismemberof"]) &&
+        Object.values(UserRoles).some((role) => oneMacUser.user.role === role),
     );
   };
 
@@ -94,6 +109,9 @@ export const Dashboard = () => {
   }
 
   if (!oneMacUser?.user || !isAbleToAccessDashboard()) {
+    if (isOAuthCallback()) {
+      return <LoadingSpinner />;
+    }
     return <Navigate to="/" />;
   }
 
