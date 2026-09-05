@@ -51,8 +51,15 @@ describe("handler", () => {
         deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
+        raiId: { type: "keyword" },
+        raiName: { type: "keyword" },
+        raiWithdrawnToggleDate: { type: "date" },
         spaWaiverId: { type: "keyword" },
         smartRecordType: { type: "keyword" },
+        smartStatus: { type: "keyword" },
+        smartStatusChangedAt: { type: "date" },
+        smartAdministrativeChangedAt: { type: "date" },
+        smartAdministrativePreviousId: { type: "keyword" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
       },
@@ -67,7 +74,16 @@ describe("handler", () => {
         statusDate: { type: "date" },
       },
     );
-    expect(updateMappingSpy).toHaveBeenCalledTimes(2);
+    expect(updateMappingSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      `${OPENSEARCH_INDEX_NAMESPACE}changelog`,
+      {
+        raiId: { type: "keyword" },
+        raiName: { type: "keyword" },
+        raiWithdrawnToggleDate: { type: "date" },
+      },
+    );
+    expect(updateMappingSpy).toHaveBeenCalledTimes(3);
 
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });

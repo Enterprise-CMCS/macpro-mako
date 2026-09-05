@@ -27,8 +27,8 @@ const smartOnemacEventSchema = z
     createdByEmail: optionalString,
     operationType: optionalString,
     creationContext: optionalString,
-    proposedEffectiveDate: z.union([z.string(), z.number()]).optional(),
-    approvedEffectiveDate: z.union([z.string(), z.number()]).optional(),
+    proposedEffectiveDate: z.union([z.string(), z.number()]).nullish(),
+    approvedEffectiveDate: z.union([z.string(), z.number()]).nullish(),
     subject: optionalString,
     description: optionalString,
     splitSpaId: optionalString,
@@ -36,6 +36,10 @@ const smartOnemacEventSchema = z
     originalSpaId: optionalString,
     originalSpaWaiverId: optionalString,
     splitReason: optionalString,
+    raiId: optionalString,
+    raiName: optionalString,
+    raiWithdrawnToggle: z.boolean().optional(),
+    raiWithdrawnToggleDate: optionalString,
   })
   .passthrough();
 

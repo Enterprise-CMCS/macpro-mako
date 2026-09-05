@@ -365,6 +365,16 @@ describe("SMART Kafka envelope parsing", () => {
     );
   });
 
+  it("accepts null optional effective dates for SMART snapshot events", () => {
+    const payload = {
+      ...smartEvent,
+      approvedEffectiveDate: null,
+      proposedEffectiveDate: null,
+    };
+
+    expect(parseSmartOnemacEvent(payload)).toEqual(expect.objectContaining(payload));
+  });
+
   it.each(["spaWaiverId", "id", "correlationId", "authority", "status", "createdAt"])(
     "rejects null required field %s and publishes VALIDATION",
     async (requiredField) => {
@@ -560,15 +570,83 @@ describe("SMART operation dispatch", () => {
     );
   });
 
-  it.each([
-    "MSP_MANUAL_RECORD_CREATED",
-    "MSP_STATUS_UPDATED",
-    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_ASSIGNMENT_UPDATED",
-    "MSP_RAI_WITHDRAWAL_TOGGLED",
-    "NOT_A_REAL_TYPE",
-    undefined,
-  ])(
+  it("consumes MSP_RAI_WITHDRAWAL_TOGGLED for an existing package", async () => {
+    const packageId = "AL-26-0001-GATT";
+    const spaWaiverId = "a0ncp000006RG8TAAW";
+    const raiId = "a0qcp000005GbK5AAK";
+    const toggleDate = "2026-08-17T16:11:46.000Z";
+    const raiTogglePayload = {
+      ...smartEvent,
+      spaWaiverId,
+      id: packageId,
+      correlationId: "",
+      authority: "Medicaid SPA",
+      status: "Pending Second Clock",
+      createdAt: toggleDate,
+      operationType: "MSP_RAI_WITHDRAWAL_TOGGLED",
+      raiId,
+      raiName: `${packageId}-RAI`,
+      raiWithdrawnToggle: true,
+      raiWithdrawnToggleDate: toggleDate,
+    };
+    const existingPackage = {
+      id: packageId,
+      origin: "OneMAC",
+      authority: "Medicaid SPA",
+      state: "AL",
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      cmsStatus: "Pending",
+      stateStatus: "Under Review",
+      raiRequestedDate: "2026-07-01T12:00:00.000Z",
+      raiReceivedDate: "2026-08-01T12:00:00.000Z",
+      raiWithdrawEnabled: false,
+      spaWaiverId,
+      deleted: false,
+    };
+    getItemSpy.mockResolvedValue({
+      found: true,
+      _id: packageId,
+      _source: existingPackage,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+    searchSpy.mockImplementation(async (_domain, index) =>
+      String(index).endsWith("main")
+        ? { hits: { hits: [{ _id: packageId, _source: existingPackage }] } }
+        : { hits: { hits: [] } },
+    );
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(raiTogglePayload, packageId))),
+    ).resolves.toBeUndefined();
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      packageId,
+      expect.objectContaining({
+        raiWithdrawEnabled: true,
+        raiId,
+        raiWithdrawnToggleDate: toggleDate,
+      }),
+    );
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/changelog$/),
+      [
+        expect.objectContaining({
+          packageId,
+          event: "toggle-withdraw-rai",
+          timestamp: Date.parse(toggleDate),
+          isAdminChange: true,
+          raiWithdrawEnabled: true,
+        }),
+      ],
+      { throwOnBulkError: true },
+    );
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
     "creates a default OneMAC-shaped document for operationType %s when the ID is missing",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -595,15 +673,7 @@ describe("SMART operation dispatch", () => {
     },
   );
 
-  it.each([
-    "MSP_MANUAL_RECORD_CREATED",
-    "MSP_STATUS_UPDATED",
-    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_ASSIGNMENT_UPDATED",
-    "MSP_RAI_WITHDRAWAL_TOGGLED",
-    "NOT_A_REAL_TYPE",
-    undefined,
-  ])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
     "updates only SMART identity fields for operationType %s when the ID exists",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
