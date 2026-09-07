@@ -229,13 +229,39 @@ const persistAdministrativeActivity = async (
   const timestamp = Date.parse(event.createdAt);
   const isIdChange = oldId !== newId;
   const copiedActivity: { id: string; [key: string]: unknown }[] = [];
+  const archivedActivity: { id: string; [key: string]: unknown }[] = [];
   if (isIdChange) {
-    const changelog = await getPackageChangelog(oldId);
+    const archivedId = `${oldId}-del`;
+    // A bulk write can partially succeed. On retry, some source activity may
+    // already belong to the archived ID while the rest still belongs to the
+    // active ID, so read both and repair the complete projection.
+    const [activeChangelog, archivedChangelog] = await Promise.all([
+      getPackageChangelog(oldId),
+      getPackageChangelog(archivedId),
+    ]);
+    const sourceActivity = Array.from(
+      new Map(
+        [...activeChangelog.hits.hits, ...archivedChangelog.hits.hits].map((activity) => [
+          activity._id,
+          activity,
+        ]),
+      ).values(),
+    );
+
     copiedActivity.push(
-      ...changelog.hits.hits.map(({ _id, _source }) => ({
+      ...sourceActivity
+        .filter(({ _source }) => _source.event !== "delete")
+        .map(({ _id, _source }) => ({
+          ..._source,
+          id: `${newId}-${getActivitySuffix(oldId, _id)}`,
+          packageId: newId,
+        })),
+    );
+    archivedActivity.push(
+      ...sourceActivity.map(({ _id, _source }) => ({
         ..._source,
-        id: `${newId}-${getActivitySuffix(oldId, _id)}`,
-        packageId: newId,
+        id: _id,
+        packageId: archivedId,
       })),
     );
   }
@@ -258,7 +284,10 @@ const persistAdministrativeActivity = async (
     ...(isIdChange ? { idToBeUpdated: oldId } : {}),
   };
   const { domain, index } = getDomainAndNamespace("changelog");
-  await os.bulkUpdateData(domain, index, [...copiedActivity, adminActivity], {
+  // Copies and the deterministic admin entry precede archival in the request.
+  // Any partial success remains safe because the next Kafka delivery reads
+  // from both source package IDs and upserts the same document IDs.
+  await os.bulkUpdateData(domain, index, [...copiedActivity, adminActivity, ...archivedActivity], {
     throwOnBulkError: true,
   });
 };

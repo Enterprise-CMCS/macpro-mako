@@ -207,6 +207,7 @@ describe("handleMspAdministrativeFieldUpdated", () => {
     );
 
     expect(getPackageChangelogSpy).toHaveBeenCalledWith(oldId);
+    expect(getPackageChangelogSpy).toHaveBeenCalledWith(`${oldId}-del`);
     expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
       "https://search.example.test",
       "test-main",
@@ -228,6 +229,7 @@ describe("handleMspAdministrativeFieldUpdated", () => {
       "test-changelog",
       expect.arrayContaining([
         expect.objectContaining({ id: `${PACKAGE_ID}-1234`, packageId: PACKAGE_ID }),
+        expect.objectContaining({ id: `${oldId}-1234`, packageId: `${oldId}-del` }),
         expect.objectContaining({
           packageId: PACKAGE_ID,
           event: "update-id",
@@ -243,6 +245,86 @@ describe("handleMspAdministrativeFieldUpdated", () => {
       { throwOnBulkError: true },
     );
     expect(updateItemSpy).not.toHaveBeenCalled();
+  });
+
+  it("repairs a partially archived rename from active and deleted changelog ownership", async () => {
+    const oldId = "MD-26-9000-SP1";
+    const oldPackage = { ...packageDocument, id: oldId } as opensearch.main.Document;
+    getPackageChangelogSpy.mockImplementation(async (packageId) => {
+      const suffix = packageId === oldId ? "active" : "archived";
+      return {
+        hits: {
+          hits: [
+            {
+              _id: `${oldId}-${suffix}`,
+              _source: {
+                id: `${oldId}-${suffix}`,
+                packageId,
+                event: "new-medicaid-submission",
+                timestamp: suffix === "active" ? 1234 : 1233,
+              },
+            },
+          ],
+        },
+      } as never;
+    });
+
+    await handleMspAdministrativeFieldUpdated(
+      createContext({
+        existence: {
+          mainById: undefined,
+          mainBySpaWaiverId: {
+            hits: { hits: [{ _id: oldId, _source: oldPackage }] },
+          } as Awaited<ReturnType<typeof os.search>>,
+          changelogById: emptySearch,
+        },
+      }),
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-changelog",
+      expect.arrayContaining([
+        expect.objectContaining({ id: `${PACKAGE_ID}-active`, packageId: PACKAGE_ID }),
+        expect.objectContaining({ id: `${PACKAGE_ID}-archived`, packageId: PACKAGE_ID }),
+        expect.objectContaining({ id: `${oldId}-active`, packageId: `${oldId}-del` }),
+        expect.objectContaining({ id: `${oldId}-archived`, packageId: `${oldId}-del` }),
+      ]),
+      { throwOnBulkError: true },
+    );
+  });
+
+  it("keeps the old package active when rename history persistence fails", async () => {
+    const oldId = "MD-26-9000-SP1";
+    const oldPackage = { ...packageDocument, id: oldId } as opensearch.main.Document;
+    const outage = new Error("OpenSearch changelog unavailable");
+    bulkUpdateDataSpy.mockResolvedValueOnce(undefined).mockRejectedValueOnce(outage);
+
+    await expect(
+      handleMspAdministrativeFieldUpdated(
+        createContext({
+          existence: {
+            mainById: undefined,
+            mainBySpaWaiverId: {
+              hits: { hits: [{ _id: oldId, _source: oldPackage }] },
+            } as Awaited<ReturnType<typeof os.search>>,
+            changelogById: emptySearch,
+          },
+        }),
+      ),
+    ).rejects.toThrow(outage);
+
+    expect(createItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      expect.objectContaining({ id: PACKAGE_ID }),
+    );
+    expect(bulkUpdateDataSpy).not.toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      [{ id: oldId, adminChangeType: "delete" }],
+      { throwOnBulkError: true },
+    );
   });
 
   it("does not overwrite a package occupying the new ID", async () => {
