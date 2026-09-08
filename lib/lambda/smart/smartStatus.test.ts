@@ -6,8 +6,6 @@ import { mapSmartStatusToSeatoolStatus } from "./smartStatus";
 describe("mapSmartStatusToSeatoolStatus", () => {
   it.each([
     ["Intake Needed", SEATOOL_STATUS.SUBMITTED],
-    ["Pkg Received", SEATOOL_STATUS.SUBMITTED],
-    ["Package Received", SEATOOL_STATUS.SUBMITTED],
     ["Pending - First Clock", SEATOOL_STATUS.PENDING],
     ["Pending RAI", SEATOOL_STATUS.PENDING_RAI],
     ["Pending - Second Clock", SEATOOL_STATUS.PENDING],
@@ -21,7 +19,10 @@ describe("mapSmartStatusToSeatoolStatus", () => {
     expect(mapSmartStatusToSeatoolStatus(smartStatus)).toBe(seatoolStatus);
   });
 
-  it("returns undefined for unknown SMART status strings", () => {
-    expect(mapSmartStatusToSeatoolStatus("Unknown status")).toBeUndefined();
-  });
+  it.each(["Unknown status", "Pkg Received", "Package Received"])(
+    "returns undefined for unsupported SMART status %s",
+    (smartStatus) => {
+      expect(mapSmartStatusToSeatoolStatus(smartStatus)).toBeUndefined();
+    },
+  );
 });

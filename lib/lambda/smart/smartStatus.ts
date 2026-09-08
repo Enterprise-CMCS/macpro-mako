@@ -2,8 +2,6 @@ import { SEATOOL_STATUS } from "shared-types";
 
 export const SMART_STATUS_VALUES = [
   "Intake Needed",
-  "Pkg Received",
-  "Package Received",
   "Pending - First Clock",
   "Pending RAI",
   "Pending - Second Clock",
@@ -24,14 +22,12 @@ export interface SmartStatusMapping {
 }
 
 /**
- * Maps the provisional SMART status contract to OneMAC's established internal statuses.
+ * Maps the confirmed SMART status contract to OneMAC's established internal statuses.
  * MSP_MANUAL_RECORD_CREATED does not use Kafka `status` for seatool mapping.
  */
 export const mapSmartStatus = (smartStatus: string): SmartStatusMapping | undefined => {
   switch (smartStatus) {
     case "Intake Needed":
-    case "Pkg Received":
-    case "Package Received":
       return { seatoolStatus: SEATOOL_STATUS.SUBMITTED, secondClock: false };
     case "Pending - First Clock":
       return { seatoolStatus: SEATOOL_STATUS.PENDING, secondClock: false };
