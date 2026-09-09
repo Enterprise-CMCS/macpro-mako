@@ -111,11 +111,14 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 ## Learned User Preferences
 
-- Make code changes on `main`; avoid committing directly to the `production` branch.
+- Create feature branches off `main`; avoid committing directly to the `production` branch.
 - When executing an attached plan, do not edit the plan file itself.
-- Enterprise JIRA (OY2/OMO): use https://jiraent.cms.gov
+- Enterprise JIRA (OY2/OMO): use https://jiraent.cms.gov; Confluence: https://confluenceent.cms.gov
 - Show draft JIRA comments for approval before posting or transitioning tickets.
 - JIRA or CSV review-only requests: assess and report only; do not implement fixes unless explicitly asked.
+- Production investigations are read-only unless the user explicitly permits changes; use `onemac-prod` or `onemac-prod-readonly`.
+- Draft emails, Teams messages, and other external replies for the user to copy and send; do not send them.
+- Harness spec and plan packets should use relative links only, never local absolute file paths.
 
 ## Learned Workspace Facts
 
@@ -123,3 +126,6 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 - Date consumers should read `proposedDate` first, then `draft.data.proposedEffectiveDate`; format in UTC and treat numeric values below `1e12` as seconds when normalizing.
 - SEATool reference tables and TypeScript types live under `lib/packages/shared-types/seatool-tables/`.
 - Environment promotion typically follows `main` → `val` → `production` (for example attachment archive rollouts).
+- Before (or as part of) promoting SMART to `val`/`production`, run `bun run bootstrap:bigmac-error-queue` for that pair (`--pair val` / `--pair production`) so `mako-val` / `mako-production` get `bigmacErrorQueueUrl` and `bigmacErrorQueueArn`, then redeploy so `sinkSmart` receives `BIGMAC_ERROR_QUEUE_URL`. Prefer doing secrets before the merge; a secret-only change does not update the Lambda until redeploy. Optional keys: synth succeeds without them, but SMART ingest errors will not reach BigMAC until both are set and the stage is redeployed. Use `--ensure-producer-secret` so OneMAC is in `bigmac/{stage}/sqsProducerAccounts`.
+- OneMAC AWS CLI profiles are `onemac-dev`, `onemac-val`, `onemac-prod`, and `onemac-prod-readonly`; BigMAC uses `bigmac-dev` and `bigmac-prod`.
+- SMART Kafka topic is `aws.mulesoft.onemac.events`; record key must equal payload `id`; envelope `origin` is exactly `"SMART"` (not `source`).
