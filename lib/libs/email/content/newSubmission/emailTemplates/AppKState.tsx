@@ -1,6 +1,6 @@
 import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatDate, formatNinetyDaysDate } from "shared-utils";
+import { formatDate, formatNinetyDaysDateFromEasternDate } from "shared-utils";
 
 import {
   BasicFooter,
@@ -34,7 +34,7 @@ export const AppKStateEmail = (props: {
           "Amendment Waiver Number": variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
-          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+          "90th Day Deadline": formatNinetyDaysDateFromEasternDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
       />
@@ -43,7 +43,7 @@ export const AppKStateEmail = (props: {
         {`This response confirms the receipt of your Waiver request or your
         response to a Waiver Request for Additional Information (RAI). You can
         expect a formal response to your submittal to be issued within 90 days,
-        before ${formatNinetyDaysDate(variables.timestamp)}.`}
+        before ${formatNinetyDaysDateFromEasternDate(variables.timestamp)}.`}
       </Text>
       <MailboxNotice type="Waiver" />
       <FollowUpNotice includeDidNotExpect={false} />

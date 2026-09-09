@@ -1,6 +1,10 @@
 import { Text } from "@react-email/components";
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatActionTypeWithWaiver, formatDate, formatNinetyDaysDate } from "shared-utils";
+import {
+  formatActionTypeWithWaiver,
+  formatDate,
+  formatNinetyDaysDateFromEasternDate,
+} from "shared-utils";
 
 import { BasicFooter, FollowUpNotice, MailboxNotice, PackageDetails } from "../../email-components";
 import { styles } from "../../email-styles";
@@ -34,7 +38,7 @@ export const Waiver1915bStateEmail = (props: {
           [`${formatActionTypeWithWaiver(variables.actionType)} Number`]: variables.id,
           "Waiver Authority": variables.authority,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
-          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+          "90th Day Deadline": formatNinetyDaysDateFromEasternDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
       />
@@ -42,7 +46,7 @@ export const Waiver1915bStateEmail = (props: {
         {`This response confirms the receipt of your Waiver request or your response to a Waiver Request for Additional Information (RAI). You
               can expect a formal response to your submittal to be issued within
               90 days, before
-              ${formatNinetyDaysDate(variables.timestamp)}
+              ${formatNinetyDaysDateFromEasternDate(variables.timestamp)}
               .`}
       </Text>
       <MailboxNotice type="Waiver" />
