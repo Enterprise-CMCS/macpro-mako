@@ -26,12 +26,14 @@ const smartTypeSelectionSchema = z.object({
   isSubTypeActive: z.boolean(),
 });
 
+const smartRaiDate = z.union([smartDate, z.literal("-- --")]);
+
 const smartRaiSchema = z
   .object({
     formalRaiRequested: z.boolean(),
-    raiRequestedDate: smartDate.nullish(),
-    raiResponseReceivedDate: smartDate.nullish(),
-    raiResponseWithdrawnDate: smartDate.nullish(),
+    raiRequestedDate: smartRaiDate.nullish(),
+    raiResponseReceivedDate: smartRaiDate.nullish(),
+    raiResponseWithdrawnDate: smartRaiDate.nullish(),
   })
   .passthrough();
 
@@ -59,8 +61,8 @@ type SmartStatusUpdatedEvent = z.infer<typeof smartStatusUpdatedSchema>;
 const hasOwn = (value: object, field: string): boolean =>
   Object.prototype.hasOwnProperty.call(value, field);
 
-const normalizeOptionalDate = (value: string | null | undefined): string | undefined =>
-  value == null ? undefined : normalizeSmartDate(value);
+const normalizeOptionalRaiDate = (value: string | null | undefined): string | undefined =>
+  value == null || value === "-- --" ? undefined : normalizeSmartDate(value);
 
 // OneMAC's legacy OpenSearch mapping requires numeric type IDs. SMART's IDs are
 // Salesforce strings, while the UI only uses these values as stable list keys.
@@ -102,15 +104,12 @@ const getRaiUpdates = (
   const updates: Record<string, unknown> = {};
   const rai = event.rai;
 
-  // SMART nulls are snapshots with an absent value, not delete commands. Preserve
-  // OneMAC dates unless SMART provides a concrete replacement.
+  // SMART relays the State-owned response dates back to OneMAC. Only the RAI
+  // requested date originates in SMART, so never overwrite response dates from
+  // their payload values. Null and the legacy "-- --" sentinel are no-ops.
   if (rai) {
-    const raiRequestedDate = normalizeOptionalDate(rai.raiRequestedDate);
-    const raiReceivedDate = normalizeOptionalDate(rai.raiResponseReceivedDate);
-    const raiWithdrawnDate = normalizeOptionalDate(rai.raiResponseWithdrawnDate);
+    const raiRequestedDate = normalizeOptionalRaiDate(rai.raiRequestedDate);
     if (raiRequestedDate) updates.raiRequestedDate = raiRequestedDate;
-    if (raiReceivedDate) updates.raiReceivedDate = raiReceivedDate;
-    if (raiWithdrawnDate) updates.raiWithdrawnDate = raiWithdrawnDate;
   }
 
   // This is the legacy SEATool exception: a newly issued Formal RAI must not
@@ -246,6 +245,13 @@ export const handleMspStatusUpdated = async (context: SmartOnemacEventContext): 
 
   const incomingTimestamp = Date.parse(event.statusChangedAt);
   const storedTimestamp = getTimestampInMilliseconds(resolution.document.smartStatusChangedAt);
+  const identityBackfill = {
+    ...(resolution.shouldBackfillSpaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
+    ...(!resolution.document.correlationId && event.correlationId
+      ? { correlationId: event.correlationId }
+      : {}),
+  };
+  const { domain, index } = getDomainAndNamespace("main");
   if (
     storedTimestamp === incomingTimestamp &&
     resolution.document.smartStatus &&
@@ -257,14 +263,12 @@ export const handleMspStatusUpdated = async (context: SmartOnemacEventContext): 
     );
     return;
   }
-
-  const identityBackfill = {
-    ...(resolution.shouldBackfillSpaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
-    ...(!resolution.document.correlationId && event.correlationId
-      ? { correlationId: event.correlationId }
-      : {}),
-  };
-  const { domain, index } = getDomainAndNamespace("main");
+  if (storedTimestamp === incomingTimestamp && resolution.document.smartStatus === event.status) {
+    if (Object.keys(identityBackfill).length > 0) {
+      await os.updateItem(domain, index, resolution.documentId, identityBackfill);
+    }
+    return;
+  }
   if (storedTimestamp !== undefined && storedTimestamp > incomingTimestamp) {
     console.info(
       JSON.stringify({

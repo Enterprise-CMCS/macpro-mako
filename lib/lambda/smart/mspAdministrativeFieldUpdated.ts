@@ -37,6 +37,7 @@ const smartAdministrativeFieldUpdatedSchema = z
     proposedEffectiveDate: smartDate.nullish(),
     spaWaiverId: requiredString,
     state: requiredString,
+    statusChangedAt: isoDateTime,
   })
   .passthrough();
 
@@ -124,7 +125,7 @@ const resolveAdministrativePackage = (
     if (
       !target ||
       !source ||
-      targetTimestamp !== Date.parse(event.createdAt) ||
+      targetTimestamp !== Date.parse(event.statusChangedAt) ||
       target._source.smartAdministrativePreviousId?.toUpperCase() !==
         (source._source.id ?? source._id).toUpperCase()
     ) {
@@ -198,15 +199,15 @@ const buildAdministrativeUpdates = (
     changes.unshift({ field: "Package ID", from: currentId, to: newId });
   }
 
-  const createdAt = new Date(event.createdAt).toISOString();
+  const statusChangedAt = new Date(event.statusChangedAt).toISOString();
   return {
     changes,
     updates: {
       ...updates,
-      smartAdministrativeChangedAt: createdAt,
+      smartAdministrativeChangedAt: statusChangedAt,
       operationType: event.operationType,
-      makoChangedDate: latestIsoDate(document.makoChangedDate, createdAt),
-      changedDate: latestIsoDate(document.changedDate, createdAt),
+      makoChangedDate: latestIsoDate(document.makoChangedDate, statusChangedAt),
+      changedDate: latestIsoDate(document.changedDate, statusChangedAt),
       ...(!document.spaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
       ...(!document.correlationId && event.correlationId
         ? { correlationId: event.correlationId }
@@ -226,7 +227,7 @@ const persistAdministrativeActivity = async (
   changes: FieldChange[],
 ): Promise<void> => {
   const newId = event.id.toUpperCase();
-  const timestamp = Date.parse(event.createdAt);
+  const timestamp = Date.parse(event.statusChangedAt);
   const isIdChange = oldId !== newId;
   const copiedActivity: { id: string; [key: string]: unknown }[] = [];
   const archivedActivity: { id: string; [key: string]: unknown }[] = [];
@@ -299,7 +300,7 @@ const prepareRenamedPackage = async (
 ): Promise<Error | undefined> => {
   const oldId = (resolution.document.id ?? resolution.documentId).toUpperCase();
   const newId = event.id.toUpperCase();
-  const timestamp = Date.parse(event.createdAt);
+  const timestamp = Date.parse(event.statusChangedAt);
   const {
     adminChangeType: _adminChangeType,
     changeMade: _changeMade,
@@ -416,7 +417,7 @@ export const handleMspAdministrativeFieldUpdated = async (
     return;
   }
 
-  const incomingTimestamp = Date.parse(event.createdAt);
+  const incomingTimestamp = Date.parse(event.statusChangedAt);
   const storedTimestamp = getTimestampInMilliseconds(
     resolution.document.smartAdministrativeChangedAt,
   );
@@ -438,7 +439,9 @@ export const handleMspAdministrativeFieldUpdated = async (
   if (storedTimestamp === incomingTimestamp && changes.length > 0 && !isPartialRename) {
     await reportSmartValidationFailure(
       context,
-      new Error("administrative fields conflict with an event at the same createdAt timestamp"),
+      new Error(
+        "administrative fields conflict with an event at the same statusChangedAt timestamp",
+      ),
     );
     return;
   }

@@ -13,6 +13,8 @@ const PACKAGE_ID = "MD-26-9000-SP1-A";
 const EXTERNAL_ID = "a0vSL00000Clw03YAB";
 const CREATED_AT = "2026-09-03T20:26:46.000Z";
 const CREATED_TIMESTAMP = Date.parse(CREATED_AT);
+const STATUS_CHANGED_AT = "2026-09-03T20:26:46.223Z";
+const STATUS_CHANGED_TIMESTAMP = Date.parse(STATUS_CHANGED_AT);
 const emptySearch = { hits: { hits: [] } };
 
 const event = Object.freeze({
@@ -28,6 +30,7 @@ const event = Object.freeze({
   createdByEmail: "smart@example.com",
   operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
   state: "Maryland",
+  statusChangedAt: STATUS_CHANGED_AT,
   initialSubmissionDate: "2026-09-03",
   approvedEffectiveDate: null,
   proposedEffectiveDate: "2027-01-31",
@@ -125,7 +128,7 @@ describe("handleMspAdministrativeFieldUpdated", () => {
       "test-changelog",
       [
         expect.objectContaining({
-          id: `${PACKAGE_ID}-smart-administrative-${CREATED_TIMESTAMP}`,
+          id: `${PACKAGE_ID}-smart-administrative-${STATUS_CHANGED_TIMESTAMP}`,
           packageId: PACKAGE_ID,
           event: "update-values",
           isAdminChange: true,
@@ -143,7 +146,7 @@ describe("handleMspAdministrativeFieldUpdated", () => {
       expect.objectContaining({
         submissionDate: "2026-09-03T04:00:00.000Z",
         proposedDate: "2027-01-31T05:00:00.000Z",
-        smartAdministrativeChangedAt: CREATED_AT,
+        smartAdministrativeChangedAt: STATUS_CHANGED_AT,
       }),
     );
     const updates = updateItemSpy.mock.calls[0][3];
@@ -354,7 +357,7 @@ describe("handleMspAdministrativeFieldUpdated", () => {
       ...packageDocument,
       id: PACKAGE_ID,
       smartAdministrativePreviousId: oldId,
-      smartAdministrativeChangedAt: CREATED_AT,
+      smartAdministrativeChangedAt: STATUS_CHANGED_AT,
     } as opensearch.main.Document;
 
     await handleMspAdministrativeFieldUpdated(

@@ -161,7 +161,7 @@ describe("handleMspStatusUpdated", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("maps Second Clock, overwrites concrete SMART RAI dates, and preserves null dates", async () => {
+  it("maps Second Clock and only consumes SMART's RAI requested date", async () => {
     const secondClockEvent = {
       ...event,
       status: "Pending - Second Clock",
@@ -191,10 +191,30 @@ describe("handleMspStatusUpdated", () => {
         seatoolStatus: SEATOOL_STATUS.PENDING,
         secondClock: true,
         raiRequestedDate: "2026-08-01T04:00:00.000Z",
-        raiReceivedDate: "2026-08-20T04:00:00.000Z",
       }),
     );
+    expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("raiReceivedDate");
     expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("raiWithdrawnDate");
+  });
+
+  it("treats null and -- -- RAI dates as no-ops outside a new Formal RAI", async () => {
+    const eventWithEmptyRaiDates = {
+      ...event,
+      rai: {
+        formalRaiRequested: false,
+        raiRequestedDate: "-- --",
+        raiResponseReceivedDate: "-- --",
+        raiResponseWithdrawnDate: null,
+      },
+    } as SmartOnemacEvent;
+
+    await handleMspStatusUpdated(createContext({ event: eventWithEmptyRaiDates }));
+
+    const updates = updateItemSpy.mock.calls[0][3];
+    expect(updates).not.toHaveProperty("raiRequestedDate");
+    expect(updates).not.toHaveProperty("raiReceivedDate");
+    expect(updates).not.toHaveProperty("raiWithdrawnDate");
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
   it("clears prior response state when SMART issues a new Formal RAI", async () => {
@@ -293,6 +313,39 @@ describe("handleMspStatusUpdated", () => {
       expect.objectContaining({ type: sink.ErrorType.VALIDATION }),
     );
     expect(updateItemSpy).not.toHaveBeenCalled();
+  });
+
+  it("does not reapply an identical status event after a OneMAC State response", async () => {
+    const pendingRaiEvent = {
+      ...event,
+      status: "Pending RAI",
+      rai: {
+        formalRaiRequested: true,
+        raiRequestedDate: "2026-09-03",
+        raiResponseReceivedDate: null,
+        raiResponseWithdrawnDate: null,
+      },
+    };
+    const afterStateResponse = {
+      smartStatus: pendingRaiEvent.status,
+      smartStatusChangedAt: STATUS_CHANGED_AT,
+      raiReceivedDate: "2026-09-04T16:00:00.000Z",
+      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+    };
+
+    await handleMspStatusUpdated(
+      createContext({
+        event: pendingRaiEvent,
+        existence: {
+          mainById: packageById(afterStateResponse),
+          mainBySpaWaiverId: packageSearch(afterStateResponse),
+          changelogById: emptySearch,
+        },
+      }),
+    );
+
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
   it("creates a hidden reservation when the status arrives before the package", async () => {
