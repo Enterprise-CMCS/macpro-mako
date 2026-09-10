@@ -20,6 +20,27 @@ export function formatNinetyDaysDate(date: number | null | undefined): string {
   return format(ninetyDaysLater, "MMM d, yyyy");
 }
 
+/**
+ * Formats a 90-day deadline using the Eastern Time calendar date of the submitted timestamp.
+ * Medicaid SPA submissions received before midnight Eastern retain that calendar date even when
+ * the timestamp has crossed into the next UTC day.
+ */
+export function formatNinetyDaysDateFromEasternDate(date: number | null | undefined): string {
+  if (!date) {
+    return "Pending";
+  }
+
+  const easternDate = new TZDate(new Date(date).toISOString(), "America/New_York");
+  const easternCalendarDateInUtc = new UTCDate(
+    easternDate.getFullYear(),
+    easternDate.getMonth(),
+    easternDate.getDate(),
+  );
+  const ninetyDaysLater = add(easternCalendarDateInUtc, { days: 90 });
+
+  return format(ninetyDaysLater, "MMM d, yyyy");
+}
+
 export function formatDate(dateValue: string | number) {
   const dateObj = new Date(dateValue);
 
