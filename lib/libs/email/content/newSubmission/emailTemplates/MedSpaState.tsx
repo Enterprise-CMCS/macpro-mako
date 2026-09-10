@@ -1,7 +1,7 @@
 import { Text } from "@react-email/components";
 import { Events } from "shared-types";
 import { CommonEmailVariables } from "shared-types";
-import { formatDate, formatNinetyDaysDate } from "shared-utils";
+import { formatDate, formatNinetyDaysDateFromEasternDate } from "shared-utils";
 
 import { BasicFooter, FollowUpNotice, MailboxNotice, PackageDetails } from "../../email-components";
 import { styles } from "../../email-styles";
@@ -27,14 +27,14 @@ export const MedSpaStateEmail = (props: {
           "Email Address": variables.submitterEmail,
           "Medicaid SPA ID": variables.id,
           "Proposed Effective Date": formatDate(variables.proposedEffectiveDate),
-          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+          "90th Day Deadline": formatNinetyDaysDateFromEasternDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
       />
       <Text style={styles.text.description}>
         {`This response confirms the receipt of your Medicaid State Plan Amendment
         (SPA or your response to a SPA Request for Additional Information (RAI)). You can expect a formal response to your submittal to be issued
-        within 90 days, before ${formatNinetyDaysDate(variables.timestamp)}.`}
+        within 90 days, before ${formatNinetyDaysDateFromEasternDate(variables.timestamp)}.`}
       </Text>
       <MailboxNotice type="SPA" />
       <FollowUpNotice includeStateLead={false} />
