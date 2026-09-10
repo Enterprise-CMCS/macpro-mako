@@ -36,6 +36,10 @@ const smartOnemacEventSchema = z
     originalSpaId: optionalString,
     originalSpaWaiverId: optionalString,
     splitReason: optionalString,
+    raiId: optionalString,
+    raiName: optionalString,
+    raiWithdrawnToggle: z.boolean().optional(),
+    raiWithdrawnToggleDate: optionalString,
   })
   .passthrough();
 
