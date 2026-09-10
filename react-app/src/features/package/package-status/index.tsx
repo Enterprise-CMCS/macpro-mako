@@ -18,7 +18,8 @@ export const PackageStatusCard = ({ submission }: PackageStatusCardProps) => {
   const isInRAIWithdrawEnabledSubStatus =
     submission.raiWithdrawEnabled &&
     submission.seatoolStatus !== SEATOOL_STATUS.PENDING_APPROVAL &&
-    submission.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE;
+    submission.seatoolStatus !== SEATOOL_STATUS.PENDING_CONCURRENCE &&
+    submission.seatoolStatus !== SEATOOL_STATUS.PENDING_DISAPPROVAL;
 
   // Similar to the above check their are certain things that occur in seatool that invalidate the secondClock
   // flag. Additionally second clock sub status only displays for CMS users
