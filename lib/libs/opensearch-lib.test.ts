@@ -6,7 +6,12 @@ import {
 import { mockedServiceServer as mockedServer } from "mocks/server";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
-import { decodeUtf8, getAwsSdkLogger, updateFieldMapping } from "./opensearch-lib";
+import {
+  assertBulkUpdateSucceeded,
+  decodeUtf8,
+  getAwsSdkLogger,
+  updateFieldMapping,
+} from "./opensearch-lib";
 
 const OPENSEARCH_INDEX = `${OPENSEARCH_INDEX_NAMESPACE}main`;
 
@@ -21,6 +26,8 @@ afterEach(() => {
 async function importWithMockedClient(mockedClient: {
   get?: ReturnType<typeof vi.fn>;
   search?: ReturnType<typeof vi.fn>;
+  create?: ReturnType<typeof vi.fn>;
+  update?: ReturnType<typeof vi.fn>;
 }) {
   vi.doMock("@aws-sdk/credential-provider-node", () => ({
     defaultProvider: () => async () => ({
@@ -86,6 +93,23 @@ describe("opensearch-lib tests", () => {
           throw: "error",
         }),
       ).rejects.toThrowError("Response Error");
+    });
+  });
+
+  describe("bulkUpdateData tests", () => {
+    it("throws on bulk item errors when requested by a retryable consumer", () => {
+      expect(() =>
+        assertBulkUpdateSucceeded(
+          { errors: true },
+          {
+            throwOnBulkError: true,
+          },
+        ),
+      ).toThrow("OpenSearch bulk update completed with item errors");
+    });
+
+    it("retains the existing log-and-continue behavior by default", () => {
+      expect(() => assertBulkUpdateSucceeded({ errors: true })).not.toThrow();
     });
   });
 
@@ -208,6 +232,81 @@ describe("opensearch-lib tests", () => {
 
       expect(getMock).toHaveBeenCalledTimes(1);
       expect(response).toEqual(body);
+    });
+  });
+
+  describe("createItem tests", () => {
+    const document = { id: "AL-26-0817-0001", origin: "SMART" };
+
+    it("creates with op_type create and reports created", async () => {
+      const createMock = vi.fn().mockResolvedValue({
+        body: { result: "created" },
+      });
+      const module = await importWithMockedClient({ create: createMock });
+
+      await expect(
+        module.createItem(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, document),
+      ).resolves.toEqual({ created: true });
+      expect(createMock).toHaveBeenCalledWith({
+        index: OPENSEARCH_INDEX,
+        id: document.id,
+        body: document,
+        refresh: true,
+      });
+    });
+
+    it("treats a 409 version conflict as a non-mutating collision", async () => {
+      const createMock = vi.fn().mockRejectedValue({
+        statusCode: 409,
+        meta: { body: { error: { type: "version_conflict_engine_exception" } } },
+      });
+      const module = await importWithMockedClient({ create: createMock });
+
+      await expect(
+        module.createItem(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, document),
+      ).resolves.toEqual({ created: false, reason: "version_conflict" });
+    });
+
+    it("rethrows non-conflict create failures", async () => {
+      const createMock = vi
+        .fn()
+        .mockRejectedValue(Object.assign(new Error("OpenSearch down"), { statusCode: 500 }));
+      const module = await importWithMockedClient({ create: createMock });
+
+      await expect(
+        module.createItem(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, document),
+      ).rejects.toThrow("OpenSearch down");
+    });
+  });
+
+  describe("updateItem tests", () => {
+    it("partial-updates only the supplied fields", async () => {
+      const updateMock = vi.fn().mockResolvedValue({ body: { result: "updated" } });
+      const module = await importWithMockedClient({ update: updateMock });
+      const fields = {
+        correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+        spaWaiverId: "a0ncp000006Wdh7AAC",
+      };
+
+      await module.updateItem(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, "AL-26-0817-0001", fields);
+
+      expect(updateMock).toHaveBeenCalledWith({
+        index: OPENSEARCH_INDEX,
+        id: "AL-26-0817-0001",
+        body: { doc: fields },
+        refresh: true,
+      });
+    });
+
+    it("rethrows update failures", async () => {
+      const updateMock = vi.fn().mockRejectedValue(new Error("OpenSearch down"));
+      const module = await importWithMockedClient({ update: updateMock });
+
+      await expect(
+        module.updateItem(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, "AL-26-0817-0001", {
+          correlationId: "id",
+        }),
+      ).rejects.toThrow("OpenSearch down");
     });
   });
 });

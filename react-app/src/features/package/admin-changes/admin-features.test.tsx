@@ -40,7 +40,7 @@ describe("Admin Features test", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", {
-        name: /Package Added\s*-\s*Sun, Jan 1 2023, 09:00:00 AM EST/,
+        name: /Split SPA Created\s*-\s*Sun, Jan 1 2023, 09:00:00 AM EST/,
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Change Made" })).toBeInTheDocument();

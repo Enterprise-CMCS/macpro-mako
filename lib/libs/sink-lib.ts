@@ -18,7 +18,7 @@ export enum ErrorType {
   BADPARSE = "badparse",
 }
 
-const ErrorMessages = {
+export const ErrorMessages = {
   [ErrorType.VALIDATION]: "A validation error occurred.",
   [ErrorType.UNKNOWN]: "An unknown error occurred.",
   [ErrorType.BULKUPDATE]: "An error occurred while bulk updating records.",

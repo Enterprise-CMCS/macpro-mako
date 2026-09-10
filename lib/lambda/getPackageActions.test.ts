@@ -1,17 +1,49 @@
 import { APIGatewayEvent } from "aws-lambda";
 import * as packageApi from "libs/api/package/getPackage";
-import { getRequestContext, noStateSubmitter, setMockUsername } from "mocks";
+import {
+  getRequestContext,
+  helpDeskUser,
+  noStateSubmitter,
+  setMockUsername,
+  testStateSubmitter,
+} from "mocks";
 import {
   GET_ERROR_ITEM_ID,
   HI_TEST_ITEM_ID,
   INITIAL_RELEASE_APPK_ITEM_ID,
   NOT_FOUND_ITEM_ID,
+  TEST_ITEM_ID,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks/data/items";
-import { Action, SEATOOL_STATUS } from "shared-types";
+import { Action, SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./getPackageActions";
+import { transformMspManualRecordCreated } from "./smart/mspManualRecordCreated";
+import { SmartOnemacEvent } from "./smart/parseSmartOnemacEvent";
+
+const smartReservationEvent = Object.freeze({
+  spaWaiverId: "a0ncp000006Wdh7AAC",
+  id: TEST_ITEM_ID,
+  correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+  origin: "SMART",
+  authority: "Medicaid SPA",
+  status: "Intake Needed",
+  createdAt: "2026-08-17T16:54:33.000Z",
+  createdByUserId: "005cp00000Jqq9HAAR",
+  createdByName: "Alice Jones",
+  createdByEmail: "alice.j@globalalliantinc.com",
+  operationType: "MSP_MANUAL_RECORD_CREATED",
+  creationContext: "MANUAL",
+  state: "Maryland",
+  initialSubmissionDate: "2026-08-17",
+}) satisfies SmartOnemacEvent;
+
+const smartReservation = {
+  ...transformMspManualRecordCreated(smartReservationEvent)!,
+  id: TEST_ITEM_ID,
+  state: "MD",
+};
 
 describe("getPackageActions Handler", () => {
   beforeEach(() => {
@@ -109,6 +141,72 @@ describe("getPackageActions Handler", () => {
     expect(res.body).toEqual(
       JSON.stringify({ actions: [Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE] }),
     );
+  });
+
+  describe("SMART reservation hiding", () => {
+    it.each([
+      ["state user", testStateSubmitter],
+      ["CMS/help-desk user", helpDeskUser],
+    ])("returns 404 for a SMART-origin package for a %s", async (_role, user) => {
+      setMockUsername(user);
+      vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: smartReservation,
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(user),
+      } as APIGatewayEvent;
+
+      const res = await handler(event);
+
+      expect(res.statusCode).toEqual(404);
+      expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
+    });
+
+    it("still returns actions for an otherwise equivalent OneMAC package", async () => {
+      setMockUsername(testStateSubmitter);
+      vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          origin: "OneMAC",
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event);
+
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toEqual(JSON.stringify({ actions: [] }));
+    });
+
+    it("returns no actions for a completed Submitted SMART package", async () => {
+      setMockUsername(testStateSubmitter);
+      vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+          seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event);
+
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toEqual(JSON.stringify({ actions: [] }));
+    });
   });
 
   it("should ignore a malformed main shell doc and resolve package actions against an active draft", async () => {

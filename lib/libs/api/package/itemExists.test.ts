@@ -2,7 +2,25 @@ import * as os from "libs/opensearch-lib";
 import { SEATOOL_STATUS } from "shared-types";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { transformMspManualRecordCreated } from "../../../lambda/smart/mspManualRecordCreated";
 import { itemExists } from "./itemExists";
+
+const smartReservation = transformMspManualRecordCreated({
+  spaWaiverId: "a0ncp000006Wdh7AAC",
+  id: "AL-26-0817-0001",
+  correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+  origin: "SMART",
+  authority: "Medicaid SPA",
+  status: "Intake Needed",
+  createdAt: "2026-08-17T16:54:33.000Z",
+  createdByUserId: "005cp00000Jqq9HAAR",
+  createdByName: "Alice Jones",
+  createdByEmail: "alice.j@globalalliantinc.com",
+  operationType: "MSP_MANUAL_RECORD_CREATED",
+  creationContext: "MANUAL",
+  state: "Alabama",
+  initialSubmissionDate: "2026-08-17",
+})!;
 
 describe("api/package/itemExists", () => {
   beforeEach(() => {
@@ -53,6 +71,18 @@ describe("api/package/itemExists", () => {
 
     const exists = await itemExists({ id: "MD-25-2525-SAVE", includeDrafts: true });
 
+    expect(exists).toBe(true);
+  });
+
+  it("blocks reuse of an active non-draft SMART reservation", async () => {
+    vi.spyOn(os, "getItem").mockResolvedValue({
+      found: true,
+      _source: smartReservation,
+    } as any);
+
+    const exists = await itemExists({ id: smartReservation.id });
+
+    expect(smartReservation.seatoolStatus).not.toBe(SEATOOL_STATUS.DRAFT);
     expect(exists).toBe(true);
   });
 

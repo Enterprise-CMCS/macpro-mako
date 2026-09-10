@@ -128,6 +128,11 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
       value: submission.id,
     },
     {
+      label: "External System Identifier",
+      value: submission.spaWaiverId ?? BLANK_VALUE,
+      canView: Boolean(submission.spaWaiverId) && (isCmsUser(user) || isHelpDeskUser(user)),
+    },
+    {
       label: "Authority",
       value: submission.authority,
     },

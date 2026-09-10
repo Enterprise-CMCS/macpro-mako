@@ -34,6 +34,8 @@ describe("DeploymentConfig", () => {
     idmEnable: "true",
     idmHomeUrl: "idmHomeUrl",
     legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+    bigmacErrorQueueUrl: "https://sqs.us-east-1.amazonaws.com/123456789012/bigmac-master-queue",
+    bigmacErrorQueueArn: "arn:aws:sqs:us-east-1:123456789012:bigmac-master-queue",
     useSharedOpenSearch: "true",
     vpcName: "vpcName",
     iamPath: "/my/path/",
@@ -102,6 +104,8 @@ describe("DeploymentConfig", () => {
       idmEnable: true, // Converted to boolean
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      bigmacErrorQueueUrl: "https://sqs.us-east-1.amazonaws.com/123456789012/bigmac-master-queue",
+      bigmacErrorQueueArn: "arn:aws:sqs:us-east-1:123456789012:bigmac-master-queue",
       externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true, // Converted to boolean
       vpcName: "vpcName",
@@ -170,6 +174,8 @@ describe("DeploymentConfig", () => {
       idmEnable: true,
       idmHomeUrl: "idmHomeUrl",
       legacyS3AccessRoleArn: "legacyS3AccessRoleArn",
+      bigmacErrorQueueUrl: "https://sqs.us-east-1.amazonaws.com/123456789012/bigmac-master-queue",
+      bigmacErrorQueueArn: "arn:aws:sqs:us-east-1:123456789012:bigmac-master-queue",
       externalApiAuthSecretArn: "externalApiAuthSecretArn", // pragma: allowlist secret
       useSharedOpenSearch: true,
       vpcName: "vpcName",
@@ -205,5 +211,23 @@ describe("DeploymentConfig", () => {
 
     expect(deploymentConfig.config.isDev).toBe(true);
     expect(deploymentConfig.config.terminationProtection).toBe(true);
+  });
+
+  it("accepts a default secret that omits BigMAC queue keys", async () => {
+    const secretWithoutBigmac = JSON.parse(defaultSecret) as Record<string, unknown>;
+    delete secretWithoutBigmac.bigmacErrorQueueUrl;
+    delete secretWithoutBigmac.bigmacErrorQueueArn;
+    vi.spyOn(sharedUtils, "getSecret").mockImplementation((secretName) => {
+      if (secretName === `${project}-default`) {
+        return Promise.resolve(JSON.stringify(secretWithoutBigmac));
+      }
+      return Promise.reject(new Error(`Secret not found: ${secretName}`));
+    });
+
+    const deploymentConfig = await DeploymentConfig.fetch({ project, stage: "feature" });
+
+    expect(deploymentConfig.config.bigmacErrorQueueUrl).toBeUndefined();
+    expect(deploymentConfig.config.bigmacErrorQueueArn).toBeUndefined();
+    expect(deploymentConfig.config.brokerString).toBe("brokerString");
   });
 });

@@ -2,6 +2,7 @@ import { screen, waitForElementToBeRemoved, within } from "@testing-library/reac
 import {
   EXISTING_ITEM_APPROVED_AMEND_ID,
   EXISTING_ITEM_TEMPORARY_EXTENSION_ID,
+  HELP_DESK_USER_USERNAME,
   setMockUsername,
   TEST_1915B_ITEM,
   TEST_1915C_ITEM,
@@ -139,6 +140,34 @@ describe("package details", () => {
     expect(screen.getByText("Created By")).toBeInTheDocument();
     expect(screen.queryByText("Submitted By")).not.toBeInTheDocument();
     expect(screen.getByText("Original Draft Creator")).toBeInTheDocument();
+  });
+
+  it.each([
+    ["CMS reviewers", TEST_REVIEWER_USERNAME],
+    ["Help Desk users", HELP_DESK_USER_USERNAME],
+  ])("shows the external system identifier to %s", async (_role, username) => {
+    setMockUsername(username);
+
+    await setup({
+      ...TEST_1915B_ITEM._source,
+      spaWaiverId: "a0ncp000006WdfVAAS",
+    });
+
+    const field = screen.getByText("External System Identifier").closest("dl");
+    expect(field).not.toBeNull();
+    expect(within(field!).getByText("a0ncp000006WdfVAAS")).toBeInTheDocument();
+  });
+
+  it("does not show the external system identifier to State users", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    await setup({
+      ...TEST_1915B_ITEM._source,
+      spaWaiverId: "a0ncp000006WdfVAAS",
+    });
+
+    expect(screen.queryByText("External System Identifier")).not.toBeInTheDocument();
+    expect(screen.queryByText("a0ncp000006WdfVAAS")).not.toBeInTheDocument();
   });
 
   it("renders CMS Subject and Description as full-width formatted text", async () => {

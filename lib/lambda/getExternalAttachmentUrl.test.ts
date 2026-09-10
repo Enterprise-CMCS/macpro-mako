@@ -357,6 +357,28 @@ describe("getExternalAttachmentUrl handler", () => {
     );
   });
 
+  it("returns 404 when the requested archive package is SMART-origin", async () => {
+    vi.mocked(getPackage).mockResolvedValueOnce({
+      found: true,
+      _source: {
+        origin: "SMART",
+      },
+    } as any);
+
+    const result = await handler(
+      createEvent({
+        packageId: "MD-26-9999-P",
+      }),
+    );
+
+    expect(result.statusCode).toBe(404);
+    expect(result.body).toEqual(
+      JSON.stringify({ message: "No record found for the given packageId" }),
+    );
+    expect(getPackageChangelog).not.toHaveBeenCalled();
+    expect(getRequestedAttachmentArchiveDownload).not.toHaveBeenCalled();
+  });
+
   it("returns 404 when the archive resolver throws a known not-found error", async () => {
     getRequestedAttachmentArchiveDownload.mockRejectedValueOnce({
       statusCode: 404,

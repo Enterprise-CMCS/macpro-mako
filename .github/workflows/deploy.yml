@@ -85,6 +85,142 @@ jobs:
           aws-region: us-east-1
           role-duration-seconds: 10800
 
+      - name: Delete leftover failed feature-stage stack
+        run: |
+          case "${STAGE_NAME}" in
+            main|val|production|datasink)
+              echo "Skipping failed-stack cleanup for protected stage ${STAGE_NAME}"
+              exit 0
+              ;;
+          esac
+
+          stack_status() {
+            aws cloudformation describe-stacks \
+              --stack-name "$1" \
+              --query "Stacks[0].StackStatus" \
+              --output text 2>/dev/null || echo NONE
+          }
+
+          delete_stack() {
+            local stack="$1"
+            local status
+            status="$(stack_status "${stack}")"
+
+            if [[ "${status}" == "NONE" ]]; then
+              echo "Stack ${stack} is already gone"
+              return 0
+            fi
+
+            if [[ "${status}" != "ROLLBACK_FAILED" && "${status}" != "DELETE_FAILED" && "${status}" != "UPDATE_ROLLBACK_FAILED" ]]; then
+              echo "Stack ${stack} status is ${status}; skipping"
+              return 0
+            fi
+
+            if [[ "${status}" == "DELETE_FAILED" ]]; then
+              local retain
+              retain=$(aws cloudformation list-stack-resources \
+                --stack-name "${stack}" \
+                --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
+                --output text)
+              if [[ -n "${retain}" && "${retain}" != "None" ]]; then
+                echo "Deleting ${stack} retaining ${retain}"
+                aws cloudformation delete-stack --stack-name "${stack}" --retain-resources ${retain}
+              else
+                echo "Deleting ${stack}"
+                aws cloudformation delete-stack --stack-name "${stack}"
+              fi
+            else
+              echo "Deleting ${stack} from ${status} without retain-resources"
+              aws cloudformation delete-stack --stack-name "${stack}"
+            fi
+
+            if aws cloudformation wait stack-delete-complete --stack-name "${stack}"; then
+              echo "Deleted ${stack}"
+              return 0
+            fi
+
+            status="$(stack_status "${stack}")"
+            if [[ "${status}" != "DELETE_FAILED" ]]; then
+              echo "Failed to delete ${stack}; status is ${status}"
+              return 1
+            fi
+
+            local retain
+            retain=$(aws cloudformation list-stack-resources \
+              --stack-name "${stack}" \
+              --query "StackResourceSummaries[?ResourceStatus=='DELETE_FAILED'].LogicalResourceId" \
+              --output text)
+            echo "Retrying delete of ${stack} retaining ${retain}"
+            aws cloudformation delete-stack --stack-name "${stack}" --retain-resources ${retain}
+            aws cloudformation wait stack-delete-complete --stack-name "${stack}"
+          }
+
+          STACK_NAME="${PROJECT}-${STAGE_NAME}"
+          STATUS="$(stack_status "${STACK_NAME}")"
+
+          if [[ "${STATUS}" != "ROLLBACK_FAILED" && "${STATUS}" != "DELETE_FAILED" && "${STATUS}" != "UPDATE_ROLLBACK_FAILED" ]]; then
+            echo "Stack ${STACK_NAME} status is ${STATUS}; no failed-stack cleanup needed"
+            exit 0
+          fi
+
+          echo "Stack ${STACK_NAME} is ${STATUS}; deleting leftover failed stack"
+
+          NESTED_STACKS=$(aws cloudformation list-stack-resources \
+            --stack-name "${STACK_NAME}" \
+            --query "StackResourceSummaries[?ResourceType=='AWS::CloudFormation::Stack'].PhysicalResourceId" \
+            --output text)
+
+          for nested_stack in ${NESTED_STACKS}; do
+            if [[ -z "${nested_stack}" || "${nested_stack}" == "None" ]]; then
+              continue
+            fi
+            delete_stack "${nested_stack}"
+          done
+
+          delete_stack "${STACK_NAME}"
+
+      - name: Remove leftover unused Lambda security group
+        run: |
+          SG_NAME="${PROJECT}-${STAGE_NAME}-lambda-sg"
+          GROUP_IDS=$(aws ec2 describe-security-groups \
+            --filters "Name=group-name,Values=${SG_NAME}" \
+            --query "SecurityGroups[].GroupId" \
+            --output text)
+
+          if [[ -z "${GROUP_IDS}" || "${GROUP_IDS}" == "None" ]]; then
+            echo "No leftover security group named ${SG_NAME}"
+            exit 0
+          fi
+
+          for group_id in ${GROUP_IDS}; do
+            for attempt in $(seq 1 20); do
+              AVAILABLE=$(aws ec2 describe-network-interfaces \
+                --filters "Name=group-id,Values=${group_id}" "Name=status,Values=available" \
+                --query "NetworkInterfaces[].NetworkInterfaceId" \
+                --output text)
+              if [[ -n "${AVAILABLE}" && "${AVAILABLE}" != "None" ]]; then
+                for eni in ${AVAILABLE}; do
+                  echo "Deleting leftover available ENI ${eni} on ${group_id}"
+                  aws ec2 delete-network-interface --network-interface-id "${eni}" || true
+                done
+              fi
+
+              IN_USE=$(aws ec2 describe-network-interfaces \
+                --filters "Name=group-id,Values=${group_id}" \
+                --query "NetworkInterfaces[].NetworkInterfaceId" \
+                --output text)
+
+              if [[ -z "${IN_USE}" || "${IN_USE}" == "None" ]]; then
+                echo "Deleting unused leftover security group ${group_id} (${SG_NAME})"
+                aws ec2 delete-security-group --group-id "${group_id}"
+                break
+              fi
+
+              echo "Security group ${group_id} still has ENIs (${IN_USE}); waiting 30s (${attempt}/20)"
+              sleep 30
+            done
+          done
+
       - name: Deploy
         run: run deploy --stage $STAGE_NAME
 
