@@ -24,7 +24,7 @@ beforeEach(() => {
   process.env.indexNamespace = OPENSEARCH_INDEX_NAMESPACE;
 
   vi.useFakeTimers();
-  const now = new Date(2023, 0, 1);
+  const now = new Date("2023-01-01T12:00:00.000Z");
   vi.setSystemTime(now);
 });
 
