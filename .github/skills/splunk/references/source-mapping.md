@@ -15,6 +15,7 @@ This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names us
 | -------------------------------------------------- | -------- | -------------------------------------------------------------- |
 | mako-val-api-attachmentArchiveBackfillStatus       | impl     | /aws/lambda/mako-val-api-attachmentArchiveBackfillStatus       |
 | mako-val-api-backfillAttachmentArchives            | impl     | /aws/lambda/mako-val-api-backfillAttachmentArchives            |
+| mako-val-api-forwardAttachmentArchiveRetries       | impl     | /aws/lambda/mako-val-api-forwardAttachmentArchiveRetries       |
 | mako-val-api-getAttachmentArchive                  | impl     | /aws/lambda/mako-val-api-getAttachmentArchive                  |
 | mako-val-api-markAttachmentArchiveFailed           | impl     | /aws/lambda/mako-val-api-markAttachmentArchiveFailed           |
 | mako-val-api-notifyAttachmentArchiveIntegrity      | impl     | /aws/lambda/mako-val-api-notifyAttachmentArchiveIntegrity      |

@@ -149,6 +149,7 @@ export const handler = authenticatedMiddy({
       packageId,
       latestTimestamp,
       preferDraft: isDraftPackage || undefined,
+      ...("rebuildRequest" in result ? result.rebuildRequest : undefined),
       source: "request",
     });
   }

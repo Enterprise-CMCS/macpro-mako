@@ -3,13 +3,12 @@ import { opensearch, SEATOOL_STATUS } from "shared-types";
 
 import { buildDraftAttachmentChangelog } from "../attachment-archive/draft-package";
 import type { AttachmentArchiveChangelogItem } from "../attachment-archive/package-activity";
-import { sendAttachmentArchiveRebuildRequest } from "../attachment-archive/rebuild-queue";
+import { sendAttachmentArchiveRetryRequest } from "../attachment-archive/rebuild-queue";
 import { AttachmentArchiveRebuildMessage } from "../attachment-archive/types";
 import { getDraftPackage, getPackageChangelog } from "../libs/api/package";
 import { rebuildPackageAttachmentArchives } from "./attachmentArchive-lib";
 
 const MAX_SOURCE_SCAN_RETRY_COUNT = 20;
-const SOURCE_SCAN_RETRY_DELAY_SECONDS = 30;
 
 function parseRecordBody(body: string): AttachmentArchiveRebuildMessage {
   const parsed = JSON.parse(body) as Partial<AttachmentArchiveRebuildMessage>;
@@ -61,14 +60,11 @@ export const handler: SQSHandler = async (event) => {
     });
 
     if (result.sourceScanPending && !sourceScanRetriesExceeded) {
-      await sendAttachmentArchiveRebuildRequest(
-        {
-          ...message,
-          sourceScanPendingAt: message.sourceScanPendingAt || new Date().toISOString(),
-          sourceScanRetryCount: sourceScanRetryCount + 1,
-        },
-        { delaySeconds: SOURCE_SCAN_RETRY_DELAY_SECONDS },
-      );
+      await sendAttachmentArchiveRetryRequest({
+        ...message,
+        sourceScanPendingAt: message.sourceScanPendingAt || new Date().toISOString(),
+        sourceScanRetryCount: sourceScanRetryCount + 1,
+      });
     }
 
     console.info(
