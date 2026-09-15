@@ -681,7 +681,7 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "NOT_A_REAL_TYPE", undefined])(
     "creates a default OneMAC-shaped document for operationType %s when the ID is missing",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -708,7 +708,7 @@ describe("SMART operation dispatch", () => {
     },
   );
 
-  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "NOT_A_REAL_TYPE", undefined])(
     "updates only SMART identity fields for operationType %s when the ID exists",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -741,6 +741,135 @@ describe("SMART operation dispatch", () => {
       });
     },
   );
+
+  it("creates a hidden reservation and applies the complete Assignment roster when the ID is missing", async () => {
+    const assignmentPayload = {
+      ...smartEvent,
+      operationType: "MSP_ASSIGNMENT_UPDATED",
+      srtAssignmentId: "a0scp00000Du3DRAAZ",
+      srtMember: [
+        {
+          srtAssignmentId: "a0scp00000Du3DRAAZ",
+          contactId: "003cp000017H4ZVAA0",
+          fullName: "Test CPOC User",
+          email: "cpoc@example.com",
+          division: "DEPO",
+          group: "CAHPG",
+          isCpoc: true,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: null,
+        },
+        {
+          srtAssignmentId: "a0scp00000Du3DSAAZ",
+          contactId: "003cp00000insUAAAY",
+          fullName: "Inactive SRT User",
+          email: "srt@example.com",
+          division: "DEPO",
+          group: "CAHPG",
+          isCpoc: false,
+          isConsultantSme: false,
+          isActive: false,
+          assignmentNotes: null,
+        },
+      ],
+    };
+    const reservation = {
+      id: smartEvent.id,
+      authority: "Medicaid SPA",
+      origin: "SMART",
+      smartRecordType: SMART_RECORD_TYPE.RESERVATION,
+      spaWaiverId: smartEvent.spaWaiverId,
+      deleted: false,
+    };
+    getItemSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
+      found: true,
+      _id: smartEvent.id,
+      _source: reservation,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(assignmentPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalledOnce();
+    expect(createItemSpy.mock.calls[0][2]).toMatchObject({
+      id: smartEvent.id,
+      origin: "SMART",
+      smartRecordType: SMART_RECORD_TYPE.RESERVATION,
+      spaWaiverId: smartEvent.spaWaiverId,
+    });
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      smartEvent.id,
+      expect.objectContaining({
+        leadAnalystName: "Test CPOC User",
+        smartCpocContactId: "003cp000017H4ZVAA0",
+        reviewTeam: [{ name: "Test CPOC User", email: "cpoc@example.com" }],
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("backfills identity and updates CPOC for a complete Assignment roster on an existing package", async () => {
+    const assignmentPayload = {
+      ...smartEvent,
+      operationType: "MSP_ASSIGNMENT_UPDATED",
+      srtAssignmentId: "a0scp00000Du3DRAAZ",
+      srtMember: [
+        {
+          srtAssignmentId: "a0scp00000Du3DRAAZ",
+          contactId: "003cp000017H4ZVAA0",
+          fullName: "Test CPOC User",
+          email: "cpoc@example.com",
+          division: "DEPO",
+          group: "CAHPG",
+          isCpoc: true,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: null,
+        },
+      ],
+    };
+    const existingPackage = {
+      id: smartEvent.id,
+      origin: "OneMAC",
+      authority: "Medicaid SPA",
+      seatoolStatus: "Pending",
+      deleted: false,
+      leadAnalystName: "Legacy CPOC",
+    };
+    getItemSpy
+      .mockResolvedValueOnce({
+        found: true,
+        _id: smartEvent.id,
+        _source: existingPackage,
+      } as Awaited<ReturnType<typeof os.getItem>>)
+      .mockResolvedValueOnce({
+        found: true,
+        _id: smartEvent.id,
+        _source: existingPackage,
+      } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(assignmentPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).toHaveBeenCalledTimes(2);
+    expect(updateItemSpy.mock.calls[0][3]).toEqual({
+      spaWaiverId: smartEvent.spaWaiverId,
+      correlationId: smartEvent.correlationId,
+    });
+    expect(updateItemSpy.mock.calls[1][3]).toMatchObject({
+      leadAnalystName: "Test CPOC User",
+      leadAnalystEmail: "cpoc@example.com",
+      smartAssignmentChangedAt: smartEvent.createdAt,
+      reviewTeam: [{ name: "Test CPOC User", email: "cpoc@example.com" }],
+    });
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
 
   it("does not erase an existing correlation ID when SMART sends a blank value", async () => {
     const payload = { ...smartEvent, correlationId: "" };
