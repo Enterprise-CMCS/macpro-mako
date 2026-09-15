@@ -101,6 +101,20 @@ export type Document = AppkDocument &
     smartStatusChangedAt?: string | number;
     smartAdministrativeChangedAt?: string | number;
     smartAdministrativePreviousId?: string;
+    smartAssignmentChangedAt?: string | number;
+    smartCpocContactId?: string | null;
+    smartSrtRoster?: {
+      srtAssignmentId: string;
+      contactId: string | null;
+      fullName: string;
+      email: string | null;
+      division: string | null;
+      group: string | null;
+      isCpoc: boolean;
+      isConsultantSme: boolean;
+      isActive: boolean;
+      assignmentNotes: string | null;
+    }[];
     createdByUserId?: string;
     splitSpaId?: string;
     splitSpaWaiverId?: string;
