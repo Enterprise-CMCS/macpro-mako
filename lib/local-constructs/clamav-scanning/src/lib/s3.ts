@@ -47,8 +47,8 @@ export async function downloadFileFromS3(
     fs.mkdirSync(constants.TMP_DOWNLOAD_PATH);
   }
 
-  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}--${s3ObjectKey}`;
-  fs.createWriteStream(localPath);
+  const safeKey = s3ObjectKey.replace(/[\\/]/g, "_");
+  const localPath: string = `${constants.TMP_DOWNLOAD_PATH}${randomUUID()}--${safeKey}`;
 
   logger.info(`Downloading file s3://${s3ObjectBucket}/${s3ObjectKey}`);
 
@@ -67,6 +67,11 @@ export async function downloadFileFromS3(
     return localPath;
   } catch (err) {
     logger.error(err);
+    try {
+      await asyncfs.unlink(localPath);
+    } catch {
+      // ignore
+    }
     throw err;
   }
 }

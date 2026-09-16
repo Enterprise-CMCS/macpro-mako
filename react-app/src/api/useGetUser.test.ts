@@ -2,10 +2,12 @@ import {
   CMS_ROLE_APPROVER_USER,
   cmsRoleApprover,
   defaultCMSUser,
+  errorApiUserDetailsHandler,
   setMockUsername,
   TEST_STATE_SUBMITTER_USER,
   testStateSubmitter,
 } from "mocks";
+import { mockedApiServer as mockedServer } from "mocks/server";
 import { describe, expect, it } from "vitest";
 
 import { getUser } from "./useGetUser";
@@ -30,5 +32,21 @@ describe("getUser", () => {
     setMockUsername(cmsRoleApprover);
     const oneMacUser = await getUser();
     expect(oneMacUser.user).toStrictEqual(CMS_ROLE_APPROVER_USER);
+  });
+
+  it("keeps an authenticated Cognito session when user details are missing", async () => {
+    setMockUsername(testStateSubmitter);
+    mockedServer.use(errorApiUserDetailsHandler);
+
+    const oneMacUser = await getUser();
+
+    expect(oneMacUser.user).toEqual(
+      expect.objectContaining({
+        email: TEST_STATE_SUBMITTER_USER.email,
+        role: "norole",
+        states: [],
+      }),
+    );
+    expect(oneMacUser.user).not.toBeNull();
   });
 });

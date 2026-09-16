@@ -112,9 +112,16 @@ describe("externalAttachmentAuthorizer handler", () => {
     const tokenResult = await issueClientCredentialsAccessToken("partner-app", "correct-secret");
     expect(tokenResult).toBeTruthy();
 
-    const finalCharacter = tokenResult!.accessToken.at(-1);
-    const replacementCharacter = finalCharacter === "x" ? "y" : "x";
-    const invalidToken = `${tokenResult!.accessToken.slice(0, -1)}${replacementCharacter}`;
+    // Corrupt a middle signature character. Changing only the final base64url
+    // character is flaky because multiple last characters can decode to the
+    // same signature bytes.
+    const [header, payload, signature] = tokenResult!.accessToken.split(".");
+    const signatureIndex = Math.floor(signature.length / 2);
+    const replacementCharacter = signature[signatureIndex] === "x" ? "y" : "x";
+    const invalidSignature =
+      `${signature.slice(0, signatureIndex)}${replacementCharacter}` +
+      signature.slice(signatureIndex + 1);
+    const invalidToken = `${header}.${payload}.${invalidSignature}`;
     const rawResult = await handler(createEvent(`Bearer ${invalidToken}`), {} as any, vi.fn());
     expect(rawResult).toBeTruthy();
     const result = rawResult as Exclude<typeof rawResult, void>;

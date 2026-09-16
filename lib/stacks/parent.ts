@@ -46,6 +46,18 @@ export class ParentStack extends cdk.Stack {
         },
       },
     );
+    const attachmentArchiveRetryQueue = new cdk.aws_sqs.Queue(this, "AttachmentArchiveRetryQueue", {
+      queueName: `${props.project}-${props.stage}-attachment-archive-retry.fifo`,
+      encryption: cdk.aws_sqs.QueueEncryption.KMS_MANAGED,
+      fifo: true,
+      contentBasedDeduplication: true,
+      deliveryDelay: cdk.Duration.seconds(30),
+      visibilityTimeout: cdk.Duration.minutes(5),
+      deadLetterQueue: {
+        maxReceiveCount: 3,
+        queue: attachmentArchiveRebuildDeadLetterQueue,
+      },
+    });
 
     if (!props.isDev) {
       new CloudWatchLogsResourcePolicy(this, "logPolicy", {
@@ -90,12 +102,15 @@ export class ParentStack extends cdk.Stack {
       devPasswordArn: props.devPasswordArn,
       sharedOpenSearchDomainArn: props.sharedOpenSearchDomainArn,
       sharedOpenSearchDomainEndpoint: props.sharedOpenSearchDomainEndpoint,
+      bigmacErrorQueueUrl: props.bigmacErrorQueueUrl,
+      bigmacErrorQueueArn: props.bigmacErrorQueueArn,
     });
 
     const apiStack = new Stacks.Api(this, "api", {
       ...commonProps,
       stack: "api",
       attachmentArchiveRebuildQueue,
+      attachmentArchiveRetryQueue,
       vpc,
       privateSubnets,
       brokerString: props.brokerString,

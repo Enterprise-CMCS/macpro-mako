@@ -40,13 +40,15 @@ describe("Admin Features test", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", {
-        name: /Package Added\s*-\s*Sun, Jan 1 2023, 09:00:00 AM EST/,
+        name: /Split SPA Created\s*-\s*Sun, Jan 1 2023, 09:00:00 AM EST/,
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Change Made" })).toBeInTheDocument();
     expect(screen.getByText("add file")).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Change Reason" })).toBeInTheDocument();
     expect(screen.getByText("missing file")).toBeInTheDocument();
+    expect(screen.getAllByText(/Enable Formal RAI Response Withdraw/).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/Disable Formal RAI Response Withdraw/).length).toBeGreaterThan(0);
   });
 
   it("displays duplicate manual updates only once", () => {

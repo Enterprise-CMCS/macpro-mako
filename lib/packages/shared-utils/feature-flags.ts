@@ -89,6 +89,15 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
+   * Hide OneMAC CMS controls and guidance for enabling/disabling Formal RAI
+   * Response Withdraw after the SMART-owned workflow launches. State actions
+   * and administrative history remain visible.
+   */
+  HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE: {
+    flag: "hide-withdraw-rai-response-toggle",
+    defaultValue: false,
+  },
+  /*
    * Toggle visibility of the homepage resources section
    */
   HOMEPAGE_RESOURCES: {
@@ -101,6 +110,13 @@ export const featureFlags = {
   CHIP_SPA_DETAILS: {
     flag: "chip-spa-details",
     defaultValue: true,
+  },
+  /*
+   * Toggle visibility of the CHIP CS22 FAQ forms
+   */
+  CHIP_CS22_FORMS: {
+    flag: "chip-cs22-forms",
+    defaultValue: false,
   },
   /*
    *  Toggle visibility between the enhanced experience and mmdl banner

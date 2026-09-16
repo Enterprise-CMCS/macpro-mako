@@ -60,8 +60,10 @@ vi.mock("@/components", async () => {
   };
 });
 
+const mockUseFeatureFlag = vi.hoisted(() => vi.fn((flag: string) => flag === "SAVE_IN_PROGRESS"));
+
 vi.mock("@/hooks/useFeatureFlag", () => ({
-  useFeatureFlag: (flag: string) => flag === "SAVE_IN_PROGRESS",
+  useFeatureFlag: mockUseFeatureFlag,
 }));
 
 const apiModule = await import("@/api");
@@ -83,6 +85,30 @@ describe("", () => {
     mockNavigate.mockReset();
     sessionStorage.clear();
     setDefaultStateSubmitter();
+    mockUseFeatureFlag.mockImplementation((flag: string) => flag === "SAVE_IN_PROGRESS");
+  });
+
+  it("hides enable and disable RAI withdraw actions when the SMART launch flag is on", async () => {
+    mockUseFeatureFlag.mockImplementation(
+      (flag: string) => flag === "SAVE_IN_PROGRESS" || flag === "HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE",
+    );
+    setMockUsername(testReviewer);
+    const submission = {
+      ...TEST_MED_SPA_ITEM._source,
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      actionType: "New" as const,
+      raiRequestedDate: "2024-01-01T00:00:00.000Z",
+      raiReceivedDate: "2024-01-01T00:00:00.000Z",
+    };
+    mockedServer.use(onceApiPackageActionsHandler(submission as opensearch.main.Document));
+
+    await setup(submission as opensearch.main.Document, TEST_MED_SPA_ITEM._id);
+
+    expect(screen.queryByText(mapActionLabel(Action.ENABLE_RAI_WITHDRAW))).not.toBeInTheDocument();
+    expect(screen.queryByText(mapActionLabel(Action.DISABLE_RAI_WITHDRAW))).not.toBeInTheDocument();
+    expect(
+      screen.getByText("No actions are currently available for this submission."),
+    ).toBeInTheDocument();
   });
 
   it("renders nothing if there are no actions", async () => {

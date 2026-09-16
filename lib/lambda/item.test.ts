@@ -7,13 +7,40 @@ import {
   HI_TEST_ITEM_ID,
   NOT_FOUND_ITEM_ID,
   setMockUsername,
+  TEST_ITEM_ID,
+  testStateSubmitter,
   WITHDRAWN_CHANGELOG_ITEM_ID,
 } from "mocks";
 import items from "mocks/data/items";
-import { SEATOOL_STATUS } from "shared-types";
+import { SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
 import { handler } from "./item";
+import { transformMspManualRecordCreated } from "./smart/mspManualRecordCreated";
+import { SmartOnemacEvent } from "./smart/parseSmartOnemacEvent";
+
+const smartReservationEvent = Object.freeze({
+  spaWaiverId: "a0ncp000006Wdh7AAC",
+  id: TEST_ITEM_ID,
+  correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+  origin: "SMART",
+  authority: "Medicaid SPA",
+  status: "Intake Needed",
+  createdAt: "2026-08-17T16:54:33.000Z",
+  createdByUserId: "005cp00000Jqq9HAAR",
+  createdByName: "Alice Jones",
+  createdByEmail: "alice.j@globalalliantinc.com",
+  operationType: "MSP_MANUAL_RECORD_CREATED",
+  creationContext: "MANUAL",
+  state: "Maryland",
+  initialSubmissionDate: "2026-08-17",
+}) satisfies SmartOnemacEvent;
+
+const smartReservation = {
+  ...transformMspManualRecordCreated(smartReservationEvent)!,
+  id: TEST_ITEM_ID,
+  state: "MD",
+};
 
 describe("getItemData Handler", () => {
   it("should return 400 if event body is missing", async () => {
@@ -93,6 +120,109 @@ describe("getItemData Handler", () => {
     expect(res).toBeTruthy();
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify(packageData));
+  });
+
+  describe("SMART reservation hiding", () => {
+    it.each([
+      ["state user", testStateSubmitter],
+      ["CMS/admin user", helpDeskUser],
+    ])("does not return SMART reservation details to a %s", async (_role, user) => {
+      setMockUsername(user);
+      const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: smartReservation,
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(user),
+      } as APIGatewayEvent;
+
+      const res = await handler(event, {} as Context);
+      getPackageSpy.mockRestore();
+
+      expect(res.statusCode).toEqual(404);
+      expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
+    });
+
+    it("still returns an otherwise equivalent OneMAC document", async () => {
+      setMockUsername(testStateSubmitter);
+      const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          origin: "OneMAC",
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event, {} as Context);
+      getPackageSpy.mockRestore();
+
+      expect(res.statusCode).toEqual(200);
+      expect(JSON.parse(res.body)).toMatchObject({
+        _id: TEST_ITEM_ID,
+        _source: {
+          id: TEST_ITEM_ID,
+          origin: "OneMAC",
+          state: "MD",
+        },
+      });
+    });
+
+    it("returns a completed SMART package", async () => {
+      setMockUsername(testStateSubmitter);
+      const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: TEST_ITEM_ID }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event, {} as Context);
+      getPackageSpy.mockRestore();
+
+      expect(res.statusCode).toEqual(200);
+      expect(JSON.parse(res.body)).toMatchObject({
+        _source: {
+          origin: "SMART",
+          smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+        },
+      });
+    });
+
+    it("returns 404 before authorization for an out-of-state SMART reservation", async () => {
+      setMockUsername(testStateSubmitter);
+      const getPackageSpy = vi.spyOn(packageApi, "getPackage").mockResolvedValueOnce({
+        found: true,
+        _id: HI_TEST_ITEM_ID,
+        _source: {
+          ...smartReservation,
+          id: HI_TEST_ITEM_ID,
+          state: "HI",
+        },
+      } as unknown as Awaited<ReturnType<typeof packageApi.getPackage>>);
+      const event = {
+        body: JSON.stringify({ id: HI_TEST_ITEM_ID, includeDraft: true, preferDraft: true }),
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent;
+
+      const res = await handler(event, {} as Context);
+      getPackageSpy.mockRestore();
+
+      expect(res.statusCode).toEqual(404);
+      expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
+    });
   });
 
   it("should return 200 with draft package data from draftmain when includeDraft=true", async () => {

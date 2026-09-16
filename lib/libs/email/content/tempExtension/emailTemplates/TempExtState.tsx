@@ -1,5 +1,5 @@
 import { CommonEmailVariables, Events } from "shared-types";
-import { formatNinetyDaysDate } from "shared-utils";
+import { formatNinetyDaysDateFromEasternDate } from "shared-utils";
 
 import { BasicFooter, FollowUpNotice, MailboxNotice, PackageDetails } from "../../email-components";
 import { BaseEmailTemplate } from "../../email-templates";
@@ -24,7 +24,7 @@ export const TempExtStateEmail = (props: { variables: TempExtStateEmailProps }) 
           "Email Address": variables.submitterEmail,
           "Temporary Extension Request Number": variables.id,
           "Temporary Extension Type": variables.authority,
-          "90th Day Deadline": formatNinetyDaysDate(variables.timestamp),
+          "90th Day Deadline": formatNinetyDaysDateFromEasternDate(variables.timestamp),
           Summary: variables.additionalInformation,
         }}
       />

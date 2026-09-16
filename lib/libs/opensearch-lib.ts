@@ -87,10 +87,109 @@ interface Document {
   [key: string]: any;
 }
 
+export type CreateItemResult = { created: true } | { created: false; reason: "version_conflict" };
+
+const getOpenSearchStatusCode = (error: unknown): number | undefined => {
+  if (error instanceof OpensearchErrors.ResponseError) {
+    return error.statusCode;
+  }
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "statusCode" in error &&
+    typeof error.statusCode === "number"
+  ) {
+    return error.statusCode;
+  }
+
+  if (
+    typeof error === "object" &&
+    error !== null &&
+    "meta" in error &&
+    typeof error.meta === "object" &&
+    error.meta !== null &&
+    "statusCode" in error.meta
+  ) {
+    return error.meta.statusCode as number | undefined;
+  }
+
+  return undefined;
+};
+
+const isVersionConflictError = (error: unknown): boolean => {
+  if (getOpenSearchStatusCode(error) === 409) {
+    return true;
+  }
+
+  if (error && typeof error === "object") {
+    const osType = (error as { meta?: { body?: { error?: { type?: string } } } }).meta?.body?.error
+      ?.type;
+    if (osType === "version_conflict_engine_exception") {
+      return true;
+    }
+  }
+
+  return error instanceof Error && error.message.includes("version_conflict_engine_exception");
+};
+
+export async function updateItem(
+  host: string,
+  index: string,
+  id: string,
+  fields: Record<string, unknown>,
+): Promise<void> {
+  client = client || (await getClient(host));
+  await client.update({
+    index,
+    id,
+    body: { doc: fields },
+    refresh: true,
+  });
+}
+
+export async function createItem(
+  host: string,
+  index: string,
+  document: Document,
+): Promise<CreateItemResult> {
+  client = client || (await getClient(host));
+
+  try {
+    await client.create({
+      index,
+      id: document.id,
+      body: document,
+      refresh: true,
+    });
+    return { created: true };
+  } catch (error) {
+    if (isVersionConflictError(error)) {
+      return { created: false, reason: "version_conflict" };
+    }
+
+    throw error;
+  }
+}
+
+export interface BulkUpdateOptions {
+  throwOnBulkError?: boolean;
+}
+
+export const assertBulkUpdateSucceeded = (
+  result: { errors?: boolean },
+  options: BulkUpdateOptions = {},
+): void => {
+  if (result.errors && options.throwOnBulkError) {
+    throw new Error("OpenSearch bulk update completed with item errors");
+  }
+};
+
 export async function bulkUpdateData(
   host: string,
   index: string,
   arrayOfDocuments: Document[],
+  options: BulkUpdateOptions = {},
 ): Promise<void> {
   if (arrayOfDocuments.length === 0) {
     console.log("No documents to update. Skipping bulk update operation.");
@@ -124,10 +223,9 @@ export async function bulkUpdateData(
           await sleep(delay);
           return attemptBulkUpdate(retries - 1, delay * 2); // Exponential backoff
         }
-        if (!hasRateLimitErrors) {
-          // Handle or throw other errors normally
-          console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
-        }
+
+        console.error("Bulk update errors:", JSON.stringify(response.body.items, null, 2));
+        assertBulkUpdateSucceeded(response.body, options);
       } else {
         console.log("Bulk update successful.");
       }

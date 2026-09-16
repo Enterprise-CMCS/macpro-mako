@@ -291,6 +291,10 @@ describe("getExternalAttachmentUrl handler", () => {
   it("returns PENDING archive responses and queues a rebuild when needed", async () => {
     getRequestedAttachmentArchiveDownload.mockResolvedValueOnce({
       needsRebuild: true,
+      rebuildRequest: {
+        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+        sourceScanRetryCount: 0,
+      },
       response: {
         status: "PENDING",
         pollAfterSeconds: 3,
@@ -316,6 +320,8 @@ describe("getExternalAttachmentUrl handler", () => {
     expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith({
       packageId: "MD-10-6772",
       latestTimestamp: 25,
+      sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+      sourceScanRetryCount: 0,
       source: "request",
     });
     expect(generatePresignedDownloadUrl).not.toHaveBeenCalled();
@@ -349,6 +355,28 @@ describe("getExternalAttachmentUrl handler", () => {
     expect(result.body).toEqual(
       JSON.stringify({ message: "No record found for the given packageId" }),
     );
+  });
+
+  it("returns 404 when the requested archive package is SMART-origin", async () => {
+    vi.mocked(getPackage).mockResolvedValueOnce({
+      found: true,
+      _source: {
+        origin: "SMART",
+      },
+    } as any);
+
+    const result = await handler(
+      createEvent({
+        packageId: "MD-26-9999-P",
+      }),
+    );
+
+    expect(result.statusCode).toBe(404);
+    expect(result.body).toEqual(
+      JSON.stringify({ message: "No record found for the given packageId" }),
+    );
+    expect(getPackageChangelog).not.toHaveBeenCalled();
+    expect(getRequestedAttachmentArchiveDownload).not.toHaveBeenCalled();
   });
 
   it("returns 404 when the archive resolver throws a known not-found error", async () => {

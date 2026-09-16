@@ -9,6 +9,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
+import { awsLambdaFunctionName, awsS3AccountBucketName } from "../config/lambda-function-name";
 import {
   getArchiveBaseReadBucket,
   getArchiveOverlayPrefix,
@@ -38,6 +39,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   stack: string;
   isDev: boolean;
   attachmentArchiveRebuildQueue: cdk.aws_sqs.IQueue;
+  attachmentArchiveRetryQueue: cdk.aws_sqs.IQueue;
   vpc: cdk.aws_ec2.IVpc;
   privateSubnets: cdk.aws_ec2.ISubnet[];
   lambdaSecurityGroup: cdk.aws_ec2.ISecurityGroup;
@@ -71,7 +73,14 @@ export class Api extends cdk.NestedStack {
     apiGateway: cdk.aws_apigateway.RestApi;
   } {
     const ATTACHMENT_ARCHIVE_HISTORICAL_BACKFILL_PAGES_PER_EXECUTION = 10;
-    const { project, stage, isDev, stack, attachmentArchiveRebuildQueue } = props;
+    const {
+      project,
+      stage,
+      isDev,
+      stack,
+      attachmentArchiveRebuildQueue,
+      attachmentArchiveRetryQueue,
+    } = props;
     const {
       vpc,
       privateSubnets,
@@ -114,7 +123,10 @@ export class Api extends cdk.NestedStack {
     const managedArchiveBucket = usesSharedArchiveOverlay
       ? undefined
       : new Bucket(this, "AttachmentArchiveBucket", {
-          bucketName: `${project}-${stage}-attachment-archives-${this.account}`,
+          bucketName: awsS3AccountBucketName(
+            `${project}-${stage}-attachment-archives`,
+            this.account,
+          ),
           versioned: true,
           encryption: BucketEncryption.S3_MANAGED,
           blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
@@ -680,14 +692,15 @@ export class Api extends cdk.NestedStack {
         }
       }
 
+      const functionName = awsLambdaFunctionName(project, stage, stack, id);
       const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
+        logGroupName: `/aws/lambda/${functionName}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
 
       const fn = new NodejsFunction(this, id, {
         runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
-        functionName: `${project}-${stage}-${stack}-${id}`,
+        functionName,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
         handler: "handler",
@@ -1071,9 +1084,19 @@ export class Api extends cdk.NestedStack {
           ATTACHMENT_ARCHIVE_BASE_BUCKET_NAME: archiveBaseReadBucketName,
           ATTACHMENT_ARCHIVE_KEY_PREFIX: archiveOverlayPrefix,
           ATTACHMENT_ARCHIVE_REBUILD_START_DELAY_MS: "1000",
+          ATTACHMENT_ARCHIVE_RETRY_QUEUE_URL: attachmentArchiveRetryQueue.queueUrl,
         },
         role: attachmentArchiveRequestRole,
         timeoutSeconds: 300,
+      },
+      {
+        id: "forwardAttachmentArchiveRetries",
+        entry: join(__dirname, "../lambda/forwardAttachmentArchiveRetries.ts"),
+        environment: {
+          ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
+        },
+        role: attachmentArchiveRequestRole,
+        timeoutSeconds: 60,
       },
       {
         id: "backfillAttachmentArchives",
@@ -1220,8 +1243,15 @@ export class Api extends cdk.NestedStack {
       archiveStateMachine.stateMachineArn,
     );
     attachmentArchiveRebuildQueue.grantSendMessages(attachmentArchiveRequestRole);
+    attachmentArchiveRetryQueue.grantSendMessages(attachmentArchiveRequestRole);
     lambdas.rebuildAttachmentArchives.addEventSource(
       new SqsEventSource(attachmentArchiveRebuildQueue, {
+        batchSize: 1,
+        maxConcurrency: 2,
+      }),
+    );
+    lambdas.forwardAttachmentArchiveRetries.addEventSource(
+      new SqsEventSource(attachmentArchiveRetryQueue, {
         batchSize: 1,
         maxConcurrency: 2,
       }),

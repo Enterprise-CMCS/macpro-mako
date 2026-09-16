@@ -1,14 +1,25 @@
 import { screen, within } from "@testing-library/react";
 import { WITHDRAW_RAI_ITEM_B } from "mocks";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { renderFormWithPackageSectionAsync } from "@/utils/test-helpers/renderForm";
 
+import { PostSubmissionWrapper } from "../post-submission-forms";
 import { DisableWithdrawRaiForm, EnableWithdrawRaiForm } from ".";
+
+const { mockUseFeatureFlag, mockUseParams } = vi.hoisted(() => ({
+  mockUseFeatureFlag: vi.fn(() => false),
+  mockUseParams: vi.fn(),
+}));
 
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
-  useParams: vi.fn().mockReturnValue({ authority: "1915(b)", id: WITHDRAW_RAI_ITEM_B }),
+  Navigate: ({ to }: { to: string }) => <div data-testid="redirect-target">{to}</div>,
+  useParams: mockUseParams,
+}));
+
+vi.mock("@/hooks/useFeatureFlag", () => ({
+  useFeatureFlag: mockUseFeatureFlag,
 }));
 
 vi.mock("shared-utils", async (importOriginal) => {
@@ -20,6 +31,11 @@ vi.mock("shared-utils", async (importOriginal) => {
 });
 
 describe("Toggle Withdraw Rai components", () => {
+  beforeEach(() => {
+    mockUseFeatureFlag.mockReturnValue(false);
+    mockUseParams.mockReturnValue({ authority: "1915(b)", id: WITHDRAW_RAI_ITEM_B });
+  });
+
   const expectCommonFormFields = () => {
     const detailSection = screen.getByTestId("detail-section");
 
@@ -70,4 +86,23 @@ describe("Toggle Withdraw Rai components", () => {
     ).toBeInTheDocument();
     expectCommonFormFields();
   });
+
+  it.each(["enable-rai-withdraw", "disable-rai-withdraw"])(
+    "redirects direct %s URLs when the SMART launch flag is on",
+    async (type) => {
+      mockUseFeatureFlag.mockReturnValue(true);
+      mockUseParams.mockReturnValue({
+        type,
+        authority: "1915(b)",
+        id: WITHDRAW_RAI_ITEM_B,
+      });
+
+      await renderFormWithPackageSectionAsync(<PostSubmissionWrapper />);
+
+      expect(screen.queryByTestId("submit-action-form")).not.toBeInTheDocument();
+      expect(screen.getByTestId("redirect-target")).toHaveTextContent(
+        `/details/1915(b)/${WITHDRAW_RAI_ITEM_B}`,
+      );
+    },
+  );
 });

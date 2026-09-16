@@ -1,3 +1,4 @@
+import * as libs from "libs";
 import {
   getFilteredRoleDocsByEmail,
   getFilteredRoleDocsByState,
@@ -139,6 +140,22 @@ describe("User Management Service", () => {
         [OS_STATE_SUBMITTER_EMAIL]: OS_STATE_SUBMITTER_USER._source,
         [OS_STATE_SYSTEM_ADMIN_EMAIL]: OS_STATE_SYSTEM_ADMIN_USER._source,
       });
+    });
+    it("should chunk large email searches below the OpenSearch boolean clause limit", async () => {
+      const searchSpy = vi.spyOn(libs, "search").mockResolvedValue({
+        hits: {
+          hits: [],
+        },
+      } as any);
+
+      const emails = Array.from({ length: 501 }, (_, index) => `user-${index}@example.com`);
+
+      await expect(getUsersByEmails(emails)).resolves.toEqual({});
+      expect(searchSpy).toHaveBeenCalledTimes(3);
+      expect(searchSpy.mock.calls.map(([, , query]) => query.query.bool.should.length)).toEqual([
+        500, 500, 2,
+      ]);
+      searchSpy.mockRestore();
     });
   });
 
