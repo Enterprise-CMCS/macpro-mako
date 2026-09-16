@@ -1,5 +1,6 @@
 import { UseQueryResult } from "@tanstack/react-query";
 import { mockUseGetUser, TEST_PACKAGE_STATUS_ITEM } from "mocks";
+import { SEATOOL_STATUS } from "shared-types";
 import { describe, expect, it, vi } from "vitest";
 
 import { OneMacUser } from "@/api";
@@ -19,5 +20,21 @@ describe("Package Status test", () => {
       <PackageStatusCard submission={TEST_PACKAGE_STATUS_ITEM._source} />,
     );
     expect(asFragment()).toMatchSnapshot();
+  });
+
+  it("does not show the RAI-withdraw sub-status while pending disapproval", () => {
+    const { queryByText } = renderWithQueryClient(
+      <PackageStatusCard
+        submission={{
+          ...TEST_PACKAGE_STATUS_ITEM._source,
+          seatoolStatus: SEATOOL_STATUS.PENDING_DISAPPROVAL,
+          cmsStatus: "Pending - Disapproval",
+          raiWithdrawEnabled: true,
+        }}
+      />,
+    );
+
+    expect(queryByText("Pending - Disapproval")).toBeInTheDocument();
+    expect(queryByText("Withdraw Formal RAI Response - Enabled")).not.toBeInTheDocument();
   });
 });
