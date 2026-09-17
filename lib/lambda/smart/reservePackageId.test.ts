@@ -114,7 +114,7 @@ describe("reservePackageId", () => {
       },
     } as Awaited<ReturnType<typeof os.getItem>>);
 
-    expect(await reservePackageId(incomingEvent)).toBe(false);
+    await expect(reservePackageId(incomingEvent)).resolves.toBe(false);
 
     expect(updateItemSpy).not.toHaveBeenCalled();
     expect(createItemSpy).not.toHaveBeenCalled();
@@ -144,6 +144,28 @@ describe("reservePackageId", () => {
       smartIdentityFields,
     );
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
+  });
+
+  it("updates correlation metadata without rewriting a matching external identifier", async () => {
+    getItemSpy.mockResolvedValueOnce({
+      found: true,
+      _id: incomingEvent.id,
+      _source: {
+        id: incomingEvent.id,
+        origin: "OneMAC",
+        correlationId: "existing-correlation",
+        spaWaiverId: incomingEvent.spaWaiverId,
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(reservePackageId(incomingEvent)).resolves.toBe(true);
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      incomingEvent.id,
+      { correlationId: incomingEvent.correlationId },
+    );
   });
 
   it("rethrows OpenSearch failures that are not collisions", async () => {

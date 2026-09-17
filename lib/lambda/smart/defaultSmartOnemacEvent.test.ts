@@ -134,6 +134,71 @@ describe("handleDefaultSmartOnemacEvent", () => {
     ]);
   });
 
+  it("rejects a conflicting spaWaiverId without replacing the stored identifier", async () => {
+    const mainById = {
+      found: true,
+      _id: "AL-26-0817-0001",
+      _source: {
+        id: "AL-26-0817-0001",
+        origin: "OneMAC",
+        spaWaiverId: "existing-external-identifier",
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>;
+
+    await handleDefaultSmartOnemacEvent({
+      event,
+      existence: { ...emptyExistence, mainById },
+      topicPartition: TOPIC_PARTITION,
+      kafkaKey: KAFKA_KEY,
+      kafkaOffset: 42,
+      kafkaTimestamp: 1786995273000,
+    });
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.VALIDATION,
+        error: expect.objectContaining({
+          message: "id is already associated with another external identifier",
+        }),
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorCode: "VALIDATION",
+        kafkaKey: KAFKA_KEY,
+        correlationId: event.correlationId,
+        payload: event,
+      }),
+    );
+  });
+
+  it("does not rewrite a matching spaWaiverId", async () => {
+    const mainById = {
+      found: true,
+      _id: "AL-26-0817-0001",
+      _source: {
+        id: "AL-26-0817-0001",
+        origin: "OneMAC",
+        spaWaiverId: event.spaWaiverId,
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>;
+
+    await handleDefaultSmartOnemacEvent({
+      event,
+      existence: { ...emptyExistence, mainById },
+      topicPartition: TOPIC_PARTITION,
+    });
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      "AL-26-0817-0001",
+      { correlationId: event.correlationId },
+    );
+  });
+
   it("publishes VALIDATION without writing when the ID has an unknown state prefix", async () => {
     const invalidEvent = { ...event, id: "XX-26-0817-0001" };
 

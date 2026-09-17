@@ -8,27 +8,47 @@ import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 import { publishSmartIngestError } from "./publishSmartIngestError";
 import { reportSmartValidationFailure, resolveSmartPackage } from "./smartEventHelpers";
 
+interface ExistingSmartIdentity {
+  spaWaiverId?: string | null;
+  correlationId?: string | null;
+}
+
 const smartIdentityFields = (
   event: SmartOnemacEvent,
-  document: { spaWaiverId?: string; correlationId?: string },
-) => ({
-  ...(!document.spaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
-  // A blank SMART correlation ID is valid, but it should not erase an
-  // identifier previously associated with an existing OneMAC package.
-  ...(!document.correlationId && event.correlationId ? { correlationId: event.correlationId } : {}),
-});
+  existing: ExistingSmartIdentity,
+): Record<string, string> | Error => {
+  const storedSpaWaiverId = existing.spaWaiverId?.trim();
+  if (storedSpaWaiverId && storedSpaWaiverId !== event.spaWaiverId) {
+    return new Error("id is already associated with another external identifier");
+  }
+
+  return {
+    // Once an external identifier is associated with a package ID, later SMART
+    // events may confirm it but must not replace it.
+    ...(!storedSpaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
+    // A blank SMART correlation ID is valid, but it should not erase an
+    // identifier previously associated with an existing OneMAC package.
+    ...(event.correlationId && event.correlationId !== existing.correlationId
+      ? { correlationId: event.correlationId }
+      : {}),
+  };
+};
 
 const updateSmartIdentityFields = async (
   domain: string,
   index: ReturnType<typeof getDomainAndNamespace>["index"],
   documentId: string,
   event: SmartOnemacEvent,
-  document: { spaWaiverId?: string; correlationId?: string },
-): Promise<void> => {
-  const fields = smartIdentityFields(event, document);
-  if (Object.keys(fields).length > 0) {
-    await os.updateItem(domain, index, documentId, fields);
+  existing: ExistingSmartIdentity,
+): Promise<Error | undefined> => {
+  const updates = smartIdentityFields(event, existing);
+  if (updates instanceof Error) return updates;
+
+  if (Object.keys(updates).length > 0) {
+    await os.updateItem(domain, index, documentId, updates);
   }
+
+  return undefined;
 };
 
 export const persistSmartOnemacEvent = async (
@@ -74,13 +94,17 @@ export const persistSmartOnemacEvent = async (
       );
       return false;
     }
-    await updateSmartIdentityFields(
+    const identityError = await updateSmartIdentityFields(
       domain,
       index,
       resolution.documentId,
       event,
       resolution.document,
     );
+    if (identityError) {
+      await reportSmartValidationFailure(context, identityError);
+      return false;
+    }
     return true;
   }
 
@@ -91,20 +115,36 @@ export const persistSmartOnemacEvent = async (
 
   const createResult = await os.createItem(domain, index, document);
   if (!createResult.created) {
+    // A concurrent writer claimed the package ID after the existence lookup.
+    // Read its identity before applying any partial update so a race cannot
+    // replace an established external identifier.
     const racedPackage = await os.getItem(domain, index, documentId);
+    if (!racedPackage?._source) {
+      throw new Error("package ID was claimed but could not be resolved after create conflict");
+    }
+
     if (
-      !racedPackage?._source ||
       racedPackage._source.deleted === true ||
-      (racedPackage._source.authority && racedPackage._source.authority !== event.authority) ||
-      (racedPackage._source.spaWaiverId && racedPackage._source.spaWaiverId !== event.spaWaiverId)
+      (racedPackage._source.authority && racedPackage._source.authority !== event.authority)
     ) {
       await reportSmartValidationFailure(
         context,
-        new Error("package ID was claimed by another record during processing"),
+        new Error("SMART identity requires a non-deleted package with matching authority"),
       );
       return false;
     }
-    await updateSmartIdentityFields(domain, index, documentId, event, racedPackage._source);
+
+    const identityError = await updateSmartIdentityFields(
+      domain,
+      index,
+      documentId,
+      event,
+      racedPackage._source,
+    );
+    if (identityError) {
+      await reportSmartValidationFailure(context, identityError);
+      return false;
+    }
   }
 
   return true;
