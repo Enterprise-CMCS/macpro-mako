@@ -742,6 +742,41 @@ describe("SMART operation dispatch", () => {
     },
   );
 
+  it("rejects MSP_MANUAL_RECORD_CREATED when the package already has a different spaWaiverId", async () => {
+    const payload = { ...smartEvent, operationType: "MSP_MANUAL_RECORD_CREATED" };
+    getItemSpy.mockResolvedValueOnce({
+      found: true,
+      _id: smartEvent.id,
+      _source: {
+        id: smartEvent.id,
+        origin: "OneMAC",
+        spaWaiverId: "existing-external-identifier",
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.VALIDATION,
+        error: expect.objectContaining({
+          message: "id is already associated with another external identifier",
+        }),
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorCode: "VALIDATION",
+        correlationId: smartEvent.correlationId,
+        payload,
+      }),
+    );
+  });
+
   it("does not erase an existing correlation ID when SMART sends a blank value", async () => {
     const payload = { ...smartEvent, correlationId: "" };
     getItemSpy.mockResolvedValueOnce({
