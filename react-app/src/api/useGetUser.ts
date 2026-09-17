@@ -38,9 +38,12 @@ export const getUser = async (): Promise<OneMacUser> => {
     userAttributesObj.username =
       currentAuthenticatedUser.username || currentAuthenticatedUser.Username || "";
 
+    const role = userDetails?.role ?? "norole";
+    const states = userDetails?.states ?? [];
+
     return {
-      user: { ...userAttributesObj, role: userDetails.role, states: userDetails.states ?? [] },
-      isCms: isCmsUser({ ...userAttributesObj, role: userDetails.role }),
+      user: { ...userAttributesObj, role, states },
+      isCms: isCmsUser({ ...userAttributesObj, role }),
     } satisfies OneMacUser;
   } catch (e) {
     console.log({ e });

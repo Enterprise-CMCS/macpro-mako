@@ -56,7 +56,7 @@ export const handler = authenticatedMiddy({
     };
   }
 
-  if (authenticatedUser["custom:cms-roles"].includes("onemac-helpdesk")) {
+  if (authenticatedUser["custom:cms-roles"]?.includes("onemac-helpdesk")) {
     const id = `${normalizedEmail}_N/A_helpdesk`;
 
     await produceMessage(
@@ -78,6 +78,39 @@ export const handler = authenticatedMiddy({
       statusCode: 200,
       body: { message: "User role updated, because no default role found" },
     };
+  }
+
+  if (authenticatedUser["custom:cms-roles"]?.includes("onemac-state-user")) {
+    const territories = (authenticatedUser["custom:state"] || "")
+      .split(",")
+      .map((state) => state.trim())
+      .filter(Boolean);
+
+    for (const territory of territories) {
+      const id = `${normalizedEmail}_${territory}_statesubmitter`;
+
+      await produceMessage(
+        process.env.topicName || "",
+        id,
+        JSON.stringify({
+          eventType: "user-role",
+          email: normalizedEmail,
+          status: "active",
+          territory,
+          role: "statesubmitter",
+          doneByEmail,
+          doneByName,
+          date,
+        }),
+      );
+    }
+
+    if (territories.length) {
+      return {
+        statusCode: 200,
+        body: { message: "User role updated, because no default role found" },
+      };
+    }
   }
 
   return {

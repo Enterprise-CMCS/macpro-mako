@@ -163,6 +163,32 @@ describe("getAttachmentArchive handler", () => {
     expect(response.body).toBe(JSON.stringify({ message: "No record found for the given id" }));
   });
 
+  it("returns 404 when the main package is SMART-origin", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "main",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        origin: "SMART",
+        state: "MD",
+        seatoolStatus: "Submitted",
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9999-P", scope: "all" }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toBe(JSON.stringify({ message: "No record found for the given id" }));
+    expect(getRequestedAttachmentArchiveStatus).not.toHaveBeenCalled();
+  });
+
   it("returns the archive response payload when the archive is ready", async () => {
     getRequestedAttachmentArchiveStatus.mockResolvedValue({
       needsRebuild: false,

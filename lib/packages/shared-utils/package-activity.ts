@@ -23,6 +23,8 @@ export function getPackageActivityLabel(event: changelog.Document["event"]): str
       return "RAI Response Submitted";
     case "upload-subsequent-documents":
       return "Subsequent Document(s) Uploaded";
+    case "split-spa":
+      return "Split SPA Created";
     default:
       return "";
   }

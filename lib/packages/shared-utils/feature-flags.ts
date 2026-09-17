@@ -89,8 +89,9 @@ export const featureFlags = {
     defaultValue: true,
   },
   /*
-   * Hide CMS controls and administrative activity for enabling/disabling
-   * Formal RAI Response Withdraw after OneMAC SMART launches.
+   * Hide OneMAC CMS controls and guidance for enabling/disabling Formal RAI
+   * Response Withdraw after the SMART-owned workflow launches. State actions
+   * and administrative history remain visible.
    */
   HIDE_WITHDRAW_RAI_RESPONSE_TOGGLE: {
     flag: "hide-withdraw-rai-response-toggle",

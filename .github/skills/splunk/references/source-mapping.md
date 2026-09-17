@@ -31,6 +31,7 @@ This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names us
 | mako-val-data-sinkChangelog                        | impl     | /aws/lambda/mako-val-data-sinkChangelog                        |
 | mako-val-data-sinkCpocs                            | impl     | /aws/lambda/mako-val-data-sinkCpocs                            |
 | mako-val-data-sinkMain                             | impl     | /aws/lambda/mako-val-data-sinkMain                             |
+| mako-val-data-sinkSmart                            | impl     | /aws/lambda/mako-val-data-sinkSmart                            |
 | mako-val-data-sinkSubtypes                         | impl     | /aws/lambda/mako-val-data-sinkSubtypes                         |
 | mako-val-data-sinkTypes                            | impl     | /aws/lambda/mako-val-data-sinkTypes                            |
 | mako-val-email-processEmails                       | impl     | /aws/lambda/mako-val-email-processEmails                       |
@@ -43,6 +44,7 @@ This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names us
 | mako-production-data-sinkChangelog                 | prod     | /aws/lambda/mako-production-data-sinkChangelog                 |
 | mako-production-data-sinkCpocs                     | prod     | /aws/lambda/mako-production-data-sinkCpocs                     |
 | mako-production-data-sinkMain                      | prod     | /aws/lambda/mako-production-data-sinkMain                      |
+| mako-production-data-sinkSmart                     | prod     | /aws/lambda/mako-production-data-sinkSmart                     |
 | mako-production-email-processEmails                | prod     | /aws/lambda/mako-production-email-processEmails                |
 
 ## API Endpoint to Source Mapping

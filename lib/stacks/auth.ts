@@ -7,6 +7,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
+import { awsCognitoDomainPrefixWithClientId } from "../config/lambda-function-name";
 
 interface AuthStackProps extends cdk.NestedStackProps {
   project: string;
@@ -161,7 +162,7 @@ export class Auth extends cdk.NestedStack {
     });
 
     const userPoolDomain = new cdk.aws_cognito.CfnUserPoolDomain(this, "UserPoolDomain", {
-      domain: `${stage}-login-${userPoolClient.ref}`,
+      domain: awsCognitoDomainPrefixWithClientId(`${stage}-login`, userPoolClient.ref),
       userPoolId: userPool.userPoolId,
     });
 

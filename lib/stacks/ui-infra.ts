@@ -4,6 +4,8 @@ import { BlockPublicAccess, Bucket, BucketEncryption } from "aws-cdk-lib/aws-s3"
 import { Construct } from "constructs";
 import * as LC from "local-constructs";
 
+import { awsS3AccountBucketName } from "../config/lambda-function-name";
+
 interface UiInfraStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
@@ -49,7 +51,7 @@ export class UiInfra extends cdk.NestedStack {
 
     // S3 Bucket for hosting static website
     const bucket = new cdk.aws_s3.Bucket(this, "S3Bucket", {
-      bucketName: `${project}-${stage}-${cdk.Aws.ACCOUNT_ID}`,
+      bucketName: awsS3AccountBucketName(`${project}-${stage}`, cdk.Aws.ACCOUNT_ID),
       versioned: true,
       websiteIndexDocument: "index.html",
       websiteErrorDocument: "index.html",
@@ -73,7 +75,7 @@ export class UiInfra extends cdk.NestedStack {
 
     // S3 Bucket for CloudFront logs
     const loggingBucket = new cdk.aws_s3.Bucket(this, "LoggingBucket", {
-      bucketName: `${project}-${stage}-cloudfront-logs-${cdk.Aws.ACCOUNT_ID}`,
+      bucketName: awsS3AccountBucketName(`${project}-${stage}-cloudfront-logs`, cdk.Aws.ACCOUNT_ID),
       versioned: true,
       encryption: cdk.aws_s3.BucketEncryption.S3_MANAGED,
       publicReadAccess: false,
