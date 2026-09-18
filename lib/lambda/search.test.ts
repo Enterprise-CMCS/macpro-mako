@@ -110,7 +110,15 @@ describe("getSearchData Handler", () => {
             bool: {
               must: [
                 { term: { "origin.keyword": "SMART" } },
-                { term: { smartRecordType: SMART_RECORD_TYPE.PACKAGE } },
+                {
+                  bool: {
+                    should: [
+                      { term: { smartRecordType: SMART_RECORD_TYPE.PACKAGE } },
+                      { term: { "smartRecordType.keyword": SMART_RECORD_TYPE.PACKAGE } },
+                    ],
+                    minimum_should_match: 1,
+                  },
+                },
               ],
             },
           },

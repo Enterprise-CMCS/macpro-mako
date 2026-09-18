@@ -97,12 +97,19 @@ export type Document = AppkDocument &
     operationType?: string;
     spaWaiverId?: string;
     smartRecordType?: SmartRecordType;
+    smartStatus?: string;
+    smartStatusChangedAt?: string | number;
+    smartAdministrativeChangedAt?: string | number;
+    smartAdministrativePreviousId?: string;
     createdByUserId?: string;
     splitSpaId?: string;
     splitSpaWaiverId?: string;
     originalSpaId?: string;
     originalSpaWaiverId?: string;
     splitReason?: string;
+    raiId?: string;
+    raiName?: string;
+    raiWithdrawnToggleDate?: string | number;
     draft?: {
       savedAt: string;
       createdAt?: string;

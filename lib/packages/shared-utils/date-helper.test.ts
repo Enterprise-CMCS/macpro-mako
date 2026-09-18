@@ -5,6 +5,7 @@ import {
   formatDateToET,
   formatDateToUTC,
   formatNinetyDaysDate,
+  formatNinetyDaysDateFromEasternDate,
   isWithinDays,
 } from "./date-helper";
 
@@ -84,6 +85,39 @@ describe("date-helper", () => {
       const date = new Date(2025, 0, 5); // Jan 5, 2025
       const formattedDate = formatNinetyDaysDate(date.getTime());
       expect(formattedDate).toBe("Apr 5, 2025");
+    });
+  });
+
+  describe("formatNinetyDaysDateFromEasternDate", () => {
+    it('should return "Pending" if date is null or undefined', () => {
+      expect(formatNinetyDaysDateFromEasternDate(null)).toBe("Pending");
+      expect(formatNinetyDaysDateFromEasternDate(undefined)).toBe("Pending");
+    });
+
+    it("uses the Eastern calendar date after midnight UTC", () => {
+      const september8At8PmEastern = Date.parse("2026-09-09T00:00:00.000Z");
+
+      expect(formatNinetyDaysDateFromEasternDate(september8At8PmEastern)).toBe("Dec 7, 2026");
+    });
+
+    it("uses the Eastern calendar date through 11:59 p.m.", () => {
+      const september8At1159PmEastern = Date.parse("2026-09-09T03:59:59.999Z");
+
+      expect(formatNinetyDaysDateFromEasternDate(september8At1159PmEastern)).toBe("Dec 7, 2026");
+    });
+
+    it("advances the calendar date at midnight Eastern", () => {
+      const september9AtMidnightEastern = Date.parse("2026-09-09T04:00:00.000Z");
+
+      expect(formatNinetyDaysDateFromEasternDate(september9AtMidnightEastern)).toBe("Dec 8, 2026");
+    });
+
+    it("accounts for the Eastern UTC offset during standard time", () => {
+      const january8At1159PmEastern = Date.parse("2026-01-09T04:59:59.999Z");
+      const january9AtMidnightEastern = Date.parse("2026-01-09T05:00:00.000Z");
+
+      expect(formatNinetyDaysDateFromEasternDate(january8At1159PmEastern)).toBe("Apr 8, 2026");
+      expect(formatNinetyDaysDateFromEasternDate(january9AtMidnightEastern)).toBe("Apr 9, 2026");
     });
   });
 

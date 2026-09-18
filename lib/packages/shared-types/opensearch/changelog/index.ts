@@ -94,6 +94,10 @@ export type Document = Omit<AppkDocument, "event"> &
       | "NOSO";
     originalSpaId?: string;
     originalSpaWaiverId?: string;
+    operationType?: string;
+    raiId?: string;
+    raiName?: string;
+    raiWithdrawnToggleDate?: string | number;
     spaWaiverId?: string;
   };
 

@@ -71,7 +71,7 @@ describe("reservePackageId", () => {
   });
 
   it.each(["OneMAC", "SEATool"])(
-    "always overwrites SMART identity fields when a package from %s already uses the ID",
+    "backfills SMART identity fields when a package from %s already uses the ID",
     async (existingOrigin) => {
       getItemSpy.mockResolvedValueOnce({
         found: true,
@@ -101,7 +101,7 @@ describe("reservePackageId", () => {
     },
   );
 
-  it("overwrites identity fields that already exist on the package", async () => {
+  it("rejects a conflicting external identifier without overwriting the package", async () => {
     getItemSpy.mockResolvedValueOnce({
       found: true,
       _id: incomingEvent.id,
@@ -114,21 +114,23 @@ describe("reservePackageId", () => {
       },
     } as Awaited<ReturnType<typeof os.getItem>>);
 
-    await reservePackageId(incomingEvent);
+    await expect(reservePackageId(incomingEvent)).resolves.toBe(false);
 
-    expect(updateItemSpy).toHaveBeenCalledOnce();
-    expect(updateItemSpy).toHaveBeenCalledWith(
-      "https://search.example.test",
-      "test-main",
-      incomingEvent.id,
-      smartIdentityFields,
-    );
+    expect(updateItemSpy).not.toHaveBeenCalled();
     expect(createItemSpy).not.toHaveBeenCalled();
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 
-  it("overwrites identity fields when create reports a version conflict", async () => {
+  it("backfills identity fields when create reports a version conflict", async () => {
     createItemSpy.mockResolvedValueOnce({ created: false, reason: "version_conflict" });
+    getItemSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
+      found: true,
+      _id: incomingEvent.id,
+      _source: {
+        id: incomingEvent.id,
+        origin: "OneMAC",
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>);
 
     await reservePackageId(incomingEvent);
 
@@ -141,6 +143,28 @@ describe("reservePackageId", () => {
       smartIdentityFields,
     );
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
+  });
+
+  it("updates correlation metadata without rewriting a matching external identifier", async () => {
+    getItemSpy.mockResolvedValueOnce({
+      found: true,
+      _id: incomingEvent.id,
+      _source: {
+        id: incomingEvent.id,
+        origin: "OneMAC",
+        correlationId: "existing-correlation",
+        spaWaiverId: incomingEvent.spaWaiverId,
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(reservePackageId(incomingEvent)).resolves.toBe(true);
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      incomingEvent.id,
+      { correlationId: incomingEvent.correlationId },
+    );
   });
 
   it("rethrows OpenSearch failures that are not collisions", async () => {
