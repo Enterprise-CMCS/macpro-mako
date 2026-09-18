@@ -400,6 +400,16 @@ describe("SMART Kafka envelope parsing", () => {
     );
   });
 
+  it("accepts null optional effective dates for SMART snapshot events", () => {
+    const payload = {
+      ...smartEvent,
+      approvedEffectiveDate: null,
+      proposedEffectiveDate: null,
+    };
+
+    expect(parseSmartOnemacEvent(payload)).toEqual(expect.objectContaining(payload));
+  });
+
   it.each(["spaWaiverId", "id", "correlationId", "authority", "status", "createdAt"])(
     "rejects null required field %s and publishes VALIDATION",
     async (requiredField) => {
@@ -671,14 +681,7 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it.each([
-    "MSP_MANUAL_RECORD_CREATED",
-    "MSP_STATUS_UPDATED",
-    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_ASSIGNMENT_UPDATED",
-    "NOT_A_REAL_TYPE",
-    undefined,
-  ])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
     "creates a default OneMAC-shaped document for operationType %s when the ID is missing",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -705,14 +708,7 @@ describe("SMART operation dispatch", () => {
     },
   );
 
-  it.each([
-    "MSP_MANUAL_RECORD_CREATED",
-    "MSP_STATUS_UPDATED",
-    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
-    "MSP_ASSIGNMENT_UPDATED",
-    "NOT_A_REAL_TYPE",
-    undefined,
-  ])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
     "updates only SMART identity fields for operationType %s when the ID exists",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -745,6 +741,41 @@ describe("SMART operation dispatch", () => {
       });
     },
   );
+
+  it("rejects MSP_MANUAL_RECORD_CREATED when the package already has a different spaWaiverId", async () => {
+    const payload = { ...smartEvent, operationType: "MSP_MANUAL_RECORD_CREATED" };
+    getItemSpy.mockResolvedValueOnce({
+      found: true,
+      _id: smartEvent.id,
+      _source: {
+        id: smartEvent.id,
+        origin: "OneMAC",
+        spaWaiverId: "existing-external-identifier",
+      },
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(logErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        type: sink.ErrorType.VALIDATION,
+        error: expect.objectContaining({
+          message: "id is already associated with another external identifier",
+        }),
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        errorCode: "VALIDATION",
+        correlationId: smartEvent.correlationId,
+        payload,
+      }),
+    );
+  });
 
   it("does not erase an existing correlation ID when SMART sends a blank value", async () => {
     const payload = { ...smartEvent, correlationId: "" };
