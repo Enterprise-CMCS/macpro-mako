@@ -218,6 +218,72 @@ describe("handleMspAssignmentUpdated", () => {
     });
   });
 
+  it("clears all projected assignments when SMART sends an empty roster snapshot", async () => {
+    await handleMspAssignmentUpdated(
+      createContext({
+        event: {
+          ...event,
+          srtMember: [],
+        } as SmartOnemacEvent,
+      }),
+    );
+
+    expect(updateItemSpy.mock.calls[0][3]).toMatchObject({
+      smartSrtRoster: [],
+      leadAnalystName: null,
+      leadAnalystEmail: null,
+      leadAnalystOfficerId: null,
+      smartCpocContactId: null,
+      reviewTeam: [],
+    });
+  });
+
+  it("retains an inactive CPOC in the snapshot without projecting an active CPOC", async () => {
+    await handleMspAssignmentUpdated(
+      createContext({
+        event: {
+          ...event,
+          srtMember: members.map((member) =>
+            member.isCpoc ? { ...member, isActive: false } : member,
+          ),
+        } as SmartOnemacEvent,
+      }),
+    );
+
+    const updates = updateItemSpy.mock.calls[0][3];
+    expect(updates).toMatchObject({
+      leadAnalystName: null,
+      leadAnalystEmail: null,
+      smartCpocContactId: null,
+      reviewTeam: [{ name: "Test SRT User", email: "srt@example.com" }],
+    });
+    expect(updates.smartSrtRoster).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ fullName: "Test CPOC User", isCpoc: true, isActive: false }),
+      ]),
+    );
+  });
+
+  it("stores complete roster snapshots in deterministic assignment-ID order", async () => {
+    await handleMspAssignmentUpdated(
+      createContext({
+        event: {
+          ...event,
+          srtMember: [...members].reverse(),
+        } as SmartOnemacEvent,
+      }),
+    );
+
+    const roster = updateItemSpy.mock.calls[0][3].smartSrtRoster as NonNullable<
+      opensearch.main.Document["smartSrtRoster"]
+    >;
+    expect(roster.map((member) => member.srtAssignmentId)).toEqual(
+      [...members]
+        .map((member) => member.srtAssignmentId)
+        .sort((left, right) => left.localeCompare(right)),
+    );
+  });
+
   it("ignores stale and identical replayed snapshots", async () => {
     await handleMspAssignmentUpdated(createContext());
     const appliedRoster = updateItemSpy.mock.calls[0][3].smartSrtRoster as NonNullable<
@@ -276,6 +342,23 @@ describe("handleMspAssignmentUpdated", () => {
     expect(updateItemSpy.mock.calls[0][3]).toMatchObject({ leadAnalystName: "Test CPOC User" });
   });
 
+  it("propagates a roster write failure and can safely apply the event on retry", async () => {
+    updateItemSpy.mockRejectedValueOnce(new Error("OpenSearch unavailable"));
+
+    await expect(handleMspAssignmentUpdated(createContext())).rejects.toThrow(
+      "OpenSearch unavailable",
+    );
+    expect(updateItemSpy).toHaveBeenCalledOnce();
+
+    updateItemSpy.mockResolvedValueOnce(undefined);
+    await expect(handleMspAssignmentUpdated(createContext())).resolves.toBeUndefined();
+    expect(updateItemSpy).toHaveBeenCalledTimes(2);
+    expect(updateItemSpy.mock.calls[1][3]).toMatchObject({
+      smartAssignmentChangedAt: CREATED_AT,
+      leadAnalystName: "Test CPOC User",
+    });
+  });
+
   it("rejects invalid rosters without persisting a package", async () => {
     await handleMspAssignmentUpdated(
       createContext({
@@ -289,6 +372,24 @@ describe("handleMspAssignmentUpdated", () => {
     expect(updateItemSpy).not.toHaveBeenCalled();
     expect(publishSmartIngestErrorSpy).toHaveBeenCalled();
     expect(logErrorSpy).toHaveBeenCalled();
+  });
+
+  it("rejects assignment updates for deleted packages before changing the roster", async () => {
+    await handleMspAssignmentUpdated(
+      createContext({
+        existence: {
+          mainById: packageById({ deleted: true }),
+          mainBySpaWaiverId: packageSearch({ deleted: true }),
+          changelogById: emptySearch,
+        },
+      }),
+    );
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ errorCode: "VALIDATION", kafkaKey: PACKAGE_ID }),
+    );
   });
 
   it("rejects two active CPOCs and non-snapshot assignment payloads", async () => {
