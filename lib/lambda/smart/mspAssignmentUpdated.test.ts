@@ -284,6 +284,24 @@ describe("handleMspAssignmentUpdated", () => {
     );
   });
 
+  it("uses optimistic concurrency metadata when updating the assignment snapshot", async () => {
+    getItemSpy.mockResolvedValue({
+      ...packageById(),
+      _seq_no: 12,
+      _primary_term: 3,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await handleMspAssignmentUpdated(createContext());
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      PACKAGE_ID,
+      expect.objectContaining({ smartAssignmentChangedAt: CREATED_AT }),
+      { ifSeqNo: 12, ifPrimaryTerm: 3 },
+    );
+  });
+
   it("ignores stale and identical replayed snapshots", async () => {
     await handleMspAssignmentUpdated(createContext());
     const appliedRoster = updateItemSpy.mock.calls[0][3].smartSrtRoster as NonNullable<
@@ -384,6 +402,18 @@ describe("handleMspAssignmentUpdated", () => {
         },
       }),
     );
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ errorCode: "VALIDATION", kafkaKey: PACKAGE_ID }),
+    );
+  });
+
+  it("rejects the update if the package identity changes before the roster write", async () => {
+    getItemSpy.mockResolvedValue(packageById({ spaWaiverId: "another-external-id" }));
+
+    await handleMspAssignmentUpdated(createContext());
 
     expect(createItemSpy).not.toHaveBeenCalled();
     expect(updateItemSpy).not.toHaveBeenCalled();

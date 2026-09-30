@@ -27,7 +27,7 @@ const defaultUpdateFieldMappingPostHandler = http.post(
   },
 );
 
-export const errorUpdateFieldMappingHandler = http.post(
+export const errorUpdateFieldMappingHandler = http.put(
   "https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/:index/_mapping",
   () => new HttpResponse("Internal server error", { status: 500 }),
 );

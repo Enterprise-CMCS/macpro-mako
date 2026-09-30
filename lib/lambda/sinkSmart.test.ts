@@ -16,6 +16,7 @@ import * as publishSmartIngestErrorModule from "./smart/publishSmartIngestError"
 
 const TOPIC = "aws.mulesoft.onemac.events";
 const TOPIC_PARTITION = `${TOPIC}-0`;
+const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
 const smartEvent = {
   spaWaiverId: "a0ncp000006Wdh7AAC",
@@ -163,14 +164,50 @@ describe("SMART Kafka envelope parsing", () => {
         value: convertObjToBase64(smartEvent),
       }),
     ],
-  ])("processes a valid payload with %s", async (_caseName, record) => {
+  ])("processes a valid payload with %s and logs a warning", async (_caseName, record) => {
     expect(parseSmartKafkaRecord(record, TOPIC_PARTITION)).toEqual(smartEvent);
-    createItemSpy.mockResolvedValueOnce({ created: true });
+    getItemSpy.mockResolvedValue(undefined);
+    searchSpy.mockResolvedValue({ hits: { hits: [] } });
+    createItemSpy.mockResolvedValue({ created: true });
 
     await expect(invokeHandler(createSmartEvent(record))).resolves.toBeUndefined();
 
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      "SMART Kafka record key does not match payload.id",
+      expect.objectContaining({
+        topicPartition: TOPIC_PARTITION,
+        payloadId: smartEvent.id,
+      }),
+    );
+    expect(logErrorSpy).not.toHaveBeenCalled();
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
-    expect(getItemSpy).toHaveBeenCalled();
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({ id: smartEvent.id }),
+    );
+  });
+
+  it("continues processing the partition after warning about a mismatched Kafka key", async () => {
+    getItemSpy.mockResolvedValue(undefined);
+    searchSpy.mockResolvedValue({ hits: { hits: [] } });
+    createItemSpy.mockResolvedValue({ created: true });
+    const mismatchedKeyRecord = createSmartRecord(smartEvent, "AL-26-0817-9999");
+    const validPayload = { ...smartEvent, id: "AL-26-0817-0002" };
+    const validRecord = createSmartRecord(validPayload);
+
+    await expect(
+      invokeHandler(createSmartEvent(mismatchedKeyRecord, validRecord)),
+    ).resolves.toBeUndefined();
+
+    expect(consoleWarnSpy).toHaveBeenCalledOnce();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+    expect(createItemSpy).toHaveBeenCalledTimes(2);
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({ id: validPayload.id }),
+    );
   });
 
   it.each(["spaWaiverId", "id", "correlationId", "origin", "authority", "status", "createdAt"])(

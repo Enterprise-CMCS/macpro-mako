@@ -97,10 +97,18 @@ export const handleMspAssignmentUpdated = async (
   const documentId = event.id.toUpperCase();
   const packageResult = await os.getItem(domain, index, documentId);
   const document = packageResult?._source;
-  if (!document || document.deleted === true || document.authority !== event.authority) {
+  const storedSpaWaiverId = document?.spaWaiverId?.trim();
+  const storedDocumentId = document?.id?.toUpperCase();
+  if (
+    !document ||
+    document.deleted === true ||
+    document.authority !== event.authority ||
+    storedDocumentId !== documentId ||
+    (storedSpaWaiverId && storedSpaWaiverId !== event.spaWaiverId)
+  ) {
     await reportSmartValidationFailure(
       context,
-      new Error("assignment update requires a non-deleted package with matching authority"),
+      new Error("assignment update requires a matching, non-deleted package identity"),
     );
     return;
   }
@@ -130,7 +138,7 @@ export const handleMspAssignmentUpdated = async (
 
   const activeCpoc = activeCpocs[0];
   const changedAt = new Date(event.createdAt).toISOString();
-  await os.updateItem(domain, index, documentId, {
+  const updates = {
     smartAssignmentChangedAt: changedAt,
     smartSrtRoster: roster,
     leadAnalystName: activeCpoc?.fullName ?? null,
@@ -144,5 +152,17 @@ export const handleMspAssignmentUpdated = async (
     makoChangedDate: latestIsoDate(document.makoChangedDate, changedAt),
     changedDate: latestIsoDate(document.changedDate, changedAt),
     operationType: event.operationType,
-  });
+  };
+  if (
+    typeof packageResult._seq_no === "number" &&
+    typeof packageResult._primary_term === "number"
+  ) {
+    await os.updateItem(domain, index, documentId, updates, {
+      ifSeqNo: packageResult._seq_no,
+      ifPrimaryTerm: packageResult._primary_term,
+    });
+    return;
+  }
+
+  await os.updateItem(domain, index, documentId, updates);
 };

@@ -308,5 +308,26 @@ describe("opensearch-lib tests", () => {
         }),
       ).rejects.toThrow("OpenSearch down");
     });
+
+    it("supports optimistic concurrency controls", async () => {
+      vi.resetModules();
+      const updateMock = vi.fn().mockResolvedValue({ body: { result: "updated" } });
+      const module = await importWithMockedClient({ update: updateMock });
+      const fields = { smartAssignmentChangedAt: "2026-09-11T02:59:31.000Z" };
+
+      await module.updateItem(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, "AL-26-0817-0001", fields, {
+        ifSeqNo: 12,
+        ifPrimaryTerm: 3,
+      });
+
+      expect(updateMock).toHaveBeenCalledWith({
+        index: OPENSEARCH_INDEX,
+        id: "AL-26-0817-0001",
+        body: { doc: fields },
+        refresh: true,
+        if_seq_no: 12,
+        if_primary_term: 3,
+      });
+    });
   });
 });

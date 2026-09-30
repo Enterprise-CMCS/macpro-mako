@@ -48,6 +48,15 @@ export const handler: Handler<KafkaEvent> = async (event) => {
           continue;
         }
 
+        if (parsedRecord.kafkaKey !== parsedEvent.data.id) {
+          console.warn("SMART Kafka record key does not match payload.id", {
+            topicPartition,
+            kafkaKey: parsedRecord.kafkaKey,
+            payloadId: parsedEvent.data.id,
+            offset: kafkaRecord.offset,
+          });
+        }
+
         await dispatchSmartOnemacEvent(parsedEvent.data, {
           topicPartition,
           kafkaKey: parsedRecord.kafkaKey,
