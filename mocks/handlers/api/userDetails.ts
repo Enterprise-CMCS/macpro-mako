@@ -62,7 +62,11 @@ const defaultApiRequestBaseCMSAccessHandler = http.get(
       return HttpResponse.json({ message: "User role updated, because no default role found" });
     }
 
-    if (user["custom:cms-roles"].includes("onemac-helpdesk")) {
+    if (user["custom:cms-roles"]?.includes("onemac-helpdesk")) {
+      return HttpResponse.json({ message: "User role updated, because no default role found" });
+    }
+
+    if (user["custom:cms-roles"]?.includes("onemac-state-user") && user["custom:state"]) {
       return HttpResponse.json({ message: "User role updated, because no default role found" });
     }
 

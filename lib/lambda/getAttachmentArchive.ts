@@ -1,6 +1,6 @@
 import { APIGatewayEvent } from "shared-types";
 import { opensearch, SEATOOL_STATUS } from "shared-types";
-import { isCmsUser, isHelpDeskUser } from "shared-utils";
+import { isCmsUser, isHelpDeskUser, isHiddenSmartReservation } from "shared-utils";
 import { z } from "zod";
 
 import { buildDraftAttachmentChangelog } from "../attachment-archive/draft-package";
@@ -62,6 +62,10 @@ const getPackageChangelogFilter = (packageResult: opensearch.main.ItemResult) =>
 
 async function resolvePackageForArchive(packageId: string, preferDraft?: boolean) {
   const mainResult = await getPackage(packageId);
+  if (isHiddenSmartReservation(mainResult?._source)) {
+    return mainResult;
+  }
+
   const hasActiveMainNonDraft = isActiveMainNonDraftPackage(mainResult);
   const draftResult = await getDraftPackage(packageId);
   const hasActiveDraft = isActiveDraftPackage(draftResult);
@@ -93,7 +97,11 @@ export const handler = authenticatedMiddy({
 
   const resolvedPackage = await resolvePackageForArchive(packageId, body.preferDraft);
 
-  if (!resolvedPackage || !resolvedPackage.found) {
+  if (
+    !resolvedPackage ||
+    !resolvedPackage.found ||
+    isHiddenSmartReservation(resolvedPackage._source)
+  ) {
     return {
       statusCode: 404,
       body: { message: "No record found for the given id" },

@@ -2,7 +2,7 @@ import { APIGatewayEvent } from "aws-lambda";
 import { isActiveDraftPackage, isActiveMainNonDraftPackage } from "libs/api/package/packageStatus";
 import { response } from "libs/handler-lib";
 import { SEATOOL_STATUS } from "shared-types";
-import { getAvailableActions, isCmsUser } from "shared-utils";
+import { getAvailableActions, isCmsUser, isHiddenSmartReservation } from "shared-utils";
 
 import {
   getAuthDetails,
@@ -48,6 +48,13 @@ export const getPackageActions = async (event: APIGatewayEvent) => {
     const result = hasActiveMainNonDraft ? mainResult : hasActiveDraft ? draftResult : undefined;
 
     if (result === undefined || !result.found) {
+      return response({
+        statusCode: 404,
+        body: { message: "No record found for the given id" },
+      });
+    }
+
+    if (isHiddenSmartReservation(result._source)) {
       return response({
         statusCode: 404,
         body: { message: "No record found for the given id" },

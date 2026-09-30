@@ -291,6 +291,16 @@ describe("package actions rules tests", () => {
       });
       expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
+    it("should return false for a package with a Pending-Disapproval status CHIP SPA", () => {
+      const check = PackageCheck({
+        ...TEST_CHIP_SPA_ITEM?._source,
+        seatoolStatus: SEATOOL_STATUS.PENDING_DISAPPROVAL,
+        actionType: "New",
+        raiRequestedDate: "2024-01-01T00:00:00.000Z",
+        raiReceivedDate: "2024-01-01T00:00:00.000Z",
+      });
+      expect(arEnableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
+    });
     it("should return false for a package with a Submitted status CHIP SPA", () => {
       const check = PackageCheck({
         ...TEST_CHIP_SPA_ITEM?._source,
@@ -487,6 +497,17 @@ describe("package actions rules tests", () => {
       });
       expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
+    it("should return false for a package with a Pending-Disapproval status", () => {
+      const check = PackageCheck({
+        ...TEST_MED_SPA_ITEM?._source,
+        seatoolStatus: SEATOOL_STATUS.PENDING_DISAPPROVAL,
+        actionType: "New",
+        raiRequestedDate: "2024-01-01T00:00:00.000Z",
+        raiReceivedDate: "2024-01-01T00:00:00.000Z",
+        raiWithdrawEnabled: true,
+      });
+      expect(arDisableWithdrawRaiResponse.check(check, TEST_REVIEWER_USER)).toBe(false);
+    });
     it("should return false for a package with a Unsubmitted status", () => {
       const check = PackageCheck({
         ...TEST_MED_SPA_ITEM?._source,
@@ -511,6 +532,16 @@ describe("package actions rules tests", () => {
         raiWithdrawEnabled: true,
       });
       expect(arWithdrawRaiResponse.check(check, TEST_STATE_SUBMITTER_USER)).toBe(true);
+    });
+    it("should return false for a package with a Pending-Disapproval status", () => {
+      const check = PackageCheck({
+        ...TEST_MED_SPA_ITEM?._source,
+        seatoolStatus: SEATOOL_STATUS.PENDING_DISAPPROVAL,
+        raiRequestedDate: "2024-01-01T00:00:00.000Z",
+        raiReceivedDate: "2024-01-01T00:00:00.000Z",
+        raiWithdrawEnabled: true,
+      });
+      expect(arWithdrawRaiResponse.check(check, TEST_STATE_SUBMITTER_USER)).toBe(false);
     });
     it("should return false for a temporary extension package", () => {
       const check = PackageCheck({

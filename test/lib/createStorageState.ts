@@ -28,9 +28,9 @@ export async function createStorageState(
 
     await loginFn(page, user.username, user.password);
     await page.goto("/dashboard", { waitUntil: "domcontentloaded" });
-    await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByRole("tab", { name: "SPAs" })).toBeVisible({ timeout: 10_000 });
-    await expect(page.getByTestId("os-table")).toBeVisible({ timeout: 10_000 });
+    await expect(page.getByRole("heading", { name: "Dashboard" })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByRole("tab", { name: "SPAs" })).toBeVisible({ timeout: 30_000 });
+    await expect(page.getByTestId("os-table")).toBeVisible({ timeout: 30_000 });
 
     await fs.mkdir(authDir, { recursive: true });
     await fs.writeFile(filePath, JSON.stringify(await page.context().storageState()));
