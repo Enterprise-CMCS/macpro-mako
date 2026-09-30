@@ -137,7 +137,7 @@ describe("handleMspAssignmentUpdated", () => {
     process.env = { ...originalEnvironment };
   });
 
-  it("replaces the legacy roster with the complete active SMART roster and CPOC", async () => {
+  it("projects the active CPOC separately from active SRT members", async () => {
     await handleMspAssignmentUpdated(createContext());
 
     expect(createItemSpy).not.toHaveBeenCalled();
@@ -153,10 +153,7 @@ describe("handleMspAssignmentUpdated", () => {
         smartAssignmentChangedAt: CREATED_AT,
         // A later assignment event does not roll back newer package activity.
         makoChangedDate: "2026-09-11T04:00:00.000Z",
-        reviewTeam: [
-          { name: "Test CPOC User", email: "patrick.spriggs@emailicf.com" },
-          { name: "Test SRT User", email: "srt@example.com" },
-        ],
+        reviewTeam: [{ name: "Test SRT User", email: "srt@example.com" }],
       }),
     );
     const updates = updateItemSpy.mock.calls[0][3];
@@ -179,6 +176,7 @@ describe("handleMspAssignmentUpdated", () => {
     expect(updateItemSpy.mock.calls[0][3]).toMatchObject({
       leadAnalystName: "Test SRT User",
       smartCpocContactId: "003cp00000insUAAAY",
+      reviewTeam: [{ name: "Test CPOC User", email: "patrick.spriggs@emailicf.com" }],
     });
 
     updateItemSpy.mockClear();
@@ -195,6 +193,10 @@ describe("handleMspAssignmentUpdated", () => {
       leadAnalystName: null,
       leadAnalystEmail: null,
       smartCpocContactId: null,
+      reviewTeam: [
+        { name: "Test CPOC User", email: "patrick.spriggs@emailicf.com" },
+        { name: "Test SRT User", email: "srt@example.com" },
+      ],
     });
   });
 
@@ -211,10 +213,7 @@ describe("handleMspAssignmentUpdated", () => {
       }),
     );
     expect(updateItemSpy.mock.calls[0][3]).toMatchObject({
-      reviewTeam: [
-        { name: "Test CPOC User", email: "patrick.spriggs@emailicf.com" },
-        { name: "Inactive SME", email: "sme@example.com" },
-      ],
+      reviewTeam: [{ name: "Inactive SME", email: "sme@example.com" }],
     });
   });
 

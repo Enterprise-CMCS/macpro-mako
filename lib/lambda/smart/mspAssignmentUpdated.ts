@@ -147,7 +147,7 @@ export const handleMspAssignmentUpdated = async (
     leadAnalystOfficerId: null,
     smartCpocContactId: activeCpoc?.contactId ?? null,
     reviewTeam: roster
-      .filter((member) => member.isActive)
+      .filter((member) => member.isActive && !member.isCpoc)
       .map((member) => ({ name: member.fullName, email: member.email ?? "" })),
     makoChangedDate: latestIsoDate(document.makoChangedDate, changedAt),
     changedDate: latestIsoDate(document.changedDate, changedAt),

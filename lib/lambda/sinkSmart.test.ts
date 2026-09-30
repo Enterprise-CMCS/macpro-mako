@@ -843,7 +843,7 @@ describe("SMART operation dispatch", () => {
       expect.objectContaining({
         leadAnalystName: "Test CPOC User",
         smartCpocContactId: "003cp000017H4ZVAA0",
-        reviewTeam: [{ name: "Test CPOC User", email: "cpoc@example.com" }],
+        reviewTeam: [],
       }),
     );
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
@@ -903,7 +903,7 @@ describe("SMART operation dispatch", () => {
       leadAnalystName: "Test CPOC User",
       leadAnalystEmail: "cpoc@example.com",
       smartAssignmentChangedAt: smartEvent.createdAt,
-      reviewTeam: [{ name: "Test CPOC User", email: "cpoc@example.com" }],
+      reviewTeam: [],
     });
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
