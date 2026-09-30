@@ -71,7 +71,7 @@ describe("reservePackageId", () => {
   });
 
   it.each(["OneMAC", "SEATool"])(
-    "backfills SMART identity fields when a package from %s already uses the ID",
+    "backfills missing SMART identity fields when a package from %s already uses the ID",
     async (existingOrigin) => {
       getItemSpy.mockResolvedValueOnce({
         found: true,
@@ -101,7 +101,7 @@ describe("reservePackageId", () => {
     },
   );
 
-  it("rejects a conflicting external identifier without overwriting the package", async () => {
+  it("rejects a different established external ID without overwriting identity", async () => {
     getItemSpy.mockResolvedValueOnce({
       found: true,
       _id: incomingEvent.id,
@@ -121,13 +121,14 @@ describe("reservePackageId", () => {
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 
-  it("backfills identity fields when create reports a version conflict", async () => {
+  it("backfills identity fields on a compatible concurrent package-ID claim", async () => {
     createItemSpy.mockResolvedValueOnce({ created: false, reason: "version_conflict" });
     getItemSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
       found: true,
       _id: incomingEvent.id,
       _source: {
         id: incomingEvent.id,
+        authority: incomingEvent.authority,
         origin: "OneMAC",
       },
     } as Awaited<ReturnType<typeof os.getItem>>);
@@ -175,7 +176,7 @@ describe("reservePackageId", () => {
     expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
   });
 
-  it("rethrows identity-field overwrite failures on an existing package", async () => {
+  it("rethrows identity-field backfill failures on an existing package", async () => {
     const outage = new Error("OpenSearch update failed");
     getItemSpy.mockResolvedValueOnce({
       found: true,

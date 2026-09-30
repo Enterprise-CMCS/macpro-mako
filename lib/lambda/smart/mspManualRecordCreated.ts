@@ -5,15 +5,23 @@ import {
   STATE_CODES,
   type StateCode,
 } from "shared-types";
+import { z } from "zod";
 
 import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
+import { reportSmartValidationFailure } from "./smartEventHelpers";
 
 const EMPTY_DISPLAY_TEXT = "";
 
 const isNonEmptyString = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
+
+const manualRecordCreatedSchema = z.object({
+  authority: z.literal("Medicaid SPA"),
+  creationContext: z.literal("MANUAL"),
+  operationType: z.literal("MSP_MANUAL_RECORD_CREATED"),
+});
 
 /**
  * OneMAC-shaped main-index document for a new SMART package reservation.
@@ -101,8 +109,13 @@ export const transformMspManualRecordCreated = (
 export const handleMspManualRecordCreated = async (
   context: SmartOnemacEventContext,
 ): Promise<void> => {
+  const contract = manualRecordCreatedSchema.safeParse(context.event);
+  if (!contract.success) {
+    await reportSmartValidationFailure(context, contract.error);
+    return;
+  }
+
   if (!(await persistSmartOnemacEvent(context))) {
     return;
   }
-  // Reviewer hook: add OneMAC manual-record-created writes here.
 };

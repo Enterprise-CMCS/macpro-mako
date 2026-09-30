@@ -9,9 +9,10 @@ import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
 /**
  * Reserves a package ID in the main index so OneMAC cannot reuse it.
  *
- * The OpenSearch `_id` is the business `id`, so any existing document is a collision
- * regardless of its origin. An existing package may be associated with a missing
- * `spaWaiverId`, but an established external identifier is never replaced.
+ * The OpenSearch `_id` is the business `id`. An existing package may be
+ * associated with SMART by filling missing identity fields, but a different
+ * established external ID is a validation conflict and is never overwritten.
+ * Status, origin, submitter, and every other existing field stay unchanged.
  */
 export const reservePackageId = async (incomingEvent: SmartOnemacEvent): Promise<boolean> => {
   const documentId = incomingEvent.id.toUpperCase();

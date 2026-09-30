@@ -133,11 +133,17 @@ const isVersionConflictError = (error: unknown): boolean => {
   return error instanceof Error && error.message.includes("version_conflict_engine_exception");
 };
 
+export interface UpdateItemOptions {
+  ifSeqNo: number;
+  ifPrimaryTerm: number;
+}
+
 export async function updateItem(
   host: string,
   index: string,
   id: string,
   fields: Record<string, unknown>,
+  options?: UpdateItemOptions,
 ): Promise<void> {
   client = client || (await getClient(host));
   await client.update({
@@ -145,6 +151,7 @@ export async function updateItem(
     id,
     body: { doc: fields },
     refresh: true,
+    ...(options ? { if_seq_no: options.ifSeqNo, if_primary_term: options.ifPrimaryTerm } : {}),
   });
 }
 
