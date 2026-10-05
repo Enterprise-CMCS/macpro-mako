@@ -46,6 +46,9 @@ const emails: EmailAddresses = {
   srtEmails: [],
   cpocEmail: [],
   accessEmail: "access@example.com",
+  seatoolMissingRecordTo: ["missing-record-dev@example.com"],
+  seatoolHelpdesk: ["seatool-helpdesk@example.com"],
+  dpoApprover: ["dpo-approver@example.com"],
 };
 
 function restoreEnvValue(key: string, value: string | undefined) {
@@ -160,5 +163,41 @@ describe("runSeatoolMissingRecordEscalation", () => {
       .find((command) => command instanceof PutObjectCommand) as PutObjectCommand;
     expect(putCommand.input.Bucket).toBe("archive-write-bucket");
     expect(putCommand.input.Key).toBe("seatool-missing-record/main/sent/2023/08/05/digest.json");
+    expect(
+      sesSendSpy.mock.calls.every(
+        ([command]) =>
+          command instanceof SendEmailCommand &&
+          command.input.Destination?.ToAddresses?.[0] === "missing-record-dev@example.com" &&
+          (command.input.Destination?.CcAddresses?.length ?? 0) === 0,
+      ),
+    ).toBe(true);
+  });
+
+  it("uses osg/chip To lists and secret CCs on production", async () => {
+    process.env.STAGE_NAME = "production";
+    s3SendSpy.mockImplementation(async (command) => {
+      if (command instanceof ListObjectsV2Command) {
+        return { Contents: [] };
+      }
+      return {};
+    });
+    fetchCandidatesMock.mockResolvedValue([
+      {
+        id: "MD-23-0001",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 4,
+      },
+    ]);
+
+    await handler({ now: "2023-08-05T12:00:00-04:00" });
+
+    expect(sesSendSpy).toHaveBeenCalledTimes(1);
+    const command = sesSendSpy.mock.calls[0][0] as SendEmailCommand;
+    expect(command.input.Destination?.ToAddresses).toEqual(["osg@cms.hhs.gov"]);
+    expect(command.input.Destination?.CcAddresses).toEqual([
+      "seatool-helpdesk@example.com",
+      "dpo-approver@example.com",
+    ]);
   });
 });
