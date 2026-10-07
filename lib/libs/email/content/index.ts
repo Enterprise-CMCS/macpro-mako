@@ -7,3 +7,4 @@ export * from "./email-components";
 export * from "./respondToRai";
 export * from "./uploadSubsequentDocuments";
 export * from "./userRoles";
+export * from "./seatoolMissingRecord";
