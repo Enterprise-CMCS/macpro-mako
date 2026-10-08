@@ -149,6 +149,37 @@ describe("Lambda Handler", () => {
     expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
   });
 
+  it("should return 404 if the main package is SMART-origin", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "main",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        origin: "SMART",
+        state: "MD",
+        seatoolStatus: "Submitted",
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({
+        id: "MD-26-9999-P",
+        bucket: ATTACHMENT_BUCKET_NAME,
+        key: "test-key",
+        filename: "test-file",
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(404);
+    expect(res.body).toEqual(JSON.stringify({ message: "No record found for the given id" }));
+    expect(mockSend).not.toHaveBeenCalled();
+  });
+
   it("should return 404 if state access is not permitted", async () => {
     const event = {
       body: JSON.stringify({

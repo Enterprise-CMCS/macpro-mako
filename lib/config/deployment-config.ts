@@ -32,6 +32,8 @@ export type InjectedConfigProperties = {
   smartLinkUrl: string;
   macproLinkUrl: string;
   legacyS3AccessRoleArn: string;
+  bigmacErrorQueueUrl?: string;
+  bigmacErrorQueueArn?: string;
   externalApiAuthSecretArn: string;
   useSharedOpenSearch: boolean;
   vpcName: string;
@@ -141,6 +143,10 @@ export class DeploymentConfig {
       typeof config.smartLinkUrl === "string" &&
       typeof config.macproLinkUrl === "string" &&
       typeof config.legacyS3AccessRoleArn === "string" &&
+      (config.bigmacErrorQueueUrl === undefined ||
+        typeof config.bigmacErrorQueueUrl === "string") &&
+      (config.bigmacErrorQueueArn === undefined ||
+        typeof config.bigmacErrorQueueArn === "string") &&
       typeof config.externalApiAuthSecretArn === "string" && // pragma: allowlist secret
       typeof config.useSharedOpenSearch === "boolean" &&
       typeof config.vpcName === "string"

@@ -53,6 +53,6 @@ describe("useRequestBaseCMSAccess", () => {
   it("should return a success message if the state user does not have roles", async () => {
     setMockUsername(coStateSubmitter);
     const result = await requestBaseCMSAccess();
-    expect(result).toEqual({ message: "User role not updated" });
+    expect(result).toEqual({ message: "User role updated, because no default role found" });
   });
 });

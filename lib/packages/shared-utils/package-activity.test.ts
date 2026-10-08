@@ -12,6 +12,7 @@ describe("package activity helpers", () => {
     expect(getPackageActivityLabel("upload-subsequent-documents")).toBe(
       "Subsequent Document(s) Uploaded",
     );
+    expect(getPackageActivityLabel("split-spa")).toBe("Split SPA Created");
   });
 
   it("slugifies labels for archive naming", () => {
