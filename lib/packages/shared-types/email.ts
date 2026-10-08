@@ -10,6 +10,9 @@ export type EmailAddresses = {
   cpocEmail: string[];
   accessEmail: string;
   userRoleCc?: string;
+  seatoolMissingRecordTo?: string[];
+  seatoolHelpdesk?: string[];
+  dpoApprover?: string[];
 };
 
 export interface CommonEmailVariables {

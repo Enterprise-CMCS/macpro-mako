@@ -275,7 +275,7 @@ describe("useAttachmentService", () => {
         );
         expect(result.current.loading).toBe(false);
       });
-      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(20);
+      expect(getAttachmentArchiveSpy).toHaveBeenCalledTimes(40);
       expect(consoleErrorSpy).toHaveBeenCalled();
     } finally {
       vi.useRealTimers();
