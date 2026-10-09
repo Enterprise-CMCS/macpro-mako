@@ -1,11 +1,25 @@
-import { render } from "@react-email/render";
-
-import { SeatoolMissingRecordEmail } from "./emailTemplates/SeatoolMissingRecordEmail";
+import {
+  buildSeatoolMissingRecordEmailHtml,
+  buildSeatoolMissingRecordEmailText,
+} from "./emailTemplates/SeatoolMissingRecordEmail";
 import { SEATOOL_MISSING_RECORD_SUBJECT, SeatoolMissingRecordRow } from "./types";
 
 export { SEATOOL_MISSING_RECORD_HELP_DESK_EMAIL, SEATOOL_MISSING_RECORD_SUBJECT } from "./types";
 export type { SeatoolMissingRecordRow } from "./types";
-export { SeatoolMissingRecordEmail } from "./emailTemplates/SeatoolMissingRecordEmail";
+export {
+  buildSeatoolMissingRecordEmailHtml,
+  buildSeatoolMissingRecordEmailText,
+  SEA_TOOL_URL,
+} from "./emailTemplates/SeatoolMissingRecordEmail";
+
+export function seatoolMissingRecordSubject(packages: SeatoolMissingRecordRow[]): string {
+  const [onlyPackage] = packages;
+  if (packages.length === 1 && onlyPackage) {
+    return `${onlyPackage.id} - ${SEATOOL_MISSING_RECORD_SUBJECT}`;
+  }
+
+  return SEATOOL_MISSING_RECORD_SUBJECT;
+}
 
 export async function renderSeatoolMissingRecordEmail({
   to,
@@ -22,16 +36,13 @@ export async function renderSeatoolMissingRecordEmail({
   cc?: string[];
   subject: string;
   body: string;
+  text: string;
 }> {
   return {
     to,
     cc,
-    subject: SEATOOL_MISSING_RECORD_SUBJECT,
-    body: await render(
-      <SeatoolMissingRecordEmail
-        applicationEndpointUrl={applicationEndpointUrl}
-        packages={packages}
-      />,
-    ),
+    subject: seatoolMissingRecordSubject(packages),
+    body: buildSeatoolMissingRecordEmailHtml({ packages, applicationEndpointUrl }),
+    text: buildSeatoolMissingRecordEmailText(packages),
   };
 }

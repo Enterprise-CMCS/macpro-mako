@@ -11,9 +11,15 @@ import { formatEasternCalendarDatePath } from "./seatool-missing-record/cadence"
 import {
   fetchMissingRecordCandidates,
   groupCandidatesByMailbox,
+  isIgnoredStatePackage,
+  mailboxGroupForAuthority,
   MissingRecordCandidate,
 } from "./seatool-missing-record/candidates";
-import { getEscalationRecipients, MailboxGroup } from "./seatool-missing-record/recipients";
+import {
+  getEscalationRecipients,
+  isProductionStage,
+  MailboxGroup,
+} from "./seatool-missing-record/recipients";
 
 export const DEFAULT_MISSING_RECORD_PREFIX = "seatool-missing-record";
 export const MAILBOX_GROUPS: MailboxGroup[] = ["medicaid-spa", "chip-spa", "waiver"];
@@ -92,12 +98,14 @@ export function createMissingRecordEmailParams({
   cc,
   subject,
   body,
+  text,
   sourceEmail,
 }: {
   to: string[];
   cc: string[];
   subject: string;
   body: string;
+  text: string;
   sourceEmail: string;
 }): SendEmailCommandInput {
   return {
@@ -108,6 +116,7 @@ export function createMissingRecordEmailParams({
     Message: {
       Body: {
         Html: { Data: body, Charset: "UTF-8" },
+        Text: { Data: text, Charset: "UTF-8" },
       },
       Subject: { Data: subject, Charset: "UTF-8" },
     },
@@ -164,11 +173,13 @@ export const handler = async (
     };
   }
 
-  const candidates = await fetchMissingRecordCandidates(now);
+  const candidates = (await fetchMissingRecordCandidates(now)).filter(
+    (candidate) => !isIgnoredStatePackage(candidate.id),
+  );
   const groups = groupCandidatesByMailbox(candidates);
   const nonEmptyGroups = MAILBOX_GROUPS.filter((group) => groups[group].length > 0);
 
-  if (nonEmptyGroups.length === 0) {
+  if (candidates.length === 0) {
     return {
       status: "skipped",
       reason: "empty",
@@ -185,28 +196,42 @@ export const handler = async (
 
   const ses = new SESClient({ region });
   const sentGroups: MailboxGroup[] = [];
+  const applicationEndpointUrl = getApplicationEndpointUrl();
 
-  for (const group of nonEmptyGroups) {
+  const sendPackages = async (group: MailboxGroup, packages: MissingRecordCandidate[]) => {
     const recipients = getEscalationRecipients(stage, group, emails);
-    if (recipients.to.length === 0) {
-      continue;
+    if (recipients.to.length === 0 || packages.length === 0) {
+      return;
     }
 
     const template = await renderSeatoolMissingRecordEmail({
       to: recipients.to,
       cc: recipients.cc,
-      applicationEndpointUrl: getApplicationEndpointUrl(),
-      packages: toEmailRows(groups[group]),
+      applicationEndpointUrl,
+      packages: toEmailRows(packages),
     });
     const params = createMissingRecordEmailParams({
       to: template.to,
       cc: template.cc ?? [],
       subject: template.subject,
       body: template.body,
+      text: template.text,
       sourceEmail,
     });
     await ses.send(new SendEmailCommand(params));
-    sentGroups.push(group);
+    if (!sentGroups.includes(group)) {
+      sentGroups.push(group);
+    }
+  };
+
+  if (isProductionStage(stage)) {
+    for (const candidate of candidates) {
+      await sendPackages(mailboxGroupForAuthority(candidate.authority), [candidate]);
+    }
+  } else {
+    for (const group of nonEmptyGroups) {
+      await sendPackages(group, groups[group]);
+    }
   }
 
   if (sentGroups.length === 0) {
