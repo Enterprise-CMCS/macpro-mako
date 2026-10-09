@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const handlers = vi.hoisted(() => ({
   evaluateExistence: vi.fn(),
+  chipSpaManualRecordUpdated: vi.fn(),
   manualRecordCreated: vi.fn(),
   statusUpdated: vi.fn(),
   administrativeFieldUpdated: vi.fn(),
@@ -13,6 +14,9 @@ const handlers = vi.hoisted(() => ({
 
 vi.mock("./evaluateSmartPackageExistence", () => ({
   evaluateSmartPackageExistence: handlers.evaluateExistence,
+}));
+vi.mock("./chipSpaManualRecordUpdated", () => ({
+  handleChipSpaManualRecordUpdated: handlers.chipSpaManualRecordUpdated,
 }));
 vi.mock("./mspManualRecordCreated", async (importOriginal) => ({
   ...(await importOriginal<typeof import("./mspManualRecordCreated")>()),
@@ -63,6 +67,7 @@ const existence = Object.freeze({
 });
 
 const knownOperations = [
+  ["CHIPSPA_MANUAL_RECORD_UPDATED", handlers.chipSpaManualRecordUpdated],
   ["MSP_MANUAL_RECORD_CREATED", handlers.manualRecordCreated],
   ["MSP_STATUS_UPDATED", handlers.statusUpdated],
   ["MSP_ADMINISTRATIVE_FIELD_UPDATED", handlers.administrativeFieldUpdated],
