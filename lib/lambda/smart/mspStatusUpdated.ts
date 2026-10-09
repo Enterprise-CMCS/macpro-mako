@@ -21,7 +21,7 @@ import { mapSmartStatus, SMART_STATUS_VALUES } from "./smartStatus";
 const smartTypeSelectionSchema = z.object({
   typeSelectionId: requiredString,
   type: requiredString,
-  subType: requiredString,
+  subType: requiredString.nullable(),
   isTypeActive: z.boolean(),
   isSubTypeActive: z.boolean(),
 });
@@ -86,7 +86,11 @@ const getTypeUpdates = (event: SmartStatusUpdatedEvent): Record<string, unknown>
         SPA_TYPE_NAME: selection.type,
       });
     }
-    if (selection.isTypeActive && selection.isSubTypeActive) {
+    // SMART currently sends a type-only selection with subType: null when the
+    // user keeps the type but clears all of its subtypes. The accompanying
+    // isSubTypeActive flag may still be true, so the missing subtype value is
+    // authoritative and must not invalidate the entire status update.
+    if (selection.isTypeActive && selection.isSubTypeActive && selection.subType !== null) {
       activeSubTypes.set(selection.typeSelectionId, {
         TYPE_ID: numericTypeId(selection.typeSelectionId),
         TYPE_NAME: selection.subType,
