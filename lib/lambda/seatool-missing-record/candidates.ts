@@ -41,8 +41,14 @@ const SUBMITTED_DISPLAY_STATUSES = new Set([
   "submitted-intake needed",
 ]);
 
+const IGNORED_STATE_CODES = new Set(["ZZ", "ZT"]);
+
 export function isValidPackageId(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+export function isIgnoredStatePackage(id: string): boolean {
+  return IGNORED_STATE_CODES.has(id.trim().slice(0, 2).toUpperCase());
 }
 
 export function parseAuthority(value: unknown): Authority | undefined {
@@ -117,6 +123,7 @@ export function isDraftRecord(record: MissingRecordSource): boolean {
 export function isMissingRecordCandidate(record: MissingRecordSource): boolean {
   return (
     isValidPackageId(record.id) &&
+    !isIgnoredStatePackage(record.id) &&
     record.origin === "OneMAC" &&
     record.deleted !== true &&
     !isDraftRecord(record) &&
