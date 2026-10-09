@@ -28,17 +28,21 @@ const srtMemberSchema = z
   })
   .passthrough();
 
-const assignmentUpdatedSchema = z
-  .object({
-    authority: z.literal("Medicaid SPA"),
-    createdAt: isoDateTime,
-    id: requiredString,
-    operationType: z.literal("MSP_ASSIGNMENT_UPDATED"),
-    origin: z.literal("SMART"),
-    spaWaiverId: requiredString,
-    srtMember: z.array(srtMemberSchema),
-  })
-  .passthrough();
+const assignmentUpdatedSchema = (
+  authority: "Medicaid SPA" | "CHIP SPA",
+  operationType: "MSP_ASSIGNMENT_UPDATED" | "CHIPSPA_ASSIGNMENT_UPDATED",
+) =>
+  z
+    .object({
+      authority: z.literal(authority),
+      createdAt: isoDateTime,
+      id: requiredString,
+      operationType: z.literal(operationType),
+      origin: z.literal("SMART"),
+      spaWaiverId: requiredString,
+      srtMember: z.array(srtMemberSchema),
+    })
+    .passthrough();
 
 type SrtMember = z.infer<typeof srtMemberSchema>;
 
@@ -60,10 +64,12 @@ const normalizedRoster = (
     }))
     .sort((left, right) => left.srtAssignmentId.localeCompare(right.srtAssignmentId));
 
-export const handleMspAssignmentUpdated = async (
+export const handleSmartAssignmentUpdated = async (
   context: SmartOnemacEventContext,
+  authority: "Medicaid SPA" | "CHIP SPA",
+  operationType: "MSP_ASSIGNMENT_UPDATED" | "CHIPSPA_ASSIGNMENT_UPDATED",
 ): Promise<void> => {
-  const parsedEvent = assignmentUpdatedSchema.safeParse(context.event);
+  const parsedEvent = assignmentUpdatedSchema(authority, operationType).safeParse(context.event);
   if (!parsedEvent.success) {
     await reportSmartValidationFailure(context, parsedEvent.error);
     return;
@@ -166,3 +172,6 @@ export const handleMspAssignmentUpdated = async (
 
   await os.updateItem(domain, index, documentId, updates);
 };
+
+export const handleMspAssignmentUpdated = async (context: SmartOnemacEventContext): Promise<void> =>
+  handleSmartAssignmentUpdated(context, "Medicaid SPA", "MSP_ASSIGNMENT_UPDATED");

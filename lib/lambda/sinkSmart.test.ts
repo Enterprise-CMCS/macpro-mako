@@ -502,6 +502,35 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("creates a hidden CHIP reservation for CHIPSPA_MANUAL_RECORD_UPDATED", async () => {
+    const payload = {
+      ...smartEvent,
+      id: "CA-26-1001",
+      spaWaiverId: "a0nTESTCHIP261001",
+      authority: "CHIP SPA",
+      operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+    };
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({
+        id: payload.id,
+        authority: "CHIP SPA",
+        origin: "SMART",
+        smartRecordType: SMART_RECORD_TYPE.RESERVATION,
+        spaWaiverId: payload.spaWaiverId,
+        operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+      }),
+    );
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("accepts null optional creator fields and dispatches a manual record creation", async () => {
     const payload = {
       ...smartEvent,
@@ -905,6 +934,79 @@ describe("SMART operation dispatch", () => {
       smartAssignmentChangedAt: smartEvent.createdAt,
       reviewTeam: [],
     });
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("consumes CHIPSPA_ASSIGNMENT_UPDATED using the complete assignment roster", async () => {
+    const packageId = "CA-26-1001";
+    const externalId = "a0nTESTCHIP261001";
+    const assignmentPayload = {
+      ...smartEvent,
+      id: packageId,
+      spaWaiverId: externalId,
+      authority: "CHIP SPA",
+      operationType: "CHIPSPA_ASSIGNMENT_UPDATED",
+      srtAssignmentId: "chip-cpoc-assignment",
+      srtMember: [
+        {
+          srtAssignmentId: "chip-cpoc-assignment",
+          contactId: "chip-cpoc-contact",
+          fullName: "CHIP CPOC",
+          email: "chip.cpoc@example.com",
+          division: "DBC",
+          group: "MBHPG",
+          isCpoc: true,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: "Active CPOC",
+        },
+        {
+          srtAssignmentId: "chip-srt-assignment",
+          contactId: "chip-srt-contact",
+          fullName: "CHIP SRT",
+          email: "chip.srt@example.com",
+          division: "DMCP",
+          group: "MCG",
+          isCpoc: false,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: "Active SRT member",
+        },
+      ],
+    };
+    const existingPackage = {
+      id: packageId,
+      origin: "OneMAC",
+      authority: "CHIP SPA",
+      seatoolStatus: "Pending",
+      deleted: false,
+      spaWaiverId: externalId,
+    };
+    getItemSpy.mockResolvedValue({
+      found: true,
+      _id: packageId,
+      _source: existingPackage,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+    searchSpy.mockResolvedValue({
+      hits: { hits: [{ _id: packageId, _source: existingPackage }] },
+    } as Awaited<ReturnType<typeof os.search>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(assignmentPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      packageId,
+      expect.objectContaining({
+        leadAnalystName: "CHIP CPOC",
+        smartCpocContactId: "chip-cpoc-contact",
+        reviewTeam: [{ name: "CHIP SRT", email: "chip.srt@example.com" }],
+        operationType: "CHIPSPA_ASSIGNMENT_UPDATED",
+      }),
+    );
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
