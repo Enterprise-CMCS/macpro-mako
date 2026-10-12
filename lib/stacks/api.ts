@@ -9,6 +9,7 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
+import { awsLambdaFunctionName, awsS3AccountBucketName } from "../config/lambda-function-name";
 import {
   getArchiveBaseReadBucket,
   getArchiveOverlayPrefix,
@@ -27,6 +28,10 @@ import {
   getLegacyAttachmentMirrorBuckets,
   getSharedAttachmentReadBucket,
 } from "./legacy-attachment-bucket-map";
+import {
+  buildSeatoolMissingRecordEscalationEnvironment,
+  createSeatoolMissingRecordEscalationDailySchedule,
+} from "./seatool-missing-record-escalation";
 import {
   buildSeatoolStatusMismatchReportEnvironment,
   createSeatoolStatusMismatchReportDailySchedule,
@@ -122,7 +127,10 @@ export class Api extends cdk.NestedStack {
     const managedArchiveBucket = usesSharedArchiveOverlay
       ? undefined
       : new Bucket(this, "AttachmentArchiveBucket", {
-          bucketName: `${project}-${stage}-attachment-archives-${this.account}`,
+          bucketName: awsS3AccountBucketName(
+            `${project}-${stage}-attachment-archives`,
+            this.account,
+          ),
           versioned: true,
           encryption: BucketEncryption.S3_MANAGED,
           blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
@@ -627,6 +635,63 @@ export class Api extends cdk.NestedStack {
       },
     );
 
+    const seatoolMissingRecordEscalationRole = new cdk.aws_iam.Role(
+      this,
+      "SeatoolMissingRecordEscalationRole",
+      {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+        managedPolicies: [
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("CloudWatchLogsFullAccess"),
+        ],
+        inlinePolicies: {
+          SeatoolMissingRecordEscalationPolicy: new cdk.aws_iam.PolicyDocument({
+            statements: [
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: [
+                  "es:ESHttpHead",
+                  "es:ESHttpPost",
+                  "es:ESHttpGet",
+                  "es:ESHttpPatch",
+                  "es:ESHttpDelete",
+                  "es:ESHttpPut",
+                ],
+                resources: [`${openSearchDomainArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:GetObject", "s3:PutObject"],
+                resources: [`${archiveWriteBucketArn}/*`],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["s3:ListBucket"],
+                resources: [archiveWriteBucketArn],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["ses:SendEmail"],
+                resources: ["*"],
+              }),
+              new cdk.aws_iam.PolicyStatement({
+                effect: cdk.aws_iam.Effect.ALLOW,
+                actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
+                resources: [
+                  `arn:aws:secretsmanager:${this.region}:${this.account}:secret:${emailAddressLookupSecretName}-*`,
+                ],
+              }),
+            ],
+          }),
+        },
+      },
+    );
+
     const attachmentArchiveIntegrityNotificationRole = new cdk.aws_iam.Role(
       this,
       "AttachmentArchiveIntegrityNotificationRole",
@@ -688,14 +753,15 @@ export class Api extends cdk.NestedStack {
         }
       }
 
+      const functionName = awsLambdaFunctionName(project, stage, stack, id);
       const logGroup = new cdk.aws_logs.LogGroup(this, `${id}LogGroup`, {
-        logGroupName: `/aws/lambda/${project}-${stage}-${stack}-${id}`,
+        logGroupName: `/aws/lambda/${functionName}`,
         removalPolicy: cdk.RemovalPolicy.DESTROY,
       });
 
       const fn = new NodejsFunction(this, id, {
         runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
-        functionName: `${project}-${stage}-${stack}-${id}`,
+        functionName,
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         entry,
         handler: "handler",
@@ -1161,6 +1227,20 @@ export class Api extends cdk.NestedStack {
         memorySize: 2048,
       },
       {
+        id: "runSeatoolMissingRecordEscalation",
+        entry: join(__dirname, "../lambda/runSeatoolMissingRecordEscalation.ts"),
+        environment: buildSeatoolMissingRecordEscalationEnvironment({
+          stage,
+          openSearchDomainEndpoint,
+          indexNamespace,
+          reportBucketName: archiveWriteBucketName,
+          emailAddressLookupSecretName,
+        }),
+        role: seatoolMissingRecordEscalationRole,
+        timeoutSeconds: 300,
+        memorySize: 512,
+      },
+      {
         id: "notifyAttachmentArchiveIntegrity",
         entry: join(__dirname, "../lambda/notifyAttachmentArchiveIntegrity.ts"),
         environment: buildAttachmentArchiveIntegrityNotificationEnvironment({
@@ -1526,6 +1606,14 @@ export class Api extends cdk.NestedStack {
       stack,
       isDev,
       runSeatoolStatusMismatchReportLambda: lambdas.runSeatoolStatusMismatchReport,
+    });
+
+    createSeatoolMissingRecordEscalationDailySchedule(this, {
+      project,
+      stage,
+      stack,
+      isDev,
+      runSeatoolMissingRecordEscalationLambda: lambdas.runSeatoolMissingRecordEscalation,
     });
 
     // Create IAM role for API Gateway to invoke Lambda functions

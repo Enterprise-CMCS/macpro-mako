@@ -368,7 +368,10 @@ const mapChangelogItemToPackageActivity = ({
     submitterName: packageActivity.submitterName,
     timestamp: packageActivity.timestamp,
     attachments: packageActivity.attachments ?? [],
-    additionalInformation: packageActivity.additionalInformation,
+    additionalInformation:
+      packageActivity.event === "split-spa"
+        ? packageActivity.changeReason
+        : packageActivity.additionalInformation,
     isAdminChange: packageActivity.isAdminChange,
   };
 };
@@ -376,7 +379,11 @@ const mapChangelogItemToPackageActivity = ({
 export const PackageActivities = ({ id, changelog, submission }: PackageActivitiesProps) => {
   const packageActivities = useMemo(() => {
     const changelogWithoutAdminChanges = changelog
-      .filter((item) => !item._source.isAdminChange)
+      .filter(
+        (item) =>
+          !item._source.isAdminChange ||
+          (item._source.event === "split-spa" && Boolean(item._source.originalSpaId)),
+      )
       .map(mapChangelogItemToPackageActivity);
 
     if (changelogWithoutAdminChanges.length > 0) {

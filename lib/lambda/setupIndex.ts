@@ -14,9 +14,22 @@ export const handler: Handler = async (event, __, callback) => {
       update: {
         approvedEffectiveDate: { type: "date" },
         changedDate: { type: "date" },
+        correlationId: { type: "keyword" },
+        createdByUserId: { type: "keyword" },
         deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
         proposedDate: { type: "date" },
+        raiId: { type: "keyword" },
+        raiName: { type: "keyword" },
+        raiWithdrawnToggleDate: { type: "date" },
+        spaWaiverId: { type: "keyword" },
+        smartRecordType: { type: "keyword" },
+        smartStatus: { type: "keyword" },
+        smartStatusChangedAt: { type: "date" },
+        smartAdministrativeChangedAt: { type: "date" },
+        smartAdministrativePreviousId: { type: "keyword" },
+        smartAssignmentChangedAt: { type: "date" },
+        smartCpocContactId: { type: "keyword" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
       },
@@ -34,6 +47,11 @@ export const handler: Handler = async (event, __, callback) => {
     await manageIndexResource({
       osDomain: event.osDomain,
       index: `${event.indexNamespace}changelog`,
+      update: {
+        raiId: { type: "keyword" },
+        raiName: { type: "keyword" },
+        raiWithdrawnToggleDate: { type: "date" },
+      },
     });
     await manageIndexResource({
       osDomain: event.osDomain,

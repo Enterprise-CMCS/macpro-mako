@@ -4,6 +4,24 @@ import { TEST_ITEM_ID } from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./checkIdentifierUsage";
+import { transformMspManualRecordCreated } from "./smart/mspManualRecordCreated";
+
+const smartReservation = transformMspManualRecordCreated({
+  spaWaiverId: "a0ncp000006Wdh7AAC",
+  id: "AL-26-0817-0001",
+  correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+  origin: "SMART",
+  authority: "Medicaid SPA",
+  status: "Intake Needed",
+  createdAt: "2026-08-17T16:54:33.000Z",
+  createdByUserId: "005cp00000Jqq9HAAR",
+  createdByName: "Alice Jones",
+  createdByEmail: "alice.j@globalalliantinc.com",
+  operationType: "MSP_MANUAL_RECORD_CREATED",
+  creationContext: "MANUAL",
+  state: "Alabama",
+  initialSubmissionDate: "2026-08-17",
+})!;
 
 // Mock the checkIdentifierUsage function
 vi.mock("libs/api/package/checkIdentifierUsage", () => ({
@@ -139,11 +157,11 @@ describe("checkIdentifierUsage handler", () => {
   it("should return 200 with inUse: true and system when identifier exists with SMART origin", async () => {
     vi.mocked(checkIdentifierUsageLib.checkIdentifierUsage).mockResolvedValue({
       exists: true,
-      origin: "SMART",
+      origin: smartReservation.origin,
     });
 
     const event = {
-      queryStringParameters: { id: "MD-SMART-123" },
+      queryStringParameters: { id: smartReservation.id },
       requestContext: {
         requestId: "test-request-id",
       },
@@ -157,6 +175,7 @@ describe("checkIdentifierUsage handler", () => {
       inUse: true,
       system: "SMART",
     });
+    expect(checkIdentifierUsageLib.checkIdentifierUsage).toHaveBeenCalledWith(smartReservation.id);
   });
 
   it("should return 200 with inUse: true and system when identifier exists with OneMACLegacy origin", async () => {
