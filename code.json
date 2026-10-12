@@ -1,6 +1,7 @@
 {
   "name": "macpro-mako",
-  "description": "The upgraded OneMAC system streamlines the submission process for state users, enabling efficient and accurate Medicaid SPA, CHIP Eligibility SPA, 1915(b) waiver, 1915(c) Appendix K waiver and Temporary Extension applications while ensuring seamless continuity with CMS review workflows.",
+  "version": "",
+  "description": "The OneMAC system streamlines the submission process for state users, enabling efficient and accurate Medicaid SPA, CHIP Eligibility SPA, 1915(b) waiver, 1915(c) Appendix K waiver and Temporary Extension applications while ensuring seamless continuity with CMS review workflows.",
   "longDescription": "OneMAC (macpro-mako) is a comprehensive healthcare regulatory submission platform that modernizes the process for states to submit and CMS to review Medicaid and CHIP program changes. Built as a cloud-native serverless application on AWS, the system enables state users to efficiently submit State Plan Amendments (SPAs), waiver applications, and related documentation through an intuitive web interface. The platform features robust form validation, document attachment capabilities, real-time status tracking, automated email notifications, and seamless integration with legacy CMS systems. Leveraging AWS Lambda for serverless compute, OpenSearch for data indexing and search, API Gateway for RESTful services, and React for the frontend user experience, OneMAC ensures secure, scalable, and reliable processing of critical healthcare program submissions that impact millions of Americans' access to Medicaid and CHIP benefits.",
   "status": "Production",
   "permissions": {
@@ -15,13 +16,16 @@
   },
   "organization": "Centers for Medicare & Medicaid Services",
   "repositoryURL": "https://github.com/Enterprise-CMCS/macpro-mako",
-  "projectURL": "https://onemac.cms.gov",
   "repositoryHost": "github.com/Enterprise-CMCS",
   "repositoryVisibility": "public",
+  "homepageURL": "",
+  "downloadURL": "",
+  "disclaimerURL": "",
+  "disclaimerText": "",
   "vcs": "git",
-  "laborHours": 19280,
+  "laborHours": 23742,
   "reuseFrequency": {
-    "forks": 0,
+    "forks": 4,
     "clones": 0
   },
   "platforms": [
@@ -37,36 +41,38 @@
   "softwareType": "standalone/web",
   "languages": [
     "TypeScript",
+    "HTML",
+    "Shell",
     "JavaScript",
     "CSS",
-    "Shell",
-    "HTML",
-    "Dockerfile"
+    "Dockerfile",
+    "MDX"
   ],
   "maintenance": "contract",
-  "contractNumber": "75FCMC24F0027",
+  "contractNumber": [
+    "75FCMC24F0027"
+  ],
+  "SBOM": "https://github.com/Enterprise-CMCS/macpro-mako/network/dependencies",
+  "relatedCode": [],
+  "reusedCode": [],
+  "partners": [],
   "date": {
     "created": "2023-01-23T21:43:54Z",
-    "lastModified": "2025-06-22T05:43:01Z",
-    "metaDataLastUpdated": "2025-06-22T05:46:35.475Z"
+    "lastModified": "2026-10-12T18:05:32Z",
+    "metadataLastUpdated": "2026-10-12T18:12:19.698Z"
   },
   "tags": [
-    "cms",
-    "healthcare",
-    "medicaid",
-    "chip",
-    "spa",
-    "waiver",
+    "macpro",
     "onemac",
-    "serverless"
+    "spa",
+    "waiver"
   ],
   "contact": {
     "email": "bpaige@gswell.com",
     "name": "Benjamin Paige"
   },
-  "feedbackMechanisms": [
-    "https://github.com/Enterprise-CMCS/macpro-mako/issues"
-  ],
+  "feedbackMechanism": "https://github.com/Enterprise-CMCS/macpro-mako/issues",
+  "AIUseCaseID": "0",
   "localisation": false,
   "repositoryType": "application",
   "userInput": true,
@@ -88,7 +94,6 @@
     "Step Functions",
     "CloudFormation"
   ],
-  "upstream": "https://github.com/Enterprise-CMCS/macpro-mako/network/dependencies",
   "subsetInHealthcare": [
     "Policy",
     "Operational",
