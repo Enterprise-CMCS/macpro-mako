@@ -502,6 +502,35 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("creates a hidden CHIP reservation for CHIPSPA_MANUAL_RECORD_UPDATED", async () => {
+    const payload = {
+      ...smartEvent,
+      id: "CA-26-1001",
+      spaWaiverId: "a0nTESTCHIP261001",
+      authority: "CHIP SPA",
+      operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+    };
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({
+        id: payload.id,
+        authority: "CHIP SPA",
+        origin: "SMART",
+        smartRecordType: SMART_RECORD_TYPE.RESERVATION,
+        spaWaiverId: payload.spaWaiverId,
+        operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+      }),
+    );
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("accepts null optional creator fields and dispatches a manual record creation", async () => {
     const payload = {
       ...smartEvent,
