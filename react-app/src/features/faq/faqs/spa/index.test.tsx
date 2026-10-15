@@ -7,7 +7,6 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { ChipSpaImplementationGuides } from "./chip-spa-implementation-guides";
 import { ChipSpaTemplates } from "./chip-spa-templates";
 import { spaContent } from "./index";
-import { SpaAmendments } from "./spa-amendments";
 
 const mockUseFeatureFlag = vi.hoisted(() => vi.fn(() => false));
 
@@ -144,38 +143,19 @@ describe("SPA FAQ documents", () => {
     expect(getPdfTitle("chp/CS27.pdf")).toBe("CS27");
   });
 
-  it("uses three scannable submission-type links in the SPA amendments FAQ", () => {
-    render(<SpaAmendments />);
-
-    const links = screen.getAllByRole("link");
-
-    expect(links).toHaveLength(3);
-    expect(
-      screen.getByRole("link", { name: "Medicaid Alternative Benefit Plan (ABP)" }),
-    ).toHaveAttribute("href", "#abp-spa-templates");
-    expect(
-      screen.getByRole("link", { name: "Medicaid Premiums and Cost Sharing" }),
-    ).toHaveAttribute("href", "#mpc-spa-templates");
-    expect(screen.getByRole("link", { name: "CHIP eligibility" })).toHaveAttribute(
-      "href",
-      "#chip-spa-templates",
-    );
-  });
-
-  it("combines the CHIP eligibility templates and implementation guides into one FAQ", () => {
+  it("marks CHIP eligibility template and implementation guide FAQs as updated", () => {
     expect(spaContent).toEqual(
       expect.arrayContaining([
         expect.objectContaining({
-          anchorText: "chip-spa-templates",
-          question: "CHIP eligibility SPA template and implementation guides",
+          question: "Where can I download CHIP eligibility SPA templates?",
           label: "Updated",
           labelColor: "green",
         }),
-      ]),
-    );
-    expect(spaContent).not.toEqual(
-      expect.arrayContaining([
-        expect.objectContaining({ anchorText: "chip-spa-implementation-guides" }),
+        expect.objectContaining({
+          question: "Where can I download CHIP eligibility SPA implementation guides?",
+          label: "Updated",
+          labelColor: "green",
+        }),
       ]),
     );
   });

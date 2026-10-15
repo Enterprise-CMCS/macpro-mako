@@ -52,11 +52,11 @@ const resourceSections: ResourceSection[] = [
     links: [
       {
         text: "Medicaid Alternative Benefit Plan (ABP)",
-        to: "/faq/abp-spa-templates",
+        to: "/faq/abp-implementation-guides-spa",
       },
       {
         text: "Medicaid Premiums and Cost Sharing",
-        to: "/faq/mpc-spa-templates",
+        to: "/faq/mpc-spa-implementation-guides",
       },
     ],
   },
@@ -76,7 +76,7 @@ const resourceSections: ResourceSection[] = [
     links: [
       {
         text: "CHIP eligibility",
-        to: "/faq/chip-spa-templates",
+        to: "/faq/chip-spa-implementation-guides",
       },
     ],
   },

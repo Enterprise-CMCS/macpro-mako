@@ -111,12 +111,12 @@ describe("Default Welcome", () => {
       within(medicaidImplementationGuidesSection as HTMLElement).getByRole("link", {
         name: "Medicaid Alternative Benefit Plan (ABP)",
       }),
-    ).toHaveAttribute("href", "/faq/abp-spa-templates");
+    ).toHaveAttribute("href", "/faq/abp-implementation-guides-spa");
     expect(
       within(medicaidImplementationGuidesSection as HTMLElement).getByRole("link", {
         name: "Medicaid Premiums and Cost Sharing",
       }),
-    ).toHaveAttribute("href", "/faq/mpc-spa-templates");
+    ).toHaveAttribute("href", "/faq/mpc-spa-implementation-guides");
 
     const chipSpaTemplatesSection = within(resourcesSection as HTMLElement)
       .getByRole("heading", { name: "CHIP SPA templates" })
@@ -136,7 +136,7 @@ describe("Default Welcome", () => {
       within(chipImplementationGuidesSection as HTMLElement).getByRole("link", {
         name: "CHIP eligibility",
       }),
-    ).toHaveAttribute("href", "/faq/chip-spa-templates");
+    ).toHaveAttribute("href", "/faq/chip-spa-implementation-guides");
 
     const additionalTemplatesSection = within(resourcesSection as HTMLElement)
       .getByRole("heading", { name: "Additional templates and tools" })

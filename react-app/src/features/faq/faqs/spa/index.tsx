@@ -94,38 +94,45 @@ export const spaContent = [
   },
   {
     anchorText: "abp-spa-templates",
-    question: "Medicaid Alternative Benefit Plan (ABP) SPA template and implementation guides",
+    question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
     label: "Updated",
     labelColor: "green",
-    answerJSX: (
-      <div className="space-y-6">
-        <AbpSpaTemplates />
-        <AbpImplementationGuidesSpa />
-      </div>
-    ),
+    answerJSX: <AbpSpaTemplates />,
+  },
+  {
+    anchorText: "abp-implementation-guides-spa",
+    question:
+      "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+    label: "New",
+    labelColor: "blue",
+    answerJSX: <AbpImplementationGuidesSpa />,
   },
   {
     anchorText: "mpc-spa-templates",
-    question: "Medicaid Premiums and Cost Sharing SPA template and implementation guides",
+    question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
     label: "New",
     labelColor: "blue",
-    answerJSX: (
-      <div className="space-y-6">
-        <MpcSpaTemplates />
-        <MpcSpaImplementationGuides />
-      </div>
-    ),
+    answerJSX: <MpcSpaTemplates />,
+  },
+  {
+    anchorText: "mpc-spa-implementation-guides",
+    question: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
+    label: "New",
+    labelColor: "blue",
+    answerJSX: <MpcSpaImplementationGuides />,
   },
   {
     anchorText: "chip-spa-templates",
-    question: "CHIP eligibility SPA template and implementation guides",
+    question: "Where can I download CHIP eligibility SPA templates?",
     label: "Updated",
     labelColor: "green",
-    answerJSX: (
-      <div className="space-y-6">
-        <ChipSpaTemplates />
-        <ChipSpaImplementationGuides />
-      </div>
-    ),
+    answerJSX: <ChipSpaTemplates />,
+  },
+  {
+    anchorText: "chip-spa-implementation-guides",
+    question: "Where can I download CHIP eligibility SPA implementation guides?",
+    label: "Updated",
+    labelColor: "green",
+    answerJSX: <ChipSpaImplementationGuides />,
   },
 ];
