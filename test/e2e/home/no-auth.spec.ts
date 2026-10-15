@@ -51,12 +51,12 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
     });
 
     // TODO
-    test.skip("New and Notable section", async () => {});
+    test.skip("New and notable section", async () => {});
 
-    test.describe("State Users section", () => {
+    test.describe("State users section", () => {
       test("displays the section header", async () => {
         await expect(homePage.stateUsersSection.header).toBeVisible();
-        await expect(homePage.stateUsersSection.header).toHaveText("State Users");
+        await expect(homePage.stateUsersSection.header).toHaveText("State users");
       });
 
       test("How it works", async () => {
@@ -94,10 +94,10 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
         );
       });
 
-      test("Submission Types", async () => {
+      test("Submission types", async () => {
         await expect(homePage.stateUsersSection.submissionTypes.header).toBeVisible();
         await expect(homePage.stateUsersSection.submissionTypes.header).toHaveText(
-          "Submission Types include:",
+          "Submission types include:",
         );
 
         await expect(homePage.stateUsersSection.submissionTypes.amendment).toBeVisible();
@@ -132,10 +132,10 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
       });
     });
 
-    test.describe("CMS Users section", () => {
+    test.describe("CMS users section", () => {
       test("displays the section header", async () => {
         await expect(homePage.cmsUsersSection.header).toBeVisible();
-        await expect(homePage.cmsUsersSection.header).toHaveText("CMS Users");
+        await expect(homePage.cmsUsersSection.header).toHaveText("CMS users");
       });
 
       test("How it works", async () => {
@@ -168,7 +168,7 @@ test.describe("home page - no auth", { tag: ["@home", "@e2e", "@smoke"] }, () =>
       test("Submission types", async () => {
         await expect(homePage.cmsUsersSection.submissionTypes.header).toBeVisible();
         await expect(homePage.cmsUsersSection.submissionTypes.header).toHaveText(
-          "Submission Types include:",
+          "Submission types include:",
         );
         await expect(homePage.cmsUsersSection.submissionTypes.amendments).toBeVisible();
         await expect(homePage.cmsUsersSection.submissionTypes.amendments).toHaveText(

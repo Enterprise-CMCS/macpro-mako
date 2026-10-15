@@ -1,6 +1,6 @@
 export const pageText = {
   stateUser: {
-    header: "State Users",
+    header: "State users",
     howItWorks: {
       header: "How it works",
       loginHeader: "Login with IDM",
@@ -14,7 +14,7 @@ export const pageText = {
     },
 
     subType: {
-      header: "Submission Types include:",
+      header: "Submission types include:",
       amendment:
         "Amendments to your Medicaid and CHIP State Plans (not submitted through MACPro, MMDL or WMS).",
       responses:
@@ -28,7 +28,7 @@ export const pageText = {
   },
 
   cmsUser: {
-    header: "CMS Users",
+    header: "CMS users",
     howItWorks: {
       header: "How it works",
       emailHeader: "Receive an email for submission notification",
@@ -41,7 +41,7 @@ export const pageText = {
         "Search the submission ID from the email and click on the submission to view and review details and attachments.",
     },
     subType: {
-      header: "Submission Types include:",
+      header: "Submission types include:",
       amendments: "Amendments to your Medicaid and CHIP State Plans.",
       responses:
         "Official state responses to formal requests for additional information (RAIs) for SPAs.",
