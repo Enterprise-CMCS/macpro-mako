@@ -1,13 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 
 import { Faq } from "./Faq";
 
+const mockUseParams = vi.hoisted(() => vi.fn(() => ({ id: "q1" })));
+
 vi.mock("react-router", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("react-router")),
-  useParams: vi.fn().mockReturnValue({ id: "q1" }),
+  useParams: mockUseParams,
 }));
 vi.mock("@/utils/ReactGA/SendGAEvent", () => ({
   sendGAEvent: vi.fn(),
@@ -19,10 +21,19 @@ vi.mock("./faqs", () => ({
       qanda: [
         { anchorText: "q1", question: "What is FAQ 1?", answerJSX: <p>Answer 1</p> },
         { anchorText: "q2", question: "What is FAQ 2?", answerJSX: <p>Answer 2</p> },
+        {
+          anchorText: "abp-spa-templates",
+          question: "ABP templates and implementation guides",
+          answerJSX: <p>Combined ABP resources</p>,
+        },
       ],
     },
   ],
 }));
+
+beforeEach(() => {
+  mockUseParams.mockReturnValue({ id: "q1" });
+});
 
 it("should expand all FAQ items when the 'Expand all' button is clicked and send GA event", () => {
   render(<Faq />);
@@ -74,6 +85,19 @@ describe("Faq", () => {
     expect(screen.getByTestId("q1")).toBeInTheDocument();
     expect(scrollToMock).toHaveBeenCalled();
     expect(scrollToMock).toHaveBeenCalledWith({
+      top: expect.any(Number),
+      behavior: "smooth",
+    });
+  });
+
+  it("opens the combined FAQ for a legacy implementation-guide URL", () => {
+    mockUseParams.mockReturnValue({ id: "abp-implementation-guides-spa" });
+    global.scrollTo = vi.fn();
+
+    render(<Faq />);
+
+    expect(screen.getByText("Combined ABP resources")).toBeVisible();
+    expect(global.scrollTo).toHaveBeenCalledWith({
       top: expect.any(Number),
       behavior: "smooth",
     });
