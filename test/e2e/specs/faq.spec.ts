@@ -187,58 +187,31 @@ for (const [role, user] of Object.entries(users)) {
             ).not.toBeVisible();
           });
 
-          test("displays download ABP SPA templates FAQ", async () => {
+          test("displays combined ABP SPA resources FAQ", async () => {
             await expect(faqPage.abpSpaTemplates).toBeVisible();
             await expect(faqPage.abpSpaTemplates).toHaveText(
-              "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+              "Medicaid Alternative Benefit Plan (ABP) SPA template and implementation guides",
             );
 
             await expect(faqPage.abpSpaTemplates.locator("div:nth-child(1)")).not.toBeVisible();
           });
 
-          test("displays download ABP SPA implementation guides FAQ", async () => {
-            await expect(faqPage.abpSpaGuides).toBeVisible();
-            await expect(faqPage.abpSpaGuides).toHaveText(
-              "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
-            );
-
-            await expect(faqPage.abpSpaGuides.locator("div:nth-child(1)")).not.toBeVisible();
-          });
-
-          test("displays download MPC SPA templates FAQ", async () => {
+          test("displays combined MPC SPA resources FAQ", async () => {
             await expect(faqPage.mpcSpaTemplates).toBeVisible();
             await expect(faqPage.mpcSpaTemplates).toHaveText(
-              "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+              "Medicaid Premiums and Cost Sharing SPA template and implementation guides",
             );
 
             await expect(faqPage.mpcSpaTemplates.locator("div:nth-child(1)")).not.toBeVisible();
           });
 
-          test("displays download MPC SPA implementation guides FAQ", async () => {
-            await expect(faqPage.mpcSpaGuides).toBeVisible();
-            await expect(faqPage.mpcSpaGuides).toHaveText(
-              "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
-            );
-
-            await expect(faqPage.mpcSpaGuides.locator("div:nth-child(1)")).not.toBeVisible();
-          });
-
-          test("displays download CHIP eligibility SPA templates FAQ", async () => {
+          test("displays combined CHIP eligibility SPA resources FAQ", async () => {
             await expect(faqPage.chipSpaTemplates).toBeVisible();
             await expect(faqPage.chipSpaTemplates).toHaveText(
-              "Where can I download CHIP eligibility SPA templates?",
+              "CHIP eligibility SPA template and implementation guides",
             );
 
             await expect(faqPage.chipSpaTemplates.locator("div:nth-child(1)")).not.toBeVisible();
-          });
-
-          test("displays download CHIP eligibility SPA implementation guides FAQ", async () => {
-            await expect(faqPage.chipSpaGuides).toBeVisible();
-            await expect(faqPage.chipSpaGuides).toHaveText(
-              "Where can I download CHIP eligibility SPA implementation guides?",
-            );
-
-            await expect(faqPage.chipSpaGuides.locator("div:nth-child(1)")).not.toBeVisible();
           });
         });
 
