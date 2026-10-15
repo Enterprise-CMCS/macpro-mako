@@ -149,7 +149,7 @@ export const Welcome = () => {
         <div
           className={cn(
             "grid items-start gap-8",
-            showResources ? "lg:grid-cols-[minmax(0,1.7fr)_minmax(280px,1fr)]" : "lg:grid-cols-1",
+            showResources ? "lg:grid-cols-2" : "lg:grid-cols-1",
           )}
         >
           <section

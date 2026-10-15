@@ -69,6 +69,6 @@ describe("StateWelcome", () => {
     hookSpy.mockReturnValueOnce(false);
 
     setup(<StateWelcomeWrapper />);
-    expect(screen.getByText("CMS Users")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "CMS users", level: 2 })).toBeInTheDocument();
   });
 });
