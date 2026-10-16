@@ -24,11 +24,8 @@ export class FAQPage {
   readonly withdrawChipSpaRai: Locator;
   readonly withdrawPackageChipSpa: Locator;
   readonly abpSpaTemplates: Locator;
-  readonly abpSpaGuides: Locator;
   readonly mpcSpaTemplates: Locator;
-  readonly mpcSpaGuides: Locator;
   readonly chipSpaTemplates: Locator;
-  readonly chipSpaGuides: Locator;
 
   readonly waiverIdFormat: Locator;
   readonly waiverRenewalIdFormat: Locator;
@@ -69,11 +66,8 @@ export class FAQPage {
     this.withdrawChipSpaRai = page.locator("#withdraw-chip-spa-rai-response");
     this.withdrawPackageChipSpa = page.locator("#withdraw-package-chip-spa");
     this.abpSpaTemplates = page.locator("#abp-spa-templates");
-    this.abpSpaGuides = page.locator("#abp-implementation-guides-spa");
     this.mpcSpaTemplates = page.locator("#mpc-spa-templates");
-    this.mpcSpaGuides = page.locator("#mpc-spa-implementation-guides");
     this.chipSpaTemplates = page.locator("#chip-spa-templates");
-    this.chipSpaGuides = page.locator("#chip-spa-implentation-guides");
 
     this.waiverIdFormat = page.locator("#initial-waiver-id-format");
     this.waiverRenewalIdFormat = page.locator("#waiver-renewal-id-format");
