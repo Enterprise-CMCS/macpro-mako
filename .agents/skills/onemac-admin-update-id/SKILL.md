@@ -15,8 +15,8 @@ First read the shared workflow: [../\_onemac-admin-common/references/workflow.md
 ## Inputs (from the Jira ticket; ask if missing)
 
 - `packageId` — current/old id (e.g. `AZ-14-001`).
-- `updatedId` — new/target id (e.g. `AZ-14-0001`). Must differ from `packageId` and match the
-  package event's id format (the Lambda validates it).
+- `updatedId` — new/target id (e.g. `AZ-14-0001`). Must differ from `packageId`. The Lambda no
+  longer validates the id format, so supply a correctly formatted new id.
 - CMS authorizer and reason (for `changeReason`).
 
 The Lambda reads the existing record itself, so no other package data is needed.
@@ -50,7 +50,6 @@ The Lambda reads the existing record itself, so no other package data is needed.
    - `STATUS_CODE: 200` -> success. Go to step 5.
    - `MARKER: ID_ALREADY_EXISTS` (or message `This ID already exists`) -> the target id exists;
      do the delete-first flow in step 4.
-   - Message about id format / `does not support ID updates` -> report to the user; do not retry.
 4. Delete-first flow (only on the collision):
    - Explain that `<NEW_ID>` already exists and must be deleted first, then ask verbatim
      `Is it okay?`. Proceed only on `yes`.

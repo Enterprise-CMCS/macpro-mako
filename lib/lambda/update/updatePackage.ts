@@ -6,18 +6,6 @@ import { events } from "shared-types";
 import { ItemResult } from "shared-types/opensearch/main";
 import { z } from "zod";
 
-import { getPackageType } from "./getPackageType";
-
-function getBaseSchema(
-  eventModule: (typeof events)[keyof typeof events],
-): z.AnyZodObject | undefined {
-  if (!("baseSchema" in eventModule) || !eventModule.baseSchema) {
-    return undefined;
-  }
-
-  return eventModule.baseSchema as z.AnyZodObject;
-}
-
 /** @typedef {object} json
  * @property {object} body
  * @property {string} body.packageId
@@ -297,33 +285,9 @@ const sendUpdateIdMessage = async ({
       body: { message: "This ID already exists" },
     });
   }
-  // use event of current package to determine how ID should be formatted
-  const packageEvent = await getPackageType(currentPackage._id);
-  const eventModule = events[packageEvent];
-  const packageSubmissionTypeSchema = getBaseSchema(eventModule);
-  if (!packageSubmissionTypeSchema) {
-    return response({
-      statusCode: 400,
-      body: { message: `Package event ${packageEvent} does not support ID updates.` },
-    });
-  }
-
-  const idSchema = (packageSubmissionTypeSchema.shape as Record<string, z.ZodTypeAny>).id;
-  if (!idSchema) {
-    return response({
-      statusCode: 400,
-      body: { message: `Package event ${packageEvent} does not define an ID format.` },
-    });
-  }
-
-  const parsedId = idSchema.safeParse(updatedId);
-
-  if (!parsedId.success) {
-    return response({
-      statusCode: 400,
-      body: parsedId.error.message,
-    });
-  }
+  // The caller supplies the correctly formatted new ID, so no package-type lookup or
+  // ID-format validation is performed here. This lets legacy and pending-RAI packages
+  // (whose submission event can't be derived from the changelog) be renumbered.
 
   const currentTime = Date.now();
 
