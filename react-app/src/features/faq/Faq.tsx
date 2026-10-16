@@ -15,15 +15,8 @@ import { sendGAEvent } from "@/utils/ReactGA/SendGAEvent";
 import { oneMACFAQContent } from "./faqs";
 import { helpDeskContact } from "./faqs/utils";
 
-const FAQ_ANCHOR_ALIASES: Record<string, string> = {
-  "abp-implementation-guides-spa": "abp-spa-templates",
-  "mpc-spa-implementation-guides": "mpc-spa-templates",
-  "chip-spa-implementation-guides": "chip-spa-templates",
-};
-
 export const Faq = () => {
   const { id } = useParams<{ id: string }>();
-  const resolvedId = id ? (FAQ_ANCHOR_ALIASES[id] ?? id) : undefined;
 
   const [openItems, setOpenItems] = useState<string[]>([]);
   const [allExpanded, setAllExpanded] = useState<boolean>(false);
@@ -38,17 +31,17 @@ export const Faq = () => {
   }, [setOpenItems]);
 
   useEffect(() => {
-    if (resolvedId) {
-      const element = document.getElementById(resolvedId);
+    if (id) {
+      const element = document.getElementById(id);
       if (element) {
-        setOpenItems([resolvedId]);
+        setOpenItems([id]);
         window.scrollTo({
           top: element.offsetTop,
           behavior: "smooth",
         });
       }
     }
-  }, [resolvedId]);
+  }, [id]);
 
   return (
     <>
