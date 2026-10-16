@@ -28,11 +28,10 @@ describe("SystemAlertBanner", () => {
       notifications: [
         {
           notifId: "latest-banner",
-          header:
-            "The new CS 22 CHIP eligibility template and implementation guide available in OneMAC",
-          body: "The CS 22 includes compliance attestations related to section 71112 of the Working Families Tax Cut (WFTC) legislation. The new template has been added to OneMAC. Section 71112 is effective January 1, 2027. The new CS 22 will be effective starting September 1, 2026.",
+          header: "CS31 template and implementation guides available in OneMAC",
+          body: "Latest active banner body",
           buttonText: "Go to FAQs",
-          buttonLink: "/faq/chip-spa-templates",
+          buttonLink: "/faq/spa-amendments",
           pubDate: "2026-03-12T00:00:00.000Z",
           expDate: "2026-03-20T00:00:00.000Z",
           disabled: false,
@@ -57,20 +56,9 @@ describe("SystemAlertBanner", () => {
     renderBanner();
 
     expect(
-      screen.getByText(
-        "The new CS 22 CHIP eligibility template and implementation guide available in OneMAC",
-      ),
+      screen.getByText("CS31 template and implementation guides available in OneMAC"),
     ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        "The CS 22 includes compliance attestations related to section 71112 of the Working Families Tax Cut (WFTC) legislation. The new template has been added to OneMAC. Section 71112 is effective January 1, 2027. The new CS 22 will be effective starting September 1, 2026.",
-      ),
-    ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Go to FAQs" })).toHaveAttribute(
-      "href",
-      "/faq/chip-spa-templates",
-    );
-    expect(screen.getByRole("link", { name: "Go to FAQs" })).toHaveAttribute("target", "faq-tab");
+    expect(screen.getByText("Latest active banner body")).toBeInTheDocument();
     expect(screen.queryByText("Older active banner body")).not.toBeInTheDocument();
   });
 

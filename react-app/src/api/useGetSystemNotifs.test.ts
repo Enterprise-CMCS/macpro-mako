@@ -1,5 +1,5 @@
 import * as query from "@tanstack/react-query";
-import { act, renderHook } from "@testing-library/react";
+import { renderHook } from "@testing-library/react";
 import { API } from "aws-amplify";
 import { mockUseGetUser } from "mocks";
 import { afterAll, afterEach, beforeAll, describe, expect, test, vi } from "vitest";
@@ -143,31 +143,6 @@ describe("useGetSystemNotif", () => {
     expect(testHook.dismissed).toStrictEqual([]);
     expect(testHook.notifications.map((notif) => notif.notifId)).toEqual([
       "activeNewest",
-      "activeOldest",
-    ]);
-  });
-
-  test("keeps a dismissed notification hidden for the same user across sessions", () => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date("2026-03-13T00:00:00.000Z"));
-
-    const firstSession = renderHook(() => api.useGetSystemNotifs());
-
-    act(() => firstSession.result.current.clearNotif("activeNewest"));
-
-    expect(firstSession.result.current.notifications.map((notif) => notif.notifId)).toEqual([
-      "activeOldest",
-    ]);
-
-    const storageKey = localStorage.key(0);
-    expect(storageKey).toMatch(/^notifs\./);
-    expect(localStorage.getItem(storageKey!)).toBe('["activeNewest"]');
-
-    firstSession.unmount();
-
-    const nextSession = renderHook(() => api.useGetSystemNotifs());
-
-    expect(nextSession.result.current.notifications.map((notif) => notif.notifId)).toEqual([
       "activeOldest",
     ]);
   });

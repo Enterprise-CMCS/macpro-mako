@@ -133,18 +133,6 @@ export const Welcome = () => {
                   </Link>
                 </article>
                 <article className="space-y-2">
-                  <h3 className="font-bold">
-                    The new CHIP eligibility SPA template, CS 22, and implementation guide are now
-                    available in OneMAC
-                  </h3>
-                  <p>
-                    The CS 22 includes compliance attestations related to section 71112 of the
-                    Working Families Tax Cut (WFTC) legislation. The new template has been added to
-                    OneMAC. Section 71112 is effective January 1, 2027. The new CS 22 will be
-                    effective starting September 1, 2026.
-                  </p>
-                </article>
-                <article className="space-y-2">
                   <h3 className="font-bold">Updated CS 18 SPA form</h3>
                   <p>
                     The CS 18 CHIP eligibility SPA template and implementation guide have been

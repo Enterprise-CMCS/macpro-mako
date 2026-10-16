@@ -1,8 +1,6 @@
 import { http, HttpResponse } from "msw";
 import { BannerNotification } from "shared-types";
 
-import { cs22Notification } from "../../data/notifs";
-
 export type NotifRequestBody = BannerNotification[];
 
 const defaultApiNotificationHandler = http.get<any, NotifRequestBody>(
@@ -10,7 +8,16 @@ const defaultApiNotificationHandler = http.get<any, NotifRequestBody>(
   async () => {
     return HttpResponse.json(
       [
-        cs22Notification,
+        {
+          notifId: "testId",
+          header: "testHeader",
+          body: "testBody",
+          buttonText: "button",
+          buttonLink: "link",
+          pubDate: new Date().toISOString(),
+          expDate: new Date().toISOString(),
+          disabled: false,
+        },
         {
           header: "testHeader",
           body: "testBody",
