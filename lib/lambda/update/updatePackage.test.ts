@@ -231,6 +231,23 @@ describe("handler", () => {
       expect(mockedProduceMessage).toHaveBeenCalledTimes(3);
     });
 
+    it("should reject an update-id with a malformed new ID", async () => {
+      const noActionevent = {
+        body: JSON.stringify({
+          packageId: CAPITATED_INITIAL_ITEM_ID,
+          action: "update-id",
+          changeMade: "Nunya",
+          changeReason: "Nunya",
+          updatedId: "bad id",
+        }),
+      } as APIGatewayEvent;
+
+      const result = await handler(noActionevent);
+
+      expect(result?.statusCode).toBe(400);
+      expect(result?.body).toEqual(JSON.stringify({ message: "Invalid new ID format" }));
+    });
+
     it("should fail to update an ID on a package - missing new ID", async () => {
       const noActionevent = {
         body: JSON.stringify({

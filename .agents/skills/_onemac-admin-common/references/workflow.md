@@ -39,13 +39,13 @@ API-Gateway shape `{ "statusCode": <n>, "body": "<json string>" }`.
 
    Proceed only on an explicit `yes`. On `no` (or anything else), stop.
 
-7. Invoke via the shared helper (it auto-selects `onemac-prod` when present, else the default
-   profile, and runs an `aws sts get-caller-identity` pre-check):
+7. Invoke via the shared helper (it uses the production OneMAC profile from `ONEMAC_ADMIN_PROFILE` or `--profile`, else the AWS default profile, and runs an `aws sts get-caller-identity` pre-check):
 
    ```bash
    bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
      --function <updatePackage|submitNOSO|submitSplitSPA> \
-     --payload-file <tmp.json>
+     --payload-file <tmp.json> \
+     --yes
    # optional overrides: --stage <stage> --profile <name> --region <region>
    ```
 
@@ -57,6 +57,9 @@ API-Gateway shape `{ "statusCode": <n>, "body": "<json string>" }`.
    telling the help desk to **save the record in SEATool** to finish the sync, show it to the
    user, and post it only after they approve (standing rule: draft Jira comments for approval
    before posting).
+10. When the flow finishes (including when it stops early), delete the temp payload JSON
+    file(s). These files can contain submitter PII; NOSO payloads include `submitterEmail`
+    and `submitterName`.
 
 ## Helper exit codes and markers
 

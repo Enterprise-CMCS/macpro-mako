@@ -49,7 +49,7 @@ next suffix via a search for `<parent>-[A-Z]`. The older wiki payload with `newP
 
    ```bash
    bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
-     --function submitSplitSPA --payload-file <tmp.json>
+     --function submitSplitSPA --payload-file <tmp.json> --yes
    ```
 
 5. Read the result. `STATUS_CODE: 200` reports the new split id in the message. A message

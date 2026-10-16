@@ -1,6 +1,6 @@
 ---
 name: onemac-admin-delete-package
-description: Soft-delete (remove) a OneMAC package in production from a Jira ticket by invoking the updatePackage Lambda with action delete. Use when a Jira helpdesk ticket asks to delete or remove a package/SPA/waiver id from OneMAC.
+description: Delete (remove) a OneMAC package in production from a Jira ticket by invoking the updatePackage Lambda with action delete. Use when a Jira helpdesk ticket asks to delete or remove a package/SPA/waiver id from OneMAC.
 disable-model-invocation: true
 ---
 
@@ -37,7 +37,7 @@ First read the shared workflow: [../\_onemac-admin-common/references/workflow.md
 
    ```bash
    bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
-     --function updatePackage --payload-file <tmp.json>
+     --function updatePackage --payload-file <tmp.json> --yes
    ```
 
 3. Report the result. `STATUS_CODE: 200` means deleted; a 404 message means the id was not

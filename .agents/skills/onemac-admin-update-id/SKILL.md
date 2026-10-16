@@ -15,8 +15,9 @@ First read the shared workflow: [../\_onemac-admin-common/references/workflow.md
 ## Inputs (from the Jira ticket; ask if missing)
 
 - `packageId` — current/old id (e.g. `AZ-14-001`).
-- `updatedId` — new/target id (e.g. `AZ-14-0001`). Must differ from `packageId`. The Lambda no
-  longer validates the id format, so supply a correctly formatted new id.
+- `updatedId` — new/target id (e.g. `AZ-14-0001`). Must differ from `packageId`. The Lambda
+  enforces only a basic id shape (uppercase, e.g. `AZ-14-0001`); it does not validate the full
+  per-type format, so supply a correctly formatted new id.
 - CMS authorizer and reason (for `changeReason`).
 
 The Lambda reads the existing record itself, so no other package data is needed.
@@ -43,7 +44,7 @@ The Lambda reads the existing record itself, so no other package data is needed.
 
    ```bash
    bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
-     --function updatePackage --payload-file <tmp.json>
+     --function updatePackage --payload-file <tmp.json> --yes
    ```
 
 3. Interpret the result:
@@ -68,7 +69,7 @@ The Lambda reads the existing record itself, so no other package data is needed.
 
      ```bash
      bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
-       --function updatePackage --payload-file <delete-tmp.json>
+       --function updatePackage --payload-file <delete-tmp.json> --yes
      ```
 
    - Wait for the Kafka sink: re-run the update-id invoke with a short backoff (a few attempts

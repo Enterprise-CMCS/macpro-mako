@@ -53,7 +53,7 @@ First read the shared workflow: [../\_onemac-admin-common/references/workflow.md
 
    ```bash
    bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
-     --function updatePackage --payload-file <tmp.json>
+     --function updatePackage --payload-file <tmp.json> --yes
    ```
 
 4. Report the result. A 400 "Cannot update invalid field(s)" / "Invalid ..." message means a

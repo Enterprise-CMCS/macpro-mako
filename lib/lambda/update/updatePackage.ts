@@ -285,9 +285,16 @@ const sendUpdateIdMessage = async ({
       body: { message: "This ID already exists" },
     });
   }
-  // The caller supplies the correctly formatted new ID, so no package-type lookup or
-  // ID-format validation is performed here. This lets legacy and pending-RAI packages
-  // (whose submission event can't be derived from the changelog) be renumbered.
+  // The caller supplies the new ID (no package-type lookup / per-event schema), but we still
+  // enforce a lightweight shape check so a malformed ID is never published to Kafka/OpenSearch.
+  // This still allows legacy and pending-RAI packages (whose submission event can't be derived
+  // from the changelog) to be renumbered.
+  if (!/^[A-Z]{2}-[A-Za-z0-9.-]+$/.test(updatedId)) {
+    return response({
+      statusCode: 400,
+      body: { message: "Invalid new ID format" },
+    });
+  }
 
   const currentTime = Date.now();
 

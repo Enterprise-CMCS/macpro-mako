@@ -40,7 +40,7 @@ First read the shared workflow: [../\_onemac-admin-common/references/workflow.md
   "body": {
     "id": "<ID>",
     "authority": "<AUTHORITY>",
-    "status": "Submitted",
+    "status": "<STATUS>",
     "submitterEmail": "<email or omit>",
     "submitterName": "<name or omit>",
     "submissionDate": "<MM/DD/YYYY hh:mm:ss AM>",
@@ -63,7 +63,7 @@ First read the shared workflow: [../\_onemac-admin-common/references/workflow.md
 
    ```bash
    bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
-     --function submitNOSO --payload-file <tmp.json>
+     --function submitNOSO --payload-file <tmp.json> --yes
    ```
 
 4. Interpret the result:

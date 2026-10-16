@@ -38,7 +38,7 @@ First read the shared workflow: [../\_onemac-admin-common/references/workflow.md
 
    ```bash
    bash .agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh \
-     --function updatePackage --payload-file <tmp.json>
+     --function updatePackage --payload-file <tmp.json> --yes
    ```
 
 3. Report the result. If the message says the package is not a deleted package, the id likely
