@@ -111,14 +111,17 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 ## Learned User Preferences
 
-- Create feature branches off `main`; avoid committing directly to the `production` branch.
+- Create feature branches off `main` (or off `val` when the change is meant to land in val first), named after the Jira ticket (e.g. `oy2-41211`); never commit directly to `production`.
 - When executing an attached plan, do not edit the plan file itself.
 - Enterprise JIRA (OY2/OMO): use https://jiraent.cms.gov; Confluence: https://confluenceent.cms.gov
 - Show draft JIRA comments for approval before posting or transitioning tickets.
 - JIRA or CSV review-only requests: assess and report only; do not implement fixes unless explicitly asked.
-- Production investigations are read-only unless the user explicitly permits changes; use `onemac-prod` or `onemac-prod-readonly`.
+- Production investigations are read-only unless the user explicitly permits changes.
 - Draft emails, Teams messages, and other external replies for the user to copy and send; do not send them.
 - Harness spec and plan packets should use relative links only, never local absolute file paths.
+- Do not record environment-specific AWS CLI profile names (OneMAC/BigMAC) in `AGENTS.md` or any committed file; keep such environment-specific details only in personal/untracked agent memory.
+- Prefer loading email addresses from the existing `emailAddresses` SSM secret rather than hardcoding them in Lambdas or stacks.
+- Do not run commands that change production without explicit user consent; first show the exact command/payload (function, profile, stage).
 
 ## Learned Workspace Facts
 
@@ -127,5 +130,9 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 - SEATool reference tables and TypeScript types live under `lib/packages/shared-types/seatool-tables/`.
 - Environment promotion typically follows `main` → `val` → `production` (for example attachment archive rollouts).
 - Before (or as part of) promoting SMART to `val`/`production`, run `bun run bootstrap:bigmac-error-queue` for that pair (`--pair val` / `--pair production`) so `mako-val` / `mako-production` get `bigmacErrorQueueUrl` and `bigmacErrorQueueArn`, then redeploy so `sinkSmart` receives `BIGMAC_ERROR_QUEUE_URL`. Prefer doing secrets before the merge; a secret-only change does not update the Lambda until redeploy. Optional keys: synth succeeds without them, but SMART ingest errors will not reach BigMAC until both are set and the stage is redeployed. Use `--ensure-producer-secret` so OneMAC is in `bigmac/{stage}/sqsProducerAccounts`.
-- OneMAC AWS CLI profiles are `onemac-dev`, `onemac-val`, `onemac-prod`, and `onemac-prod-readonly`; BigMAC uses `bigmac-dev` and `bigmac-prod`.
 - SMART Kafka topic is `aws.mulesoft.onemac.events`; record key must equal payload `id`; envelope `origin` is exactly `"SMART"` (not `source`).
+- In OpenSearch package docs, OneMAC writes `changedDate` while SEA Tool ingest writes `changed_date` (from `STATE_PLAN.CHANGED_DATE`); a SEA Tool update is skipped when `changed_date` is earlier than OneMAC `changedDate`, and a missing `changed_date` means no matching SEA Tool record has merged.
+- The SEA Tool missing-record escalation (`lib/lambda/seatool-missing-record/*`, handler `runSeatoolMissingRecordEscalation.ts`, scheduled 8:00 AM America/New_York by `lib/stacks/seatool-missing-record-escalation.ts`) emails submitted OneMAC packages (including `Submitted - Intake Needed`) that still have no `changed_date` once they are at least 4 Eastern calendar days old (`isPastMissingRecordCadence`, `MIN_CALENDAR_DAYS_SINCE_SUBMIT=4`); it excludes drafts, deleted records, temporary extensions, SMART reservations, and `ZZ`/`ZT` ids. Production sends one email per package; other stages send one digest per authority to only `seatoolMissingRecordTo` from the `emailAddresses` secret.
+- Attachment downloads/archives require the S3 object's scan tag to be `CLEAN`; the bucket blocks `s3:GetObject` for any non-`CLEAN` tag (only the scanner role is exempt), and an extension/content mismatch is tagged `EXTMISMATCH` (e.g. a `.docx` that is actually a PDF), which re-scanning the same object cannot fix.
+- Three admin Lambdas are invoked manually (direct-invoke payload `{"body": {...}}`, API-Gateway-style `{statusCode, body}` response, names `mako-<stage>-api-<fn>` in `us-east-1`): `updatePackage` (actions `update-id`, `delete`, `recover`, `update-values`), `submitNOSO`, and `submitSplitSPA`. `update-id` returns 400 `This ID already exists` when the target id exists; `submitNOSO` fails only if an existing record's origin is `OneMAC` (SEATool-origin re-submits); `submitSplitSPA` never collides but auto-increments the `-A..-Z` suffix. A `delete` admin change physically removes the OpenSearch doc, so the standard conflict fix is delete the colliding id, wait for the sink, then retry.
+- Deploy workflow jobs run in a GitHub environment named after the branch: `main` requires a reviewer, `val` and `production` use deployment branch policies with no required reviewer, feature-branch environments are unprotected, and Lint/Prettier run without a GitHub environment.
