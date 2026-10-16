@@ -24,28 +24,16 @@ export const SpaAmendments = () => (
     <ul className="ml-8 list-disc space-y-2 text-primary" role="list">
       {[
         {
-          text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+          text: "Medicaid Alternative Benefit Plan (ABP)",
           href: "#abp-spa-templates",
         },
         {
-          text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
-          href: "#abp-implementation-guides-spa",
-        },
-        {
-          text: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+          text: "Medicaid Premiums and Cost Sharing",
           href: "#mpc-spa-templates",
         },
         {
-          text: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
-          href: "#mpc-spa-implementation-guides",
-        },
-        {
-          text: "Where can I download CHIP eligibility SPA templates?",
+          text: "CHIP eligibility",
           href: "#chip-spa-templates",
-        },
-        {
-          text: "Where can I download CHIP eligibility SPA implementation guides?",
-          href: "#chip-spa-implementation-guides",
         },
       ].map(({ href, text }) => (
         <li key={href}>

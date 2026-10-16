@@ -35,7 +35,7 @@ describe("Default Welcome", () => {
 
     expect(screen.getByText(/Welcome to the official submission system/)).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
+      screen.getByRole("heading", { name: "New and notable", level: 2 }).parentElement,
     ).toHaveClass("hidden");
   });
 
@@ -46,15 +46,15 @@ describe("Default Welcome", () => {
 
     expect(screen.getByText(/Welcome to the official submission system/)).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
+      screen.getByRole("heading", { name: "New and notable", level: 2 }).parentElement,
     ).not.toHaveClass("hidden");
-    expect(screen.getByText("Saving Draft Packages")).toBeInTheDocument();
+    expect(screen.getByText("Saving draft packages")).toBeInTheDocument();
     expect(
       screen.getByText(
         /New functionality has been added to OneMAC allowing state users to save a draft version/,
       ),
     ).toBeInTheDocument();
-    expect(screen.getByRole("link", { name: "Access State User Guide" })).toHaveAttribute(
+    expect(screen.getByRole("link", { name: "Access state user guide" })).toHaveAttribute(
       "href",
       "/faq/onboarding-materials",
     );
@@ -73,14 +73,14 @@ describe("Default Welcome", () => {
     ).toHaveAttribute("href", "/faq/chip-spa-templates");
 
     const newAndNotableSection = screen
-      .getByRole("heading", { name: "New and Notable", level: 2 })
+      .getByRole("heading", { name: "New and notable", level: 2 })
       .closest("section");
     expect(newAndNotableSection).not.toBeNull();
     expect(
       within(newAndNotableSection as HTMLElement)
         .getAllByRole("heading", { level: 3 })
         .map((heading) => heading.textContent),
-    ).toEqual(["Saving Draft Packages", "Updated CS 18 SPA form", "Updated CS 31 SPA form"]);
+    ).toEqual(["Saving draft packages", "Updated CS 18 SPA form", "Updated CS 31 SPA form"]);
 
     const resourcesSection = screen.getByRole("heading", {
       name: "Resources",
@@ -88,53 +88,91 @@ describe("Default Welcome", () => {
     }).parentElement;
     expect(resourcesSection).not.toBeNull();
 
-    const spaTemplatesSection = within(resourcesSection as HTMLElement)
-      .getByRole("heading", { name: "SPA Templates" })
+    const medicaidSpaTemplatesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "Medicaid SPA templates" })
       .closest("section");
-    expect(spaTemplatesSection).not.toBeNull();
+    expect(medicaidSpaTemplatesSection).not.toBeNull();
     expect(
-      within(spaTemplatesSection as HTMLElement).getByRole("link", {
+      within(medicaidSpaTemplatesSection as HTMLElement).getByRole("link", {
         name: "Medicaid Alternative Benefit Plan (ABP)",
       }),
     ).toHaveAttribute("href", "/faq/abp-spa-templates");
     expect(
-      within(spaTemplatesSection as HTMLElement).getByRole("link", {
+      within(medicaidSpaTemplatesSection as HTMLElement).getByRole("link", {
         name: "Medicaid Premiums and Cost Sharing",
       }),
     ).toHaveAttribute("href", "/faq/mpc-spa-templates");
-    expect(
-      within(spaTemplatesSection as HTMLElement).getByRole("link", { name: "CHIP eligibility" }),
-    ).toHaveAttribute("href", "/faq/chip-spa-templates");
 
-    const implementationGuidesSection = within(resourcesSection as HTMLElement)
-      .getByRole("heading", { name: "SPA Implementation Guides" })
+    const medicaidImplementationGuidesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "Medicaid SPA implementation guides" })
       .closest("section");
-    expect(implementationGuidesSection).not.toBeNull();
+    expect(medicaidImplementationGuidesSection).not.toBeNull();
     expect(
-      within(implementationGuidesSection as HTMLElement).getByRole("link", {
+      within(medicaidImplementationGuidesSection as HTMLElement).getByRole("link", {
         name: "Medicaid Alternative Benefit Plan (ABP)",
       }),
-    ).toHaveAttribute("href", "/faq/abp-implementation-guides-spa");
+    ).toHaveAttribute("href", "/faq/abp-spa-templates");
     expect(
-      within(implementationGuidesSection as HTMLElement).getByRole("link", {
+      within(medicaidImplementationGuidesSection as HTMLElement).getByRole("link", {
         name: "Medicaid Premiums and Cost Sharing",
       }),
-    ).toHaveAttribute("href", "/faq/mpc-spa-implementation-guides");
+    ).toHaveAttribute("href", "/faq/mpc-spa-templates");
+
+    const chipSpaTemplatesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "CHIP SPA templates" })
+      .closest("section");
+    expect(chipSpaTemplatesSection).not.toBeNull();
     expect(
-      within(implementationGuidesSection as HTMLElement).getByRole("link", {
+      within(chipSpaTemplatesSection as HTMLElement).getByRole("link", {
         name: "CHIP eligibility",
       }),
-    ).toHaveAttribute("href", "/faq/chip-spa-implementation-guides");
+    ).toHaveAttribute("href", "/faq/chip-spa-templates");
+
+    const chipImplementationGuidesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "CHIP SPA implementation guides" })
+      .closest("section");
+    expect(chipImplementationGuidesSection).not.toBeNull();
+    expect(
+      within(chipImplementationGuidesSection as HTMLElement).getByRole("link", {
+        name: "CHIP eligibility",
+      }),
+    ).toHaveAttribute("href", "/faq/chip-spa-templates");
+
+    const additionalTemplatesSection = within(resourcesSection as HTMLElement)
+      .getByRole("heading", { name: "Additional templates and tools" })
+      .closest("section");
+    expect(additionalTemplatesSection).not.toBeNull();
+    [
+      {
+        name: "Medicaid SPA toolkit (Medicaid.gov)",
+        href: "https://www.medicaid.gov/resources-for-states/spa-and-1915-waiver-processing/medicaid-spa-processing-tools-for-states",
+      },
+      {
+        name: "CHIP SPA toolkit (Medicaid.gov)",
+        href: "https://www.medicaid.gov/resources-for-states/spa-and-1915-waiver-processing/chip-spa-processing-tools-for-states",
+      },
+      {
+        name: "1915 Waiver toolkit (Medicaid.gov)",
+        href: "https://www.medicaid.gov/resources-for-states/spa-and-1915-waiver-processing/1915-waiver-processing-tools-for-states",
+      },
+    ].forEach(({ name, href }) => {
+      expect(
+        within(additionalTemplatesSection as HTMLElement).getByRole("link", { name }),
+      ).toHaveAttribute("href", href);
+      expect(
+        within(additionalTemplatesSection as HTMLElement).getByRole("link", { name }),
+      ).toHaveAttribute("target", "_blank");
+    });
 
     const userGuidesSection = within(resourcesSection as HTMLElement)
       .getByRole("heading", { name: "User guides" })
       .closest("section");
     expect(userGuidesSection).not.toBeNull();
     expect(
-      within(userGuidesSection as HTMLElement).getByRole("link", { name: "State User Guide" }),
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "State user guide" }),
     ).toHaveAttribute("href", "/faq/onboarding-materials");
     expect(
-      within(userGuidesSection as HTMLElement).getByRole("link", { name: "CMS User Guide" }),
+      within(userGuidesSection as HTMLElement).getByRole("link", { name: "CMS user guide" }),
     ).toHaveAttribute("href", "/faq/onboarding-materials");
   });
 
@@ -144,11 +182,13 @@ describe("Default Welcome", () => {
 
     setup();
 
-    expect(screen.getByText("Saving Draft Packages")).toBeInTheDocument();
+    expect(screen.getByText("Saving draft packages")).toBeInTheDocument();
     expect(
-      screen.getByRole("heading", { name: "New and Notable", level: 2 }).parentElement,
+      screen.getByRole("heading", { name: "New and notable", level: 2 }).parentElement,
     ).toHaveClass("m-auto", "max-w-[767px]");
     expect(screen.queryByRole("heading", { name: "Resources", level: 2 })).not.toBeInTheDocument();
-    expect(screen.queryByRole("heading", { name: "SPA Templates" })).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("heading", { name: "Medicaid SPA templates" }),
+    ).not.toBeInTheDocument();
   });
 });

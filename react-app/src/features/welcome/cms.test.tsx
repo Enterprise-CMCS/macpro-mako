@@ -63,6 +63,6 @@ describe("CMSWelcome", () => {
     hookSpy.mockReturnValueOnce(false);
 
     setup(<CMSWelcomeWrapper />);
-    expect(screen.getByText("State Users")).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "State users", level: 2 })).toBeInTheDocument();
   });
 });

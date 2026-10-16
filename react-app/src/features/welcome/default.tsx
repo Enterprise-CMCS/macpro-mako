@@ -14,10 +14,27 @@ const USER_GUIDE_DOWNLOADS = {
   state: "/onboarding/OneMACStateUserGuide.pdf",
 } as const;
 
-const resourceSections = [
+type ResourceLink =
+  | {
+      text: string;
+      to: string;
+      downloadHref?: string;
+    }
+  | {
+      text: string;
+      href: string;
+    };
+
+interface ResourceSection {
+  id: string;
+  title: string;
+  links: ResourceLink[];
+}
+
+const resourceSections: ResourceSection[] = [
   {
-    id: "spa-templates",
-    title: "SPA Templates",
+    id: "medicaid-spa-templates",
+    title: "Medicaid SPA templates",
     links: [
       {
         text: "Medicaid Alternative Benefit Plan (ABP)",
@@ -27,6 +44,26 @@ const resourceSections = [
         text: "Medicaid Premiums and Cost Sharing",
         to: "/faq/mpc-spa-templates",
       },
+    ],
+  },
+  {
+    id: "medicaid-spa-implementation-guides",
+    title: "Medicaid SPA implementation guides",
+    links: [
+      {
+        text: "Medicaid Alternative Benefit Plan (ABP)",
+        to: "/faq/abp-spa-templates",
+      },
+      {
+        text: "Medicaid Premiums and Cost Sharing",
+        to: "/faq/mpc-spa-templates",
+      },
+    ],
+  },
+  {
+    id: "chip-spa-templates",
+    title: "CHIP SPA templates",
+    links: [
       {
         text: "CHIP eligibility",
         to: "/faq/chip-spa-templates",
@@ -34,20 +71,30 @@ const resourceSections = [
     ],
   },
   {
-    id: "spa-implementation-guides",
-    title: "SPA Implementation Guides",
+    id: "chip-spa-implementation-guides",
+    title: "CHIP SPA implementation guides",
     links: [
       {
-        text: "Medicaid Alternative Benefit Plan (ABP)",
-        to: "/faq/abp-implementation-guides-spa",
-      },
-      {
-        text: "Medicaid Premiums and Cost Sharing",
-        to: "/faq/mpc-spa-implementation-guides",
-      },
-      {
         text: "CHIP eligibility",
-        to: "/faq/chip-spa-implementation-guides",
+        to: "/faq/chip-spa-templates",
+      },
+    ],
+  },
+  {
+    id: "additional-templates-and-tools",
+    title: "Additional templates and tools",
+    links: [
+      {
+        text: "Medicaid SPA toolkit (Medicaid.gov)",
+        href: "https://www.medicaid.gov/resources-for-states/spa-and-1915-waiver-processing/medicaid-spa-processing-tools-for-states",
+      },
+      {
+        text: "CHIP SPA toolkit (Medicaid.gov)",
+        href: "https://www.medicaid.gov/resources-for-states/spa-and-1915-waiver-processing/chip-spa-processing-tools-for-states",
+      },
+      {
+        text: "1915 Waiver toolkit (Medicaid.gov)",
+        href: "https://www.medicaid.gov/resources-for-states/spa-and-1915-waiver-processing/1915-waiver-processing-tools-for-states",
       },
     ],
   },
@@ -56,12 +103,12 @@ const resourceSections = [
     title: "User guides",
     links: [
       {
-        text: "State User Guide",
+        text: "State user guide",
         to: "/faq/onboarding-materials",
         downloadHref: USER_GUIDE_DOWNLOADS.state,
       },
       {
-        text: "CMS User Guide",
+        text: "CMS user guide",
         to: "/faq/onboarding-materials",
         downloadHref: USER_GUIDE_DOWNLOADS.cms,
       },
@@ -102,7 +149,7 @@ export const Welcome = () => {
         <div
           className={cn(
             "grid items-start gap-8",
-            showResources ? "lg:grid-cols-[minmax(0,1.7fr)_minmax(280px,1fr)]" : "lg:grid-cols-1",
+            showResources ? "lg:grid-cols-2" : "lg:grid-cols-1",
           )}
         >
           <section
@@ -111,11 +158,11 @@ export const Welcome = () => {
               showResources ? "min-w-0" : "m-auto w-full max-w-[767px]",
             )}
           >
-            <h2 className="text-2xl font-bold">New and Notable</h2>
+            <h2 className="text-2xl font-bold">New and notable</h2>
             <CardWithTopBorder className="">
               <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">
                 <article className="space-y-2">
-                  <h3 className="font-bold">Saving Draft Packages</h3>
+                  <h3 className="font-bold">Saving draft packages</h3>
                   <p>
                     New functionality has been added to OneMAC allowing state users to save a draft
                     version of new submission packages. This allows states to begin working on their
@@ -129,7 +176,7 @@ export const Welcome = () => {
                     className="inline-block underline text-[#0071bc]"
                     onClick={() => downloadFile(USER_GUIDE_DOWNLOADS.state)}
                   >
-                    Access State User Guide
+                    Access state user guide
                   </Link>
                 </article>
                 <article className="space-y-2">
@@ -170,16 +217,31 @@ export const Welcome = () => {
                         {title}
                       </h3>
                       <ul className="list-disc pl-6 mt-2 space-y-1 text-[#0071bc]" role="list">
-                        {links.map(({ text, to, downloadHref }) => (
-                          <li key={`${title}-${text}`}>
-                            <Link
-                              to={to}
-                              target={FAQ_TAB}
-                              className="underline"
-                              onClick={downloadHref ? () => downloadFile(downloadHref) : undefined}
-                            >
-                              {text}
-                            </Link>
+                        {links.map((link) => (
+                          <li key={`${title}-${link.text}`}>
+                            {"href" in link ? (
+                              <a
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="underline"
+                              >
+                                {link.text}
+                              </a>
+                            ) : (
+                              <Link
+                                to={link.to}
+                                target={FAQ_TAB}
+                                className="underline"
+                                onClick={
+                                  link.downloadHref
+                                    ? () => downloadFile(link.downloadHref as string)
+                                    : undefined
+                                }
+                              >
+                                {link.text}
+                              </Link>
+                            )}
                           </li>
                         ))}
                       </ul>
@@ -192,7 +254,7 @@ export const Welcome = () => {
         </div>
         <div className="flex flex-col justify-center gap-8">
           <div>
-            <h2 className="text-2xl font-bold mb-4">State Users</h2>
+            <h2 className="text-2xl font-bold mb-4">State users</h2>
             <div className="flex flex-col md:flex-row gap-12">
               <C.HowItWorks>
                 <C.Step
@@ -212,7 +274,7 @@ export const Welcome = () => {
                 />
               </C.HowItWorks>
               <div className="flex-grow">
-                <h3 className="font-bold text-xl mb-4">Submission Types include:</h3>
+                <h3 className="font-bold text-xl mb-4">Submission types include:</h3>
                 <ul className="flex flex-col gap-4">
                   <li>
                     <p>
@@ -252,7 +314,7 @@ export const Welcome = () => {
             </div>
           </div>
           <div>
-            <h2 className="text-2xl font-bold mb-4">CMS Users</h2>
+            <h2 className="text-2xl font-bold mb-4">CMS users</h2>
             <div className="flex flex-col md:flex-row gap-8">
               <C.HowItWorks>
                 <C.Step
@@ -272,7 +334,7 @@ export const Welcome = () => {
                 />
               </C.HowItWorks>
               <div>
-                <h3 className="font-bold text-xl mb-4">Submission Types include:</h3>
+                <h3 className="font-bold text-xl mb-4">Submission types include:</h3>
                 <ul className="flex flex-col gap-4">
                   <li>
                     <p>Amendments to your Medicaid and CHIP State Plans.</p>

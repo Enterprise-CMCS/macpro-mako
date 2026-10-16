@@ -94,45 +94,38 @@ export const spaContent = [
   },
   {
     anchorText: "abp-spa-templates",
-    question: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+    question: "Medicaid Alternative Benefit Plan (ABP) SPA template and implementation guides",
     label: "Updated",
     labelColor: "green",
-    answerJSX: <AbpSpaTemplates />,
-  },
-  {
-    anchorText: "abp-implementation-guides-spa",
-    question:
-      "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
-    label: "New",
-    labelColor: "blue",
-    answerJSX: <AbpImplementationGuidesSpa />,
+    answerJSX: (
+      <div className="space-y-6">
+        <AbpSpaTemplates />
+        <AbpImplementationGuidesSpa />
+      </div>
+    ),
   },
   {
     anchorText: "mpc-spa-templates",
-    question: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+    question: "Medicaid Premiums and Cost Sharing SPA template and implementation guides",
     label: "New",
     labelColor: "blue",
-    answerJSX: <MpcSpaTemplates />,
-  },
-  {
-    anchorText: "mpc-spa-implementation-guides",
-    question: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
-    label: "New",
-    labelColor: "blue",
-    answerJSX: <MpcSpaImplementationGuides />,
+    answerJSX: (
+      <div className="space-y-6">
+        <MpcSpaTemplates />
+        <MpcSpaImplementationGuides />
+      </div>
+    ),
   },
   {
     anchorText: "chip-spa-templates",
-    question: "Where can I download CHIP eligibility SPA templates?",
+    question: "CHIP eligibility SPA template and implementation guides",
     label: "Updated",
     labelColor: "green",
-    answerJSX: <ChipSpaTemplates />,
-  },
-  {
-    anchorText: "chip-spa-implementation-guides",
-    question: "Where can I download CHIP eligibility SPA implementation guides?",
-    label: "Updated",
-    labelColor: "green",
-    answerJSX: <ChipSpaImplementationGuides />,
+    answerJSX: (
+      <div className="space-y-6">
+        <ChipSpaTemplates />
+        <ChipSpaImplementationGuides />
+      </div>
+    ),
   },
 ];
