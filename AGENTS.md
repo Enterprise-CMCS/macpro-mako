@@ -109,6 +109,18 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 - Store secrets outside the repo; export `AGENT_MODE`, `STAGE_NAME`, and AWS credentials through your shell profile.
 - Validate infrastructure with `bun run cdk synth` prior to review and ensure IAM boundaries remain intact.
 
+## Agent Skills
+
+- Repo-committed agent skills live under `.agents/skills/` so any agent (Cursor, Codex, Claude, etc.) can use them. Each skill is a directory with a `SKILL.md`; shared helpers/references for a suite live in a sibling `_`-prefixed folder (no `SKILL.md`).
+- The `onemac-admin-*` suite performs production admin changes from a Jira ticket by invoking the three manual admin Lambdas (`updatePackage`, `submitNOSO`, `submitSplitSPA`). Each gathers values from the ticket (asking for gaps), shows the exact payload, requires a verbatim `Is it okay?` confirmation, invokes via `.agents/skills/_onemac-admin-common/scripts/invoke-admin-lambda.sh` (auto-selects the `onemac-prod` profile when present, else the default profile), handles the delete-first collision fix, and drafts the SEATool-save ticket comment for approval. Shared flow: `.agents/skills/_onemac-admin-common/references/workflow.md`.
+  - `onemac-admin-update-id` — change/renumber a package id (delete-first when the target id exists).
+  - `onemac-admin-delete-package` — soft-delete a package.
+  - `onemac-admin-recover-package` — recover a `-del` package.
+  - `onemac-admin-update-fields` — update field values (date fields must be epoch-ms).
+  - `onemac-admin-submit-split-spa` — create the next Medicaid Split SPA.
+  - `onemac-admin-submit-noso` — add a SEATool/MMDL package to OneMAC (NOSO).
+- These skills set `disable-model-invocation: true`, so invoke them by name. `.cursor/*` is gitignored, so for Cursor-native discovery a developer may create a local (uncommitted) symlink: `ln -s ../.agents/skills .cursor/skills`.
+
 ## Learned User Preferences
 
 - Create feature branches off `main` (or off `val` when the change is meant to land in val first), named after the Jira ticket (e.g. `oy2-41211`); never commit directly to `production`.
