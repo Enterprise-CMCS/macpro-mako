@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   groupCandidatesByMailbox,
+  isIgnoredStatePackage,
   isMissingRecordCandidate,
   MissingRecordCandidate,
   MissingRecordSource,
@@ -68,6 +69,14 @@ describe("seatool missing-record candidates", () => {
         }),
       ),
     ).toBe(true);
+  });
+
+  it("excludes ZZ and ZT test state packages", () => {
+    expect(isIgnoredStatePackage("ZZ-26-0001")).toBe(true);
+    expect(isIgnoredStatePackage("zt-26-0001")).toBe(true);
+    expect(isIgnoredStatePackage("MD-23-0001")).toBe(false);
+    expect(isMissingRecordCandidate(source({ id: "ZZ-26-0001" }))).toBe(false);
+    expect(toMissingRecordCandidate(source({ id: "ZT-23-0004" }), NOW)).toBeUndefined();
   });
 
   it("excludes records that are not yet day 4", () => {
