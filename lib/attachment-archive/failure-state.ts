@@ -9,7 +9,7 @@ import {
 
 const DEFAULT_FAILURE_MESSAGE = "Unable to prepare the attachment archive.";
 const PARTIAL_ARCHIVE_WARNING_MESSAGE =
-  "Some attachments in this download are no longer available and were not included.";
+  "One or more files are unavailable and were not included as part of the .zip file download.";
 
 export const ATTACHMENT_ARCHIVE_TERMINAL_FAILURE_CODES = new Set<AttachmentArchiveFailureCode>(
   ATTACHMENT_ARCHIVE_FAILURE_CODES,

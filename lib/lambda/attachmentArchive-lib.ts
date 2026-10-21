@@ -46,6 +46,7 @@ import {
   AttachmentArchiveManifestAttachment,
   AttachmentArchiveNamespace,
   AttachmentArchivePackageManifest,
+  AttachmentArchiveRebuildMessage,
   AttachmentArchiveScope,
   AttachmentArchiveSectionManifest,
   AttachmentArchiveSourceAttachment,
@@ -57,7 +58,7 @@ const DEFAULT_POLL_AFTER_SECONDS = 3;
 const DEFAULT_REBUILD_START_DELAY_MS = 1000;
 const SOURCE_SCAN_PENDING_POLL_AFTER_SECONDS = 5;
 const SOURCE_SCAN_PENDING_MESSAGE =
-  "Attachments are still being scanned. Please try again shortly.";
+  "Attachments are being scanned. Your download will start automatically when scanning is complete.";
 const awsRegion = process.env.region || process.env.AWS_REGION;
 
 const archiveBucketClient = new S3Client({ region: awsRegion });
@@ -811,7 +812,10 @@ async function ensureArchiveArtifact({
     };
   }
 
-  if (resolution.action === "in_progress") {
+  const shouldRecheckSourceScan =
+    resolution.action === "in_progress" && resolution.pendingReason === "SOURCE_SCAN_PENDING";
+
+  if (resolution.action === "in_progress" && !shouldRecheckSourceScan) {
     return {
       artifact,
       artifactBucketName: writeBucketName,
@@ -1014,6 +1018,10 @@ export async function getRequestedAttachmentArchiveDownload({
 }): Promise<{
   response: AttachmentArchiveDownloadResponse;
   needsRebuild: boolean;
+  rebuildRequest?: Pick<
+    AttachmentArchiveRebuildMessage,
+    "sourceScanPendingAt" | "sourceScanRetryCount"
+  >;
 }> {
   const artifact = getRequestedArtifact({
     packageId,
@@ -1040,6 +1048,10 @@ export async function getRequestedAttachmentArchiveDownload({
   }
 
   if (resolution.action === "in_progress") {
+    const needsSourceScanRecovery =
+      resolution.pendingReason === "SOURCE_SCAN_PENDING" &&
+      typeof resolution.current?.sourceScanRetryCount !== "number";
+
     return {
       response: {
         status: "PENDING",
@@ -1050,7 +1062,17 @@ export async function getRequestedAttachmentArchiveDownload({
             ? SOURCE_SCAN_PENDING_POLL_AFTER_SECONDS
             : DEFAULT_POLL_AFTER_SECONDS,
       },
-      needsRebuild: false,
+      needsRebuild: needsSourceScanRecovery,
+      ...(needsSourceScanRecovery
+        ? {
+            rebuildRequest: {
+              ...(resolution.current?.sourceScanPendingAt
+                ? { sourceScanPendingAt: resolution.current.sourceScanPendingAt }
+                : {}),
+              sourceScanRetryCount: 0,
+            },
+          }
+        : {}),
     };
   }
 

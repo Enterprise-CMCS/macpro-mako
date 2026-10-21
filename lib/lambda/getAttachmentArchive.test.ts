@@ -163,6 +163,32 @@ describe("getAttachmentArchive handler", () => {
     expect(response.body).toBe(JSON.stringify({ message: "No record found for the given id" }));
   });
 
+  it("returns 404 when the main package is SMART-origin", async () => {
+    vi.spyOn(packageApi, "getPackage").mockResolvedValue({
+      found: true,
+      _id: "MD-26-9999-P",
+      _index: "main",
+      _score: 1,
+      _source: {
+        id: "MD-26-9999-P",
+        origin: "SMART",
+        state: "MD",
+        seatoolStatus: "Submitted",
+      },
+    } as any);
+
+    const event = {
+      body: JSON.stringify({ id: "MD-26-9999-P", scope: "all" }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(404);
+    expect(response.body).toBe(JSON.stringify({ message: "No record found for the given id" }));
+    expect(getRequestedAttachmentArchiveStatus).not.toHaveBeenCalled();
+  });
+
   it("returns the archive response payload when the archive is ready", async () => {
     getRequestedAttachmentArchiveStatus.mockResolvedValue({
       needsRebuild: false,
@@ -370,13 +396,18 @@ describe("getAttachmentArchive handler", () => {
     );
   });
 
-  it("returns source-scan pending details without queuing another rebuild", async () => {
+  it("queues one recovery rebuild for legacy source-scan pending state", async () => {
     getRequestedAttachmentArchiveStatus.mockResolvedValue({
-      needsRebuild: false,
+      needsRebuild: true,
+      rebuildRequest: {
+        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+        sourceScanRetryCount: 0,
+      },
       response: {
         status: "PENDING",
         reason: "SOURCE_SCAN_PENDING",
-        message: "Attachments are still being scanned. Please try again shortly.",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
         pollAfterSeconds: 5,
       },
     });
@@ -393,10 +424,41 @@ describe("getAttachmentArchive handler", () => {
       JSON.stringify({
         status: "PENDING",
         reason: "SOURCE_SCAN_PENDING",
-        message: "Attachments are still being scanned. Please try again shortly.",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
         pollAfterSeconds: 5,
       }),
     );
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: WITHDRAWN_CHANGELOG_ITEM_ID,
+        sourceScanPendingAt: "2026-06-15T10:00:00.000Z",
+        sourceScanRetryCount: 0,
+        source: "request",
+      }),
+    );
+  });
+
+  it("does not enqueue another primary rebuild while a source-scan retry is scheduled", async () => {
+    getRequestedAttachmentArchiveStatus.mockResolvedValue({
+      needsRebuild: false,
+      response: {
+        status: "PENDING",
+        reason: "SOURCE_SCAN_PENDING",
+        message:
+          "Attachments are being scanned. Your download will start automatically when scanning is complete.",
+        pollAfterSeconds: 5,
+      },
+    });
+
+    const event = {
+      body: JSON.stringify({ id: WITHDRAWN_CHANGELOG_ITEM_ID, scope: "all" }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const response = await handler(event, {} as Context);
+
+    expect(response.statusCode).toBe(200);
     expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
   });
 

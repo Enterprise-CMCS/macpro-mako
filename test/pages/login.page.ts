@@ -7,10 +7,18 @@ export class LoginPage {
   }
 
   private async waitForAuthenticatedAppReady() {
-    await this.page.waitForURL(/\/dashboard(?:[/?#]|$)/, { timeout: 30_000 });
+    await this.page.waitForURL(
+      (url) => {
+        const { pathname } = new URL(url);
+        return pathname === "/dashboard" || pathname.startsWith("/dashboard/");
+      },
+      { timeout: 30_000 },
+    );
+
+    // Stay on the OAuth callback URL so Amplify can exchange `code`.
     await this.page.getByRole("heading", { name: "Dashboard" }).waitFor({
       state: "visible",
-      timeout: 30_000,
+      timeout: 90_000,
     });
   }
 
