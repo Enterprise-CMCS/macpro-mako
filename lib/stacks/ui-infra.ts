@@ -196,6 +196,7 @@ export class UiInfra extends cdk.NestedStack {
         comment: `CloudFront Distro for the static website hosted in S3 for ${project}-${stage}`,
         defaultRootObject: "index.html",
         httpVersion: cdk.aws_cloudfront.HttpVersion.HTTP2,
+        priceClass: cdk.aws_cloudfront.PriceClass.PRICE_CLASS_ALL,
         viewerCertificate,
         loggingConfig: {
           bucket: loggingBucket,
