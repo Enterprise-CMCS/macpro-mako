@@ -25,26 +25,36 @@ next suffix via a search for `<parent>-[A-Z]`. The older wiki payload with `newP
 
 ## Payload
 
+`changeMade` is stored on the admin-change changelog and shown under Administrative Package
+Changes. It **must name the new split SPA id** (`<NEW_SPLIT_ID>`), not the parent. The parent
+belongs only in `packageId` (the Lambda input) and in `changeReason`.
+
 ```json
 {
   "body": {
     "packageId": "<PARENT_ID>",
-    "changeMade": "<PARENT_ID> split SPA was manually added to OneMAC.",
+    "changeMade": "<NEW_SPLIT_ID> split SPA was manually added to OneMAC.",
     "changeReason": "This split SPA was created per authorization from <CMS authorizer>. Split from SPA <PARENT_ID>."
   }
 }
 ```
 
+Example: parent `MD-25-1235`, intended next suffix `-A` →
+`changeMade`: `MD-25-1235-A split SPA was manually added to OneMAC.`
+
 ## Steps
 
 1. Confirm the target suffix the ticket wants (e.g. `-A`). The Lambda produces
-   `max(existing suffix) + 1`, starting at `A` when none exist.
+   `max(existing suffix) + 1`, starting at `A` when none exist. Derive
+   `<NEW_SPLIT_ID>` = `<PARENT_ID>-<suffix>` (e.g. `MD-25-1235-A`) and use that exact id in
+   `changeMade`. Do not put the parent id in `changeMade`.
 2. If the intended suffix already exists in OneMAC (e.g. a SEATool-sourced `<PARENT_ID>-A`), the
    Lambda would skip to the next letter. To force the intended letter, do the delete-first flow:
    explain it, ask verbatim `Is it okay?`, then delete that existing split id via
-   `updatePackage` `action: delete`, wait for the sink, and continue.
-3. Follow shared steps 1-6 (build payload, show it, ask verbatim `Is it okay?`). Proceed only on
-   `yes`.
+   `updatePackage` `action: delete`, wait for the sink, and continue. After delete-first, keep
+   `<NEW_SPLIT_ID>` as the forced intended id (not the next letter).
+3. Follow shared steps 1-6 (build payload with `<NEW_SPLIT_ID>` in `changeMade`, show it, ask
+   verbatim `Is it okay?`). Proceed only on `yes`.
 4. Invoke:
 
    ```bash
@@ -52,7 +62,8 @@ next suffix via a search for `<parent>-[A-Z]`. The older wiki payload with `newP
      --function submitSplitSPA --payload-file <tmp.json> --yes
    ```
 
-5. Read the result. `STATUS_CODE: 200` reports the new split id in the message. A message
+5. Read the result. `STATUS_CODE: 200` reports the new split id in the message. Confirm that
+   message's id matches the `<NEW_SPLIT_ID>` used in `changeMade`. A message
    "Record must be a Medicaid SPA" means the parent authority is wrong; a 404 means the parent
    id was not found — confirm with the user.
 6. Draft the finalize comment for the ticket and post only after the user approves:
