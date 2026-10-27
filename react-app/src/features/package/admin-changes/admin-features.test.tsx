@@ -40,7 +40,7 @@ describe("Admin Features test", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole("button", {
-        name: /Split SPA Created\s*-\s*Sun, Jan 1 2023, 09:00:00 AM EST/,
+        name: /Package Added\s*-\s*Sun, Jan 1 2023, 09:00:00 AM EST/,
       }),
     ).toBeInTheDocument();
     expect(screen.getByRole("heading", { level: 2, name: "Change Made" })).toBeInTheDocument();
@@ -90,5 +90,28 @@ describe("Admin Features test", () => {
     ).toBeInTheDocument();
     expect(screen.getAllByRole("button", { name: /Manual Update/ })).toHaveLength(1);
     expect(screen.getAllByText("Submission Inactivated")).toHaveLength(1);
+  });
+
+  it("shows a fallback when a manual update has no change reason", () => {
+    const manualUpdate = [
+      {
+        _id: "MD-26-9000-NK3-A-smart-administrative-1789689591000",
+        _index: "mainchangelog",
+        _source: {
+          id: "MD-26-9000-NK3-A-smart-administrative-1789689591000",
+          packageId: "MD-26-9000-NK3-A",
+          event: "update-values" as const,
+          timestamp: 1789689591000,
+          changeMade: "Initial Submission Date changed from 2026-09-16 to 2026-09-15",
+          isAdminChange: true,
+        },
+      },
+    ] as ItemResult[];
+
+    renderWithQueryClient(<AdminPackageActivities changelog={manualUpdate} />);
+
+    expect(screen.getByRole("button", { name: /Manual Update/ })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { level: 2, name: "Change Reason" })).toBeInTheDocument();
+    expect(screen.getByText("No information submitted")).toBeInTheDocument();
   });
 });

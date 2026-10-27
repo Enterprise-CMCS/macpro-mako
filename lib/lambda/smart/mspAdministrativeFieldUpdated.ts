@@ -105,6 +105,13 @@ const getChangeMade = (changes: FieldChange[]): string =>
     )
     .join("; ");
 
+const getChangeReason = (createdByName: string | null | undefined): string => {
+  const actor = createdByName?.trim();
+  return actor
+    ? `This package was updated in OneMAC to reflect an administrative change made in SMART by ${actor}.`
+    : "This package was updated in OneMAC to reflect an administrative change made in SMART.";
+};
+
 const resolveAdministrativePackage = (
   context: SmartOnemacEventContext,
   event: SmartAdministrativeFieldUpdatedEvent,
@@ -276,6 +283,7 @@ const persistAdministrativeActivity = async (
     isAdminChange: true,
     adminChangeType: isIdChange ? "update-id" : "update-values",
     changeMade,
+    changeReason: getChangeReason(event.createdByName),
     submitterName: event.createdByName?.trim() || "SMART",
     submitterEmail: event.createdByEmail?.trim() || "",
     createdByUserId: event.createdByUserId,
