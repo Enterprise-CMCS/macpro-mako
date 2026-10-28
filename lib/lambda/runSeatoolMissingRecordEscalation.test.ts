@@ -27,8 +27,12 @@ vi.mock("libs/email/content/seatoolMissingRecord", () => ({
   renderSeatoolMissingRecordEmail: vi.fn(async ({ to, cc = [], packages }) => ({
     to,
     cc,
-    subject: "ACTION REQUIRED - No matching record in SEA Tool",
+    subject:
+      packages.length === 1
+        ? `${packages[0].id} - ACTION REQUIRED - No matching record in SEA Tool`
+        : "ACTION REQUIRED - No matching record in SEA Tool",
     body: `<html>${packages.map((row: { id: string }) => row.id).join(",")}</html>`,
+    text: packages.map((row: { id: string }) => row.id).join("\n"),
   })),
 }));
 
@@ -199,5 +203,131 @@ describe("runSeatoolMissingRecordEscalation", () => {
       "seatool-helpdesk@example.com",
       "dpo-approver@example.com",
     ]);
+    expect(command.input.Message?.Subject?.Data).toBe(
+      "MD-23-0001 - ACTION REQUIRED - No matching record in SEA Tool",
+    );
+    expect(command.input.Message?.Body?.Text?.Data).toBe("MD-23-0001");
+  });
+
+  it("sends one production email per package, including packages that share an authority", async () => {
+    process.env.STAGE_NAME = "production";
+    s3SendSpy.mockImplementation(async (command) => {
+      if (command instanceof ListObjectsV2Command) {
+        return { Contents: [] };
+      }
+      return {};
+    });
+    fetchCandidatesMock.mockResolvedValue([
+      {
+        id: "MD-23-0001",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 4,
+      },
+      {
+        id: "VA-23-0008",
+        submissionDate: "2023-07-30T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 6,
+      },
+      {
+        id: "CA-23-0002",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.CHIP_SPA,
+        daysSinceSubmit: 4,
+      },
+    ]);
+
+    const result = await handler({ now: "2023-08-05T12:00:00-04:00" });
+
+    expect(result.status).toBe("sent");
+    expect(result.candidateCount).toBe(3);
+    expect(result.sentGroups).toEqual(["medicaid-spa", "chip-spa"]);
+    expect(sesSendSpy).toHaveBeenCalledTimes(3);
+    const subjects = sesSendSpy.mock.calls.map(([command]) => {
+      if (!(command instanceof SendEmailCommand)) {
+        return "";
+      }
+      return command.input.Message?.Subject?.Data;
+    });
+    expect(subjects).toEqual([
+      "MD-23-0001 - ACTION REQUIRED - No matching record in SEA Tool",
+      "VA-23-0008 - ACTION REQUIRED - No matching record in SEA Tool",
+      "CA-23-0002 - ACTION REQUIRED - No matching record in SEA Tool",
+    ]);
+    const chipCommand = sesSendSpy.mock.calls[2][0] as SendEmailCommand;
+    expect(chipCommand.input.Destination?.ToAddresses).toEqual(["chip.inbox@cms.hhs.gov"]);
+  });
+
+  it("groups lower-environment emails by authority", async () => {
+    s3SendSpy.mockImplementation(async (command) => {
+      if (command instanceof ListObjectsV2Command) {
+        return { Contents: [] };
+      }
+      return {};
+    });
+    fetchCandidatesMock.mockResolvedValue([
+      {
+        id: "MD-23-0001",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 4,
+      },
+      {
+        id: "VA-23-0008",
+        submissionDate: "2023-07-30T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 6,
+      },
+    ]);
+
+    await handler({ now: "2023-08-05T12:00:00-04:00" });
+
+    expect(sesSendSpy).toHaveBeenCalledTimes(1);
+    const command = sesSendSpy.mock.calls[0][0] as SendEmailCommand;
+    expect(command.input.Message?.Subject?.Data).toBe(
+      "ACTION REQUIRED - No matching record in SEA Tool",
+    );
+    expect(command.input.Message?.Body?.Html?.Data).toContain("MD-23-0001,VA-23-0008");
+    expect(command.input.Destination?.ToAddresses).toEqual(["missing-record-dev@example.com"]);
+  });
+
+  it("does not email ZZ or ZT packages", async () => {
+    process.env.STAGE_NAME = "production";
+    s3SendSpy.mockImplementation(async (command) => {
+      if (command instanceof ListObjectsV2Command) {
+        return { Contents: [] };
+      }
+      return {};
+    });
+    fetchCandidatesMock.mockResolvedValue([
+      {
+        id: "ZZ-23-0001",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 4,
+      },
+      {
+        id: "zt-23-0002",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority["1915b"],
+        daysSinceSubmit: 8,
+      },
+      {
+        id: "MD-23-0001",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 4,
+      },
+    ]);
+
+    const result = await handler({ now: "2023-08-05T12:00:00-04:00" });
+
+    expect(result.status).toBe("sent");
+    expect(result.candidateCount).toBe(1);
+    expect(sesSendSpy).toHaveBeenCalledTimes(1);
+    const command = sesSendSpy.mock.calls[0][0] as SendEmailCommand;
+    expect(command.input.Message?.Subject?.Data).toContain("MD-23-0001");
+    expect(command.input.Message?.Body?.Html?.Data).not.toContain("ZZ-23-0001");
   });
 });
