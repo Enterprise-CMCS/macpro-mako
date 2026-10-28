@@ -115,7 +115,8 @@ describe("requestBaseCMSAccess handler", () => {
     );
   });
 
-  it("should return 200 if a state user does not have roles", async () => {
+  it("should grant active state submitter roles from Cognito state attributes", async () => {
+    mockedProducer.send.mockResolvedValueOnce([{ message: "sent" }]);
     setMockUsername(coStateSubmitter);
 
     const event = {
@@ -126,7 +127,17 @@ describe("requestBaseCMSAccess handler", () => {
     const res = await handler(event, {} as Context);
 
     expect(res.statusCode).toEqual(200);
-    expect(res.body).toEqual(JSON.stringify({ message: "User role not updated" }));
+    expect(res.body).toEqual(
+      JSON.stringify({ message: "User role updated, because no default role found" }),
+    );
+    expect(mockedProducer.send).toHaveBeenCalledWith({
+      topic: "request-cms-access",
+      messages: [
+        expect.objectContaining({
+          key: "submitter@example.com_CO_statesubmitter",
+        }),
+      ],
+    });
   });
 
   it("should return 500 if there was an error", async () => {

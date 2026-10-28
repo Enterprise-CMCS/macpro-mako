@@ -134,6 +134,7 @@ const isInSecondClock = (
       SEATOOL_STATUS.PENDING,
       SEATOOL_STATUS.PENDING_CONCURRENCE,
       SEATOOL_STATUS.PENDING_APPROVAL,
+      SEATOOL_STATUS.PENDING_DISAPPROVAL,
     ].includes(seatoolStatus) && // if it's in pending
     raiReceivedDate // if its latest rai has a received date
   ) {

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { SeaTool } from "../../events";
+import type { SmartRecordType } from "../../smart";
 import { ItemResult as Changelog } from "../changelog";
 import { AggQuery, Filterable as FIL, Hit, QueryState, Response as Res } from "./../_";
 import {
@@ -92,6 +93,37 @@ export type Document = AppkDocument &
     withdrawEmailSent?: boolean;
     fullName?: string;
     event?: string;
+    correlationId?: string;
+    operationType?: string;
+    spaWaiverId?: string;
+    smartRecordType?: SmartRecordType;
+    smartStatus?: string;
+    smartStatusChangedAt?: string | number;
+    smartAdministrativeChangedAt?: string | number;
+    smartAdministrativePreviousId?: string;
+    smartAssignmentChangedAt?: string | number;
+    smartCpocContactId?: string | null;
+    smartSrtRoster?: {
+      srtAssignmentId: string;
+      contactId: string | null;
+      fullName: string;
+      email: string | null;
+      division: string | null;
+      group: string | null;
+      isCpoc: boolean;
+      isConsultantSme: boolean;
+      isActive: boolean;
+      assignmentNotes: string | null;
+    }[];
+    createdByUserId?: string;
+    splitSpaId?: string;
+    splitSpaWaiverId?: string;
+    originalSpaId?: string;
+    originalSpaWaiverId?: string;
+    splitReason?: string;
+    raiId?: string;
+    raiName?: string;
+    raiWithdrawnToggleDate?: string | number;
     draft?: {
       savedAt: string;
       createdAt?: string;
