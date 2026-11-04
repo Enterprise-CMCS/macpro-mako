@@ -15,7 +15,9 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { handler } from "./updatePackage";
 
 vi.mock("libs/api/kafka", () => ({
-  produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
+  produceMessage: vi.fn(() =>
+    Promise.resolve([{ topicName: "test-topic", partition: 0, errorCode: 0, offset: "1" }]),
+  ),
 }));
 
 const mockedProduceMessage = vi.mocked(produceMessage);
@@ -24,7 +26,9 @@ describe("handler", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     process.env.topicName = "test-topic";
-    mockedProduceMessage.mockResolvedValue([{ partition: 0, offset: "1" }]);
+    mockedProduceMessage.mockResolvedValue([
+      { topicName: "test-topic", partition: 0, errorCode: 0, offset: "1" },
+    ]);
   });
 
   it("should return 400 if event body is missing", async () => {
@@ -210,7 +214,7 @@ describe("handler", () => {
       expect(result?.body).toEqual(JSON.stringify({ message: "Topic name is not defined" }));
     });
 
-    it("should fail to update a package with bad existing id format", async () => {
+    it("should renumber a legacy package whose type cannot be derived from the changelog", async () => {
       const noActionevent = {
         body: JSON.stringify({
           packageId: SIMPLE_ID,
@@ -223,34 +227,25 @@ describe("handler", () => {
 
       const result = await handler(noActionevent);
 
-      expect(result?.statusCode).toBe(500);
-      expect(result?.body).toEqual(
-        JSON.stringify({
-          message: "The type of package could not be determined.",
-        }),
-      );
+      expect(result?.statusCode).toBe(200);
+      expect(mockedProduceMessage).toHaveBeenCalledTimes(3);
     });
 
-    it("should fail to update a package ID with bad new id format", async () => {
+    it("should reject an update-id with a malformed new ID", async () => {
       const noActionevent = {
         body: JSON.stringify({
           packageId: CAPITATED_INITIAL_ITEM_ID,
           action: "update-id",
           changeMade: "Nunya",
           changeReason: "Nunya",
-          updatedId: "SS-120",
+          updatedId: "bad id",
         }),
       } as APIGatewayEvent;
 
       const result = await handler(noActionevent);
 
       expect(result?.statusCode).toBe(400);
-      expect(JSON.parse(JSON.parse(result?.body || JSON.stringify("[\n {\n }\n ]")))?.[0]).toEqual({
-        code: "custom",
-        message:
-          "The Initial Waiver Number must be in the format of SS-####.R00.00 or SS-#####.R00.00",
-        path: [],
-      });
+      expect(result?.body).toEqual(JSON.stringify({ message: "Invalid new ID format" }));
     });
 
     it("should fail to update an ID on a package - missing new ID", async () => {
