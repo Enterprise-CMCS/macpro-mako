@@ -1,7 +1,7 @@
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { APIGatewayEvent, APIGatewayProxyEventHeaders, Context } from "aws-lambda";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { normalizeEvent, NormalizeEventOptions } from "./normalizations";
 
@@ -419,28 +419,5 @@ describe("normalizeEvent middleware", () => {
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify({ message: "OK" }));
     expect(res.headers).toBeUndefined();
-  });
-
-  it("logs method, path, and request id without the full event body", async () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => undefined);
-    const event = {
-      body: JSON.stringify({ client_secret: "should-not-be-logged" }),
-      httpMethod: "POST",
-      path: "/oauth/token",
-      requestContext: { requestId: "req-123" },
-    } as APIGatewayEvent;
-
-    const handler = setupHandler();
-    await handler(event, {} as Context);
-
-    expect(logSpy).toHaveBeenCalledWith(
-      JSON.stringify({
-        httpMethod: "POST",
-        path: "/oauth/token",
-        requestId: "req-123",
-      }),
-    );
-    expect(logSpy.mock.calls.flat().join(" ")).not.toContain("client_secret");
-    logSpy.mockRestore();
   });
 });

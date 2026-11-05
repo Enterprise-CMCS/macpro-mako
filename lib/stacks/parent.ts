@@ -127,7 +127,6 @@ export class ParentStack extends cdk.Stack {
       attachmentsBucket: uploadsStack.attachmentsBucket,
       notificationSecretName: props.notificationSecretName,
       notificationSecretArn: props.notificationSecretArn,
-      applicationEndpointUrl: uiInfraStack.applicationEndpointUrl,
     });
 
     const authStack = new Stacks.Auth(this, "auth", {
