@@ -27,24 +27,35 @@ export const handler = authenticatedMiddy({
 })
   .use(canViewUser())
   .handler(async (event: GetUserDetailsEvent, context: ContextWithAuthenticatedUser) => {
-    const email = normalizeEmail(event?.body?.userEmail || context?.authenticatedUser?.email);
+    const selfEmail = normalizeEmail(context?.authenticatedUser?.email);
+    const requestedEmail = normalizeEmail(event?.body?.userEmail);
+    const email = requestedEmail || selfEmail;
 
     if (!email) {
       throw new Error("Email is undefined");
     }
 
-    const userDetails = await getUserByEmail(email);
-    if (!userDetails) {
+    const storedUser = await getUserByEmail(email);
+    // A new stage has no user document until the profile event is indexed.
+    // The signed-in user's role still lives in the roles index, and a 404
+    // here hides that role and bounces login back to the home page.
+    if (!storedUser && email !== selfEmail) {
       throw createError(404, JSON.stringify({ message: "User not found" }));
     }
 
     const latestActiveRoleObj = await getLatestActiveRoleByEmail(email);
     const activeStates = await getActiveStatesForUserByEmail(email);
+    const { given_name: givenName, family_name: familyName } = context.authenticatedUser ?? {};
 
     return {
       statusCode: 200,
       body: {
-        ...userDetails,
+        ...(storedUser ?? {
+          id: `${email}_user-information`,
+          eventType: "user-info",
+          email,
+          fullName: [givenName, familyName].filter(Boolean).join(" "),
+        }),
         role: latestActiveRoleObj?.role ?? "norole",
         states: activeStates,
       },
