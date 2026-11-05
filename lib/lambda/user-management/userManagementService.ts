@@ -219,10 +219,6 @@ export const getLatestActiveRoleByEmail = async (email: string): Promise<roles.D
       {
         lastModifiedDate: {
           order: "desc",
-          // A new stage's roles index has no documents yet, so this field has no
-          // mapping. OpenSearch rejects the sort unless an unmapped type is set,
-          // and that 400 blocks login from creating the user's first role.
-          unmapped_type: "long",
         },
       },
     ],
