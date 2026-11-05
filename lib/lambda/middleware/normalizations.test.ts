@@ -1,7 +1,7 @@
 import middy from "@middy/core";
 import httpErrorHandler from "@middy/http-error-handler";
 import { APIGatewayEvent, APIGatewayProxyEventHeaders, Context } from "aws-lambda";
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 
 import { normalizeEvent, NormalizeEventOptions } from "./normalizations";
 

@@ -6,13 +6,7 @@ import { Data } from "./data";
 
 vi.setConfig({ testTimeout: 180_000, hookTimeout: 180_000 });
 
-function buildDataTemplate({
-  stage,
-  shared,
-}: {
-  stage: string;
-  shared: boolean;
-}): Template {
+function buildDataTemplate({ stage, shared }: { stage: string; shared: boolean }): Template {
   const app = new cdk.App();
   const parent = new cdk.Stack(app, `DataOpenSearchMasterParent-${stage}-${shared}`, {
     env: {
@@ -97,11 +91,13 @@ describe("OpenSearch master role", () => {
     expect(masterRole).toBeUndefined();
 
     const trustDocuments = roles.map((role) =>
-      JSON.stringify((role.Properties as { AssumeRolePolicyDocument?: unknown })?.AssumeRolePolicyDocument),
+      JSON.stringify(
+        (role.Properties as { AssumeRolePolicyDocument?: unknown })?.AssumeRolePolicyDocument,
+      ),
     );
-    expect(trustDocuments.some((doc) => doc.includes('"AWS":"arn:aws:iam::123456789012:root"'))).toBe(
-      false,
-    );
+    expect(
+      trustDocuments.some((doc) => doc.includes('"AWS":"arn:aws:iam::123456789012:root"')),
+    ).toBe(false);
     expect(trustDocuments.some((doc) => doc.includes("AccountPrincipal"))).toBe(false);
 
     template.hasResourceProperties("AWS::IAM::Policy", {

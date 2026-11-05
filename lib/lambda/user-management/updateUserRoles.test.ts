@@ -1,11 +1,6 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
-import {
-  getRequestContext,
-  setDefaultStateSubmitter,
-  setMockUsername,
-  systemAdmin,
-} from "mocks";
+import { getRequestContext, setDefaultStateSubmitter, setMockUsername, systemAdmin } from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./updateUserRoles";

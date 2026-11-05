@@ -19,8 +19,8 @@ describe("apiGatewayInvokeResources", () => {
   });
 
   it("rejects the account-wide wildcard ARN", () => {
-    expect(() =>
-      apiGatewayInvokeResources(["arn:aws:lambda:*:*:function:*"]),
-    ).toThrow("API Gateway invoke policy must not use a wildcard function ARN");
+    expect(() => apiGatewayInvokeResources(["arn:aws:lambda:*:*:function:*"])).toThrow(
+      "API Gateway invoke policy must not use a wildcard function ARN",
+    );
   });
 });
