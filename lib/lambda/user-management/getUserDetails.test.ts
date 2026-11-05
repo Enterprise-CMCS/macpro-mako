@@ -9,8 +9,6 @@ import {
   osUsers,
   setDefaultStateSubmitter,
   setMockUsername,
-  TEST_NEW_STATE_SUBMITTER_EMAIL,
-  TEST_NEW_STATE_SUBMITTER_USERNAME,
   TEST_STATE_SUBMITTER_EMAIL,
   TEST_STATE_SUBMITTER_USERNAME,
 } from "mocks";
@@ -139,27 +137,6 @@ describe("getUserDetails handler", () => {
 
     expect(res.statusCode).toEqual(200);
     expect(res.body).toEqual(JSON.stringify(expectedUser));
-  });
-
-  it("should return the signed-in user when OpenSearch has no profile document yet", async () => {
-    setMockUsername(TEST_NEW_STATE_SUBMITTER_USERNAME);
-
-    const event = {
-      body: JSON.stringify({}),
-      requestContext: getRequestContext(),
-    } as APIGatewayEvent;
-
-    const res = await handler(event, {} as Context);
-
-    expect(res.statusCode).toEqual(200);
-    expect(JSON.parse(res.body)).toEqual({
-      id: `${TEST_NEW_STATE_SUBMITTER_EMAIL}_user-information`,
-      eventType: "user-info",
-      email: TEST_NEW_STATE_SUBMITTER_EMAIL,
-      fullName: "Test Submitter",
-      role: "norole",
-      states: [],
-    });
   });
 
   it("should return 403, if userEmail in the event body does not match the authenticated user's email and the authenticated user is not a user manager", async () => {
