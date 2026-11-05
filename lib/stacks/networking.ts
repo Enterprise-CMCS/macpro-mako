@@ -24,7 +24,7 @@ export class Networking extends cdk.NestedStack {
       vpc,
       description: `Outbound permissive sg for lambdas in ${project}-${stage}.`,
       allowAllOutbound: true, // Set to false to customize egress rules
-      ...(isDev ? {} : { securityGroupName: `${project}-${stage}-lambda-sg` }),
+      securityGroupName: `${project}-${stage}-lambda-sg`,
     });
 
     lambdaSecurityGroup.applyRemovalPolicy(
