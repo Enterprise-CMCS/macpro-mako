@@ -11,6 +11,7 @@ import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
 import { awsLambdaFunctionName, awsS3AccountBucketName } from "../config/lambda-function-name";
 import { apiGatewayInvokeResources } from "./api-gateway-invoke";
+import { apiStageDataTraceEnabled } from "./api-stage-logging";
 import {
   getArchiveBaseReadBucket,
   getArchiveOverlayPrefix,
@@ -1648,7 +1649,7 @@ export class Api extends cdk.NestedStack {
       deployOptions: {
         stageName: stage,
         loggingLevel: cdk.aws_apigateway.MethodLoggingLevel.INFO,
-        dataTraceEnabled: true,
+        dataTraceEnabled: apiStageDataTraceEnabled(isDev),
         metricsEnabled: true,
         accessLogDestination: new cdk.aws_apigateway.LogGroupLogDestination(
           apiExecutionLogsLogGroup,
