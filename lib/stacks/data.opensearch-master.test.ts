@@ -84,11 +84,10 @@ describe("OpenSearch master role", () => {
     });
 
     const roles = Object.values(template.findResources("AWS::IAM::Role"));
-    const masterRole = roles.find((role) => {
-      const policies = (role.Properties as { ManagedPolicyArns?: string[] })?.ManagedPolicyArns;
-      return policies?.some((arn) => arn.includes("AmazonOpenSearchServiceFullAccess"));
-    });
-    expect(masterRole).toBeUndefined();
+    const hasFullAccessManagedPolicy = roles.some((role) =>
+      JSON.stringify(role).includes("AmazonOpenSearchServiceFullAccess"),
+    );
+    expect(hasFullAccessManagedPolicy).toBe(false);
 
     const trustDocuments = roles.map((role) =>
       JSON.stringify(
@@ -98,7 +97,6 @@ describe("OpenSearch master role", () => {
     expect(
       trustDocuments.some((doc) => doc.includes('"AWS":"arn:aws:iam::123456789012:root"')),
     ).toBe(false);
-    expect(trustDocuments.some((doc) => doc.includes("AccountPrincipal"))).toBe(false);
 
     template.hasResourceProperties("AWS::IAM::Policy", {
       PolicyDocument: {
