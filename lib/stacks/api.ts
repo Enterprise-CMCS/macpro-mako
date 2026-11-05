@@ -10,6 +10,7 @@ import { join } from "path";
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
 import { awsLambdaFunctionName, awsS3AccountBucketName } from "../config/lambda-function-name";
+import { apiGatewayInvokeResources } from "./api-gateway-invoke";
 import {
   getArchiveBaseReadBucket,
   getArchiveOverlayPrefix,
@@ -1616,17 +1617,13 @@ export class Api extends cdk.NestedStack {
       runSeatoolMissingRecordEscalationLambda: lambdas.runSeatoolMissingRecordEscalation,
     });
 
-    // Create IAM role for API Gateway to invoke Lambda functions
+    // Create IAM role for API Gateway to invoke Lambda functions.
+    // Invoke allow is attached after apiResources so it lists only routed ARNs.
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
       inlinePolicies: {
         InvokeLambdaPolicy: new cdk.aws_iam.PolicyDocument({
           statements: [
-            new cdk.aws_iam.PolicyStatement({
-              effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["lambda:InvokeFunction"],
-              resources: ["arn:aws:lambda:*:*:function:*"],
-            }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.DENY,
               actions: ["logs:CreateLogGroup"],
@@ -1912,6 +1909,16 @@ export class Api extends cdk.NestedStack {
         resource.authorizer,
       );
     });
+
+    apiGatewayRole.addToPolicy(
+      new cdk.aws_iam.PolicyStatement({
+        effect: cdk.aws_iam.Effect.ALLOW,
+        actions: ["lambda:InvokeFunction"],
+        resources: apiGatewayInvokeResources(
+          Object.values(apiResources).map((resource) => resource.lambda.functionArn),
+        ),
+      }),
+    );
 
     // Define CloudWatch Alarms
     const createCloudWatchAlarm = (id: string, lambdaFunction: cdk.aws_lambda.Function) => {
