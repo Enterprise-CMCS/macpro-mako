@@ -10,6 +10,7 @@ import { join } from "path";
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
 import { awsLambdaFunctionName, awsS3AccountBucketName } from "../config/lambda-function-name";
+import { apiCorsAllowOrigins, applicationOriginFromEndpointUrl } from "./api-cors-origins";
 import { apiGatewayInvokeResources } from "./api-gateway-invoke";
 import { apiStageDataTraceEnabled } from "./api-stage-logging";
 import {
@@ -62,6 +63,7 @@ interface ApiStackProps extends cdk.NestedStackProps {
   emailAddressLookupSecretName: DeploymentConfigProperties["emailAddressLookupSecretName"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
+  applicationEndpointUrl: string;
 }
 
 export class Api extends cdk.NestedStack {
@@ -104,7 +106,11 @@ export class Api extends cdk.NestedStack {
       dbInfoSecretName,
       notificationSecretName,
       notificationSecretArn,
+      applicationEndpointUrl,
     } = props;
+
+    const corsAllowOrigins = apiCorsAllowOrigins(applicationEndpointUrl, isDev);
+    const corsPrimaryOrigin = applicationOriginFromEndpointUrl(applicationEndpointUrl);
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
     const legacyAttachmentBucketMapParameterName = getLegacyAttachmentBucketMapParameterName(
@@ -1667,7 +1673,7 @@ export class Api extends cdk.NestedStack {
         }),
       },
       defaultCorsPreflightOptions: {
-        allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
+        allowOrigins: corsAllowOrigins,
         allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,
         allowHeaders: [
           "Content-Type",
@@ -1689,7 +1695,7 @@ export class Api extends cdk.NestedStack {
       restApiId: api.restApiId,
       responseType: "DEFAULT_4XX",
       responseParameters: {
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+        "gatewayresponse.header.Access-Control-Allow-Origin": `'${corsPrimaryOrigin}'`,
         "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
       },
     });
@@ -1699,7 +1705,7 @@ export class Api extends cdk.NestedStack {
       restApiId: api.restApiId,
       responseType: "DEFAULT_5XX",
       responseParameters: {
-        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
+        "gatewayresponse.header.Access-Control-Allow-Origin": `'${corsPrimaryOrigin}'`,
         "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
       },
     });
