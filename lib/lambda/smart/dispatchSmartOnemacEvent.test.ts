@@ -4,6 +4,7 @@ const handlers = vi.hoisted(() => ({
   evaluateExistence: vi.fn(),
   chipSpaAssignmentUpdated: vi.fn(),
   chipSpaManualRecordUpdated: vi.fn(),
+  chipSpaPackageDetailsUpdated: vi.fn(),
   manualRecordCreated: vi.fn(),
   statusUpdated: vi.fn(),
   administrativeFieldUpdated: vi.fn(),
@@ -21,6 +22,9 @@ vi.mock("./chipSpaAssignmentUpdated", () => ({
 }));
 vi.mock("./chipSpaManualRecordUpdated", () => ({
   handleChipSpaManualRecordUpdated: handlers.chipSpaManualRecordUpdated,
+}));
+vi.mock("./chipSpaPackageDetailsUpdated", () => ({
+  handleChipSpaPackageDetailsUpdated: handlers.chipSpaPackageDetailsUpdated,
 }));
 vi.mock("./mspManualRecordCreated", async (importOriginal) => ({
   ...(await importOriginal<typeof import("./mspManualRecordCreated")>()),
@@ -73,6 +77,7 @@ const existence = Object.freeze({
 const knownOperations = [
   ["CHIPSPA_ASSIGNMENT_UPDATED", handlers.chipSpaAssignmentUpdated],
   ["CHIPSPA_MANUAL_RECORD_UPDATED", handlers.chipSpaManualRecordUpdated],
+  ["CHIPSPA_PACKAGE_DETAILS_UPDATED", handlers.chipSpaPackageDetailsUpdated],
   ["MSP_MANUAL_RECORD_CREATED", handlers.manualRecordCreated],
   ["MSP_STATUS_UPDATED", handlers.statusUpdated],
   ["MSP_ADMINISTRATIVE_FIELD_UPDATED", handlers.administrativeFieldUpdated],

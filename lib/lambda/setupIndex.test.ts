@@ -60,6 +60,8 @@ describe("handler", () => {
         smartStatusChangedAt: { type: "date" },
         smartAdministrativeChangedAt: { type: "date" },
         smartAdministrativePreviousId: { type: "keyword" },
+        smartPackageDetailsChangedAt: { type: "date" },
+        smartPackageDetailsPreviousId: { type: "keyword" },
         smartAssignmentChangedAt: { type: "date" },
         smartCpocContactId: { type: "keyword" },
         statusDate: { type: "date" },

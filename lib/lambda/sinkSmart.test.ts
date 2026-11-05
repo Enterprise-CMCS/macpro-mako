@@ -1010,6 +1010,91 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("consumes CHIPSPA_PACKAGE_DETAILS_UPDATED and records administrative changes", async () => {
+    const packageId = "CA-26-1105-CHIP";
+    const externalId = "a0nTESTCHIP261105";
+    const statusChangedAt = "2026-11-05T17:00:00.123Z";
+    const packageDetailsPayload = {
+      ...smartEvent,
+      id: packageId,
+      spaWaiverId: externalId,
+      authority: "CHIP SPA",
+      operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+      statusChangedAt,
+      state: "California",
+      initialSubmissionDate: "2026-11-05",
+      subject: "Updated CHIP subject",
+      description: "Updated CHIP description",
+      proposedEffectiveDate: "2027-01-31",
+      approvedEffectiveDate: "2026-12-01",
+      typeSelections: [
+        {
+          typeSelectionId: "chip-eligibility-magi",
+          type: "Eligibility",
+          subType: "MAGI",
+          isTypeActive: true,
+          isSubTypeActive: true,
+        },
+      ],
+    };
+    const existingPackage = {
+      id: packageId,
+      origin: "OneMAC",
+      authority: "CHIP SPA",
+      state: "CA",
+      seatoolStatus: "Pending",
+      deleted: false,
+      spaWaiverId: externalId,
+      submissionDate: "2026-11-04T05:00:00.000Z",
+      subject: "Existing CHIP subject",
+      description: "Existing CHIP description",
+    };
+    getItemSpy.mockResolvedValue({
+      found: true,
+      _id: packageId,
+      _source: existingPackage,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+    searchSpy
+      .mockResolvedValueOnce({
+        hits: { hits: [{ _id: packageId, _source: existingPackage }] },
+      } as Awaited<ReturnType<typeof os.search>>)
+      .mockResolvedValueOnce({ hits: { hits: [] } });
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(packageDetailsPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      packageId,
+      expect.objectContaining({
+        subject: "Updated CHIP subject",
+        description: "Updated CHIP description",
+        submissionDate: "2026-11-05T05:00:00.000Z",
+        proposedDate: "2027-01-31T05:00:00.000Z",
+        approvedEffectiveDate: "2026-12-01T05:00:00.000Z",
+        smartPackageDetailsChangedAt: statusChangedAt,
+        operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+      }),
+    );
+    expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("origin");
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/changelog$/),
+      [
+        expect.objectContaining({
+          packageId,
+          event: "update-values",
+          changeMade: "Initial Submission Date changed from 2026-11-04 to 2026-11-05",
+          operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+        }),
+      ],
+      { throwOnBulkError: true },
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("rejects MSP_MANUAL_RECORD_CREATED when the package already has a different spaWaiverId", async () => {
     const payload = { ...smartEvent, operationType: "MSP_MANUAL_RECORD_CREATED" };
     getItemSpy.mockResolvedValueOnce({
