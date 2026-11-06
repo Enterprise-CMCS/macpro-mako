@@ -2,6 +2,15 @@ import { LambdaClient, ListEventSourceMappingsCommand } from "@aws-sdk/client-la
 import { Handler } from "aws-lambda";
 import { Kafka } from "kafkajs";
 
+const isPartitionCaughtUp = (latestOffset: string, currentOffset: string): boolean => {
+  // KafkaJS reports -1 when a consumer group has never committed an offset.
+  if (currentOffset === "-1") {
+    return false;
+  }
+
+  return latestOffset === currentOffset;
+};
+
 export const handler: Handler = async (event, _, callback) => {
   const response = {
     statusCode: 200,
@@ -78,21 +87,32 @@ export const handler: Handler = async (event, _, callback) => {
           groupId,
           topics: [topic],
         });
-        // Assuming there's a single partition for simplicity.
-        const latestOffset = topicOffsets[0].offset;
-        const currentOffset = groupOffsets[0].partitions[0].offset;
+        const groupPartitions = groupOffsets[0]?.partitions || [];
+        const partitionStates = topicOffsets.map((topicOffset) => {
+          const groupPartition = groupPartitions.find(
+            (partition) => partition.partition === topicOffset.partition,
+          );
+          const currentOffset = groupPartition?.offset ?? "-1";
+          return {
+            partition: topicOffset.partition,
+            latestOffset: topicOffset.offset,
+            currentOffset,
+            current: isPartitionCaughtUp(topicOffset.offset, currentOffset),
+          };
+        });
+        const current = partitionStates.every((partition) => partition.current);
         offsets[groupId] = {
-          latestOffset,
-          currentOffset,
+          current,
+          partitions: partitionStates,
         };
         console.log(
-          `Topic: ${topic}, Group: ${groupId}, Latest Offset: ${latestOffset}, Current Offset: ${currentOffset}`,
+          `Topic: ${topic}, Group: ${groupId}, Partitions: ${JSON.stringify(partitionStates)}`,
         );
       }
     }
     await admin.disconnect();
     response.stable = statuses.every((status) => status === "Stable");
-    response.current = Object.values(offsets).every((o) => o.latestOffset === o.currentOffset);
+    response.current = Object.values(offsets).every((o) => o.current);
     response.ready = response.stable && response.current;
   } catch (error: any) {
     response.statusCode = 500;

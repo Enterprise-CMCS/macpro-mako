@@ -13,6 +13,7 @@ describe("handler", () => {
   };
   const createIndexSpy = vi.spyOn(os, "createIndex");
   const updateMappingSpy = vi.spyOn(os, "updateFieldMapping");
+  const reindexDocumentsSpy = vi.spyOn(os, "reindexDocuments").mockResolvedValue(undefined);
   const callback = vi.fn();
 
   afterEach(() => {
@@ -86,9 +87,24 @@ describe("handler", () => {
       },
     );
     expect(updateMappingSpy).toHaveBeenCalledTimes(3);
+    expect(reindexDocumentsSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      "mainroles",
+      `${OPENSEARCH_INDEX_NAMESPACE}roles`,
+    );
 
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
+
+  it.each(["main", "val", "production"])(
+    "should not copy mainroles into shared stage %s",
+    async (indexNamespace) => {
+      await handler({ osDomain: OPENSEARCH_DOMAIN, indexNamespace }, {} as Context, callback);
+
+      expect(reindexDocumentsSpy).not.toHaveBeenCalled();
+      expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
+    },
+  );
 
   it("should handle errors and return status 500", async () => {
     mockedServer.use(errorCreateIndexHandler);
@@ -97,6 +113,7 @@ describe("handler", () => {
 
     expect(createIndexSpy).toHaveBeenCalledTimes(1);
     expect(updateMappingSpy).not.toHaveBeenCalled();
+    expect(reindexDocumentsSpy).not.toHaveBeenCalled();
     expect(callback).toHaveBeenCalledWith(expect.any(Error), {
       statusCode: 500,
     });
