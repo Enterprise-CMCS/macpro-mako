@@ -502,13 +502,14 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("creates a hidden CHIP reservation for CHIPSPA_MANUAL_RECORD_UPDATED", async () => {
+  it("creates a hidden CHIP reservation for MSP_MANUAL_RECORD_CREATED", async () => {
     const payload = {
       ...smartEvent,
       id: "CA-26-1001",
       spaWaiverId: "a0nTESTCHIP261001",
       authority: "CHIP SPA",
-      operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+      operationType: "MSP_MANUAL_RECORD_CREATED",
+      creationContext: "MANUAL",
     };
 
     await expect(
@@ -524,7 +525,7 @@ describe("SMART operation dispatch", () => {
         origin: "SMART",
         smartRecordType: SMART_RECORD_TYPE.RESERVATION,
         spaWaiverId: payload.spaWaiverId,
-        operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+        operationType: "MSP_MANUAL_RECORD_CREATED",
       }),
     );
     expect(updateItemSpy).not.toHaveBeenCalled();
@@ -937,7 +938,7 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("consumes CHIPSPA_ASSIGNMENT_UPDATED using the complete assignment roster", async () => {
+  it("consumes MSP_ASSIGNMENT_UPDATED for CHIP using the complete assignment roster", async () => {
     const packageId = "CA-26-1001";
     const externalId = "a0nTESTCHIP261001";
     const assignmentPayload = {
@@ -945,7 +946,7 @@ describe("SMART operation dispatch", () => {
       id: packageId,
       spaWaiverId: externalId,
       authority: "CHIP SPA",
-      operationType: "CHIPSPA_ASSIGNMENT_UPDATED",
+      operationType: "MSP_ASSIGNMENT_UPDATED",
       srtAssignmentId: "chip-cpoc-assignment",
       srtMember: [
         {
@@ -1004,13 +1005,13 @@ describe("SMART operation dispatch", () => {
         leadAnalystName: "CHIP CPOC",
         smartCpocContactId: "chip-cpoc-contact",
         reviewTeam: [{ name: "CHIP SRT", email: "chip.srt@example.com" }],
-        operationType: "CHIPSPA_ASSIGNMENT_UPDATED",
+        operationType: "MSP_ASSIGNMENT_UPDATED",
       }),
     );
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("consumes CHIPSPA_PACKAGE_DETAILS_UPDATED and records administrative changes", async () => {
+  it("consumes MSP_ADMINISTRATIVE_FIELD_UPDATED for CHIP package details", async () => {
     const packageId = "CA-26-1105-CHIP";
     const externalId = "a0nTESTCHIP261105";
     const statusChangedAt = "2026-11-05T17:00:00.123Z";
@@ -1019,7 +1020,7 @@ describe("SMART operation dispatch", () => {
       id: packageId,
       spaWaiverId: externalId,
       authority: "CHIP SPA",
-      operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+      operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
       statusChangedAt,
       state: "California",
       initialSubmissionDate: "2026-11-05",
@@ -1075,7 +1076,7 @@ describe("SMART operation dispatch", () => {
         proposedDate: "2027-01-31T05:00:00.000Z",
         approvedEffectiveDate: "2026-12-01T05:00:00.000Z",
         smartPackageDetailsChangedAt: statusChangedAt,
-        operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+        operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
       }),
     );
     expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("origin");
@@ -1087,7 +1088,7 @@ describe("SMART operation dispatch", () => {
           packageId,
           event: "update-values",
           changeMade: "Initial Submission Date changed from 2026-11-04 to 2026-11-05",
-          operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+          operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
         }),
       ],
       { throwOnBulkError: true },

@@ -1,5 +1,3 @@
-import { handleChipSpaAssignmentUpdated } from "./chipSpaAssignmentUpdated";
-import { handleChipSpaManualRecordUpdated } from "./chipSpaManualRecordUpdated";
 import { handleChipSpaPackageDetailsUpdated } from "./chipSpaPackageDetailsUpdated";
 import { handleDefaultSmartOnemacEvent } from "./defaultSmartOnemacEvent";
 import { evaluateSmartPackageExistence, SmartKafkaMetadata } from "./evaluateSmartPackageExistence";
@@ -13,9 +11,6 @@ import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 import { persistSmartOnemacEvent } from "./persistSmartOnemacEvent";
 
 const SMART_OPERATION_TYPES = [
-  "CHIPSPA_ASSIGNMENT_UPDATED",
-  "CHIPSPA_MANUAL_RECORD_UPDATED",
-  "CHIPSPA_PACKAGE_DETAILS_UPDATED",
   "MSP_MANUAL_RECORD_CREATED",
   "MSP_STATUS_UPDATED",
   "MSP_ADMINISTRATIVE_FIELD_UPDATED",
@@ -57,15 +52,6 @@ export const dispatchSmartOnemacEvent = async (
   }
 
   switch (operationType) {
-    case "CHIPSPA_ASSIGNMENT_UPDATED":
-      await handleChipSpaAssignmentUpdated(context);
-      return;
-    case "CHIPSPA_MANUAL_RECORD_UPDATED":
-      await handleChipSpaManualRecordUpdated(context);
-      return;
-    case "CHIPSPA_PACKAGE_DETAILS_UPDATED":
-      await handleChipSpaPackageDetailsUpdated(context);
-      return;
     case "MSP_MANUAL_RECORD_CREATED":
       await handleMspManualRecordCreated(context);
       return;
@@ -73,7 +59,11 @@ export const dispatchSmartOnemacEvent = async (
       await handleMspStatusUpdated(context);
       return;
     case "MSP_ADMINISTRATIVE_FIELD_UPDATED":
-      await handleMspAdministrativeFieldUpdated(context);
+      if (event.authority === "CHIP SPA") {
+        await handleChipSpaPackageDetailsUpdated(context);
+      } else {
+        await handleMspAdministrativeFieldUpdated(context);
+      }
       return;
     case "MSP_SPLIT_SPA_CREATED":
       await handleMspSplitSpaCreated(context);

@@ -44,7 +44,7 @@ const event = Object.freeze({
   createdByUserId: "005SMARTUSER",
   createdByName: "CHIP Super User",
   createdByEmail: "chip.super@example.com",
-  operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+  operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
   state: "California",
   initialSubmissionDate: "2026-11-05",
   statusChangedAt: STATUS_CHANGED_AT,
@@ -255,7 +255,7 @@ describe("handleChipSpaPackageDetailsUpdated", () => {
       PACKAGE_ID,
       {
         smartPackageDetailsChangedAt: STATUS_CHANGED_AT,
-        operationType: "CHIPSPA_PACKAGE_DETAILS_UPDATED",
+        operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
         correlationId: event.correlationId,
       },
     );
@@ -411,7 +411,7 @@ describe("handleChipSpaPackageDetailsUpdated", () => {
 
   it.each([
     ["authority", "Medicaid SPA"],
-    ["operationType", "MSP_ADMINISTRATIVE_FIELD_UPDATED"],
+    ["operationType", "CHIPSPA_PACKAGE_DETAILS_UPDATED"],
     ["initialSubmissionDate", "2026-02-30"],
   ])("rejects an invalid %s contract value", async (field, value) => {
     const invalidEvent = { ...event, [field]: value } as SmartOnemacEvent;

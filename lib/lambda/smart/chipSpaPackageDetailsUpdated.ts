@@ -34,7 +34,7 @@ const chipSpaPackageDetailsUpdatedSchema = z
     description: z.string().nullish(),
     id: requiredString,
     initialSubmissionDate: calendarDate,
-    operationType: z.literal("CHIPSPA_PACKAGE_DETAILS_UPDATED"),
+    operationType: z.literal("MSP_ADMINISTRATIVE_FIELD_UPDATED"),
     origin: z.literal("SMART"),
     proposedEffectiveDate: smartDate.nullish(),
     spaWaiverId: requiredString,

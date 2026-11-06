@@ -32,7 +32,7 @@ const smartRaiSchema = z
 
 const smartStatusUpdatedSchema = z
   .object({
-    authority: z.literal("Medicaid SPA"),
+    authority: z.enum(["Medicaid SPA", "CHIP SPA"]),
     correlationId: z.string().trim(),
     createdAt: isoDateTime,
     description: z.string().nullish(),
@@ -108,7 +108,11 @@ const buildStatusUpdates = (
   const normalizedStatusDate = normalizeSmartDate(event.statusDate);
   const { cmsStatus, stateStatus } = getStatus(seatoolStatus);
   const raiUpdates = getRaiUpdates(event, seatoolStatus);
-  const typeUpdates = getSmartTypeUpdates(event);
+  // CHIP package details are owned by MSP_ADMINISTRATIVE_FIELD_UPDATED. A
+  // status snapshot may repeat those values, but it must not overwrite a
+  // newer package-detail event. Medicaid retains its established behavior.
+  const acceptsPackageDetails = event.authority === "Medicaid SPA";
+  const typeUpdates = acceptsPackageDetails ? getSmartTypeUpdates(event) : undefined;
   const isFinalDisposition = finalDispositionStatuses.includes(seatoolStatus);
 
   return {
@@ -127,8 +131,12 @@ const buildStatusUpdates = (
     operationType: event.operationType,
     ...raiUpdates,
     ...(isFinalDisposition ? { raiWithdrawEnabled: false } : {}),
-    ...(hasOwn(event, "subject") ? { subject: event.subject ?? null } : {}),
-    ...(hasOwn(event, "description") ? { description: event.description ?? null } : {}),
+    ...(acceptsPackageDetails && hasOwn(event, "subject")
+      ? { subject: event.subject ?? null }
+      : {}),
+    ...(acceptsPackageDetails && hasOwn(event, "description")
+      ? { description: event.description ?? null }
+      : {}),
     ...(typeUpdates ?? {}),
     ...(!document.spaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
     ...(!document.correlationId && event.correlationId
