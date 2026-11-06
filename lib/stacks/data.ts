@@ -160,20 +160,22 @@ export class Data extends cdk.NestedStack {
         ],
       });
 
-      const openSearchMasterRole = new cdk.aws_iam.Role(this, "OpenSearchMasterRole", {
-        assumedBy: new cdk.aws_iam.ServicePrincipal("es.amazonaws.com"),
+      const mapRoleExecutionRole = new cdk.aws_iam.Role(this, "MapRoleLambdaExecutionRole", {
+        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
         managedPolicies: [
-          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName("AmazonOpenSearchServiceFullAccess"),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaBasicExecutionRole",
+          ),
+          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+            "service-role/AWSLambdaVPCAccessExecutionRole",
+          ),
         ],
       });
 
-      openSearchMasterRole.assumeRolePolicy?.addStatements(
-        new cdk.aws_iam.PolicyStatement({
-          effect: cdk.aws_iam.Effect.ALLOW,
-          principals: [new cdk.aws_iam.AccountPrincipal(cdk.Stack.of(this).account)],
-          actions: ["sts:AssumeRole"],
-        }),
-      );
+      // Trusted only by the map-role Lambda that signs OpenSearch admin calls.
+      const openSearchMasterRole = new cdk.aws_iam.Role(this, "OpenSearchMasterRole", {
+        assumedBy: mapRoleExecutionRole,
+      });
 
       const openSearchDomain = new cdk.aws_opensearchservice.CfnDomain(this, "OpenSearchDomain", {
         ebsOptions: { ebsEnabled: true, volumeType: "gp3", volumeSize: 20 },
@@ -266,6 +268,38 @@ export class Data extends cdk.NestedStack {
         devPasswordArn,
       );
 
+      const openSearchHttpActions = [
+        "es:ESHttpHead",
+        "es:ESHttpPost",
+        "es:ESHttpGet",
+        "es:ESHttpPatch",
+        "es:ESHttpDelete",
+        "es:ESHttpPut",
+      ];
+
+      openSearchMasterRole.addToPolicy(
+        new cdk.aws_iam.PolicyStatement({
+          effect: cdk.aws_iam.Effect.ALLOW,
+          actions: openSearchHttpActions,
+          resources: [`${openSearchDomain.attrArn}/*`],
+        }),
+      );
+
+      mapRoleExecutionRole.addToPolicy(
+        new cdk.aws_iam.PolicyStatement({
+          effect: cdk.aws_iam.Effect.ALLOW,
+          actions: openSearchHttpActions,
+          resources: [`${openSearchDomain.attrArn}/*`],
+        }),
+      );
+      mapRoleExecutionRole.addToPolicy(
+        new cdk.aws_iam.PolicyStatement({
+          effect: cdk.aws_iam.Effect.ALLOW,
+          actions: ["sts:AssumeRole"],
+          resources: [openSearchMasterRole.roleArn],
+        }),
+      );
+
       const mapRole = new NodejsFunction(this, "MapRoleLambdaFunction", {
         functionName: awsLambdaFunctionName(project, stage, stack, "mapRole"),
         timeout: cdk.Duration.minutes(2),
@@ -273,40 +307,7 @@ export class Data extends cdk.NestedStack {
         handler: "handler",
         depsLockFilePath: join(__dirname, "../../bun.lockb"),
         runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
-        role: new cdk.aws_iam.Role(this, "MapRoleLambdaExecutionRole", {
-          assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
-          managedPolicies: [
-            cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaBasicExecutionRole",
-            ),
-            cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-              "service-role/AWSLambdaVPCAccessExecutionRole",
-            ),
-          ],
-          inlinePolicies: {
-            LambdaAssumeRolePolicy: new cdk.aws_iam.PolicyDocument({
-              statements: [
-                new cdk.aws_iam.PolicyStatement({
-                  effect: cdk.aws_iam.Effect.ALLOW,
-                  actions: [
-                    "es:ESHttpHead",
-                    "es:ESHttpPost",
-                    "es:ESHttpGet",
-                    "es:ESHttpPatch",
-                    "es:ESHttpDelete",
-                    "es:ESHttpPut",
-                  ],
-                  resources: [`${openSearchDomain.attrArn}/*`],
-                }),
-                new cdk.aws_iam.PolicyStatement({
-                  effect: cdk.aws_iam.Effect.ALLOW,
-                  actions: ["sts:AssumeRole"],
-                  resources: [openSearchMasterRole.roleArn],
-                }),
-              ],
-            }),
-          },
-        }),
+        role: mapRoleExecutionRole,
         vpc,
         vpcSubnets: {
           subnets: privateSubnets,
