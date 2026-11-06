@@ -1,6 +1,12 @@
 import { APIGatewayEvent, Context } from "aws-lambda";
 import { produceMessage } from "libs/api/kafka";
-import { getRequestContext, setDefaultStateSubmitter, setMockUsername, systemAdmin } from "mocks";
+import {
+  getRequestContext,
+  osStateSystemAdmin,
+  setDefaultStateSubmitter,
+  setMockUsername,
+  systemAdmin,
+} from "mocks";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handler } from "./updateUserRoles";
@@ -28,7 +34,9 @@ describe("updateUserRoles handler", () => {
     setDefaultStateSubmitter();
     process.env.topicName = "create-user-profile";
     mockedProduceMessage.mockReset();
-    mockedProduceMessage.mockResolvedValue([{ message: "sent" }]);
+    mockedProduceMessage.mockResolvedValue([
+      { topicName: "create-user-profile", partition: 0, errorCode: 0, offset: "1" },
+    ]);
   });
 
   it("should return 500, if the topicName is not set", async () => {
@@ -154,6 +162,41 @@ describe("updateUserRoles handler", () => {
         doneByName: "System Admin",
       }),
     );
+  });
+
+  it("should allow a state system admin to update roles in their territory", async () => {
+    setMockUsername(osStateSystemAdmin);
+
+    const event = {
+      body: JSON.stringify({
+        updatedRoles: [validUpdatedRole],
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(200);
+    expect(mockedProduceMessage).toHaveBeenCalledTimes(1);
+  });
+
+  it("should return 403 if a state system admin updates a role outside their territory", async () => {
+    setMockUsername(osStateSystemAdmin);
+
+    const event = {
+      body: JSON.stringify({
+        updatedRoles: [{ ...validUpdatedRole, territory: "CA" }],
+      }),
+      requestContext: getRequestContext(),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toEqual(403);
+    expect(JSON.parse(res.body)).toEqual({
+      message: "You are not authorized to perform this action.",
+    });
+    expect(mockedProduceMessage).not.toHaveBeenCalled();
   });
 
   it("should return 500 if there is an error producing the message", async () => {

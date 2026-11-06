@@ -126,10 +126,10 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 - Create feature branches off `main` (or off `val` when the change is meant to land in val first), named after the Jira ticket (e.g. `oy2-41211`); never commit directly to `production`.
 - When executing an attached plan, do not edit the plan file itself.
 - Enterprise JIRA (OY2/OMO): use https://jiraent.cms.gov; Confluence: https://confluenceent.cms.gov
-- Show draft JIRA comments for approval before posting or transitioning tickets.
+- Draft JIRA comments, emails, Teams messages, and other external replies for approval before posting or sending; do not send them.
 - JIRA or CSV review-only requests: assess and report only; do not implement fixes unless explicitly asked.
 - Production investigations are read-only unless the user explicitly permits changes.
-- Draft emails, Teams messages, and other external replies for the user to copy and send; do not send them.
+- Prefer root-cause fixes over forward-fix login/handler workarounds when ephemeral stages fail after Cognito auth (empty OpenSearch indexes, sort mapping errors); do not land Cognito `getUserDetails` fallbacks or `unmapped_type` sort patches as the fix.
 - Harness spec and plan packets should use relative links only, never local absolute file paths.
 - Do not record environment-specific AWS CLI profile names (OneMAC/BigMAC) in `AGENTS.md` or any committed file; keep such environment-specific details only in personal/untracked agent memory.
 - Prefer loading email addresses from the existing `emailAddresses` SSM secret rather than hardcoding them in Lambdas or stacks.
@@ -138,10 +138,10 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 ## Learned Workspace Facts
 
-- `proposedEffectiveDate` in Mako/Kafka events is epoch milliseconds; legacy OneMAC records use ISO strings. OpenSearch and the UI use `proposedDate`, which may still be either format depending on source.
-- Date consumers should read `proposedDate` first, then `draft.data.proposedEffectiveDate`; format in UTC and treat numeric values below `1e12` as seconds when normalizing.
+- `proposedEffectiveDate` in Mako/Kafka events is epoch milliseconds; legacy OneMAC records use ISO strings. OpenSearch and the UI use `proposedDate`, which may still be either format depending on source; date consumers should read `proposedDate` first, then `draft.data.proposedEffectiveDate`, format in UTC, and treat numeric values below `1e12` as seconds when normalizing.
 - SEATool reference tables and TypeScript types live under `lib/packages/shared-types/seatool-tables/`.
 - Environment promotion typically follows `main` → `val` → `production` (for example attachment archive rollouts).
+- Fresh-stage OpenSearch `users`/`roles`/`main` population depends on Kafka replay via `runReindex`, which the Custom Resource starts only on CloudFormation Create (Update does not re-run it—do not change that for `main`/`val`/`production`). Login 400s on `lastModifiedDate`/`makoChangedDate` after a failed or skipped reindex are empty-index symptoms, not Cognito/UI bugs; those sorts succeed on healthy stages because replayed documents created the mappings.
 - Before (or as part of) promoting SMART to `val`/`production`, run `bun run bootstrap:bigmac-error-queue` for that pair (`--pair val` / `--pair production`) so `mako-val` / `mako-production` get `bigmacErrorQueueUrl` and `bigmacErrorQueueArn`, then redeploy so `sinkSmart` receives `BIGMAC_ERROR_QUEUE_URL`. Prefer doing secrets before the merge; a secret-only change does not update the Lambda until redeploy. Optional keys: synth succeeds without them, but SMART ingest errors will not reach BigMAC until both are set and the stage is redeployed. Use `--ensure-producer-secret` so OneMAC is in `bigmac/{stage}/sqsProducerAccounts`.
 - SMART Kafka topic is `aws.mulesoft.onemac.events`; record key must equal payload `id`; envelope `origin` is exactly `"SMART"` (not `source`).
 - In OpenSearch package docs, OneMAC writes `changedDate` while SEA Tool ingest writes `changed_date` (from `STATE_PLAN.CHANGED_DATE`); a SEA Tool update is skipped when `changed_date` is earlier than OneMAC `changedDate`, and a missing `changed_date` means no matching SEA Tool record has merged.

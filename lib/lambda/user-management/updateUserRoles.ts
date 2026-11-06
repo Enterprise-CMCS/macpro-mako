@@ -43,6 +43,22 @@ export const handler = authenticatedMiddy({
       );
     }
 
+    // State system admins may only mutate roles for territories they administer, and may
+    // not update other statesystemadmin roles (mirrors getRoleRequests scoping).
+    if (authenticatedUser.role === "statesystemadmin") {
+      const administeredStates = authenticatedUser.states ?? [];
+      if (
+        updatedRole.role === "statesystemadmin" ||
+        !updatedRole.territory ||
+        !administeredStates.includes(updatedRole.territory)
+      ) {
+        throw createError(
+          403,
+          JSON.stringify({ message: "You are not authorized to perform this action." }),
+        );
+      }
+    }
+
     console.log("Producing message for:", updatedRole.email, updatedRole.role);
 
     try {
