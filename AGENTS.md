@@ -57,7 +57,7 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 ### UI workflows
 
-- `./run ui --mocked` — run the React app against MSW handlers (starts Vite on port 5173).
+- `./run ui --mocked` — run the React app against MSW handlers (starts Vite on port 5000).
 - `./run ui [--stage <stage>]` — run the React app against the specified deployed API; defaults to the branch-derived stage and writes the correct `.env.local` for Amplify/Vite.
 - `./run storybook [--ci|--build-only]` — build Storybook assets and optionally launch the dev server (installs Playwright Chromium first).
 - `./run emails` — launch the transactional email preview server (requires AWS credentials unless mocked data is used downstream).

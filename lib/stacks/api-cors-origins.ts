@@ -1,4 +1,4 @@
-const LOCAL_UI_ORIGIN = "http://localhost:5173";
+const LOCAL_UI_ORIGIN = "http://localhost:5000";
 
 /** Strip a trailing slash so CORS origins match browser Origin headers. */
 export function applicationOriginFromEndpointUrl(applicationEndpointUrl: string): string {

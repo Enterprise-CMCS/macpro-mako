@@ -18,7 +18,7 @@ describe("apiCorsAllowOrigins", () => {
   it("adds localhost for dev stages", () => {
     expect(apiCorsAllowOrigins("https://d111.cloudfront.net/", true)).toEqual([
       "https://d111.cloudfront.net",
-      "http://localhost:5173",
+      "http://localhost:5000",
     ]);
   });
 
