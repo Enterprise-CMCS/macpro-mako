@@ -461,7 +461,7 @@ export class Data extends cdk.NestedStack {
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
-              actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeVpcs"],
+              actions: ["ec2:DescribeSecurityGroups", "ec2:DescribeSubnets", "ec2:DescribeVpcs"],
               resources: ["*"],
             }),
             new cdk.aws_iam.PolicyStatement({
@@ -917,7 +917,9 @@ export class Data extends cdk.NestedStack {
                   .when(
                     cdk.aws_stepfunctions.Condition.booleanEquals("$.ready", false),
                     new cdk.aws_stepfunctions.Wait(this, "WaitForData", {
-                      time: cdk.aws_stepfunctions.WaitTime.duration(cdk.Duration.seconds(3)),
+                      // Longer waits keep the reindex state machine under the
+                      // 25,000-event history limit while Kafka catches up.
+                      time: cdk.aws_stepfunctions.WaitTime.duration(cdk.Duration.seconds(30)),
                     }).next(checkDataProgressTask),
                   ),
               ),
@@ -925,7 +927,7 @@ export class Data extends cdk.NestedStack {
           .when(
             cdk.aws_stepfunctions.Condition.booleanEquals("$.ready", false),
             new cdk.aws_stepfunctions.Wait(this, "WaitForSeaData", {
-              time: cdk.aws_stepfunctions.WaitTime.duration(cdk.Duration.seconds(3)),
+              time: cdk.aws_stepfunctions.WaitTime.duration(cdk.Duration.seconds(30)),
             }).next(checkSeaDataProgressTask),
           ),
       );
@@ -955,6 +957,48 @@ export class Data extends cdk.NestedStack {
       logGroupName: `/aws/lambda/${runReindexFunctionName}`,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
+    const checkReindexCompleteFunctionName = awsLambdaFunctionName(
+      project,
+      stage,
+      stack,
+      "checkReindexComplete",
+    );
+    const checkReindexCompleteLogGroup = new cdk.aws_logs.LogGroup(
+      this,
+      `checkReindexCompleteLogGroup`,
+      {
+        logGroupName: `/aws/lambda/${checkReindexCompleteFunctionName}`,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+      },
+    );
+
+    const reindexCustomResourceRole = new cdk.aws_iam.Role(this, "RunReindexLambdaExecutionRole", {
+      assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
+      managedPolicies: [
+        cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
+          "service-role/AWSLambdaBasicExecutionRole",
+        ),
+      ],
+      inlinePolicies: {
+        LambdaAssumeRolePolicy: new cdk.aws_iam.PolicyDocument({
+          statements: [
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["states:StartExecution", "states:DescribeExecution"],
+              resources: [
+                `arn:aws:states:${this.region}:${this.account}:stateMachine:${project}-${stage}-${stack}-reindex`,
+                `arn:aws:states:${this.region}:${this.account}:execution:${project}-${stage}-${stack}-reindex:*`,
+              ],
+            }),
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.DENY,
+              actions: ["logs:CreateLogGroup"],
+              resources: ["*"],
+            }),
+          ],
+        }),
+      },
+    });
 
     const runReindexLambda = new NodejsFunction(this, "runReindexLambdaFunction", {
       functionName: runReindexFunctionName,
@@ -963,41 +1007,38 @@ export class Data extends cdk.NestedStack {
       depsLockFilePath: join(__dirname, "../../bun.lockb"),
       runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
       timeout: cdk.Duration.minutes(5),
-      role: new cdk.aws_iam.Role(this, "RunReindexLambdaExecutionRole", {
-        assumedBy: new cdk.aws_iam.ServicePrincipal("lambda.amazonaws.com"),
-        managedPolicies: [
-          cdk.aws_iam.ManagedPolicy.fromAwsManagedPolicyName(
-            "service-role/AWSLambdaBasicExecutionRole",
-          ),
-        ],
-        inlinePolicies: {
-          LambdaAssumeRolePolicy: new cdk.aws_iam.PolicyDocument({
-            statements: [
-              new cdk.aws_iam.PolicyStatement({
-                effect: cdk.aws_iam.Effect.ALLOW,
-                actions: ["states:StartExecution"],
-                resources: [
-                  `arn:aws:states:${this.region}:${this.account}:stateMachine:${project}-${stage}-${stack}-reindex`,
-                ],
-              }),
-              new cdk.aws_iam.PolicyStatement({
-                effect: cdk.aws_iam.Effect.DENY,
-                actions: ["logs:CreateLogGroup"],
-                resources: ["*"],
-              }),
-            ],
-          }),
-        },
-      }),
+      role: reindexCustomResourceRole,
       logGroup: runReindexLogGroup,
       bundling: commonBundlingOptions,
     });
+
+    const checkReindexCompleteLambda = new NodejsFunction(
+      this,
+      "checkReindexCompleteLambdaFunction",
+      {
+        functionName: checkReindexCompleteFunctionName,
+        entry: join(__dirname, "../lambda/checkReindexComplete.ts"),
+        handler: "handler",
+        depsLockFilePath: join(__dirname, "../../bun.lockb"),
+        runtime: cdk.aws_lambda.Runtime.NODEJS_22_X,
+        timeout: cdk.Duration.seconds(30),
+        role: reindexCustomResourceRole,
+        logGroup: checkReindexCompleteLogGroup,
+        bundling: commonBundlingOptions,
+      },
+    );
 
     const runReindexProviderProvider = new cdk.custom_resources.Provider(
       this,
       "RunReindexProvider",
       {
         onEventHandler: runReindexLambda,
+        isCompleteHandler: checkReindexCompleteLambda,
+        queryInterval: cdk.Duration.minutes(1),
+        // CDK Provider framework caps totalTimeout at 1 hour. checkReindexComplete
+        // fails Create on FAILED within that window and hands off long RUNNING
+        // executions before the provider waiter times out.
+        totalTimeout: cdk.Duration.hours(1),
       },
     );
 

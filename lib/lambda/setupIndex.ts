@@ -2,6 +2,9 @@ import { Handler } from "aws-lambda";
 import * as os from "libs/opensearch-lib";
 import { opensearch } from "shared-types";
 
+const SHARED_INDEX_NAMESPACES = new Set(["main", "val", "production"]);
+const MAIN_ROLES_INDEX = "mainroles" as opensearch.Index;
+
 export const handler: Handler = async (event, __, callback) => {
   const response = {
     statusCode: 200,
@@ -77,10 +80,15 @@ export const handler: Handler = async (event, __, callback) => {
       osDomain: event.osDomain,
       index: `${event.indexNamespace}users`,
     });
+    const rolesIndex = `${event.indexNamespace}roles` as opensearch.Index;
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}roles`,
+      index: rolesIndex,
     });
+
+    if (!SHARED_INDEX_NAMESPACES.has(event.indexNamespace)) {
+      await os.reindexDocuments(event.osDomain, MAIN_ROLES_INDEX, rolesIndex);
+    }
   } catch (error: any) {
     response.statusCode = 500;
     errorResponse = error;

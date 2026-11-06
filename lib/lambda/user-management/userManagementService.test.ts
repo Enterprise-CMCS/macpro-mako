@@ -299,6 +299,30 @@ describe("User Management Service", () => {
       const result = await getLatestActiveRoleByEmail("StateSubmitter@Nightwatch.Test");
       expect(result).toEqual(role._source);
     });
+
+    it("should sort lastModifiedDate with an unmapped type for empty roles indexes", async () => {
+      const searchSpy = vi.spyOn(libs, "search").mockResolvedValueOnce({
+        hits: { hits: [] },
+      } as never);
+
+      await getLatestActiveRoleByEmail("empty-stage@example.com");
+
+      expect(searchSpy).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.any(String),
+        expect.objectContaining({
+          sort: [
+            {
+              lastModifiedDate: {
+                order: "desc",
+                unmapped_type: "long",
+              },
+            },
+          ],
+        }),
+      );
+      searchSpy.mockRestore();
+    });
   });
 
   describe("getUserRolesWithNames", () => {

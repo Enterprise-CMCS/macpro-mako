@@ -439,6 +439,36 @@ export async function updateFieldMapping(
   }
 }
 
+export async function reindexDocuments(
+  host: string,
+  sourceIndex: opensearch.Index,
+  destIndex: opensearch.Index,
+) {
+  client = client || (await getClient(host));
+  try {
+    const sourceExists = await client.indices.exists({ index: sourceIndex });
+    if (!sourceExists.body) {
+      console.warn(
+        `Source index ${sourceIndex} does not exist; skipping reindex into ${destIndex}`,
+      );
+      return;
+    }
+
+    await client.reindex({
+      wait_for_completion: true,
+      refresh: true,
+      body: {
+        conflicts: "proceed",
+        source: { index: sourceIndex },
+        dest: { index: destIndex },
+      },
+    });
+  } catch (error) {
+    console.error(`Error reindexing from ${sourceIndex} to ${destIndex}:`, error);
+    throw error;
+  }
+}
+
 export function decodeUtf8(data: any, seen = new WeakMap<object, unknown>()): any {
   if (typeof data === "string") {
     try {
