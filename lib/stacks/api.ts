@@ -10,9 +10,6 @@ import { join } from "path";
 import { commonBundlingOptions } from "../config/bundling-config";
 import { DeploymentConfigProperties } from "../config/deployment-config";
 import { awsLambdaFunctionName, awsS3AccountBucketName } from "../config/lambda-function-name";
-import { apiCorsAllowOrigins, applicationOriginFromEndpointUrl } from "./api-cors-origins";
-import { apiGatewayInvokeResources } from "./api-gateway-invoke";
-import { apiStageDataTraceEnabled } from "./api-stage-logging";
 import {
   getArchiveBaseReadBucket,
   getArchiveOverlayPrefix,
@@ -63,7 +60,6 @@ interface ApiStackProps extends cdk.NestedStackProps {
   emailAddressLookupSecretName: DeploymentConfigProperties["emailAddressLookupSecretName"];
   notificationSecretName: DeploymentConfigProperties["notificationSecretName"];
   notificationSecretArn: DeploymentConfigProperties["notificationSecretArn"];
-  applicationEndpointUrl: string;
 }
 
 export class Api extends cdk.NestedStack {
@@ -106,11 +102,7 @@ export class Api extends cdk.NestedStack {
       dbInfoSecretName,
       notificationSecretName,
       notificationSecretArn,
-      applicationEndpointUrl,
     } = props;
-
-    const corsAllowOrigins = apiCorsAllowOrigins(applicationEndpointUrl, isDev);
-    const corsPrimaryOrigin = applicationOriginFromEndpointUrl(applicationEndpointUrl);
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
     const legacyAttachmentBucketMapParameterName = getLegacyAttachmentBucketMapParameterName(
@@ -1624,13 +1616,17 @@ export class Api extends cdk.NestedStack {
       runSeatoolMissingRecordEscalationLambda: lambdas.runSeatoolMissingRecordEscalation,
     });
 
-    // Create IAM role for API Gateway to invoke Lambda functions.
-    // Invoke allow is attached after apiResources so it lists only routed ARNs.
+    // Create IAM role for API Gateway to invoke Lambda functions
     const apiGatewayRole = new cdk.aws_iam.Role(this, "ApiGatewayRole", {
       assumedBy: new cdk.aws_iam.ServicePrincipal("apigateway.amazonaws.com"),
       inlinePolicies: {
         InvokeLambdaPolicy: new cdk.aws_iam.PolicyDocument({
           statements: [
+            new cdk.aws_iam.PolicyStatement({
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["lambda:InvokeFunction"],
+              resources: ["arn:aws:lambda:*:*:function:*"],
+            }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.DENY,
               actions: ["logs:CreateLogGroup"],
@@ -1655,7 +1651,7 @@ export class Api extends cdk.NestedStack {
       deployOptions: {
         stageName: stage,
         loggingLevel: cdk.aws_apigateway.MethodLoggingLevel.INFO,
-        dataTraceEnabled: apiStageDataTraceEnabled(isDev),
+        dataTraceEnabled: true,
         metricsEnabled: true,
         accessLogDestination: new cdk.aws_apigateway.LogGroupLogDestination(
           apiExecutionLogsLogGroup,
@@ -1673,7 +1669,7 @@ export class Api extends cdk.NestedStack {
         }),
       },
       defaultCorsPreflightOptions: {
-        allowOrigins: corsAllowOrigins,
+        allowOrigins: cdk.aws_apigateway.Cors.ALL_ORIGINS,
         allowMethods: cdk.aws_apigateway.Cors.ALL_METHODS,
         allowHeaders: [
           "Content-Type",
@@ -1695,7 +1691,7 @@ export class Api extends cdk.NestedStack {
       restApiId: api.restApiId,
       responseType: "DEFAULT_4XX",
       responseParameters: {
-        "gatewayresponse.header.Access-Control-Allow-Origin": `'${corsPrimaryOrigin}'`,
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
         "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
       },
     });
@@ -1705,7 +1701,7 @@ export class Api extends cdk.NestedStack {
       restApiId: api.restApiId,
       responseType: "DEFAULT_5XX",
       responseParameters: {
-        "gatewayresponse.header.Access-Control-Allow-Origin": `'${corsPrimaryOrigin}'`,
+        "gatewayresponse.header.Access-Control-Allow-Origin": "'*'",
         "gatewayresponse.header.Access-Control-Allow-Headers": "'*'",
       },
     });
@@ -1916,16 +1912,6 @@ export class Api extends cdk.NestedStack {
         resource.authorizer,
       );
     });
-
-    apiGatewayRole.addToPolicy(
-      new cdk.aws_iam.PolicyStatement({
-        effect: cdk.aws_iam.Effect.ALLOW,
-        actions: ["lambda:InvokeFunction"],
-        resources: apiGatewayInvokeResources(
-          Object.values(apiResources).map((resource) => resource.lambda.functionArn),
-        ),
-      }),
-    );
 
     // Define CloudWatch Alarms
     const createCloudWatchAlarm = (id: string, lambdaFunction: cdk.aws_lambda.Function) => {
