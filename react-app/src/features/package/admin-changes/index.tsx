@@ -41,12 +41,10 @@ const AC_LegacyAdminChange = ({ adminActivity }: AdminChangeProps) => (
       <h2 className="font-bold text-lg mb-2">Change Made</h2>
       <p>{adminActivity.changeMade || "No information submitted"}</p>
     </div>
-    {adminActivity.changeReason && (
-      <div>
-        <h2 className="font-bold text-lg mb-2">Change Reason</h2>
-        <p>{adminActivity.changeReason}</p>
-      </div>
-    )}
+    <div>
+      <h2 className="font-bold text-lg mb-2">Change Reason</h2>
+      <p>{adminActivity.changeReason || "No information submitted"}</p>
+    </div>
   </div>
 );
 function checkRegexPatterns(input: string): string {
@@ -84,7 +82,7 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
           AC_LegacyAdminChange,
         ];
       case "split-spa":
-        return ["Split SPA Created", AC_LegacyAdminChange];
+        return ["Package Added", AC_LegacyAdminChange];
       case "update-id":
         return ["Manual Update", AC_LegacyAdminChange];
       case "update-values":
