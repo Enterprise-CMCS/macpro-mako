@@ -134,6 +134,8 @@ describe("handleMspAdministrativeFieldUpdated", () => {
           isAdminChange: true,
           changeMade:
             "Initial Submission Date changed from 2026-09-01 to 2026-09-03; Proposed Effective Date changed from 2027-01-01 to 2027-01-31",
+          changeReason:
+            "This package was updated in OneMAC to reflect an administrative change made in SMART by Super1 Nag.",
           submitterName: event.createdByName,
         }),
       ],
