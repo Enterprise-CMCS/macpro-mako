@@ -4,6 +4,7 @@ import { opensearch } from "shared-types";
 
 const SHARED_INDEX_NAMESPACES = new Set(["main", "val", "production"]);
 const MAIN_ROLES_INDEX = "mainroles" as opensearch.Index;
+const MAIN_USERS_INDEX = "mainusers" as opensearch.Index;
 
 export const handler: Handler = async (event, __, callback) => {
   const response = {
@@ -21,6 +22,7 @@ export const handler: Handler = async (event, __, callback) => {
         createdByUserId: { type: "keyword" },
         deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
+        makoChangedDate: { type: "date" },
         proposedDate: { type: "date" },
         raiId: { type: "keyword" },
         raiName: { type: "keyword" },
@@ -76,9 +78,10 @@ export const handler: Handler = async (event, __, callback) => {
       osDomain: event.osDomain,
       index: `${event.indexNamespace}legacyinsights`,
     });
+    const usersIndex = `${event.indexNamespace}users` as opensearch.Index;
     await manageIndexResource({
       osDomain: event.osDomain,
-      index: `${event.indexNamespace}users`,
+      index: usersIndex,
     });
     const rolesIndex = `${event.indexNamespace}roles` as opensearch.Index;
     await manageIndexResource({
@@ -88,6 +91,7 @@ export const handler: Handler = async (event, __, callback) => {
 
     if (!SHARED_INDEX_NAMESPACES.has(event.indexNamespace)) {
       await os.reindexDocuments(event.osDomain, MAIN_ROLES_INDEX, rolesIndex);
+      await os.reindexDocuments(event.osDomain, MAIN_USERS_INDEX, usersIndex);
     }
   } catch (error: any) {
     response.statusCode = 500;

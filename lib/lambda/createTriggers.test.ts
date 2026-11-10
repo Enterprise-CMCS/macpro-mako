@@ -50,6 +50,7 @@ describe("Lambda Handler", () => {
         },
       ],
       consumerGroupPrefix: "cg-",
+      pollerGroupName: "mako-ephemeral-kafka",
       brokerString: "broker1,broker2",
       subnets: ["subnet-1", "subnet-2", "subnet-3"],
       securityGroup: "sg-12345678",
@@ -64,6 +65,11 @@ describe("Lambda Handler", () => {
           Enabled: true,
           FunctionName: TEST_FUNCTION_NAME,
           Topics: [TEST_TOPIC_NAME],
+          ProvisionedPollerConfig: {
+            MinimumPollers: 1,
+            MaximumPollers: 2,
+            PollerGroupName: "mako-ephemeral-kafka",
+          },
         }),
       } as CreateEventSourceMappingCommand),
     );
@@ -88,6 +94,7 @@ describe("Lambda Handler", () => {
         },
       ],
       consumerGroupPrefix: "cg-",
+      pollerGroupName: "mako-ephemeral-kafka",
       brokerString: "broker1,broker2",
       subnets: ["subnet-1", "subnet-2", "subnet-3"],
       securityGroup: "sg-12345678",

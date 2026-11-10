@@ -51,6 +51,7 @@ describe("handler", () => {
         createdByUserId: { type: "keyword" },
         deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
+        makoChangedDate: { type: "date" },
         proposedDate: { type: "date" },
         raiId: { type: "keyword" },
         raiName: { type: "keyword" },
@@ -92,6 +93,12 @@ describe("handler", () => {
       "mainroles",
       `${OPENSEARCH_INDEX_NAMESPACE}roles`,
     );
+    expect(reindexDocumentsSpy).toHaveBeenCalledWith(
+      OPENSEARCH_DOMAIN,
+      "mainusers",
+      `${OPENSEARCH_INDEX_NAMESPACE}users`,
+    );
+    expect(reindexDocumentsSpy).toHaveBeenCalledTimes(2);
 
     expect(callback).toHaveBeenCalledWith(null, { statusCode: 200 });
   });
