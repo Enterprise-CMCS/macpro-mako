@@ -45,11 +45,6 @@ export const handler: Handler = async (event, _, callback) => {
               URI: `security_group:${event.securityGroup}`,
             },
           ],
-          ProvisionedPollerConfig: {
-            MinimumPollers: 1,
-            MaximumPollers: 2,
-            PollerGroupName: event.pollerGroupName,
-          },
           StartingPosition: event.startingPosition || "TRIM_HORIZON",
           Topics: [topic],
         };

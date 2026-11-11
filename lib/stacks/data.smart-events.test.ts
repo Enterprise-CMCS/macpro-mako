@@ -187,11 +187,6 @@ describe.each(STAGE_FIXTURES)("Data SMART events infrastructure for $stage", ({ 
     expect(mappingProperties.StartingPosition).toBe("LATEST");
     expect(consumerGroupConfig?.ConsumerGroupId).toMatch(/[Ss][Mm][Aa][Rr][Tt]/);
     expect(JSON.stringify(mappingProperties.FunctionName)).toContain(smartLambdaLogicalId);
-    expect(mappingProperties.ProvisionedPollerConfig).toEqual({
-      MinimumPollers: 1,
-      MaximumPollers: 2,
-      PollerGroupName: `mako-${stage}-kafka`,
-    });
   });
 
   it("keeps SMART out of CDC, changelog, email, and reindex mappings", () => {

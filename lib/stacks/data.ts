@@ -64,7 +64,6 @@ export class Data extends cdk.NestedStack {
       bigmacErrorQueueArn,
     } = props;
     const consumerGroupPrefix = `--${project}--${stage}--`;
-    const pollerGroupName = `${project}-${stage}-kafka`;
     const smartOnemacTopic = `${topicNamespace}aws.mulesoft.onemac.events`;
 
     let openSearchDomainEndpoint;
@@ -607,11 +606,6 @@ export class Data extends cdk.NestedStack {
           uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
         },
       ],
-      provisionedPollerConfig: {
-        minimumPollers: 1,
-        maximumPollers: 2,
-        pollerGroupName,
-      },
       startingPosition: "LATEST",
       topics: [smartOnemacTopic],
     });
@@ -807,7 +801,6 @@ export class Data extends cdk.NestedStack {
             brokerString,
             securityGroup: lambdaSecurityGroup.securityGroupId,
             consumerGroupPrefix,
-            pollerGroupName,
             subnets: privateSubnets.map((subnet) => subnet.subnetId),
             triggers: [
               {
@@ -848,7 +841,6 @@ export class Data extends cdk.NestedStack {
                     brokerString,
                     securityGroup: lambdaSecurityGroup.securityGroupId,
                     consumerGroupPrefix,
-                    pollerGroupName,
                     subnets: privateSubnets.map((subnet) => subnet.subnetId),
                     triggers: [
                       {
@@ -905,7 +897,6 @@ export class Data extends cdk.NestedStack {
                           brokerString,
                           securityGroup: lambdaSecurityGroup.securityGroupId,
                           consumerGroupPrefix,
-                          pollerGroupName,
                           subnets: privateSubnets.map((subnet) => subnet.subnetId),
                           triggers: [
                             {

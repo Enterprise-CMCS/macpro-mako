@@ -233,8 +233,6 @@ export class Email extends cdk.NestedStack {
 
     alarm.addAlarmAction(new cdk.aws_cloudwatch_actions.SnsAction(alarmTopic));
 
-    const pollerGroupName = `${project}-${stage}-kafka`;
-
     new CfnEventSourceMapping(this, "SinkSESTriggerOnemac", {
       batchSize: 1,
       enabled: true,
@@ -254,11 +252,6 @@ export class Email extends cdk.NestedStack {
           uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
         },
       ],
-      provisionedPollerConfig: {
-        minimumPollers: 1,
-        maximumPollers: 2,
-        pollerGroupName,
-      },
       startingPosition: "LATEST",
       topics: [`${topicNamespace}aws.onemac.migration.cdc`],
       destinationConfig: {
@@ -287,11 +280,6 @@ export class Email extends cdk.NestedStack {
           uri: `security_group:${lambdaSecurityGroup.securityGroupId}`,
         },
       ],
-      provisionedPollerConfig: {
-        minimumPollers: 1,
-        maximumPollers: 2,
-        pollerGroupName,
-      },
       startingPosition: "LATEST",
       topics: [`aws.seatool.ksql.onemac.three.agg.State_Plan`],
       destinationConfig: {
