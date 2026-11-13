@@ -152,6 +152,17 @@ export const arUploadSubsequentDocuments: ActionRule = {
       return false;
     }
 
+    if (
+      checker.authorityIs([Authority.CHIP_SPA]) &&
+      checker.hasStatus([
+        SEATOOL_STATUS.PENDING_CONCURRENCE,
+        SEATOOL_STATUS.PENDING_APPROVAL,
+        SEATOOL_STATUS.PENDING_DISAPPROVAL,
+      ])
+    ) {
+      return !checker.hasRequestedRai && !checker.isLocked;
+    }
+
     if (checker.hasStatus([SEATOOL_STATUS.PENDING])) {
       if (checker.hasRequestedRai) {
         return false;

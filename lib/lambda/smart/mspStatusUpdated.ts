@@ -16,7 +16,7 @@ import {
   resolveSmartPackage,
   smartDate,
 } from "./smartEventHelpers";
-import { mapSmartStatus, SMART_STATUS_VALUES } from "./smartStatus";
+import { CHIP_SMART_STATUS_VALUES, mapSmartStatus } from "./smartStatus";
 
 const smartTypeSelectionSchema = z.object({
   typeSelectionId: requiredString,
@@ -39,7 +39,7 @@ const smartRaiSchema = z
 
 const smartStatusUpdatedSchema = z
   .object({
-    authority: z.literal("Medicaid SPA"),
+    authority: z.enum(["Medicaid SPA", "CHIP SPA"]),
     correlationId: z.string().trim(),
     createdAt: isoDateTime,
     description: z.string().nullish(),
@@ -48,7 +48,7 @@ const smartStatusUpdatedSchema = z
     origin: z.literal("SMART"),
     rai: smartRaiSchema.nullish(),
     spaWaiverId: requiredString,
-    status: z.enum(SMART_STATUS_VALUES),
+    status: z.enum(CHIP_SMART_STATUS_VALUES),
     statusChangedAt: isoDateTime,
     statusDate: calendarDate,
     subject: z.string().nullish(),
@@ -144,7 +144,7 @@ const buildStatusUpdates = (
   event: SmartStatusUpdatedEvent,
   document: opensearch.main.Document,
 ): Record<string, unknown> => {
-  const statusMapping = mapSmartStatus(event.status);
+  const statusMapping = mapSmartStatus(event.status, event.authority);
   if (!statusMapping) throw new Error(`Unsupported SMART status: ${event.status}`);
 
   const { seatoolStatus } = statusMapping;
@@ -152,7 +152,10 @@ const buildStatusUpdates = (
   const normalizedStatusDate = normalizeSmartDate(event.statusDate);
   const { cmsStatus, stateStatus } = getStatus(seatoolStatus);
   const raiUpdates = getRaiUpdates(event, seatoolStatus);
-  const typeUpdates = getTypeUpdates(event);
+  // CHIP package details are owned by administrative-field events. Repeated
+  // detail snapshots on status events must not replace those newer values.
+  const acceptsPackageDetails = event.authority === "Medicaid SPA";
+  const typeUpdates = acceptsPackageDetails ? getTypeUpdates(event) : undefined;
   const isFinalDisposition = finalDispositionStatuses.includes(seatoolStatus);
 
   return {
@@ -166,13 +169,21 @@ const buildStatusUpdates = (
     initialIntakeNeeded: seatoolStatus === SEATOOL_STATUS.SUBMITTED,
     locked: false,
     secondClock: getSecondClock(document, raiUpdates, statusMapping.secondClock),
-    makoChangedDate: latestIsoDate(document.makoChangedDate, statusChangedAt),
+    // A SMART status change is not a new OneMAC State action. Preserve CHIP's
+    // Latest Package Activity while retaining Medicaid's existing behavior.
+    ...(acceptsPackageDetails
+      ? { makoChangedDate: latestIsoDate(document.makoChangedDate, statusChangedAt) }
+      : {}),
     changedDate: latestIsoDate(document.changedDate, statusChangedAt),
     operationType: event.operationType,
     ...raiUpdates,
     ...(isFinalDisposition ? { raiWithdrawEnabled: false } : {}),
-    ...(hasOwn(event, "subject") ? { subject: event.subject ?? null } : {}),
-    ...(hasOwn(event, "description") ? { description: event.description ?? null } : {}),
+    ...(acceptsPackageDetails && hasOwn(event, "subject")
+      ? { subject: event.subject ?? null }
+      : {}),
+    ...(acceptsPackageDetails && hasOwn(event, "description")
+      ? { description: event.description ?? null }
+      : {}),
     ...(typeUpdates ?? {}),
     ...(!document.spaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
     ...(!document.correlationId && event.correlationId
@@ -204,19 +215,20 @@ const createStatusReservation = async (
   if (result.created) return undefined;
 
   const racedPackage = await os.getItem(domain, index, event.id.toUpperCase());
-  if (
-    !racedPackage?._source ||
-    (racedPackage._source.spaWaiverId && racedPackage._source.spaWaiverId !== event.spaWaiverId)
-  ) {
-    return new Error("package ID was claimed by another record during processing");
+  if (!racedPackage?._source) {
+    throw new Error("package ID was claimed but could not be resolved after create conflict");
   }
 
-  await os.updateItem(
-    domain,
-    index,
-    racedPackage._id,
-    buildStatusUpdates(event, racedPackage._source),
-  );
+  // A concurrent create may already contain a newer status or a State action.
+  // Run the same identity, authority, freshness, and replay checks before writing.
+  await handleMspStatusUpdated({
+    ...context,
+    existence: {
+      ...context.existence,
+      mainById: racedPackage,
+      mainBySpaWaiverId: undefined,
+    },
+  });
   return undefined;
 };
 
@@ -227,10 +239,32 @@ export const handleMspStatusUpdated = async (context: SmartOnemacEventContext): 
     return;
   }
   const event = parsedEvent.data;
-  const resolution = resolveSmartPackage(context);
+  if (!mapSmartStatus(event.status, event.authority)) {
+    await reportSmartValidationFailure(
+      context,
+      new Error(`Unsupported SMART status: ${event.status}`),
+    );
+    return;
+  }
+
+  let resolution = resolveSmartPackage(context);
   if (resolution instanceof Error) {
     await reportSmartValidationFailure(context, resolution);
     return;
+  }
+
+  // Use a single GET snapshot for both status data and optimistic concurrency.
+  // The external-ID search above still rejects ambiguous or conflicting links.
+  const packageById = context.existence.mainById;
+  if (resolution && packageById?._source && packageById._id === resolution.documentId) {
+    resolution = resolveSmartPackage({
+      ...context,
+      existence: { ...context.existence, mainBySpaWaiverId: undefined },
+    });
+    if (resolution instanceof Error) {
+      await reportSmartValidationFailure(context, resolution);
+      return;
+    }
   }
 
   if (!resolution) {
@@ -256,6 +290,21 @@ export const handleMspStatusUpdated = async (context: SmartOnemacEventContext): 
       : {}),
   };
   const { domain, index } = getDomainAndNamespace("main");
+  const { documentId } = resolution;
+  const updatePackage = (updates: Record<string, unknown>): Promise<void> => {
+    if (
+      packageById?._id === documentId &&
+      typeof packageById._seq_no === "number" &&
+      typeof packageById._primary_term === "number"
+    ) {
+      return os.updateItem(domain, index, documentId, updates, {
+        ifSeqNo: packageById._seq_no,
+        ifPrimaryTerm: packageById._primary_term,
+      });
+    }
+
+    return os.updateItem(domain, index, documentId, updates);
+  };
   if (
     storedTimestamp === incomingTimestamp &&
     resolution.document.smartStatus &&
@@ -269,7 +318,7 @@ export const handleMspStatusUpdated = async (context: SmartOnemacEventContext): 
   }
   if (storedTimestamp === incomingTimestamp && resolution.document.smartStatus === event.status) {
     if (Object.keys(identityBackfill).length > 0) {
-      await os.updateItem(domain, index, resolution.documentId, identityBackfill);
+      await updatePackage(identityBackfill);
     }
     return;
   }
@@ -284,15 +333,10 @@ export const handleMspStatusUpdated = async (context: SmartOnemacEventContext): 
       }),
     );
     if (Object.keys(identityBackfill).length > 0) {
-      await os.updateItem(domain, index, resolution.documentId, identityBackfill);
+      await updatePackage(identityBackfill);
     }
     return;
   }
 
-  await os.updateItem(
-    domain,
-    index,
-    resolution.documentId,
-    buildStatusUpdates(event, resolution.document),
-  );
+  await updatePackage(buildStatusUpdates(event, resolution.document));
 };

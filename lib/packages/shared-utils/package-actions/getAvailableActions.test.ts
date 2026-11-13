@@ -108,4 +108,36 @@ describe("getAvailableActions tests", () => {
     });
     expect(result).toEqual([Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE]);
   });
+
+  describe("CHIP pending workflow actions", () => {
+    it.each([
+      SEATOOL_STATUS.PENDING_CONCURRENCE,
+      SEATOOL_STATUS.PENDING_APPROVAL,
+      SEATOOL_STATUS.PENDING_DISAPPROVAL,
+    ])("allows uploads in %s without changing Medicaid permissions", (seatoolStatus) => {
+      const state = { seatoolStatus, initialIntakeNeeded: false, locked: false };
+      expect(
+        getAvailableActions(TEST_STATE_SUBMITTER_USER, { ...TEST_CHIP_SPA_ITEM._source, ...state }),
+      ).toEqual([Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE]);
+      expect(
+        getAvailableActions(TEST_STATE_SUBMITTER_USER, { ...TEST_MED_SPA_ITEM._source, ...state }),
+      ).not.toContain(Action.UPLOAD_SUBSEQUENT_DOCUMENTS);
+    });
+
+    it.each([
+      { locked: true },
+      { initialIntakeNeeded: true },
+      { raiRequestedDate: "2026-11-03T05:00:00.000Z", raiReceivedDate: null },
+    ])("retains upload safeguards for %j", (state) => {
+      expect(
+        getAvailableActions(TEST_STATE_SUBMITTER_USER, {
+          ...TEST_CHIP_SPA_ITEM._source,
+          seatoolStatus: SEATOOL_STATUS.PENDING_DISAPPROVAL,
+          initialIntakeNeeded: false,
+          locked: false,
+          ...state,
+        }),
+      ).not.toContain(Action.UPLOAD_SUBSEQUENT_DOCUMENTS);
+    });
+  });
 });
