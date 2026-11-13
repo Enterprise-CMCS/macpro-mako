@@ -41,7 +41,13 @@ export const normalizeEvent = (opts: NormalizeEventOptions = {}): MiddlewareObj 
 
   return {
     before: async (request: Request) => {
-      console.log(JSON.stringify(request?.event, null, 2));
+      console.log(
+        JSON.stringify({
+          httpMethod: request?.event?.httpMethod,
+          path: request?.event?.path,
+          requestId: request?.event?.requestContext?.requestId,
+        }),
+      );
       if (options.opensearch) {
         validateEnvVariable("osDomain");
         validateEnvVariable("indexNamespace");
