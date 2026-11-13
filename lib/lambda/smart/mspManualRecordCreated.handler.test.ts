@@ -142,10 +142,45 @@ describe("handleMspManualRecordCreated", () => {
     expect(updateItemSpy).not.toHaveBeenCalled();
   });
 
+  it("uses payload authority for a CHIP reservation with the shared operation type", async () => {
+    const chipEvent = {
+      ...event,
+      id: "CA-26-0903-SG1",
+      authority: "CHIP SPA",
+    } as SmartOnemacEvent;
+
+    await handleMspManualRecordCreated(
+      createContext({
+        event: chipEvent,
+        kafkaKey: chipEvent.id,
+      }),
+    );
+
+    expect(createItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      expect.objectContaining({
+        id: chipEvent.id,
+        authority: "CHIP SPA",
+        operationType: "MSP_MANUAL_RECORD_CREATED",
+      }),
+    );
+  });
+
   it("rejects a non-manual creation context", async () => {
     await handleMspManualRecordCreated(
       createContext({ event: { ...event, creationContext: "AUTOMATED" } }),
     );
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).toHaveBeenCalled();
+  });
+
+  it("rejects an unsupported payload authority", async () => {
+    await handleMspManualRecordCreated(
+      createContext({ event: { ...event, authority: "1915(c)" } as SmartOnemacEvent }),
+    );
+
     expect(createItemSpy).not.toHaveBeenCalled();
     expect(updateItemSpy).not.toHaveBeenCalled();
     expect(publishSmartIngestErrorSpy).toHaveBeenCalled();
