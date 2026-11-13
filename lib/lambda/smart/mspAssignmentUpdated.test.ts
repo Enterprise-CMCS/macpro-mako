@@ -165,6 +165,32 @@ describe("handleMspAssignmentUpdated", () => {
     );
   });
 
+  it("uses payload authority for CHIP assignments with the shared operation type", async () => {
+    const chipPackage = { authority: "CHIP SPA" } as const;
+    getItemSpy.mockResolvedValue(packageById(chipPackage));
+    await handleMspAssignmentUpdated(
+      createContext({
+        event: { ...event, authority: "CHIP SPA" } as SmartOnemacEvent,
+        existence: {
+          mainById: packageById(chipPackage),
+          mainBySpaWaiverId: packageSearch(chipPackage),
+          changelogById: emptySearch,
+        },
+      }),
+    );
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      PACKAGE_ID,
+      expect.objectContaining({
+        leadAnalystName: "Test CPOC User",
+        operationType: "MSP_ASSIGNMENT_UPDATED",
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("changes and clears the CPOC from a complete roster snapshot", async () => {
     const changedMembers = members.map((member) => ({
       ...member,

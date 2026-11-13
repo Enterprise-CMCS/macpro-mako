@@ -55,6 +55,11 @@ const emails: EmailAddresses = {
   dpoApprover: ["dpo-approver@example.com"],
 };
 
+const productionEmails: EmailAddresses = {
+  ...emails,
+  seatoolMissingRecordTo: undefined,
+};
+
 function restoreEnvValue(key: string, value: string | undefined) {
   if (value === undefined) {
     delete process.env[key];
@@ -179,6 +184,7 @@ describe("runSeatoolMissingRecordEscalation", () => {
 
   it("uses osg/chip To lists and secret CCs on production", async () => {
     process.env.STAGE_NAME = "production";
+    getSecretMock.mockResolvedValue(JSON.stringify(productionEmails));
     s3SendSpy.mockImplementation(async (command) => {
       if (command instanceof ListObjectsV2Command) {
         return { Contents: [] };
@@ -209,8 +215,44 @@ describe("runSeatoolMissingRecordEscalation", () => {
     expect(command.input.Message?.Body?.Text?.Data).toBe("MD-23-0001");
   });
 
+  it("routes production only to seatoolMissingRecordTo when the override is set", async () => {
+    process.env.STAGE_NAME = "production";
+    s3SendSpy.mockImplementation(async (command) => {
+      if (command instanceof ListObjectsV2Command) {
+        return { Contents: [] };
+      }
+      return {};
+    });
+    fetchCandidatesMock.mockResolvedValue([
+      {
+        id: "MD-23-0001",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.MED_SPA,
+        daysSinceSubmit: 4,
+      },
+      {
+        id: "CA-23-0002",
+        submissionDate: "2023-08-01T12:00:00-04:00",
+        authority: Authority.CHIP_SPA,
+        daysSinceSubmit: 4,
+      },
+    ]);
+
+    await handler({ now: "2023-08-05T12:00:00-04:00" });
+
+    expect(sesSendSpy).toHaveBeenCalledTimes(2);
+    for (const [command] of sesSendSpy.mock.calls) {
+      const sendCommand = command as SendEmailCommand;
+      expect(sendCommand.input.Destination?.ToAddresses).toEqual([
+        "missing-record-dev@example.com",
+      ]);
+      expect(sendCommand.input.Destination?.CcAddresses ?? []).toEqual([]);
+    }
+  });
+
   it("sends one production email per package, including packages that share an authority", async () => {
     process.env.STAGE_NAME = "production";
+    getSecretMock.mockResolvedValue(JSON.stringify(productionEmails));
     s3SendSpy.mockImplementation(async (command) => {
       if (command instanceof ListObjectsV2Command) {
         return { Contents: [] };

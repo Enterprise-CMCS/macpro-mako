@@ -2,8 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const handlers = vi.hoisted(() => ({
   evaluateExistence: vi.fn(),
-  chipSpaAssignmentUpdated: vi.fn(),
-  chipSpaManualRecordUpdated: vi.fn(),
+  chipSpaPackageDetailsUpdated: vi.fn(),
   manualRecordCreated: vi.fn(),
   statusUpdated: vi.fn(),
   administrativeFieldUpdated: vi.fn(),
@@ -16,11 +15,8 @@ const handlers = vi.hoisted(() => ({
 vi.mock("./evaluateSmartPackageExistence", () => ({
   evaluateSmartPackageExistence: handlers.evaluateExistence,
 }));
-vi.mock("./chipSpaAssignmentUpdated", () => ({
-  handleChipSpaAssignmentUpdated: handlers.chipSpaAssignmentUpdated,
-}));
-vi.mock("./chipSpaManualRecordUpdated", () => ({
-  handleChipSpaManualRecordUpdated: handlers.chipSpaManualRecordUpdated,
+vi.mock("./chipSpaPackageDetailsUpdated", () => ({
+  handleChipSpaPackageDetailsUpdated: handlers.chipSpaPackageDetailsUpdated,
 }));
 vi.mock("./mspManualRecordCreated", async (importOriginal) => ({
   ...(await importOriginal<typeof import("./mspManualRecordCreated")>()),
@@ -71,8 +67,6 @@ const existence = Object.freeze({
 });
 
 const knownOperations = [
-  ["CHIPSPA_ASSIGNMENT_UPDATED", handlers.chipSpaAssignmentUpdated],
-  ["CHIPSPA_MANUAL_RECORD_UPDATED", handlers.chipSpaManualRecordUpdated],
   ["MSP_MANUAL_RECORD_CREATED", handlers.manualRecordCreated],
   ["MSP_STATUS_UPDATED", handlers.statusUpdated],
   ["MSP_ADMINISTRATIVE_FIELD_UPDATED", handlers.administrativeFieldUpdated],
@@ -116,6 +110,24 @@ describe("dispatchSmartOnemacEvent", () => {
         expect(otherHandler).not.toHaveBeenCalled();
       }
     }
+    expect(handlers.defaultEvent).not.toHaveBeenCalled();
+  });
+
+  it("routes CHIP administrative updates by payload authority", async () => {
+    const event = {
+      ...baseEvent,
+      authority: "CHIP SPA",
+      operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+    };
+
+    await dispatchSmartOnemacEvent(event, metadata);
+
+    expect(handlers.chipSpaPackageDetailsUpdated).toHaveBeenCalledWith({
+      event,
+      existence,
+      ...metadata,
+    });
+    expect(handlers.administrativeFieldUpdated).not.toHaveBeenCalled();
     expect(handlers.defaultEvent).not.toHaveBeenCalled();
   });
 

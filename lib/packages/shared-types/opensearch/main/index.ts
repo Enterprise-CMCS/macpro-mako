@@ -101,6 +101,8 @@ export type Document = AppkDocument &
     smartStatusChangedAt?: string | number;
     smartAdministrativeChangedAt?: string | number;
     smartAdministrativePreviousId?: string;
+    smartPackageDetailsChangedAt?: string | number;
+    smartPackageDetailsPreviousId?: string;
     smartAssignmentChangedAt?: string | number;
     smartCpocContactId?: string | null;
     smartSrtRoster?: {
