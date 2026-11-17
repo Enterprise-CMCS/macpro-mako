@@ -9,6 +9,7 @@ import { validateEnvVariable } from "shared-utils";
 import { getSearchUserScope } from "../libs/api/auth/user";
 import { getAppkChildren } from "../libs/api/package";
 import { search } from "../libs/opensearch-lib";
+import { assertSafeSearchQuery, UnsupportedSearchQueryError } from "./searchQueryGuard";
 import { handleOpensearchError } from "./utils";
 
 // Handler function to search index
@@ -28,52 +29,41 @@ export const getSearchData = async (event: APIGatewayEvent) => {
   const { domain, index } = getDomainAndNamespace(requestedIndex);
 
   try {
-    let query: any = {};
-    if (event.body) {
-      query = JSON.parse(event.body);
-    }
-    query.query = query?.query || {};
-    query.query.bool = query.query?.bool || {};
-    query.query.bool.must = query.query.bool?.must || [];
-    query.query.bool.must_not = query.query.bool?.must_not || [];
-    query.query.bool.must_not.push({ term: { deleted: true } });
-    const includeDrafts = query.includeDrafts !== false;
-    delete query.includeDrafts;
-
+    const requestBody: Record<string, any> = event.body ? JSON.parse(event.body) : {};
     const { stateFilter, canViewDrafts } = await getSearchUserScope(event);
+    if (stateFilter === false) {
+      return response({
+        statusCode: 403,
+        body: { message: "Not authorized to search" },
+      });
+    }
+
+    assertSafeSearchQuery(requestBody);
+
+    const includeDrafts = requestBody.includeDrafts !== false;
+    const clientQuery = requestBody.query;
+    const query: Record<string, any> = { ...requestBody };
+    delete query.includeDrafts;
+    delete query.query;
+
+    const hasClientQuery =
+      clientQuery &&
+      typeof clientQuery === "object" &&
+      !Array.isArray(clientQuery) &&
+      Object.keys(clientQuery).length > 0;
+    const must: unknown[] = [hasClientQuery ? clientQuery : { match_all: {} }];
+    const mustNot: unknown[] = [{ term: { deleted: true } }];
     const shouldIncludeDrafts =
       includeDrafts && requestedIndex === "main" && (Boolean(stateFilter) || canViewDrafts);
     if (stateFilter) {
-      query.query.bool.must.push(stateFilter);
-      if (shouldIncludeDrafts) {
-        const draftIndex = getOsNamespace("draftmain");
-        query.query.bool.must.push({
-          bool: {
-            should: [
-              {
-                bool: {
-                  must_not: [{ term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } }],
-                },
-              },
-              {
-                bool: {
-                  must: [
-                    { term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } },
-                    { term: { _index: draftIndex } },
-                  ],
-                },
-              },
-            ],
-            minimum_should_match: 1,
-          },
-        });
-      }
-    } else if (stateFilter === null && !canViewDrafts) {
+      must.push(stateFilter);
+    } else if (!canViewDrafts) {
       // Drafts are state-only and should not appear in CMS search results.
-      query.query.bool.must_not.push({ term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } });
-    } else if (shouldIncludeDrafts) {
+      mustNot.push({ term: { "seatoolStatus.keyword": SEATOOL_STATUS.DRAFT } });
+    }
+    if (shouldIncludeDrafts) {
       const draftIndex = getOsNamespace("draftmain");
-      query.query.bool.must.push({
+      must.push({
         bool: {
           should: [
             {
@@ -95,7 +85,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       });
     }
     // Return OneMAC records and NOSOs (denoted with SEATool origin and only NOSO)
-    query.query.bool.must.push({
+    must.push({
       bool: {
         should: [
           { terms: { "origin.keyword": ["OneMAC", ONEMAC_LEGACY_ORIGIN] } },
@@ -127,6 +117,7 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       },
     });
 
+    query.query = { bool: { must, must_not: mustNot } };
     query.from = query.from || 0;
     query.size = query.size || 100;
     const searchIndex: Parameters<typeof search>[1] = shouldIncludeDrafts
@@ -147,6 +138,12 @@ export const getSearchData = async (event: APIGatewayEvent) => {
       body: results,
     });
   } catch (error) {
+    if (error instanceof UnsupportedSearchQueryError) {
+      return response({
+        statusCode: 400,
+        body: { message: error.message },
+      });
+    }
     return response(handleOpensearchError(error));
   }
 };
