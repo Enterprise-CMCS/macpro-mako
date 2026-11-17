@@ -4,6 +4,8 @@ import * as appk from "./app-k";
 import * as capitatedAmendment from "./capitated-amendment";
 import * as capitatedIntial from "./capitated-initial";
 import * as capitatedRenewal from "./capitated-renewal";
+import * as ceRecordSubmitted from "./ce-record-submitted";
+import * as ceSubsequentDocuments from "./ce-subsequent-documents";
 import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
@@ -45,6 +47,8 @@ export const events = {
   "respond-to-rai": respondToRai,
   "upload-subsequent-documents": uploadSubsequentDocuments,
   "app-k": appk,
+  "ce-record-submitted": ceRecordSubmitted,
+  "ce-subsequent-documents": ceSubsequentDocuments,
   "legacy-event": legacyEvent,
   "legacy-admin-change": legacyAdminChange,
   "split-spa": splitSpa,
@@ -54,6 +58,8 @@ export type BaseSchemas = z.infer<typeof newMedicaidSubmission.baseSchema>;
 
 export type Events = {
   AppKSubmission: z.infer<typeof appk.schema>;
+  CeRecordSubmitted: z.infer<typeof ceRecordSubmitted.schema>;
+  CeSubsequentDocuments: z.infer<typeof ceSubsequentDocuments.schema>;
   CapitatedInitial: z.infer<typeof capitatedIntial.schema>;
   CapitatedRenewal: z.infer<typeof capitatedRenewal.schema>;
   CapitatedAmendment: z.infer<typeof capitatedAmendment.schema>;

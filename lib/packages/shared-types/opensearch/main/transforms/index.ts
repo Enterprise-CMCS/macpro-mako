@@ -18,3 +18,5 @@ export * as changedDate from "./changedDate";
 export * as temporaryExtension from "./temporary-extension";
 export * as appK from "./app-k";
 export * as uploadSubsequentDocuments from "./upload-subsequent-documents";
+export * as ceRecordSubmitted from "./ce-record-submitted";
+export * as ceSubsequentDocuments from "./ce-subsequent-documents";

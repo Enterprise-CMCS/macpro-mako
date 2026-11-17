@@ -7,6 +7,7 @@ import {
 
 import { ATTACHMENT_BUCKET_NAME } from "../consts";
 import type { TestItemResult } from "../index.d";
+import { listCentraSearchHits } from "./centra-session";
 export const EXISTING_ITEM_PENDING_ID = "MD-0002.R00.00";
 export const EXISTING_ITEM_APPROVED_NEW_ID = "MD-0000.R00.00";
 export const DELETED_ITEM_ID = "MD-0000.R00.00-del";
@@ -1555,14 +1556,23 @@ export const TEST_TEMP_EXT_ITEM = items[
 
 export const itemList = Object.values(items);
 
-export const getFilteredItemList = (filters: string[]): opensearch.main.ItemResult[] =>
-  itemList
+export const getFilteredItemList = (filters: string[]): opensearch.main.ItemResult[] => {
+  const staticMatches = itemList
     .filter((item) => filters.includes(item?._source?.authority || ""))
     .map((item) => item as opensearch.main.ItemResult);
+  const seen = new Set(staticMatches.flatMap((item) => (item._id ? [item._id] : [])));
+  const centraMatches = listCentraSearchHits().filter((item) => {
+    const id = item._id;
+    return (
+      Boolean(id) && !seen.has(id as string) && filters.includes(item?._source?.authority || "")
+    );
+  }) as opensearch.main.ItemResult[];
+  return [...staticMatches, ...centraMatches];
+};
 
 export const docList = itemList.map((item) => (item?._source || {}) as opensearch.main.Document);
 
 export const getFilteredDocList = (filters: string[]): opensearch.main.Document[] =>
-  docList.filter((item) => filters.includes(item?.authority || ""));
+  getFilteredItemList(filters).map((item) => (item?._source || {}) as opensearch.main.Document);
 
 export default items;

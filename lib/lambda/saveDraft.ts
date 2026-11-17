@@ -10,7 +10,12 @@ import {
 import { response } from "libs/handler-lib";
 import * as os from "libs/opensearch-lib";
 import { getDomainAndNamespace } from "libs/utils";
-import { getStatus, SEATOOL_STATUS } from "shared-types";
+import {
+  CE_HARDSHIP_KIND_CODES,
+  type CeHardshipKindCode,
+  getStatus,
+  SEATOOL_STATUS,
+} from "shared-types";
 import { DRAFTABLE_EVENTS, type DraftableEvent, isStateUser } from "shared-utils";
 import { z } from "zod";
 
@@ -41,9 +46,31 @@ const eventToAuthority: Partial<Record<DraftableEvent, string>> = {
   "contracting-renewal": "1915(b)",
   "contracting-amendment": "1915(b)",
   "app-k": "1915(c)",
+  "ce-record-submitted": "CE_HARDSHIP_EXCEPTION",
 };
 
-const knownDraftAuthorities = new Set(["Medicaid SPA", "CHIP SPA", "1915(b)", "1915(c)"]);
+const knownDraftAuthorities = new Set([
+  "Medicaid SPA",
+  "CHIP SPA",
+  "1915(b)",
+  "1915(c)",
+  "CE_HARDSHIP_EXCEPTION",
+]);
+
+const isCeHardshipKind = (value: string): value is CeHardshipKindCode => {
+  return (CE_HARDSHIP_KIND_CODES as readonly string[]).includes(value);
+};
+
+const hardshipKindFromDraft = (
+  draftData: Record<string, unknown>,
+): CeHardshipKindCode | undefined => {
+  const value = draftData.hardshipKind;
+  if (typeof value !== "string" || !isCeHardshipKind(value)) {
+    return undefined;
+  }
+
+  return value;
+};
 
 const eventToActionType: Partial<Record<DraftableEvent, string>> = {
   "capitated-initial": "New",
@@ -347,6 +374,7 @@ export const handler = authenticatedMiddy({
   const { stateStatus, cmsStatus } = getStatus(SEATOOL_STATUS.DRAFT);
   const draftEventName = eventName as DraftableEvent;
   const resolvedAuthority = resolveAuthority(draftEventName, authority, draftData);
+  const hardshipKind = hardshipKindFromDraft(draftData);
 
   if (!resolvedAuthority) {
     return response({
@@ -445,6 +473,7 @@ export const handler = authenticatedMiddy({
     ...(eventToActionType[draftEventName] && {
       actionType: eventToActionType[draftEventName],
     }),
+    ...(draftEventName === "ce-record-submitted" ? { hardshipKind: hardshipKind ?? null } : {}),
     event: draftEventName,
     draft: {
       savedAt,

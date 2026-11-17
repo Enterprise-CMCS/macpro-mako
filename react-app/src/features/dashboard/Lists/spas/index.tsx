@@ -6,7 +6,11 @@ import { formatDateToET, formatDateToUTC } from "shared-utils";
 import { OneMacUser } from "@/api";
 import { OsMainView, OsTableColumn } from "@/components";
 import { BLANK_VALUE } from "@/consts";
-import { removeUnderscoresAndCapitalize } from "@/utils";
+import {
+  formatHardshipKindLabel,
+  formatSpaGridAuthority,
+  readCentraHardshipKind,
+} from "@/utils/centra";
 
 import { CellDetailsLink, renderCellActions, renderCellDate } from "../renderCells";
 
@@ -46,9 +50,14 @@ const getColumns = ({ user, isCms }: OneMacUser): OsTableColumn[] => {
     {
       field: "authority.keyword",
       label: "Authority",
-      transform: (data) => data.authority ?? BLANK_VALUE,
-      cell: (data) =>
-        data?.authority ? removeUnderscoresAndCapitalize(data.authority) : BLANK_VALUE,
+      transform: (data) => formatSpaGridAuthority(data.authority),
+      cell: (data) => formatSpaGridAuthority(data.authority),
+    },
+    {
+      field: "hardshipKind.keyword",
+      label: "Request Type",
+      transform: (data) => formatHardshipKindLabel(readCentraHardshipKind(data)),
+      cell: (data) => formatHardshipKindLabel(readCentraHardshipKind(data)),
     },
     {
       field: isCms ? "cmsStatus.keyword" : "stateStatus.keyword",

@@ -13,6 +13,12 @@ describe("package activity helpers", () => {
       "Subsequent Document(s) Uploaded",
     );
     expect(getPackageActivityLabel("split-spa")).toBe("Split SPA Created");
+    expect(getPackageActivityLabel("ce-record-submitted")).toBe(
+      "Community Engagement Short-Term Hardship Exception Submitted",
+    );
+    expect(getPackageActivityLabel("ce-subsequent-documents")).toBe(
+      "Subsequent documentation uploaded",
+    );
   });
 
   it("slugifies labels for archive naming", () => {
@@ -20,5 +26,11 @@ describe("package activity helpers", () => {
       "subsequent-documents-uploaded",
     );
     expect(getPackageActivityLabelSlug("respond-to-rai")).toBe("rai-response-submitted");
+    expect(getPackageActivityLabelSlug("ce-record-submitted")).toBe(
+      "community-engagement-short-term-hardship-exception-submitted",
+    );
+    expect(getPackageActivityLabelSlug("ce-subsequent-documents")).toBe(
+      "subsequent-documentation-uploaded",
+    );
   });
 });

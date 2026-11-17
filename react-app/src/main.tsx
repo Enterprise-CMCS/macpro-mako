@@ -30,7 +30,12 @@ const initializeApp = async () => {
 
     await mockedWorker.start({ onUnhandledRequest: "warn" });
 
-    await setMockUsername(import.meta.env.VITE_MOCK_USER_USERNAME || TEST_STATE_SUBMITTER_USERNAME);
+    const mockUsernameOverride = window.localStorage.getItem("mako-mock-username");
+    await setMockUsername(
+      mockUsernameOverride ||
+        import.meta.env.VITE_MOCK_USER_USERNAME ||
+        TEST_STATE_SUBMITTER_USERNAME,
+    );
   }
 
   // Initialize LaunchDarkly

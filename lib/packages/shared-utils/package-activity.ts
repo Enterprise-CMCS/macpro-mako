@@ -14,6 +14,8 @@ export function getPackageActivityLabel(event: changelog.Document["event"]): str
     case "temporary-extension":
     case "app-k":
       return "Initial Package Submitted";
+    case "ce-record-submitted":
+      return "Community Engagement Short-Term Hardship Exception Submitted";
     case "withdraw-package":
       return "Package - Withdrawal Requested";
     case "legacy-withdraw-rai-request":
@@ -23,10 +25,22 @@ export function getPackageActivityLabel(event: changelog.Document["event"]): str
       return "RAI Response Submitted";
     case "upload-subsequent-documents":
       return "Subsequent Document(s) Uploaded";
+    case "ce-subsequent-documents":
+      return "Subsequent documentation uploaded";
     case "split-spa":
       return "Split SPA Created";
-    default:
+    case "legacy-admin-change":
+    case "toggle-withdraw-rai":
+    case "update-values":
+    case "update-id":
+    case "delete":
+    case "NOSO":
       return "";
+    default: {
+      const exhaustive: never = event;
+      void exhaustive;
+      return "";
+    }
   }
 }
 

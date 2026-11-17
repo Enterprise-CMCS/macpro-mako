@@ -72,6 +72,31 @@ describe("handler", () => {
     );
   });
 
+  it("forwards retention config entries to topic creation", async () => {
+    (topics.createTopics as vi.Mock).mockResolvedValue(undefined);
+    const topicsWithRetention = [
+      {
+        topic: "aws.onemac.centra.events",
+        numPartitions: 1,
+        replicationFactor: 3,
+        configEntries: [{ name: "retention.ms", value: "-1" }],
+      },
+    ];
+
+    await handler(
+      {
+        ...event,
+        ResourceProperties: {
+          brokerString,
+          topicsToCreate: topicsWithRetention,
+        },
+      },
+      context,
+    );
+
+    expect(topics.createTopics).toHaveBeenCalledWith(brokerString, topicsWithRetention);
+  });
+
   it("should throw an error for numPartitions less than 1", async () => {
     const invalidEvent = {
       ...event,

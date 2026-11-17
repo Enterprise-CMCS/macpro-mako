@@ -91,11 +91,18 @@ describe("Default Welcome", () => {
         .getAllByRole("heading", { level: 3 })
         .map((heading) => heading.textContent),
     ).toEqual([
+      "Community Engagement Short-Term Hardship Exception",
       "Saving Draft Packages",
       "The new CHIP eligibility SPA template, CS 22, and implementation guide are now available in OneMAC",
       "Updated CS 18 SPA form",
       "Updated CS 31 SPA form",
     ]);
+    expect(screen.getByText(/SS-CE-YY-###/)).toBeInTheDocument();
+    expect(screen.getByText(/CE Hardship Exception/)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "View Community Engagement FAQs" })).toHaveAttribute(
+      "href",
+      "/faq/centra-id-format",
+    );
 
     const resourcesSection = screen.getByRole("heading", {
       name: "Resources",

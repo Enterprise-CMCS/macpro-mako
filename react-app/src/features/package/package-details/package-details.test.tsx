@@ -302,4 +302,54 @@ describe("package details", () => {
     expect(within(proposedEffectiveDateField!).getByText("-- --")).toBeInTheDocument();
     expect(screen.queryByText("Pending")).not.toBeInTheDocument();
   });
+
+  it("shows CEntra authority, request type, and submission date", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    await setup({
+      ...TEST_1915B_ITEM._source,
+      id: "MD-CE-26-001",
+      authority: "CE_HARDSHIP_EXCEPTION",
+      actionType: undefined,
+      hardshipKind: "CE_UNEMPLOYMENT",
+      proposedDate: 1774396800000,
+    } as opensearch.main.Document);
+
+    expect(screen.getByText("CE Hardship Exception Package Details")).toBeInTheDocument();
+    expect(screen.getByText("CE Hardship Exception")).toBeInTheDocument();
+    expect(screen.getByText("High Unemployment Requests")).toBeInTheDocument();
+    expect(screen.getByText("Submission Date")).toBeInTheDocument();
+    expect(screen.getByText("March 25, 2026")).toBeInTheDocument();
+    expect(screen.queryByText("Proposed Effective Date")).not.toBeInTheDocument();
+    expect(screen.queryByText("CE_HARDSHIP_EXCEPTION")).not.toBeInTheDocument();
+  });
+
+  it("shows CEntra draft request type and submission date from saved draft data", async () => {
+    setMockUsername(TEST_STATE_SUBMITTER_USERNAME);
+
+    await setup({
+      ...TEST_1915B_ITEM._source,
+      id: "MD-CE-26-002",
+      authority: "CE_HARDSHIP_EXCEPTION",
+      actionType: undefined,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      stateStatus: "Draft",
+      cmsStatus: "Draft",
+      hardshipKind: undefined,
+      proposedDate: undefined,
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        createdByName: "Original Draft Creator",
+        data: {
+          hardshipKind: "CE_SADE",
+          proposedEffectiveDate: 1774396800000,
+        },
+      },
+    } as unknown as opensearch.main.Document);
+
+    expect(screen.getByText("Stafford Act Disaster and Emergency Requests")).toBeInTheDocument();
+    expect(screen.getByText("Submission Date")).toBeInTheDocument();
+    expect(screen.getByText("March 25, 2026")).toBeInTheDocument();
+    expect(screen.getByText("Created By")).toBeInTheDocument();
+  });
 });

@@ -1,5 +1,7 @@
 import { AbpImplementationGuidesSpa } from "./abp-implementation-guides-spa";
 import { AbpSpaTemplates } from "./abp-spa-templates";
+import { CentraAttachments } from "./centra-attachments";
+import { CentraIdFormat } from "./centra-id-format";
 import { ChipSpaAttachments } from "./chip-spa-attachments";
 import { ChipSpaImplementationGuides } from "./chip-spa-implementation-guides";
 import { ChipSpaRaiAttachments } from "./chip-spa-rai-attachments";
@@ -30,6 +32,21 @@ export const spaContent = [
     anchorText: "spa-id-format",
     question: "What format is used to enter a SPA ID?",
     answerJSX: <SpaIdFormat />,
+  },
+  {
+    anchorText: "centra-id-format",
+    question:
+      "What format is used to enter a Community Engagement Short-Term Hardship Exception ID?",
+    label: "New",
+    labelColor: "blue",
+    answerJSX: <CentraIdFormat />,
+  },
+  {
+    anchorText: "centra-attachments",
+    question: "What are the attachments for a Community Engagement Short-Term Hardship Exception?",
+    label: "New",
+    labelColor: "blue",
+    answerJSX: <CentraAttachments />,
   },
   {
     anchorText: "medicaid-spa-attachments",

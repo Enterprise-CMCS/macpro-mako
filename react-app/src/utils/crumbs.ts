@@ -14,6 +14,8 @@ export const getDashboardTabForAuthority = (authority: Authority): "spas" | "wai
   switch (authority) {
     case "CHIP SPA" as Authority:
     case "Medicaid SPA" as Authority:
+    case "CE_HARDSHIP_EXCEPTION" as Authority:
+    case Authority.CE_HARDSHIP_EXCEPTION:
       return "spas";
     case "1915(b)":
     case "1915(c)":

@@ -64,6 +64,61 @@ const EARLIER_ISO_DATETIME = "2024-08-03T00:30:41.557Z";
 const LATER_TIMESTAMP = 1742645041557;
 const LATER_ISO_DATETIME = "2025-03-22T12:04:01.557Z";
 
+function centraKafkaRecord(
+  topic: string,
+  eventName: "ce-record-submitted" | "ce-subsequent-documents" = "ce-record-submitted",
+) {
+  const subsequent = eventName === "ce-subsequent-documents";
+  return createKafkaRecord({
+    topic,
+    key: Buffer.from("MD-CE-26-001").toString("base64"),
+    value: convertObjToBase64({
+      id: "MD-CE-26-001",
+      state: "MD",
+      event: eventName,
+      operationType: subsequent ? "CE_SUBSEQUENT_DOCUMENTS" : "CE_RECORD_SUBMITTED",
+      authority: "CE_HARDSHIP_EXCEPTION",
+      hardshipKind: "CE_UNEMPLOYMENT",
+      additionalInformation: subsequent ? "Labor table added." : null,
+      ...(subsequent ? {} : { proposedEffectiveDate: 1762400000000 }),
+      origin: "mako",
+      submitterName: "Alex Rivera",
+      submitterEmail: "alex.rivera@maryland.gov",
+      timestamp: TIMESTAMP,
+      attachments: {
+        ceTemplate: {
+          label: "Template",
+          files: subsequent
+            ? []
+            : [
+                {
+                  filename: "request.pdf",
+                  title: "Request",
+                  bucket: "mako-attachments",
+                  key: "MD-CE-26-001/ceTemplate/request.pdf",
+                  uploadDate: TIMESTAMP,
+                },
+              ],
+        },
+        other: {
+          label: "Other Supporting Documentation",
+          files: subsequent
+            ? [
+                {
+                  filename: "labor.pdf",
+                  title: "Labor",
+                  bucket: "mako-attachments",
+                  key: "MD-CE-26-001/other/labor.pdf",
+                  uploadDate: TIMESTAMP,
+                },
+              ]
+            : [],
+        },
+      },
+    }),
+  });
+}
+
 const bulkUpdateDataSpy = vi.spyOn(os, "bulkUpdateData");
 const updateDataSpy = vi.spyOn(os, "updateData").mockResolvedValue(undefined as any);
 const logErrorSpy = vi.spyOn(sink, "logError");
@@ -358,6 +413,54 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
         doc_as_upsert: false,
       },
     });
+  });
+
+  it.each(["--mako--init-centra--aws.onemac.centra.events", "aws.onemac.centra.events"])(
+    "indexes a CEntra submission from %s and deletes the matching draft",
+    async (topic) => {
+      await insertOneMacRecordsFromKafkaIntoMako([centraKafkaRecord(topic)], topic);
+
+      expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+        expect.objectContaining({
+          id: "MD-CE-26-001",
+          authority: "CE_HARDSHIP_EXCEPTION",
+          hardshipKind: "CE_UNEMPLOYMENT",
+          origin: "OneMAC",
+          seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+          stateStatus: "Submitted",
+          cmsStatus: "Submitted - Intake Needed",
+          proposedDate: 1762400000000,
+          state: "MD",
+        }),
+      ]);
+      expect(updateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, {
+        index: OPENSEARCH_DRAFT_INDEX,
+        id: "MD-CE-26-001",
+        refresh: true,
+        body: {
+          doc: expect.objectContaining({
+            deleted: true,
+          }),
+          doc_as_upsert: false,
+        },
+      });
+    },
+  );
+
+  it("does not delete a draft when indexing CEntra subsequent documents", async () => {
+    const topic = "aws.onemac.centra.events";
+    await insertOneMacRecordsFromKafkaIntoMako(
+      [centraKafkaRecord(topic, "ce-subsequent-documents")],
+      topic,
+    );
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      expect.objectContaining({
+        id: "MD-CE-26-001",
+        makoChangedDate: ISO_DATETIME,
+      }),
+    ]);
+    expect(updateDataSpy).not.toHaveBeenCalled();
   });
 
   it("does not mark draft records deleted for non-submission events", async () => {

@@ -9,7 +9,10 @@ import { baseURL } from "./lib/baseURLs";
 const ENV = process.env.PW_ENV || "local";
 const stage = process.env.STAGE_NAME || "main";
 const project = process.env.PROJECT;
-const deploymentOutput = await getDeploymentOutput(stage, project);
+const isMockedAgent = process.env.AGENT_MODE === "mocked" || process.env.PW_ENV === "mocked";
+const deploymentOutput = isMockedAgent
+  ? { applicationEndpointUrl: baseURL.local }
+  : await getDeploymentOutput(stage, project);
 
 let rootURL;
 
@@ -100,9 +103,16 @@ export default defineConfig({
       name: "local",
       use: {
         baseURL: baseURL.local,
-        storageState: "./playwright/.auth/state-user.json",
+        ...(isMockedAgent ? {} : { storageState: "./playwright/.auth/state-user.json" }),
       },
-      dependencies: ["local-setup"],
+      dependencies: isMockedAgent ? [] : ["local-setup"],
+    },
+    {
+      name: "mocked",
+      testMatch: "**/centra.spec.ts",
+      use: {
+        baseURL: baseURL.local,
+      },
     },
     {
       name: "ci",

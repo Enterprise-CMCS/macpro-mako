@@ -46,6 +46,37 @@ const TEST_ITEM_UPDATE_ID = "MD-0005.R01.01";
 const TEST_ITEM_UPDATE_KEY = Buffer.from(TEST_ITEM_UPDATE_ID).toString("base64");
 const TIMESTAMP = 1732645041557;
 
+function centraChangelogRecord() {
+  return {
+    id: "MD-CE-26-001",
+    state: "MD",
+    event: "ce-record-submitted",
+    operationType: "CE_RECORD_SUBMITTED",
+    authority: "CE_HARDSHIP_EXCEPTION",
+    hardshipKind: "CE_UNEMPLOYMENT",
+    proposedEffectiveDate: 1762400000000,
+    additionalInformation: null,
+    origin: "mako",
+    submitterName: "Alex Rivera",
+    submitterEmail: "alex.rivera@maryland.gov",
+    timestamp: TIMESTAMP,
+    attachments: {
+      ceTemplate: {
+        files: [
+          {
+            filename: "request.pdf",
+            title: "Request",
+            bucket: "mako-attachments",
+            key: "MD-CE-26-001/ceTemplate/request.pdf",
+            uploadDate: TIMESTAMP,
+          },
+        ],
+      },
+      other: { files: [] },
+    },
+  };
+}
+
 describe("syncing Changelog events", () => {
   const hasAttachmentArchiveRebuildQueueConfigured = vi.mocked(
     rebuildQueue.hasAttachmentArchiveRebuildQueueConfigured,
@@ -119,6 +150,72 @@ describe("syncing Changelog events", () => {
 
     await handler(event, {} as Context, vi.fn());
 
+    expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
+  });
+
+  it("indexes centra events and queues archive rebuilds for the stage topic", async () => {
+    hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(true);
+    const centraTopic = "--mako--init-centra--aws.onemac.centra.events";
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = [TOPIC, centraTopic].join(",");
+
+    const event = createKafkaEvent({
+      [`${centraTopic}-0`]: [
+        createKafkaRecord({
+          topic: `${centraTopic}-0`,
+          key: Buffer.from("MD-CE-26-001").toString("base64"),
+          value: convertObjToBase64(centraChangelogRecord()),
+          offset: 7,
+        }),
+      ],
+    });
+
+    await handler(event, {} as Context, vi.fn());
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      expect.objectContaining({
+        event: "ce-record-submitted",
+        authority: "CE_HARDSHIP_EXCEPTION",
+        hardshipKind: "CE_UNEMPLOYMENT",
+        packageId: "MD-CE-26-001",
+        id: "MD-CE-26-001-7",
+        origin: "mako",
+      }),
+    ]);
+    expect(sendAttachmentArchiveRebuildRequest).toHaveBeenCalledWith(
+      expect.objectContaining({
+        packageId: "MD-CE-26-001",
+        source: "sink-changelog",
+      }),
+    );
+  });
+
+  it("indexes the shared centra topic without queueing an ephemeral archive rebuild", async () => {
+    hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(true);
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = [
+      TOPIC,
+      "--mako--init-centra--aws.onemac.centra.events",
+    ].join(",");
+
+    const event = createKafkaEvent({
+      "aws.onemac.centra.events-0": [
+        createKafkaRecord({
+          topic: "aws.onemac.centra.events-0",
+          key: Buffer.from("MD-CE-26-001").toString("base64"),
+          value: convertObjToBase64(centraChangelogRecord()),
+          offset: 3,
+        }),
+      ],
+    });
+
+    await handler(event, {} as Context, vi.fn());
+
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(OPENSEARCH_DOMAIN, OPENSEARCH_INDEX, [
+      expect.objectContaining({
+        event: "ce-record-submitted",
+        packageId: "MD-CE-26-001",
+        id: "MD-CE-26-001-3",
+      }),
+    ]);
     expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
   });
 

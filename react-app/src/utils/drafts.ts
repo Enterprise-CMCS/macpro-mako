@@ -33,6 +33,8 @@ const DRAFT_ID_CONFLICT_FIELD_MESSAGES: Record<string, string> = {
     "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
   "app-k":
     "According to our records, this Waiver Amendment Number already exists. Please check the Waiver Amendment Number and try entering it again.",
+  "ce-record-submitted":
+    "According to our records, this Submission ID already exists. Please check the Submission ID and try entering it again.",
 };
 export const getNonOwnerDraftWarningModalBody = (packageId: string) =>
   `Since you are not the creator or most recent editor, are you sure you want to take this action on ${packageId}?`;
@@ -122,6 +124,7 @@ const EVENT_TO_DRAFT_PATH: Record<string, string> = {
   "contracting-amendment": "/new-submission/waiver/b/b4/amendment/create",
   "temporary-extension": "/new-submission/waiver/temporary-extensions",
   "app-k": "/new-submission/waiver/app-k",
+  "ce-record-submitted": "/new-submission/spa/medicaid/create/centra",
 };
 
 export const getDraftEditLink = (record: opensearch.main.Document) => {

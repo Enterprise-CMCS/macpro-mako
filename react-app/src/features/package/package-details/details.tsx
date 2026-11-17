@@ -12,6 +12,14 @@ import {
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
 import { convertStateAbbrToFullName } from "@/utils";
+import {
+  formatCentraSubmissionDate,
+  formatHardshipKindLabel,
+  formatPackageAuthorityLabel,
+  isCeHardshipException,
+  readCentraHardshipKind,
+  readCentraSubmissionDate,
+} from "@/utils/centra";
 
 type ReviewTeamListProps = {
   reviewTeam: opensearch.main.Document["reviewTeam"];
@@ -134,7 +142,12 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Authority",
-      value: submission.authority,
+      value: formatPackageAuthorityLabel(submission.authority),
+    },
+    {
+      label: "Request Type",
+      value: formatHardshipKindLabel(readCentraHardshipKind(submission)),
+      canView: isCeHardshipException(submission.authority),
     },
     {
       label: "Action Type",
@@ -225,8 +238,14 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
     canView: submission.actionType !== "Extend",
   },
   {
-    label: "Proposed Effective Date",
+    label: isCeHardshipException(submission.authority)
+      ? "Submission Date"
+      : "Proposed Effective Date",
     value: (() => {
+      if (isCeHardshipException(submission.authority)) {
+        return formatCentraSubmissionDate(readCentraSubmissionDate(submission));
+      }
+
       const proposedDateFromDraftData = submission.draft?.data?.proposedEffectiveDate;
       const draftDateValue =
         typeof proposedDateFromDraftData === "string" ||

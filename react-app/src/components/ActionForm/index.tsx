@@ -411,6 +411,7 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }, [draftPackageIdForWarning, navigateAwayFromDraft]);
 
   useEffect(() => {
+    isMountedRef.current = true;
     return () => {
       isMountedRef.current = false;
       if (draftConflictRevalidationTimeoutRef.current) {

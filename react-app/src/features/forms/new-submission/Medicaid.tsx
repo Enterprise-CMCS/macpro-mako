@@ -16,7 +16,7 @@ import { AttachmentFileFormatInstructions } from "@/components/ActionForm/action
 import { FAQ_TAB } from "@/consts";
 import { formSchemas } from "@/formSchemas";
 
-import { NEW_SUBMISSION_FORM_DESCRIPTION, NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "./content";
+import { MEDICAID_SPA_FORM_DESCRIPTION, NEW_SUBMISSION_PROGRESS_LOSS_REMINDER } from "./content";
 
 export const MedicaidForm = () => {
   return (
@@ -24,8 +24,9 @@ export const MedicaidForm = () => {
       schema={formSchemas["new-medicaid-submission"]}
       title="Medicaid SPA Details"
       breadcrumbText="Submit new Medicaid SPA"
-      formDescription={NEW_SUBMISSION_FORM_DESCRIPTION}
+      formDescription={MEDICAID_SPA_FORM_DESCRIPTION}
       formDescriptionProgressLossReminder={NEW_SUBMISSION_PROGRESS_LOSS_REMINDER}
+      preSubmissionMessage={MEDICAID_SPA_FORM_DESCRIPTION}
       fields={({ control }) => (
         <>
           <FormField

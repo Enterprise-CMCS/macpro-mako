@@ -9,6 +9,12 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { awsCognitoDomainPrefix, awsLambdaFunctionName } from "../config/lambda-function-name";
+import {
+  attachmentArchiveRebuildTriggerTopics,
+  centraCreateTopic,
+  centraEventsTopicName,
+  centraReindexTopics,
+} from "./centra-topics";
 
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
@@ -65,6 +71,7 @@ export class Data extends cdk.NestedStack {
     } = props;
     const consumerGroupPrefix = `--${project}--${stage}--`;
     const smartOnemacTopic = `${topicNamespace}aws.mulesoft.onemac.events`;
+    const centraEventsTopic = centraEventsTopicName(topicNamespace);
 
     let openSearchDomainEndpoint;
     let openSearchDomainArn;
@@ -353,6 +360,7 @@ export class Data extends cdk.NestedStack {
         {
           topic: smartOnemacTopic,
         },
+        centraCreateTopic(topicNamespace),
       ],
       vpc,
     });
@@ -363,7 +371,11 @@ export class Data extends cdk.NestedStack {
         privateSubnets: privateSubnets,
         securityGroups: [lambdaSecurityGroup],
         brokerString,
-        topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`, smartOnemacTopic],
+        topicPatternsToDelete: [
+          `${topicNamespace}aws.onemac.migration.cdc`,
+          smartOnemacTopic,
+          centraEventsTopic,
+        ],
       });
     }
 
@@ -492,7 +504,8 @@ export class Data extends cdk.NestedStack {
           useVpc: true,
           environment: {
             ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
-            ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME: `${topicNamespace}aws.onemac.migration.cdc`,
+            ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME:
+              attachmentArchiveRebuildTriggerTopics(topicNamespace),
             osDomain: `https://${openSearchDomainEndpoint}`,
             indexNamespace,
           },
@@ -722,12 +735,17 @@ export class Data extends cdk.NestedStack {
               topics: [
                 "aws.onemac.migration.cdc",
                 `${topicNamespace}aws.onemac.migration.cdc`,
+                ...centraReindexTopics(topicNamespace),
                 "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
               ],
             },
             {
               function: lambdaFunctions.sinkChangelog.functionName,
-              topics: ["aws.onemac.migration.cdc", `${topicNamespace}aws.onemac.migration.cdc`],
+              topics: [
+                "aws.onemac.migration.cdc",
+                `${topicNamespace}aws.onemac.migration.cdc`,
+                ...centraReindexTopics(topicNamespace),
+              ],
             },
             {
               function: lambdaFunctions.sinkTypes.functionName,
@@ -848,6 +866,7 @@ export class Data extends cdk.NestedStack {
                         topics: [
                           "aws.onemac.migration.cdc",
                           `${topicNamespace}aws.onemac.migration.cdc`,
+                          ...centraReindexTopics(topicNamespace),
                           "aws.seatool.debezium.changed_date.SEA.dbo.State_Plan",
                         ],
                       },
@@ -856,6 +875,7 @@ export class Data extends cdk.NestedStack {
                         topics: [
                           "aws.onemac.migration.cdc",
                           `${topicNamespace}aws.onemac.migration.cdc`,
+                          ...centraReindexTopics(topicNamespace),
                         ],
                       },
                       {

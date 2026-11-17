@@ -27,6 +27,7 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       const topic = getTopic(topicPartition);
       switch (topic) {
         case "aws.onemac.migration.cdc":
+        case "aws.onemac.centra.events":
           // await legacyAdminChanges(
           //   event.records[topicPartition],
           //   topicPartition,
@@ -53,13 +54,27 @@ function getTopicNameFromPartition(topicPartition: string): string {
   return topicPartition.replace(/-\d+$/, "");
 }
 
+function configuredArchiveRebuildTopics(): string[] | undefined {
+  const configuredTopicNames = process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME;
+  if (!configuredTopicNames) {
+    return undefined;
+  }
+
+  const topics = configuredTopicNames
+    .split(",")
+    .map((topic) => topic.trim())
+    .filter((topic) => topic.length > 0);
+
+  return topics.length > 0 ? topics : undefined;
+}
+
 function shouldQueueArchiveRebuildForTopic(topicPartition: string): boolean {
-  const configuredTopicName = process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME;
-  if (!configuredTopicName) {
+  const configuredTopics = configuredArchiveRebuildTopics();
+  if (!configuredTopics) {
     return true;
   }
 
-  return getTopicNameFromPartition(topicPartition) === configuredTopicName;
+  return configuredTopics.includes(getTopicNameFromPartition(topicPartition));
 }
 
 function extractIds(input: string): { beforeId: string; afterId: string } | null {

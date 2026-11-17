@@ -33,7 +33,11 @@ export const PackageCheck = ({
   ];
 
   const planChecks = {
-    isSpa: checkAuthority(authority, [Authority.MED_SPA, Authority.CHIP_SPA]),
+    isSpa: checkAuthority(authority, [
+      Authority.MED_SPA,
+      Authority.CHIP_SPA,
+      Authority.CE_HARDSHIP_EXCEPTION,
+    ]),
     isWaiver: checkAuthority(authority, [Authority["1915b"], Authority["1915c"]]),
     isAppk: false,
     isAppkChild: false,

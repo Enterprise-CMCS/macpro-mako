@@ -23,6 +23,7 @@ import {
   createAttachmentArchiveIntegrityStateMachine,
 } from "./attachment-archive-integrity";
 import { createAttachmentArchiveStateMachine } from "./attachment-archive-state-machine";
+import { centraEventsTopicName } from "./centra-topics";
 import {
   getLegacyAttachmentBucketMapParameterName,
   getLegacyAttachmentMirrorBuckets,
@@ -105,6 +106,7 @@ export class Api extends cdk.NestedStack {
     } = props;
 
     const topicName = `${topicNamespace}aws.onemac.migration.cdc`;
+    const centraTopicName = centraEventsTopicName(topicNamespace);
     const legacyAttachmentBucketMapParameterName = getLegacyAttachmentBucketMapParameterName(
       project,
       stage,
@@ -897,6 +899,7 @@ export class Api extends cdk.NestedStack {
         environment: {
           dbInfoSecretName,
           topicName,
+          centraTopicName,
           brokerString,
           osDomain: `https://${openSearchDomainEndpoint}`,
           indexNamespace,

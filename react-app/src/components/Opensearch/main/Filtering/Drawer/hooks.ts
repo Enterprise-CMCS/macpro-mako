@@ -24,6 +24,7 @@ export const useFilterState = () => {
       return {
         [C.SELECT_STATE.field]: C.SELECT_STATE,
         [C.CHECK_AUTHORITY.field]: C.CHECK_AUTHORITY,
+        [C.CHECK_REQUEST_TYPE.field]: C.CHECK_REQUEST_TYPE,
         ...(() => {
           if (isCms) return { [C.CHECK_CMSSTATUS.field]: C.CHECK_CMSSTATUS };
           return { [C.CHECK_STATESTATUS.field]: C.CHECK_STATESTATUS };

@@ -61,6 +61,7 @@ export const postSubmissionForms: Partial<
     ["1915(c)"]: UploadSubsequentDocuments,
     ["Medicaid SPA"]: UploadSubsequentDocuments,
     ["CHIP SPA"]: UploadSubsequentDocuments,
+    CE_HARDSHIP_EXCEPTION: UploadSubsequentDocuments,
   },
 };
 

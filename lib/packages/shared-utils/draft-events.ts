@@ -10,6 +10,7 @@ export const DRAFTABLE_EVENTS = [
   "contracting-amendment",
   "temporary-extension",
   "app-k",
+  "ce-record-submitted",
 ] as const;
 
 export type DraftableEvent = (typeof DRAFTABLE_EVENTS)[number];

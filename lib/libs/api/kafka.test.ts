@@ -1,7 +1,7 @@
 import { mockedProducer } from "mocks/helpers/kafka.utils";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
-import { getProducer, produceMessage } from "./kafka";
+import { getCentraProducer, getProducer, produceCentraMessage, produceMessage } from "./kafka";
 
 describe("Kafka producer functions", () => {
   let brokerString: string | undefined;
@@ -72,8 +72,32 @@ describe("Kafka producer functions", () => {
     expect(mockedProducer.send).toHaveBeenCalled();
   });
 
+  it("should produce a centra message on its own producer", async () => {
+    const topic = "aws.onemac.centra.events";
+    const key = "MD-CE-26-001";
+    const value = JSON.stringify({ event: "ce-record-submitted" });
+
+    mockedProducer.send.mockResolvedValueOnce([{ partition: 0, offset: "1" }]);
+
+    await produceCentraMessage(topic, key, value);
+
+    expect(mockedProducer.connect).toHaveBeenCalled();
+    expect(mockedProducer.send).toHaveBeenCalledWith({
+      topic,
+      messages: [
+        {
+          key,
+          value,
+          partition: 0,
+          headers: { source: "mako" },
+        },
+      ],
+    });
+  });
+
   it("should throw an error if brokerString is not defined", () => {
     delete process.env.brokerString;
     expect(() => getProducer()).toThrowError();
+    expect(() => getCentraProducer()).toThrowError();
   });
 });

@@ -1,4 +1,12 @@
-import { QueryAggs, QueryContainer, TermQuery, TermsQuery, TestAggResult, TestHit } from "../index";
+import {
+  Query,
+  QueryAggs,
+  QueryContainer,
+  TermQuery,
+  TermsQuery,
+  TestAggResult,
+  TestHit,
+} from "../index";
 
 export const getFilterValue = (
   query: QueryContainer | QueryContainer[] | undefined,
@@ -278,6 +286,7 @@ export const getAggregations = (
       sum_other_doc_count: 0,
       buckets: isSpa
         ? [
+            { key: "CE_HARDSHIP_EXCEPTION", doc_count: 3 },
             { key: "CHIP SPA", doc_count: 31 },
             { key: "Medicaid SPA", doc_count: 90 },
           ]
@@ -287,5 +296,126 @@ export const getAggregations = (
           ],
     };
   }
+
+  if (aggs?.["hardshipKind.keyword"]) {
+    aggregations["hardshipKind.keyword"] = {
+      doc_count_error_upper_bound: 0,
+      sum_other_doc_count: 0,
+      buckets: [
+        { key: "CE_NEA", doc_count: 1 },
+        { key: "CE_SADE", doc_count: 1 },
+        { key: "CE_UNEMPLOYMENT", doc_count: 1 },
+      ],
+    };
+  }
   return aggregations;
+};
+
+type SearchSource = Record<string, unknown> | null | undefined;
+
+type SearchHit = {
+  _id?: string;
+  _source?: SearchSource;
+};
+
+type LooseClause = {
+  term?: Record<string, unknown>;
+  terms?: Record<string, unknown>;
+  dis_max?: {
+    queries?: {
+      wildcard?: Record<string, { value?: string } | string>;
+    }[];
+  };
+};
+
+const asClauses = (value: QueryContainer | QueryContainer[] | undefined): LooseClause[] => {
+  if (!value) return [];
+  return (Array.isArray(value) ? value : [value]) as LooseClause[];
+};
+
+const scalarValue = (raw: unknown): string => {
+  if (raw && typeof raw === "object" && "value" in raw) {
+    return String((raw as { value: unknown }).value ?? "");
+  }
+  return raw == null ? "" : String(raw);
+};
+
+const clauseFilters = (clause: LooseClause, key: "term" | "terms") => {
+  const bucket = clause[key];
+  if (!bucket) return [];
+  return Object.entries(bucket).flatMap(([field, raw]) => {
+    if (field === "boost" || field === "_name") return [];
+    const values = Array.isArray(raw) ? raw.map((value) => String(value)) : [scalarValue(raw)];
+    return values.length ? [{ field, values }] : [];
+  });
+};
+
+const sourceField = (source: SearchSource, field: string): string => {
+  if (!source) return "";
+  const key = field.replace(/\.keyword$/, "");
+  const value = source[key];
+  return value == null ? "" : String(value);
+};
+
+const searchNeedles = (clauses: LooseClause[]): string[] =>
+  clauses.flatMap((clause) =>
+    (clause.dis_max?.queries ?? []).flatMap((query) => {
+      const wildcard = query.wildcard;
+      if (!wildcard) return [];
+      return Object.values(wildcard).flatMap((spec) => {
+        const raw = typeof spec === "string" ? spec : spec?.value;
+        const needle = String(raw ?? "")
+          .replace(/^\*/, "")
+          .replace(/\*$/, "")
+          .trim()
+          .toLowerCase();
+        return needle ? [needle] : [];
+      });
+    }),
+  );
+
+const matchesFilters = (
+  source: SearchSource,
+  filters: { field: string; values: string[] }[],
+): boolean =>
+  filters.every((filter) =>
+    filter.values.some(
+      (value) => sourceField(source, filter.field).toLowerCase() === value.toLowerCase(),
+    ),
+  );
+
+/** Apply dashboard term filters, exclusions, and the package-id search box. */
+export const applyMainSearchFilters = <T extends SearchHit>(
+  items: T[],
+  query: Query | undefined,
+): T[] => {
+  const must = asClauses(query?.bool?.must);
+  const mustNot = asClauses(query?.bool?.must_not);
+  const filter = asClauses(query?.bool?.filter);
+  const required = [...must, ...filter].flatMap((clause) => [
+    ...clauseFilters(clause, "term"),
+    ...clauseFilters(clause, "terms"),
+  ]);
+  const excluded = mustNot.flatMap((clause) => [
+    ...clauseFilters(clause, "term"),
+    ...clauseFilters(clause, "terms"),
+  ]);
+  const needles = searchNeedles(must);
+
+  return items.filter((item) => {
+    if (item._source?.deleted === true) return false;
+    if (!matchesFilters(item._source, required)) return false;
+    if (excluded.some((entry) => matchesFilters(item._source, [entry]))) return false;
+    if (
+      needles.length > 0 &&
+      !needles.every((needle) =>
+        ["id", "submitterName", "leadAnalystName"].some((field) =>
+          sourceField(item._source, field).toLowerCase().includes(needle),
+        ),
+      )
+    ) {
+      return false;
+    }
+    return true;
+  });
 };

@@ -1,5 +1,5 @@
 import { Navigate, useParams } from "react-router";
-import { opensearch } from "shared-types";
+import { CE_EVENT, opensearch } from "shared-types";
 import { z } from "zod";
 
 import { useGetItem } from "@/api";
@@ -14,9 +14,14 @@ import {
   AttachmentFileFormatInstructions,
 } from "@/components/ActionForm/actionForm.components";
 import { formSchemas } from "@/formSchemas";
+import { isCeHardshipException } from "@/utils";
 import { getEffectiveInitialSubmissionEvent } from "@/utils/chipEligibility";
 
 import { getFAQLinkForAttachments } from "../../faqLinks";
+import { CentraSubsequentDocuments } from "./CentraSubsequentDocuments";
+
+const isCentraSubmission = (submission: opensearch.main.Document) =>
+  isCeHardshipException(submission.authority) || submission.event === CE_EVENT.RECORD_SUBMITTED;
 
 const initialSubmissionEvents = [
   "app-k",
@@ -172,6 +177,15 @@ export const UploadSubsequentDocuments = () => {
 
   if (!submission?._source) {
     return <Navigate to="/dashboard" />;
+  }
+
+  if (isCentraSubmission(submission._source)) {
+    return (
+      <CentraSubsequentDocuments
+        packageId={submission._source.id || id || ""}
+        hardshipKind={submission._source.hardshipKind}
+      />
+    );
   }
 
   const originalSubmissionEvent = inferInitialSubmissionEvent(submission._source);

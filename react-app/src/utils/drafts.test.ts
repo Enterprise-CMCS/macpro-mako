@@ -37,6 +37,12 @@ describe("getDraftIdConflictFieldMessage", () => {
     );
   });
 
+  test("returns CEntra duplicate copy", () => {
+    expect(getDraftIdConflictFieldMessage("ce-record-submitted")).toBe(
+      "According to our records, this Submission ID already exists. Please check the Submission ID and try entering it again.",
+    );
+  });
+
   test("returns event-specific copy for temporary extensions and app k", () => {
     expect(getDraftIdConflictFieldMessage("temporary-extension")).toBe(
       "According to our records, this Temporary Extension Request Number already exists. Please check the Temporary Extension Request Number and try entering it again.",
@@ -117,6 +123,21 @@ describe("draft links and copy", () => {
     expect(getDraftEditLink(record as never)).toEqual({
       pathname: "/new-submission/spa/medicaid/create",
       search: "draftId=MD-26-1234-P&origin=spas",
+    });
+    expect(getDraftDashboardLink(record as never)).toBe("/dashboard?tab=spas");
+  });
+
+  test("builds a CEntra draft link on the SPAs tab", () => {
+    const record = {
+      id: "MD-CE-26-001",
+      authority: "CE_HARDSHIP_EXCEPTION",
+      event: "ce-record-submitted",
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+    } as const;
+
+    expect(getDraftEditLink(record as never)).toEqual({
+      pathname: "/new-submission/spa/medicaid/create/centra",
+      search: "draftId=MD-CE-26-001&origin=spas",
     });
     expect(getDraftDashboardLink(record as never)).toBe("/dashboard?tab=spas");
   });

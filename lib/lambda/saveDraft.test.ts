@@ -859,4 +859,234 @@ describe("saveDraft handler", () => {
       }),
     );
   });
+
+  it("creates a CEntra draft with authority and hardship kind", async () => {
+    const draftId = "MD-CE-26-001";
+    const event = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: draftId,
+        event: "ce-record-submitted",
+        draftData: {
+          id: draftId,
+          hardshipKind: "CE_UNEMPLOYMENT",
+          state: "MD",
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: draftId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "CE_HARDSHIP_EXCEPTION",
+            hardshipKind: "CE_UNEMPLOYMENT",
+            state: "MD",
+            event: "ce-record-submitted",
+          }),
+        }),
+      }),
+    );
+  });
+
+  it("updates a CEntra draft hardship kind", async () => {
+    const draftId = "MD-CE-26-001";
+    vi.spyOn(packageApi, "getDraftPackage").mockResolvedValue({
+      found: true,
+      _id: draftId,
+      _seq_no: 4,
+      _primary_term: 1,
+      _source: {
+        id: draftId,
+        seatoolStatus: SEATOOL_STATUS.DRAFT,
+        deleted: false,
+        authority: "CE_HARDSHIP_EXCEPTION",
+        hardshipKind: "CE_UNEMPLOYMENT",
+        submitterEmail: "state.user@example.com",
+        submitterName: "State User",
+        draft: {
+          savedAt: "2026-01-01T00:00:00.000Z",
+          createdAt: "2026-01-01T00:00:00.000Z",
+          createdByEmail: "state.user@example.com",
+          createdByName: "State User",
+          data: { id: draftId, hardshipKind: "CE_UNEMPLOYMENT" },
+        },
+      },
+    } as any);
+
+    const event = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: draftId,
+        originalDraftId: draftId,
+        event: "ce-record-submitted",
+        draftData: {
+          id: draftId,
+          hardshipKind: "CE_NEA",
+          state: "MD",
+        },
+        ifSeqNo: 4,
+        ifPrimaryTerm: 1,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        id: draftId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "CE_HARDSHIP_EXCEPTION",
+            hardshipKind: "CE_NEA",
+          }),
+        }),
+      }),
+    );
+  });
+
+  it("moves a CEntra draft when the submission id changes", async () => {
+    const draftId = "MD-CE-26-001";
+    const nextDraftId = "MD-CE-26-002";
+    vi.spyOn(packageApi, "getDraftPackage").mockImplementation(async (id) => {
+      if (id === nextDraftId) {
+        return undefined as any;
+      }
+
+      return {
+        found: true,
+        _id: draftId,
+        _seq_no: 10,
+        _primary_term: 2,
+        _source: {
+          id: draftId,
+          seatoolStatus: SEATOOL_STATUS.DRAFT,
+          deleted: false,
+          authority: "CE_HARDSHIP_EXCEPTION",
+          hardshipKind: "CE_SADE",
+          submitterEmail: "state.user@example.com",
+          submitterName: "State User",
+          draft: {
+            savedAt: "2026-01-01T00:00:00.000Z",
+            createdAt: "2026-01-01T00:00:00.000Z",
+            createdByEmail: "state.user@example.com",
+            createdByName: "State User",
+            data: { id: draftId, hardshipKind: "CE_SADE" },
+          },
+        },
+      } as any;
+    });
+
+    const event = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: nextDraftId,
+        originalDraftId: draftId,
+        event: "ce-record-submitted",
+        draftData: {
+          id: nextDraftId,
+          hardshipKind: "CE_SADE",
+          state: "MD",
+        },
+        ifSeqNo: 10,
+        ifPrimaryTerm: 2,
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenNthCalledWith(
+      1,
+      expect.any(String),
+      expect.objectContaining({
+        id: nextDraftId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            id: nextDraftId,
+            authority: "CE_HARDSHIP_EXCEPTION",
+            hardshipKind: "CE_SADE",
+          }),
+        }),
+      }),
+    );
+    expect(os.updateData).toHaveBeenNthCalledWith(
+      2,
+      expect.any(String),
+      expect.objectContaining({
+        id: draftId,
+        body: expect.objectContaining({
+          doc: expect.objectContaining({ deleted: true }),
+        }),
+      }),
+    );
+  });
+
+  it("stores a null hardship kind when the CEntra draft value is unknown", async () => {
+    const draftId = "MD-CE-26-001";
+    const event = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: draftId,
+        event: "ce-record-submitted",
+        draftData: {
+          id: draftId,
+          hardshipKind: "CE_OTHER",
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "CE_HARDSHIP_EXCEPTION",
+            hardshipKind: null,
+          }),
+        }),
+      }),
+    );
+  });
+
+  it("accepts CE_HARDSHIP_EXCEPTION from known draft authorities", async () => {
+    const tempExtensionId = "MD-1198.R06.TE00";
+    const event = {
+      ...baseEvent,
+      body: JSON.stringify({
+        id: tempExtensionId,
+        event: "temporary-extension",
+        authority: "CE_HARDSHIP_EXCEPTION",
+        draftData: {
+          ids: {
+            id: tempExtensionId,
+          },
+        },
+      }),
+    } as APIGatewayEvent;
+
+    const res = await handler(event, {} as Context);
+
+    expect(res.statusCode).toBe(200);
+    expect(os.updateData).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({
+        body: expect.objectContaining({
+          doc: expect.objectContaining({
+            authority: "CE_HARDSHIP_EXCEPTION",
+          }),
+        }),
+      }),
+    );
+  });
 });
