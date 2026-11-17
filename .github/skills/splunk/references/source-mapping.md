@@ -21,6 +21,7 @@ This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names us
 | mako-val-api-notifyAttachmentArchiveIntegrity      | impl     | /aws/lambda/mako-val-api-notifyAttachmentArchiveIntegrity      |
 | mako-val-api-rebuildAttachmentArchives             | impl     | /aws/lambda/mako-val-api-rebuildAttachmentArchives             |
 | mako-val-api-runAttachmentArchiveIntegrityCheck    | impl     | /aws/lambda/mako-val-api-runAttachmentArchiveIntegrityCheck    |
+| mako-val-api-runSeatoolMissingRecordEscalation     | impl     | /aws/lambda/mako-val-api-runSeatoolMissingRecordEscalation     |
 | mako-val-api-runSeatoolStatusMismatchReport        | impl     | /aws/lambda/mako-val-api-runSeatoolStatusMismatchReport        |
 | mako-val-api-deleteDraft                           | impl     | /aws/lambda/mako-val-api-deleteDraft                           |
 | mako-val-api-saveDraft                             | impl     | /aws/lambda/mako-val-api-saveDraft                             |
@@ -38,6 +39,7 @@ This file maps AWS Lambda CloudWatch log sources to the Splunk `source` names us
 | mako-production-api-submitNOSO                     | prod     | /aws/lambda/mako-production-api-submitNOSO                     |
 | mako-production-api-deleteDraft                    | prod     | /aws/lambda/mako-production-api-deleteDraft                    |
 | mako-production-api-saveDraft                      | prod     | /aws/lambda/mako-production-api-saveDraft                      |
+| mako-production-api-runSeatoolMissingRecordEscalation | prod  | /aws/lambda/mako-production-api-runSeatoolMissingRecordEscalation |
 | mako-production-api-runSeatoolStatusMismatchReport | prod     | /aws/lambda/mako-production-api-runSeatoolStatusMismatchReport |
 | mako-production-api-submitSplitSPA                 | prod     | /aws/lambda/mako-production-api-submitSplitSPA                 |
 | mako-production-api-updatePackage                  | prod     | /aws/lambda/mako-production-api-updatePackage                  |

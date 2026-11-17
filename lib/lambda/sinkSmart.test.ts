@@ -16,6 +16,7 @@ import * as publishSmartIngestErrorModule from "./smart/publishSmartIngestError"
 
 const TOPIC = "aws.mulesoft.onemac.events";
 const TOPIC_PARTITION = `${TOPIC}-0`;
+const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => undefined);
 
 const smartEvent = {
   spaWaiverId: "a0ncp000006Wdh7AAC",
@@ -163,14 +164,50 @@ describe("SMART Kafka envelope parsing", () => {
         value: convertObjToBase64(smartEvent),
       }),
     ],
-  ])("processes a valid payload with %s", async (_caseName, record) => {
+  ])("processes a valid payload with %s and logs a warning", async (_caseName, record) => {
     expect(parseSmartKafkaRecord(record, TOPIC_PARTITION)).toEqual(smartEvent);
-    createItemSpy.mockResolvedValueOnce({ created: true });
+    getItemSpy.mockResolvedValue(undefined);
+    searchSpy.mockResolvedValue({ hits: { hits: [] } });
+    createItemSpy.mockResolvedValue({ created: true });
 
     await expect(invokeHandler(createSmartEvent(record))).resolves.toBeUndefined();
 
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      "SMART Kafka record key does not match payload.id",
+      expect.objectContaining({
+        topicPartition: TOPIC_PARTITION,
+        payloadId: smartEvent.id,
+      }),
+    );
+    expect(logErrorSpy).not.toHaveBeenCalled();
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
-    expect(getItemSpy).toHaveBeenCalled();
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({ id: smartEvent.id }),
+    );
+  });
+
+  it("continues processing the partition after warning about a mismatched Kafka key", async () => {
+    getItemSpy.mockResolvedValue(undefined);
+    searchSpy.mockResolvedValue({ hits: { hits: [] } });
+    createItemSpy.mockResolvedValue({ created: true });
+    const mismatchedKeyRecord = createSmartRecord(smartEvent, "AL-26-0817-9999");
+    const validPayload = { ...smartEvent, id: "AL-26-0817-0002" };
+    const validRecord = createSmartRecord(validPayload);
+
+    await expect(
+      invokeHandler(createSmartEvent(mismatchedKeyRecord, validRecord)),
+    ).resolves.toBeUndefined();
+
+    expect(consoleWarnSpy).toHaveBeenCalledOnce();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+    expect(createItemSpy).toHaveBeenCalledTimes(2);
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({ id: validPayload.id }),
+    );
   });
 
   it.each(["spaWaiverId", "id", "correlationId", "origin", "authority", "status", "createdAt"])(
@@ -465,6 +502,36 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("creates a hidden CHIP reservation for MSP_MANUAL_RECORD_CREATED", async () => {
+    const payload = {
+      ...smartEvent,
+      id: "CA-26-1001",
+      spaWaiverId: "a0nTESTCHIP261001",
+      authority: "CHIP SPA",
+      operationType: "MSP_MANUAL_RECORD_CREATED",
+      creationContext: "MANUAL",
+    };
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(payload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      expect.objectContaining({
+        id: payload.id,
+        authority: "CHIP SPA",
+        origin: "SMART",
+        smartRecordType: SMART_RECORD_TYPE.RESERVATION,
+        spaWaiverId: payload.spaWaiverId,
+        operationType: "MSP_MANUAL_RECORD_CREATED",
+      }),
+    );
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("accepts null optional creator fields and dispatches a manual record creation", async () => {
     const payload = {
       ...smartEvent,
@@ -681,7 +748,7 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "NOT_A_REAL_TYPE", undefined])(
     "creates a default OneMAC-shaped document for operationType %s when the ID is missing",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -708,7 +775,7 @@ describe("SMART operation dispatch", () => {
     },
   );
 
-  it.each(["MSP_MANUAL_RECORD_CREATED", "MSP_ASSIGNMENT_UPDATED", "NOT_A_REAL_TYPE", undefined])(
+  it.each(["MSP_MANUAL_RECORD_CREATED", "NOT_A_REAL_TYPE", undefined])(
     "updates only SMART identity fields for operationType %s when the ID exists",
     async (operationType) => {
       const payload = { ...smartEvent, operationType, id: smartEvent.id.toLowerCase() };
@@ -741,6 +808,293 @@ describe("SMART operation dispatch", () => {
       });
     },
   );
+
+  it("creates a hidden reservation and applies the complete Assignment roster when the ID is missing", async () => {
+    const assignmentPayload = {
+      ...smartEvent,
+      operationType: "MSP_ASSIGNMENT_UPDATED",
+      srtAssignmentId: "a0scp00000Du3DRAAZ",
+      srtMember: [
+        {
+          srtAssignmentId: "a0scp00000Du3DRAAZ",
+          contactId: "003cp000017H4ZVAA0",
+          fullName: "Test CPOC User",
+          email: "cpoc@example.com",
+          division: "DEPO",
+          group: "CAHPG",
+          isCpoc: true,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: null,
+        },
+        {
+          srtAssignmentId: "a0scp00000Du3DSAAZ",
+          contactId: "003cp00000insUAAAY",
+          fullName: "Inactive SRT User",
+          email: "srt@example.com",
+          division: "DEPO",
+          group: "CAHPG",
+          isCpoc: false,
+          isConsultantSme: false,
+          isActive: false,
+          assignmentNotes: null,
+        },
+      ],
+    };
+    const reservation = {
+      id: smartEvent.id,
+      authority: "Medicaid SPA",
+      origin: "SMART",
+      smartRecordType: SMART_RECORD_TYPE.RESERVATION,
+      spaWaiverId: smartEvent.spaWaiverId,
+      deleted: false,
+    };
+    getItemSpy.mockResolvedValueOnce(undefined).mockResolvedValueOnce({
+      found: true,
+      _id: smartEvent.id,
+      _source: reservation,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(assignmentPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).toHaveBeenCalledOnce();
+    expect(createItemSpy.mock.calls[0][2]).toMatchObject({
+      id: smartEvent.id,
+      origin: "SMART",
+      smartRecordType: SMART_RECORD_TYPE.RESERVATION,
+      spaWaiverId: smartEvent.spaWaiverId,
+    });
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      smartEvent.id,
+      expect.objectContaining({
+        leadAnalystName: "Test CPOC User",
+        smartCpocContactId: "003cp000017H4ZVAA0",
+        reviewTeam: [],
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("backfills identity and updates CPOC for a complete Assignment roster on an existing package", async () => {
+    const assignmentPayload = {
+      ...smartEvent,
+      operationType: "MSP_ASSIGNMENT_UPDATED",
+      srtAssignmentId: "a0scp00000Du3DRAAZ",
+      srtMember: [
+        {
+          srtAssignmentId: "a0scp00000Du3DRAAZ",
+          contactId: "003cp000017H4ZVAA0",
+          fullName: "Test CPOC User",
+          email: "cpoc@example.com",
+          division: "DEPO",
+          group: "CAHPG",
+          isCpoc: true,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: null,
+        },
+      ],
+    };
+    const existingPackage = {
+      id: smartEvent.id,
+      origin: "OneMAC",
+      authority: "Medicaid SPA",
+      seatoolStatus: "Pending",
+      deleted: false,
+      leadAnalystName: "Legacy CPOC",
+    };
+    getItemSpy
+      .mockResolvedValueOnce({
+        found: true,
+        _id: smartEvent.id,
+        _source: existingPackage,
+      } as Awaited<ReturnType<typeof os.getItem>>)
+      .mockResolvedValueOnce({
+        found: true,
+        _id: smartEvent.id,
+        _source: existingPackage,
+      } as Awaited<ReturnType<typeof os.getItem>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(assignmentPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).toHaveBeenCalledTimes(2);
+    expect(updateItemSpy.mock.calls[0][3]).toEqual({
+      spaWaiverId: smartEvent.spaWaiverId,
+      correlationId: smartEvent.correlationId,
+    });
+    expect(updateItemSpy.mock.calls[1][3]).toMatchObject({
+      leadAnalystName: "Test CPOC User",
+      leadAnalystEmail: "cpoc@example.com",
+      smartAssignmentChangedAt: smartEvent.createdAt,
+      reviewTeam: [],
+    });
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("consumes MSP_ASSIGNMENT_UPDATED for CHIP using the complete assignment roster", async () => {
+    const packageId = "CA-26-1001";
+    const externalId = "a0nTESTCHIP261001";
+    const assignmentPayload = {
+      ...smartEvent,
+      id: packageId,
+      spaWaiverId: externalId,
+      authority: "CHIP SPA",
+      operationType: "MSP_ASSIGNMENT_UPDATED",
+      srtAssignmentId: "chip-cpoc-assignment",
+      srtMember: [
+        {
+          srtAssignmentId: "chip-cpoc-assignment",
+          contactId: "chip-cpoc-contact",
+          fullName: "CHIP CPOC",
+          email: "chip.cpoc@example.com",
+          division: "DBC",
+          group: "MBHPG",
+          isCpoc: true,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: "Active CPOC",
+        },
+        {
+          srtAssignmentId: "chip-srt-assignment",
+          contactId: "chip-srt-contact",
+          fullName: "CHIP SRT",
+          email: "chip.srt@example.com",
+          division: "DMCP",
+          group: "MCG",
+          isCpoc: false,
+          isConsultantSme: false,
+          isActive: true,
+          assignmentNotes: "Active SRT member",
+        },
+      ],
+    };
+    const existingPackage = {
+      id: packageId,
+      origin: "OneMAC",
+      authority: "CHIP SPA",
+      seatoolStatus: "Pending",
+      deleted: false,
+      spaWaiverId: externalId,
+    };
+    getItemSpy.mockResolvedValue({
+      found: true,
+      _id: packageId,
+      _source: existingPackage,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+    searchSpy.mockResolvedValue({
+      hits: { hits: [{ _id: packageId, _source: existingPackage }] },
+    } as Awaited<ReturnType<typeof os.search>>);
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(assignmentPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(createItemSpy).not.toHaveBeenCalled();
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      packageId,
+      expect.objectContaining({
+        leadAnalystName: "CHIP CPOC",
+        smartCpocContactId: "chip-cpoc-contact",
+        reviewTeam: [{ name: "CHIP SRT", email: "chip.srt@example.com" }],
+        operationType: "MSP_ASSIGNMENT_UPDATED",
+      }),
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("consumes MSP_ADMINISTRATIVE_FIELD_UPDATED for CHIP package details", async () => {
+    const packageId = "CA-26-1105-CHIP";
+    const externalId = "a0nTESTCHIP261105";
+    const statusChangedAt = "2026-11-05T17:00:00.123Z";
+    const packageDetailsPayload = {
+      ...smartEvent,
+      id: packageId,
+      spaWaiverId: externalId,
+      authority: "CHIP SPA",
+      operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+      statusChangedAt,
+      state: "California",
+      initialSubmissionDate: "2026-11-05",
+      subject: "Updated CHIP subject",
+      description: "Updated CHIP description",
+      proposedEffectiveDate: "2027-01-31",
+      approvedEffectiveDate: "2026-12-01",
+      typeSelections: [
+        {
+          typeSelectionId: "chip-eligibility-magi",
+          type: "Eligibility",
+          subType: "MAGI",
+          isTypeActive: true,
+          isSubTypeActive: true,
+        },
+      ],
+    };
+    const existingPackage = {
+      id: packageId,
+      origin: "OneMAC",
+      authority: "CHIP SPA",
+      state: "CA",
+      seatoolStatus: "Pending",
+      deleted: false,
+      spaWaiverId: externalId,
+      submissionDate: "2026-11-04T05:00:00.000Z",
+      subject: "Existing CHIP subject",
+      description: "Existing CHIP description",
+    };
+    getItemSpy.mockResolvedValue({
+      found: true,
+      _id: packageId,
+      _source: existingPackage,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+    searchSpy
+      .mockResolvedValueOnce({
+        hits: { hits: [{ _id: packageId, _source: existingPackage }] },
+      } as Awaited<ReturnType<typeof os.search>>)
+      .mockResolvedValueOnce({ hits: { hits: [] } });
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(packageDetailsPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      packageId,
+      expect.objectContaining({
+        subject: "Updated CHIP subject",
+        description: "Updated CHIP description",
+        submissionDate: "2026-11-05T05:00:00.000Z",
+        proposedDate: "2027-01-31T05:00:00.000Z",
+        approvedEffectiveDate: "2026-12-01T05:00:00.000Z",
+        smartPackageDetailsChangedAt: statusChangedAt,
+        operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+      }),
+    );
+    expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("origin");
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/changelog$/),
+      [
+        expect.objectContaining({
+          packageId,
+          event: "update-values",
+          changeMade: "Initial Submission Date changed from 2026-11-04 to 2026-11-05",
+          operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+        }),
+      ],
+      { throwOnBulkError: true },
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
 
   it("rejects MSP_MANUAL_RECORD_CREATED when the package already has a different spaWaiverId", async () => {
     const payload = { ...smartEvent, operationType: "MSP_MANUAL_RECORD_CREATED" };

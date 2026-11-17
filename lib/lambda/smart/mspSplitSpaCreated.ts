@@ -79,8 +79,18 @@ interface SplitPackageDocument extends Record<string, unknown> {
   id: string;
 }
 
-const getSplitChangeMade = (splitSpaId: string, originalSpaId: string): string =>
-  `Created split SPA ${splitSpaId} from ${originalSpaId}`;
+const getSplitChangeMade = (splitSpaId: string): string =>
+  `${splitSpaId} was manually added to OneMAC.`;
+
+const getSplitChangeReason = (
+  originalSpaId: string,
+  splitReason: string,
+  createdByName: string | null | undefined,
+): string => {
+  const actor = createdByName?.trim();
+  const actorText = actor ? ` by ${actor}` : "";
+  return `This package was added to OneMAC from SMART. Package was split from SPA ${originalSpaId}${actorText}. Reason: ${splitReason}`;
+};
 
 const hasConflictingCorrelationId = (
   document: opensearch.main.Document,
@@ -225,7 +235,8 @@ const buildSplitPackage = (
   const splitSpaId = event.splitSpaId.toUpperCase();
   const originalSpaId = event.originalSpaId.toUpperCase();
   const timestamp = Date.parse(event.createdAt);
-  const changeMade = getSplitChangeMade(splitSpaId, originalSpaId);
+  const changeMade = getSplitChangeMade(splitSpaId);
+  const changeReason = getSplitChangeReason(originalSpaId, event.splitReason, event.createdByName);
 
   // Preserve the parent's business data and role-specific statuses. A split
   // event creates a new package; it does not independently transition status.
@@ -251,7 +262,7 @@ const buildSplitPackage = (
     isAdminChange: true,
     adminChangeType: "split-spa",
     changeMade,
-    changeReason: event.splitReason,
+    changeReason,
   };
 };
 
@@ -374,7 +385,8 @@ const persistSplitActivity = async (
       id: `${splitSpaId}-${getActivitySuffix(originalSpaId, _id)}`,
       packageId: splitSpaId,
     }));
-  const changeMade = getSplitChangeMade(splitSpaId, originalSpaId);
+  const changeMade = getSplitChangeMade(splitSpaId);
+  const changeReason = getSplitChangeReason(originalSpaId, event.splitReason, event.createdByName);
   const adminActivity = {
     id: `${splitSpaId}-smart-split-${event.splitSpaWaiverId}`,
     packageId: splitSpaId,
@@ -383,7 +395,7 @@ const persistSplitActivity = async (
     isAdminChange: true,
     adminChangeType: "split-spa",
     changeMade,
-    changeReason: event.splitReason,
+    changeReason,
     additionalInformation: event.splitReason,
     submitterName: event.createdByName ?? "",
     submitterEmail: event.createdByEmail ?? "",

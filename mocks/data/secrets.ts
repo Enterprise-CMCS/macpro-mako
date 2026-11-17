@@ -54,7 +54,10 @@ const secrets: Record<string, TestSecretData> = {
       '"chipCcList": ["chip.cc1@example.com", "chip.cc2@example.com"],' +
       '"sourceEmail": "source@example.com",' +
       '"srtEmails": ["srt1@example.com", "srt2@example.com"],' +
-      '"cpocEmail": ["cpoc@example.com"]' +
+      '"cpocEmail": ["cpoc@example.com"],' +
+      '"seatoolMissingRecordTo": ["missing-record-dev@example.com"],' +
+      '"seatoolHelpdesk": ["seatool-helpdesk@example.com"],' +
+      '"dpoApprover": ["dpo-approver@example.com"]' +
       "}",
     VersionId: "1.0",
     VersionStages: ["prod"],

@@ -11,7 +11,7 @@ import { Archiver, ZipArchive } from "archiver";
 import { randomUUID } from "crypto";
 import { createReadStream, createWriteStream, promises as fs } from "fs";
 import { join } from "path";
-import { Readable } from "stream";
+import { PassThrough, Readable } from "stream";
 import { finished } from "stream/promises";
 
 import { buildAttachmentArchiveCurrent } from "../archive-manifest";
@@ -67,7 +67,114 @@ const getAttachmentBucketClient = createAttachmentBucketClientFactory({
 });
 
 type AttachmentBody = NonNullable<GetObjectCommandOutput["Body"]>;
-type ArchiverInput = Buffer | Readable;
+
+const DEFAULT_ATTACHMENT_ENTRY_IDLE_MS = 60_000;
+
+function attachmentEntryIdleMs(): number {
+  const configured = Number(process.env.ATTACHMENT_ARCHIVE_ENTRY_IDLE_MS);
+  if (Number.isFinite(configured) && configured > 0) {
+    return configured;
+  }
+  return DEFAULT_ATTACHMENT_ENTRY_IDLE_MS;
+}
+
+function stalledAttachmentError(
+  attachment: Pick<AttachmentArchiveManifestAttachment, "bucket" | "key">,
+): Error {
+  return new Error(
+    `Attachment ${attachment.bucket}/${attachment.key} stopped producing bytes before it could be archived`,
+  );
+}
+
+async function appendAttachmentBody(
+  archive: Archiver,
+  source: Readable,
+  name: string,
+  attachment: Pick<AttachmentArchiveManifestAttachment, "bucket" | "key">,
+): Promise<void> {
+  const monitored = new PassThrough();
+  let settled = false;
+  let idleTimer: ReturnType<typeof setTimeout> | undefined;
+  let entryResolve: () => void = () => undefined;
+  let entryReject: (error: Error) => void = () => undefined;
+
+  const entryFinished = new Promise<void>((resolve, reject) => {
+    entryResolve = resolve;
+    entryReject = reject;
+  });
+
+  const cleanup = () => {
+    if (idleTimer !== undefined) {
+      clearTimeout(idleTimer);
+    }
+    archive.removeListener("entry", onEntry);
+    archive.removeListener("error", onFailure);
+    source.removeListener("data", onData);
+    source.removeListener("end", onEnd);
+    source.removeListener("error", onFailure);
+    monitored.removeListener("drain", onDrain);
+  };
+
+  const settle = (error?: Error) => {
+    if (settled) {
+      return;
+    }
+    settled = true;
+    cleanup();
+    if (!error) {
+      entryResolve();
+      return;
+    }
+
+    source.on("error", () => undefined);
+    monitored.on("error", () => undefined);
+    source.destroy();
+    monitored.destroy();
+    entryReject(error);
+  };
+
+  const armIdleTimer = () => {
+    if (idleTimer !== undefined) {
+      clearTimeout(idleTimer);
+    }
+    idleTimer = setTimeout(() => {
+      settle(stalledAttachmentError(attachment));
+    }, attachmentEntryIdleMs());
+  };
+
+  const onEntry = () => {
+    settle();
+  };
+
+  const onFailure = (error: Error) => {
+    settle(error);
+  };
+
+  const onDrain = () => {
+    source.resume();
+  };
+
+  const onData = (chunk: Buffer | string) => {
+    armIdleTimer();
+    if (!monitored.write(chunk)) {
+      source.pause();
+    }
+  };
+
+  const onEnd = () => {
+    monitored.end();
+  };
+
+  archive.on("entry", onEntry);
+  archive.on("error", onFailure);
+  monitored.on("drain", onDrain);
+  source.on("data", onData);
+  source.on("end", onEnd);
+  source.on("error", onFailure);
+  armIdleTimer();
+  archive.append(monitored, { name });
+  await entryFinished;
+}
 
 function isSectionManifest(
   manifest: AttachmentArchiveManifest,
@@ -239,9 +346,8 @@ async function appendSectionManifest(
       continue;
     }
 
-    archive.append(toArchiverInput(result.body), {
-      name: pathResolver(attachment),
-    });
+    const source = toArchiverInput(result.body, attachment);
+    await appendAttachmentBody(archive, source, pathResolver(attachment), attachment);
     appendedAttachmentCount += 1;
   }
 
@@ -380,7 +486,10 @@ function toNodeWebReadableStream(stream: ReadableStream<Uint8Array>): NodeReadab
   return stream as unknown as NodeReadableStream<any>;
 }
 
-function toArchiverInput(body: AttachmentBody): ArchiverInput {
+function toArchiverInput(
+  body: AttachmentBody,
+  attachment: Pick<AttachmentArchiveManifestAttachment, "bucket" | "key">,
+): Readable {
   if (isNodeReadableStream(body)) {
     return body as Readable;
   }
@@ -397,7 +506,9 @@ function toArchiverInput(body: AttachmentBody): ArchiverInput {
     return Readable.from(body);
   }
 
-  throw new Error("Attachment body could not be converted to a readable stream");
+  throw new Error(
+    `Attachment ${attachment.bucket}/${attachment.key} could not be converted to a readable stream`,
+  );
 }
 
 async function run(): Promise<void> {

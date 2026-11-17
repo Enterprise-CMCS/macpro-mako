@@ -295,6 +295,114 @@ describe("handleMspRaiWithdrawalToggled", () => {
     expect(bulkUpdateDataSpy).toHaveBeenCalledOnce();
   });
 
+  it("allows a later re-enable after OneMAC withdraws and receives another RAI response", async () => {
+    const previousToggleDate = "2026-08-17T16:00:00.000Z";
+    const previousToggleTimestamp = Date.parse(previousToggleDate);
+    const reEnableDate = "2026-08-17T17:00:00.000Z";
+    const reEnableEvent = {
+      ...event,
+      createdAt: reEnableDate,
+      raiWithdrawnToggleDate: reEnableDate,
+    };
+    const resetMainState = {
+      raiWithdrawEnabled: false,
+      raiId: RAI_ID,
+      raiWithdrawnToggleDate: previousToggleDate,
+      raiReceivedDate: "2026-08-17T16:45:00.000Z",
+    };
+
+    await handleMspRaiWithdrawalToggled(
+      createContext({
+        event: reEnableEvent,
+        existence: {
+          mainById: packageById(resetMainState),
+          mainBySpaWaiverId: packageSearch(resetMainState),
+          changelogById: {
+            hits: {
+              hits: [
+                {
+                  _id: `${PACKAGE_ID}-smart-rai-toggle-${previousToggleTimestamp}-enabled`,
+                  _source: {
+                    id: `${PACKAGE_ID}-smart-rai-toggle-${previousToggleTimestamp}-enabled`,
+                    packageId: PACKAGE_ID,
+                    event: "toggle-withdraw-rai",
+                    timestamp: previousToggleTimestamp,
+                    raiWithdrawEnabled: true,
+                    raiId: RAI_ID,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      }),
+    );
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-main",
+      PACKAGE_ID,
+      expect.objectContaining({
+        raiWithdrawEnabled: true,
+        raiWithdrawnToggleDate: reEnableDate,
+      }),
+    );
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      "https://search.example.test",
+      "test-changelog",
+      [
+        expect.objectContaining({
+          timestamp: Date.parse(reEnableDate),
+          raiWithdrawEnabled: true,
+        }),
+      ],
+      { throwOnBulkError: true },
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("prefers a strictly newer main toggle when its changelog write is missing", async () => {
+    const olderTimestamp = Date.parse("2026-08-17T15:00:00.000Z");
+    const newerMainDate = "2026-08-18T16:11:46.000Z";
+    const staleDisableEvent = { ...event, raiWithdrawnToggle: false };
+    const newerMainState = {
+      raiWithdrawEnabled: true,
+      raiId: RAI_ID,
+      raiWithdrawnToggleDate: newerMainDate,
+    };
+
+    await handleMspRaiWithdrawalToggled(
+      createContext({
+        event: staleDisableEvent,
+        existence: {
+          mainById: packageById(newerMainState),
+          mainBySpaWaiverId: packageSearch(newerMainState),
+          changelogById: {
+            hits: {
+              hits: [
+                {
+                  _id: `${PACKAGE_ID}-${olderTimestamp}`,
+                  _source: {
+                    id: `${PACKAGE_ID}-${olderTimestamp}`,
+                    packageId: PACKAGE_ID,
+                    event: "toggle-withdraw-rai",
+                    timestamp: olderTimestamp,
+                    raiWithdrawEnabled: false,
+                    raiId: RAI_ID,
+                  },
+                },
+              ],
+            },
+          },
+        },
+      }),
+    );
+
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).toHaveBeenCalledOnce();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("rejects a conflicting toggle at the same timestamp", async () => {
     await handleMspRaiWithdrawalToggled(
       createContext({

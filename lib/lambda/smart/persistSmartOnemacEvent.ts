@@ -6,10 +6,11 @@ import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
 import { getStateFromPackageId, transformMspManualRecordCreated } from "./mspManualRecordCreated";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 import { publishSmartIngestError } from "./publishSmartIngestError";
-import { reportSmartValidationFailure } from "./smartEventHelpers";
+import { reportSmartValidationFailure, resolveSmartPackage } from "./smartEventHelpers";
 
 interface ExistingSmartIdentity {
   spaWaiverId?: string | null;
+  correlationId?: string | null;
 }
 
 const smartIdentityFields = (
@@ -27,7 +28,9 @@ const smartIdentityFields = (
     ...(!storedSpaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
     // A blank SMART correlation ID is valid, but it should not erase an
     // identifier previously associated with an existing OneMAC package.
-    ...(event.correlationId ? { correlationId: event.correlationId } : {}),
+    ...(event.correlationId && event.correlationId !== existing.correlationId
+      ? { correlationId: event.correlationId }
+      : {}),
   };
 };
 
@@ -51,7 +54,7 @@ const updateSmartIdentityFields = async (
 export const persistSmartOnemacEvent = async (
   context: SmartOnemacEventContext,
 ): Promise<boolean> => {
-  const { event, existence, topicPartition, kafkaKey, kafkaOffset, kafkaTimestamp } = context;
+  const { event, topicPartition, kafkaKey, kafkaOffset, kafkaTimestamp } = context;
   const documentId = event.id.toUpperCase();
   if (!getStateFromPackageId(documentId)) {
     logError({
@@ -75,13 +78,28 @@ export const persistSmartOnemacEvent = async (
   }
 
   const { domain, index } = getDomainAndNamespace("main");
-  if (existence.mainById) {
+  const resolution = resolveSmartPackage(context);
+  if (resolution instanceof Error) {
+    await reportSmartValidationFailure(context, resolution);
+    return false;
+  }
+  if (resolution) {
+    if (
+      resolution.document.deleted === true ||
+      (resolution.document.authority && resolution.document.authority !== event.authority)
+    ) {
+      await reportSmartValidationFailure(
+        context,
+        new Error("SMART identity requires a non-deleted package with matching authority"),
+      );
+      return false;
+    }
     const identityError = await updateSmartIdentityFields(
       domain,
       index,
-      documentId,
+      resolution.documentId,
       event,
-      existence.mainById._source,
+      resolution.document,
     );
     if (identityError) {
       await reportSmartValidationFailure(context, identityError);
@@ -103,6 +121,17 @@ export const persistSmartOnemacEvent = async (
     const racedPackage = await os.getItem(domain, index, documentId);
     if (!racedPackage?._source) {
       throw new Error("package ID was claimed but could not be resolved after create conflict");
+    }
+
+    if (
+      racedPackage._source.deleted === true ||
+      (racedPackage._source.authority && racedPackage._source.authority !== event.authority)
+    ) {
+      await reportSmartValidationFailure(
+        context,
+        new Error("SMART identity requires a non-deleted package with matching authority"),
+      );
+      return false;
     }
 
     const identityError = await updateSmartIdentityFields(

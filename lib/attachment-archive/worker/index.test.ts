@@ -1,7 +1,15 @@
+import { EventEmitter } from "events";
 import { Readable } from "stream";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 type JsonStore = Map<string, any>;
+
+type ArchiveMock = EventEmitter & {
+  abort: ReturnType<typeof vi.fn>;
+  append: ReturnType<typeof vi.fn>;
+  finalize: ReturnType<typeof vi.fn>;
+  pipe: ReturnType<typeof vi.fn>;
+};
 
 const originalEnv = {
   ARCHIVE_BUCKET_NAME: process.env.ARCHIVE_BUCKET_NAME,
@@ -61,13 +69,7 @@ function buildCurrent() {
 }
 
 describe("attachment archive worker runtime", () => {
-  let archiveMock: {
-    abort: ReturnType<typeof vi.fn>;
-    append: ReturnType<typeof vi.fn>;
-    finalize: ReturnType<typeof vi.fn>;
-    on: ReturnType<typeof vi.fn>;
-    pipe: ReturnType<typeof vi.fn>;
-  };
+  let archiveMock: ArchiveMock;
   let createReadStreamMock: ReturnType<typeof vi.fn>;
   let createWriteStreamMock: ReturnType<typeof vi.fn>;
   let finishedMock: ReturnType<typeof vi.fn>;
@@ -107,13 +109,15 @@ describe("attachment archive worker runtime", () => {
       destroy: vi.fn(),
     };
 
-    archiveMock = {
-      abort: vi.fn(),
-      append: vi.fn(),
-      finalize: vi.fn().mockResolvedValue(undefined),
-      on: vi.fn().mockReturnThis(),
-      pipe: vi.fn(),
-    };
+    archiveMock = new EventEmitter() as ArchiveMock;
+    archiveMock.abort = vi.fn();
+    archiveMock.append = vi.fn(() => {
+      queueMicrotask(() => {
+        archiveMock.emit("entry", {});
+      });
+    });
+    archiveMock.finalize = vi.fn().mockResolvedValue(undefined);
+    archiveMock.pipe = vi.fn();
     createReadStreamMock = vi.fn(() => Readable.from(["zip-body"]));
     createWriteStreamMock = vi.fn(() => archiveFileStream);
     finishedMock = vi.fn().mockResolvedValue(undefined);
@@ -192,6 +196,8 @@ describe("attachment archive worker runtime", () => {
     process.env.region = originalEnv.region;
     process.env.LEGACY_ATTACHMENT_BUCKET_MAP = originalEnv.LEGACY_ATTACHMENT_BUCKET_MAP;
     process.env.LEGACY_S3_ACCESS_ROLE_ARN = originalEnv.LEGACY_S3_ACCESS_ROLE_ARN;
+    delete process.env.ATTACHMENT_ARCHIVE_ENTRY_IDLE_MS;
+    process.exitCode = undefined;
   });
 
   it("logs finalize, upload, and current-write stages on the successful path", async () => {
@@ -269,5 +275,86 @@ describe("attachment archive worker runtime", () => {
       status: "FAILED",
       errorMessage: "finalize boom",
     });
+  });
+
+  it("does not append the next attachment until the previous entry finishes", async () => {
+    vi.spyOn(console, "info").mockImplementation(() => undefined);
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    const manifest = buildSectionManifest();
+    manifest.attachments.push({
+      ...manifest.attachments[0],
+      key: "attachment-2.docx",
+      filename: "attachment-2.docx",
+      title: "Attachment 2",
+      archiveFilename: "attachment-2.docx",
+      archivePath: "CO-25-0002-1960-section-1-initial-package-submitted/attachment-2.docx",
+    });
+    jsonStore.set(process.env.ARCHIVE_MANIFEST_KEY as string, manifest);
+
+    let releaseFirstEntry: (() => void) | undefined;
+    archiveMock.append = vi.fn(() => {
+      if (archiveMock.append.mock.calls.length === 1) {
+        releaseFirstEntry = () => {
+          archiveMock.emit("entry", {});
+        };
+        return;
+      }
+
+      queueMicrotask(() => {
+        archiveMock.emit("entry", {});
+      });
+    });
+
+    const pending = import("./index");
+    await vi.waitFor(() => {
+      expect(archiveMock.append).toHaveBeenCalledTimes(1);
+    });
+    expect(archiveMock.finalize).not.toHaveBeenCalled();
+
+    releaseFirstEntry?.();
+    await pending;
+
+    expect(archiveMock.append).toHaveBeenCalledTimes(2);
+    expect(archiveMock.finalize).toHaveBeenCalledTimes(1);
+    expect(jsonStore.get(process.env.ARCHIVE_CURRENT_KEY as string)).toMatchObject({
+      status: "READY",
+      appendedAttachmentCount: 2,
+    });
+  });
+
+  it("fails a body that stops producing bytes before finalize", async () => {
+    process.env.ATTACHMENT_ARCHIVE_ENTRY_IDLE_MS = "20";
+    vi.spyOn(console, "info").mockImplementation(() => undefined);
+    vi.spyOn(console, "error").mockImplementation(() => undefined);
+    s3SendMock.mockImplementation(async (command: { input?: { Bucket?: string } }) => {
+      if (command.input?.Bucket?.includes("attachments")) {
+        return {
+          Body: new Readable({
+            read() {
+              return undefined;
+            },
+          }),
+        };
+      }
+
+      return {};
+    });
+    archiveMock.append = vi.fn();
+
+    const pending = import("./index");
+    await vi.waitFor(() => {
+      expect(archiveMock.append).toHaveBeenCalledTimes(1);
+    });
+    expect(archiveMock.finalize).not.toHaveBeenCalled();
+    await pending;
+
+    expect(archiveMock.finalize).not.toHaveBeenCalled();
+    const current = jsonStore.get(process.env.ARCHIVE_CURRENT_KEY as string);
+    expect(current).toMatchObject({
+      status: "FAILED",
+      errorMessage:
+        "Attachment mako-val-attachments-169888657886/attachment-1.docx stopped producing bytes before it could be archived",
+    });
+    expect(current.failureCode).toBeUndefined();
   });
 });

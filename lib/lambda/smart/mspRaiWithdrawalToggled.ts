@@ -168,33 +168,34 @@ const getLatestToggleState = (
   context: SmartOnemacEventContext,
   mainDocument: opensearch.main.Document,
 ): ToggleState | Error | undefined => {
-  const candidates: ToggleState[] = [];
+  let mainState: ToggleState | undefined;
   const mainTimestamp = getTimestampInMilliseconds(mainDocument.raiWithdrawnToggleDate);
   if (mainTimestamp !== undefined) {
-    candidates.push({
+    mainState = {
       enabled: mainDocument.raiWithdrawEnabled,
       raiId: mainDocument.raiId,
       timestamp: mainTimestamp,
-    });
+    };
   }
 
+  const changelogStates: ToggleState[] = [];
   for (const { _source } of getSearchHits<opensearch.changelog.Document>(
     context.existence.changelogById,
   )) {
     if (_source.event !== "toggle-withdraw-rai") continue;
     const timestamp = getTimestampInMilliseconds(_source.timestamp);
     if (timestamp === undefined) continue;
-    candidates.push({
+    changelogStates.push({
       enabled: _source.raiWithdrawEnabled,
       raiId: _source.raiId,
       timestamp,
     });
   }
 
-  if (candidates.length === 0) return undefined;
+  if (changelogStates.length === 0) return mainState;
 
-  const latestTimestamp = Math.max(...candidates.map(({ timestamp }) => timestamp));
-  const latestCandidates = candidates.filter(({ timestamp }) => timestamp === latestTimestamp);
+  const latestTimestamp = Math.max(...changelogStates.map(({ timestamp }) => timestamp));
+  const latestCandidates = changelogStates.filter(({ timestamp }) => timestamp === latestTimestamp);
   const enabledValues = new Set(
     latestCandidates.flatMap(({ enabled }) => (enabled === undefined ? [] : [enabled])),
   );
@@ -204,11 +205,23 @@ const getLatestToggleState = (
     return new Error("existing RAI withdrawal toggle state is ambiguous at its latest timestamp");
   }
 
-  return {
+  const changelogState: ToggleState = {
     enabled: [...enabledValues][0],
     raiId: [...raiIds][0],
     timestamp: latestTimestamp,
   };
+
+  // A State withdraw/response action resets raiWithdrawEnabled on the main
+  // document but intentionally retains the last SMART toggle timestamp for
+  // audit purposes. When that happens, the toggle activity is the
+  // authoritative state at the shared timestamp. A strictly newer main value
+  // still wins so a retry cannot regress a main write whose changelog write
+  // failed.
+  if (!mainState || changelogState.timestamp >= mainState.timestamp) {
+    return changelogState;
+  }
+
+  return mainState;
 };
 
 const persistToggleActivity = async (
