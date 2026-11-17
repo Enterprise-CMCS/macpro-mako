@@ -22,7 +22,7 @@ describe("ce-record-submitted schema", () => {
       authority: "CE_HARDSHIP_EXCEPTION",
       hardshipKind: "CE_UNEMPLOYMENT",
       proposedEffectiveDate: CE_PROPOSED_EFFECTIVE_DATE,
-      additionalInformation: null,
+      additionalInformation: "High unemployment attestation for MD counties.",
       submitterName: "Alex Rivera",
       submitterEmail: "alex.rivera@maryland.gov",
       timestamp: CE_TIMESTAMP,
@@ -111,13 +111,22 @@ describe("ce-record-submitted schema", () => {
     );
   });
 
-  it("rejects additional information over 4,000 characters", () => {
-    const parsed = schema.safeParse(
+  it("requires non-whitespace additional information and rejects over 4,000 characters", () => {
+    expect(schema.safeParse(ceRecordInput({ additionalInformation: "   " })).success).toBe(false);
+    expect(schema.safeParse(ceRecordInput({ additionalInformation: "" })).success).toBe(false);
+    expect(schema.safeParse(ceRecordInput({ additionalInformation: null })).success).toBe(false);
+
+    const trimmed = schema.parse(
+      ceRecordInput({ additionalInformation: "  County unemployment rates attached.  " }),
+    );
+    expect(trimmed.additionalInformation).toBe("County unemployment rates attached.");
+
+    const tooLong = schema.safeParse(
       ceRecordInput({
         additionalInformation: "a".repeat(CE_ADDITIONAL_INFORMATION_MAX_LENGTH + 1),
       }),
     );
-    expect(parsed.success).toBe(false);
+    expect(tooLong.success).toBe(false);
   });
 
   it("rejects an unknown hardship kind and operation type", () => {

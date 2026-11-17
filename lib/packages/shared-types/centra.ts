@@ -68,7 +68,8 @@ export interface CeRecordSubmitted {
   hardshipKind: CeHardshipKindCode;
   /** Submission Date, epoch milliseconds. */
   proposedEffectiveDate: number;
-  additionalInformation: string | null;
+  /** Required. Non-whitespace, at most 4,000 characters. */
+  additionalInformation: string;
   submitterName: string;
   submitterEmail: string;
   timestamp: number;

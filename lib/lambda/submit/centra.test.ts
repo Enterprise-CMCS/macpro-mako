@@ -26,7 +26,7 @@ function ceRecordBody(overrides: Record<string, unknown> = {}) {
     event: "ce-record-submitted",
     hardshipKind: "CE_UNEMPLOYMENT",
     proposedEffectiveDate: 1762400000000,
-    additionalInformation: null,
+    additionalInformation: "High unemployment attestation for MD counties.",
     attachments: {
       ceTemplate: { files: [ceFile] },
       other: { files: [] },

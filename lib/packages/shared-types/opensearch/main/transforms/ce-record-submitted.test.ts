@@ -29,7 +29,7 @@ describe("ce-record-submitted main transform", () => {
       statusDate: new Date(seaToolFriendlyTimestamp(timestampDate)).toISOString(),
       submitterEmail: "alex.rivera@maryland.gov",
       submitterName: "Alex Rivera",
-      additionalInformation: null,
+      additionalInformation: "High unemployment attestation for MD counties.",
       initialIntakeNeeded: true,
       raiWithdrawEnabled: false,
     });

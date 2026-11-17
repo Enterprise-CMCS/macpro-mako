@@ -240,6 +240,11 @@ export const CentraForm = () => (
       operationType: CE_OPERATION_TYPE.RECORD_SUBMITTED,
       attachments: emptyAttachments,
     }}
+    additionalInformation={{
+      required: true,
+      title: "Additional Information",
+      label: "Add anything else you would like to share with CMS.",
+    }}
     attachments={{
       title: "Attachments",
       requiredIndicatorForTitle: true,

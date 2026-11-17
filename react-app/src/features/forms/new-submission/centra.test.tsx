@@ -93,7 +93,12 @@ describe("Centra form", () => {
     expect(idInput).toHaveValue("MD-CE-26-001");
   });
 
-  test("enables Save & Submit after a submission date and one attachment", async () => {
+  test("requires additional information before enabling Save & Submit", async () => {
+    expect(screen.getByTestId("additional-info")).toHaveTextContent("Additional Information");
+    expect(screen.getByTestId("additional-info").querySelector(".text-red-600")).toHaveTextContent(
+      "*",
+    );
+
     const idInput = screen.getByLabelText(/Submission ID/);
     await userEvent.clear(idInput);
     await userEvent.type(idInput, "MD-CE-26-101");
@@ -106,6 +111,21 @@ describe("Centra form", () => {
     expect(screen.getByTestId("submit-action-form")).toBeDisabled();
 
     await upload("ceTemplate");
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+
+    await userEvent.type(
+      screen.getByLabelText(/Add anything else you would like to share with CMS/),
+      "   ",
+    );
+    expect(screen.getByTestId("submit-action-form")).toBeDisabled();
+
+    await userEvent.clear(
+      screen.getByLabelText(/Add anything else you would like to share with CMS/),
+    );
+    await userEvent.type(
+      screen.getByLabelText(/Add anything else you would like to share with CMS/),
+      "County unemployment rates attached.",
+    );
 
     await waitFor(() => expect(screen.getByTestId("submit-action-form")).toBeEnabled());
     expect(screen.getByTestId("submit-action-form")).toHaveTextContent("Save & Submit");

@@ -154,6 +154,8 @@ test.describe("CEntra hardship exception", { tag: ["@centra"] }, () => {
       await selectRequestType(page, CE_HARDSHIP_KIND_LABELS.CE_SADE);
       await pickSubmissionDate(page);
       await uploadSlot(page, "ceTemplate", templatePdf);
+      await expect(page.getByTestId("submit-action-form")).toBeDisabled();
+      await page.locator("#additional-info").fill("Draft continue hardship note");
       await expect(page.getByTestId("submit-action-form")).toBeEnabled();
       await page.getByTestId("submit-action-form").click();
       await expect(page.getByTestId("banner-header")).toHaveText(
@@ -357,6 +359,7 @@ test.describe("CEntra hardship exception", { tag: ["@centra"] }, () => {
       await page.locator("#ce-submission-id").fill("MD-CE-26-500");
       await pickSubmissionDate(page);
       await uploadSlot(page, "ceTemplate", templatePdf);
+      await page.locator("#additional-info").fill("Triggering a mocked 500");
       await expect(page.getByTestId("submit-action-form")).toBeEnabled();
       await page.getByTestId("submit-action-form").click();
 

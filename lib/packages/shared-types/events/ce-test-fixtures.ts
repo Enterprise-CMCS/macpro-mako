@@ -19,7 +19,7 @@ export function ceRecordInput(overrides: Record<string, unknown> = {}): Record<s
     state: "MD",
     hardshipKind: "CE_UNEMPLOYMENT",
     proposedEffectiveDate: CE_PROPOSED_EFFECTIVE_DATE,
-    additionalInformation: null,
+    additionalInformation: "High unemployment attestation for MD counties.",
     attachments: {
       ceTemplate: {
         files: [ceFile("request.pdf", "MD-CE-26-001/ceTemplate/request.pdf")],

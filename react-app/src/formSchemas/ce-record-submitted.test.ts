@@ -27,7 +27,7 @@ const recordInput = (overrides: Record<string, unknown> = {}) => ({
   state: "MD",
   hardshipKind: "CE_UNEMPLOYMENT",
   proposedEffectiveDate: 1762400000000,
-  additionalInformation: null,
+  additionalInformation: "High unemployment attestation for MD counties.",
   attachments: {
     ceTemplate: { files: [file] },
     other: { files: [] },
@@ -100,6 +100,12 @@ describe("ce-record-submitted form schema", () => {
     const tooLong = await formSchemas["ce-record-submitted"].safeParseAsync(
       recordInput({ additionalInformation: "a".repeat(4001) }),
     );
+    const blankInfo = await formSchemas["ce-record-submitted"].safeParseAsync(
+      recordInput({ additionalInformation: "   " }),
+    );
+    const emptyInfo = await formSchemas["ce-record-submitted"].safeParseAsync(
+      recordInput({ additionalInformation: "" }),
+    );
 
     expect(messagesFor(badId)).toContain(CE_PACKAGE_ID_FORMAT_MESSAGE);
     expect(messagesFor(unknownState).join(" ")).toMatch(/known state code/i);
@@ -107,6 +113,8 @@ describe("ce-record-submitted form schema", () => {
     expect(messagesFor(mismatch)).toContain("State must match the ID prefix.");
     expect(messagesFor(noFiles)).toContain(CE_ATTACHMENT_REQUIRED_MESSAGE);
     expect(messagesFor(tooLong).join(" ")).toMatch(/4,000/);
+    expect(blankInfo.success).toBe(false);
+    expect(emptyInfo.success).toBe(false);
   });
 
   it("rejects a duplicate submission id", async () => {

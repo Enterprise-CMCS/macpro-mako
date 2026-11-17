@@ -55,7 +55,7 @@ function centraChangelogRecord() {
     authority: "CE_HARDSHIP_EXCEPTION",
     hardshipKind: "CE_UNEMPLOYMENT",
     proposedEffectiveDate: 1762400000000,
-    additionalInformation: null,
+    additionalInformation: "High unemployment attestation for MD counties.",
     origin: "mako",
     submitterName: "Alex Rivera",
     submitterEmail: "alex.rivera@maryland.gov",

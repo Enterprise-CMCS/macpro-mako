@@ -38,21 +38,16 @@ export const ceAttachmentsSchema = z.object({
   other: ceAttachmentSlotSchema(CE_ATTACHMENT_LABELS.other),
 });
 
+/** Required on submit; whitespace-only is rejected. */
 export const ceAdditionalInformationSchema = z
-  .string()
-  .max(CE_ADDITIONAL_INFORMATION_MAX_LENGTH, {
-    message: "Additional Information must be at most 4,000 characters.",
-  })
-  .nullable()
-  .default(null);
-
-export const ceSubsequentInformationSchema = z
   .string()
   .trim()
   .min(1, { message: "Required" })
   .max(CE_ADDITIONAL_INFORMATION_MAX_LENGTH, {
     message: "Additional Information must be at most 4,000 characters.",
   });
+
+export const ceSubsequentInformationSchema = ceAdditionalInformationSchema;
 
 export interface CeSubmissionCrossFields {
   id?: string;
