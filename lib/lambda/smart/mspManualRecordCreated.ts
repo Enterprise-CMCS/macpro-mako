@@ -18,7 +18,7 @@ const isNonEmptyString = (value: unknown): value is string =>
   typeof value === "string" && value.trim().length > 0;
 
 const manualRecordCreatedSchema = z.object({
-  authority: z.literal("Medicaid SPA"),
+  authority: z.enum(["Medicaid SPA", "CHIP SPA"]),
   creationContext: z.literal("MANUAL"),
   operationType: z.literal("MSP_MANUAL_RECORD_CREATED"),
 });

@@ -30,7 +30,7 @@ const srtMemberSchema = z
 
 const assignmentUpdatedSchema = z
   .object({
-    authority: z.literal("Medicaid SPA"),
+    authority: z.enum(["Medicaid SPA", "CHIP SPA"]),
     createdAt: isoDateTime,
     id: requiredString,
     operationType: z.literal("MSP_ASSIGNMENT_UPDATED"),
@@ -60,7 +60,7 @@ const normalizedRoster = (
     }))
     .sort((left, right) => left.srtAssignmentId.localeCompare(right.srtAssignmentId));
 
-export const handleMspAssignmentUpdated = async (
+export const handleSmartAssignmentUpdated = async (
   context: SmartOnemacEventContext,
 ): Promise<void> => {
   const parsedEvent = assignmentUpdatedSchema.safeParse(context.event);
@@ -166,3 +166,6 @@ export const handleMspAssignmentUpdated = async (
 
   await os.updateItem(domain, index, documentId, updates);
 };
+
+export const handleMspAssignmentUpdated = async (context: SmartOnemacEventContext): Promise<void> =>
+  handleSmartAssignmentUpdated(context);

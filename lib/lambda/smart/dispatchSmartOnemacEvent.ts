@@ -1,3 +1,4 @@
+import { handleChipSpaPackageDetailsUpdated } from "./chipSpaPackageDetailsUpdated";
 import { handleDefaultSmartOnemacEvent } from "./defaultSmartOnemacEvent";
 import { evaluateSmartPackageExistence, SmartKafkaMetadata } from "./evaluateSmartPackageExistence";
 import { handleMspAdministrativeFieldUpdated } from "./mspAdministrativeFieldUpdated";
@@ -58,7 +59,11 @@ export const dispatchSmartOnemacEvent = async (
       await handleMspStatusUpdated(context);
       return;
     case "MSP_ADMINISTRATIVE_FIELD_UPDATED":
-      await handleMspAdministrativeFieldUpdated(context);
+      if (event.authority === "CHIP SPA") {
+        await handleChipSpaPackageDetailsUpdated(context);
+      } else {
+        await handleMspAdministrativeFieldUpdated(context);
+      }
       return;
     case "MSP_SPLIT_SPA_CREATED":
       await handleMspSplitSpaCreated(context);

@@ -17,14 +17,7 @@ import {
   smartDate,
 } from "./smartEventHelpers";
 import { mapSmartStatus, SMART_STATUS_VALUES } from "./smartStatus";
-
-const smartTypeSelectionSchema = z.object({
-  typeSelectionId: requiredString,
-  type: requiredString,
-  subType: requiredString,
-  isTypeActive: z.boolean(),
-  isSubTypeActive: z.boolean(),
-});
+import { getSmartTypeUpdates, smartTypeSelectionSchema } from "./smartTypeSelections";
 
 const smartRaiDate = z.union([smartDate, z.literal("-- --")]);
 
@@ -39,7 +32,7 @@ const smartRaiSchema = z
 
 const smartStatusUpdatedSchema = z
   .object({
-    authority: z.literal("Medicaid SPA"),
+    authority: z.enum(["Medicaid SPA", "CHIP SPA"]),
     correlationId: z.string().trim(),
     createdAt: isoDateTime,
     description: z.string().nullish(),
@@ -63,39 +56,6 @@ const hasOwn = (value: object, field: string): boolean =>
 
 const normalizeOptionalRaiDate = (value: string | null | undefined): string | undefined =>
   value == null || value === "-- --" ? undefined : normalizeSmartDate(value);
-
-// OneMAC's legacy OpenSearch mapping requires numeric type IDs. SMART's IDs are
-// Salesforce strings, while the UI only uses these values as stable list keys.
-const numericTypeId = (value: string): number => {
-  let hash = 2166136261;
-  for (const character of value) {
-    hash = Math.imul(hash ^ character.charCodeAt(0), 16777619);
-  }
-  return hash >>> 0 || 1;
-};
-
-const getTypeUpdates = (event: SmartStatusUpdatedEvent): Record<string, unknown> | undefined => {
-  if (!hasOwn(event, "typeSelections") || event.typeSelections == null) return undefined;
-
-  const activeTypes = new Map<string, { SPA_TYPE_ID: number; SPA_TYPE_NAME: string }>();
-  const activeSubTypes = new Map<string, { TYPE_ID: number; TYPE_NAME: string }>();
-  for (const selection of event.typeSelections) {
-    if (selection.isTypeActive && !activeTypes.has(selection.type)) {
-      activeTypes.set(selection.type, {
-        SPA_TYPE_ID: numericTypeId(selection.type),
-        SPA_TYPE_NAME: selection.type,
-      });
-    }
-    if (selection.isTypeActive && selection.isSubTypeActive) {
-      activeSubTypes.set(selection.typeSelectionId, {
-        TYPE_ID: numericTypeId(selection.typeSelectionId),
-        TYPE_NAME: selection.subType,
-      });
-    }
-  }
-
-  return { types: [...activeTypes.values()], subTypes: [...activeSubTypes.values()] };
-};
 
 const getRaiUpdates = (
   event: SmartStatusUpdatedEvent,
@@ -148,7 +108,11 @@ const buildStatusUpdates = (
   const normalizedStatusDate = normalizeSmartDate(event.statusDate);
   const { cmsStatus, stateStatus } = getStatus(seatoolStatus);
   const raiUpdates = getRaiUpdates(event, seatoolStatus);
-  const typeUpdates = getTypeUpdates(event);
+  // CHIP package details are owned by MSP_ADMINISTRATIVE_FIELD_UPDATED. A
+  // status snapshot may repeat those values, but it must not overwrite a
+  // newer package-detail event. Medicaid retains its established behavior.
+  const acceptsPackageDetails = event.authority === "Medicaid SPA";
+  const typeUpdates = acceptsPackageDetails ? getSmartTypeUpdates(event) : undefined;
   const isFinalDisposition = finalDispositionStatuses.includes(seatoolStatus);
 
   return {
@@ -167,8 +131,12 @@ const buildStatusUpdates = (
     operationType: event.operationType,
     ...raiUpdates,
     ...(isFinalDisposition ? { raiWithdrawEnabled: false } : {}),
-    ...(hasOwn(event, "subject") ? { subject: event.subject ?? null } : {}),
-    ...(hasOwn(event, "description") ? { description: event.description ?? null } : {}),
+    ...(acceptsPackageDetails && hasOwn(event, "subject")
+      ? { subject: event.subject ?? null }
+      : {}),
+    ...(acceptsPackageDetails && hasOwn(event, "description")
+      ? { description: event.description ?? null }
+      : {}),
     ...(typeUpdates ?? {}),
     ...(!document.spaWaiverId ? { spaWaiverId: event.spaWaiverId } : {}),
     ...(!document.correlationId && event.correlationId

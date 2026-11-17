@@ -72,6 +72,16 @@ describe("UiInfra security remediations", () => {
     expect(distributionConfig).toContain("viewer-response");
   });
 
+  it("uses all CloudFront edge locations", () => {
+    const template = buildUiInfraTemplate();
+
+    template.hasResourceProperties("AWS::CloudFront::Distribution", {
+      DistributionConfig: {
+        PriceClass: "PriceClass_All",
+      },
+    });
+  });
+
   it("does not ship jszip in the UI dependency graph", () => {
     const repoRoot = join(__dirname, "../..");
     const packageManifest = readFileSync(join(repoRoot, "react-app/package.json"), "utf8");

@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const handlers = vi.hoisted(() => ({
   evaluateExistence: vi.fn(),
+  chipSpaPackageDetailsUpdated: vi.fn(),
   manualRecordCreated: vi.fn(),
   statusUpdated: vi.fn(),
   administrativeFieldUpdated: vi.fn(),
@@ -13,6 +14,9 @@ const handlers = vi.hoisted(() => ({
 
 vi.mock("./evaluateSmartPackageExistence", () => ({
   evaluateSmartPackageExistence: handlers.evaluateExistence,
+}));
+vi.mock("./chipSpaPackageDetailsUpdated", () => ({
+  handleChipSpaPackageDetailsUpdated: handlers.chipSpaPackageDetailsUpdated,
 }));
 vi.mock("./mspManualRecordCreated", async (importOriginal) => ({
   ...(await importOriginal<typeof import("./mspManualRecordCreated")>()),
@@ -106,6 +110,24 @@ describe("dispatchSmartOnemacEvent", () => {
         expect(otherHandler).not.toHaveBeenCalled();
       }
     }
+    expect(handlers.defaultEvent).not.toHaveBeenCalled();
+  });
+
+  it("routes CHIP administrative updates by payload authority", async () => {
+    const event = {
+      ...baseEvent,
+      authority: "CHIP SPA",
+      operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+    };
+
+    await dispatchSmartOnemacEvent(event, metadata);
+
+    expect(handlers.chipSpaPackageDetailsUpdated).toHaveBeenCalledWith({
+      event,
+      existence,
+      ...metadata,
+    });
+    expect(handlers.administrativeFieldUpdated).not.toHaveBeenCalled();
     expect(handlers.defaultEvent).not.toHaveBeenCalled();
   });
 
