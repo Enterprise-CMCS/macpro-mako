@@ -79,7 +79,9 @@ function centraKafkaRecord(
       operationType: subsequent ? "CE_SUBSEQUENT_DOCUMENTS" : "CE_RECORD_SUBMITTED",
       authority: "CE_HARDSHIP_EXCEPTION",
       hardshipKind: "CE_UNEMPLOYMENT",
-      additionalInformation: subsequent ? "Labor table added." : null,
+      additionalInformation: subsequent
+        ? "Labor table added."
+        : "High unemployment attestation for MD counties.",
       ...(subsequent ? {} : { proposedEffectiveDate: 1762400000000 }),
       origin: "mako",
       submitterName: "Alex Rivera",
