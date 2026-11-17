@@ -10,8 +10,9 @@ import {
   testStateSubmitter,
   USER_POOL_ID,
 } from "mocks";
-import { afterAll, describe, expect, it } from "vitest";
+import { afterAll, afterEach, describe, expect, it, vi } from "vitest";
 
+import * as userManagement from "../../../lambda/user-management/userManagementService";
 import {
   getAuthDetails,
   getSearchUserScope,
@@ -22,6 +23,9 @@ import {
 } from "./user";
 
 describe("Auth functions", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
   afterAll(() => {
     setMockUsername(testStateSubmitter);
   });
@@ -167,12 +171,11 @@ describe("Auth functions", () => {
       });
     });
 
-    it("should throw an error if state user has no associated states", async () => {
-      await expect(
-        getStateFilter({
-          requestContext: getRequestContext(nullStateSubmitter),
-        } as APIGatewayEvent),
-      ).rejects.toThrow("State user detected, but no associated states.  Cannot continue");
+    it("should deny access if a state user has no associated states", async () => {
+      const result = await getStateFilter({
+        requestContext: getRequestContext(nullStateSubmitter),
+      } as APIGatewayEvent);
+      expect(result).toBe(false);
     });
 
     it("should return null for a CMS user", async () => {
@@ -184,6 +187,22 @@ describe("Auth functions", () => {
   });
 
   describe("getSearchUserScope", () => {
+    it("denies access when the active role does not grant CMS or state access", async () => {
+      const attributes = convertUserAttributes(testStateSubmitter);
+      const role = await userManagement.getLatestActiveRoleByEmail(attributes.email);
+      expect(role).not.toBeNull();
+      vi.spyOn(userManagement, "getLatestActiveRoleByEmail").mockResolvedValue({
+        ...role!,
+        role: "norole",
+      });
+
+      const result = await getSearchUserScope({
+        requestContext: getRequestContext(testStateSubmitter),
+      } as APIGatewayEvent);
+
+      expect(result).toEqual({ stateFilter: false, canViewDrafts: false });
+    });
+
     it("should deny draft visibility and search results when the user has no active role", async () => {
       const result = await getSearchUserScope({
         requestContext: getRequestContext(noRoleUser),
@@ -215,12 +234,11 @@ describe("Auth functions", () => {
       });
     });
 
-    it("should throw an error if state user has no associated states", async () => {
-      await expect(
-        getSearchUserScope({
-          requestContext: getRequestContext(nullStateSubmitter),
-        } as APIGatewayEvent),
-      ).rejects.toThrow("State user detected, but no associated states.  Cannot continue");
+    it("should deny access if a state user has no associated states", async () => {
+      const result = await getSearchUserScope({
+        requestContext: getRequestContext(nullStateSubmitter),
+      } as APIGatewayEvent);
+      expect(result).toEqual({ stateFilter: false, canViewDrafts: false });
     });
 
     it("should deny draft visibility for CMS users who are not Helpdesk", async () => {

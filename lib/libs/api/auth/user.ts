@@ -5,7 +5,13 @@ import {
 } from "@aws-sdk/client-cognito-identity-provider";
 import { APIGatewayEvent } from "aws-lambda";
 import { CognitoUserAttributes } from "shared-types";
-import { isCmsUser, isCmsWriteUser, isHelpDeskUser, normalizeEmail } from "shared-utils";
+import {
+  isCmsUser,
+  isCmsWriteUser,
+  isHelpDeskUser,
+  isStateUser,
+  normalizeEmail,
+} from "shared-utils";
 
 import {
   getActiveStatesForUserByEmail,
@@ -171,6 +177,9 @@ export const getSearchUserScope = async (event: APIGatewayEvent): Promise<Search
   const userWithRole = { ...userAttributes, role: activeRole.role };
 
   if (!isCmsUser(userWithRole)) {
+    if (!isStateUser(userWithRole)) {
+      return { stateFilter: false, canViewDrafts: false };
+    }
     const states = await getActiveStatesForUserByEmail(userAttributes.email, activeRole.role);
     if (states.length > 0) {
       return {
@@ -182,7 +191,7 @@ export const getSearchUserScope = async (event: APIGatewayEvent): Promise<Search
         canViewDrafts: false,
       };
     }
-    throw "State user detected, but no associated states.  Cannot continue";
+    return { stateFilter: false, canViewDrafts: false };
   }
 
   return {
