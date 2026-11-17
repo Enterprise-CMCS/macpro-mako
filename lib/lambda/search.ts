@@ -26,6 +26,12 @@ export const getSearchData = async (event: APIGatewayEvent) => {
     });
   }
   const requestedIndex = event.pathParameters.index as BaseIndex;
+  if (requestedIndex !== "main" && requestedIndex !== "changelog") {
+    return response({
+      statusCode: 400,
+      body: { message: "Index is not searchable" },
+    });
+  }
   const { domain, index } = getDomainAndNamespace(requestedIndex);
 
   try {

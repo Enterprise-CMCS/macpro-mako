@@ -203,6 +203,21 @@ describe("getSearchData Handler", () => {
     ).toBe(false);
   });
 
+  it("should reject searches against non-package indices", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} } }),
+      pathParameters: { index: "main,users" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(testStateSubmitter),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual({ message: "Index is not searchable" });
+    expect(searchSpy).not.toHaveBeenCalled();
+  });
+
   it("should deny search when the user has no active role", async () => {
     const searchSpy = vi.spyOn(osLib, "search");
     const event = {
