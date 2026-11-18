@@ -224,7 +224,8 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     {
       label: "Formal RAI Response Date",
       value: submission.raiReceivedDate ? formatDateToET(submission.raiReceivedDate) : BLANK_VALUE,
-      canView: submission.actionType !== "Extend",
+      // CEntra has no RAI workflow; hide the empty field for that authority.
+      canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
     },
   ];
 };
@@ -235,7 +236,7 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
     value: submission.finalDispositionDate
       ? formatDateToUTC(submission.finalDispositionDate)
       : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
+    canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
   },
   {
     label: isCeHardshipException(submission.authority)
@@ -263,7 +264,7 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
     value: submission.approvedEffectiveDate
       ? formatDateToUTC(submission.approvedEffectiveDate)
       : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
+    canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
   },
 ];
 
@@ -299,7 +300,7 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
       {
         label: "CPOC",
         value: <p className="text-lg">{submission.leadAnalystName || BLANK_VALUE}</p>,
-        canView: submission.actionType !== "Extend",
+        canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
       },
       {
         label: "SRT",

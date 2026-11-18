@@ -37,6 +37,21 @@ export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
     };
   }
 
+  // Incomplete details origin (missing id/authority) must not navigate to `/details`,
+  // which is not a matched route and falls through to the 404 page.
+  if (origin === DETAILS_ORIGIN) {
+    return {
+      pathname: `/${DASHBOARD_ORIGIN}`,
+      ...(authority
+        ? {
+            search: new URLSearchParams({
+              tab: getDashboardTabForAuthority(authority),
+            }).toString(),
+          }
+        : {}),
+    };
+  }
+
   if (origin === DASHBOARD_ORIGIN && authority) {
     return {
       pathname: `/${origin}`,
@@ -55,7 +70,14 @@ export const getFormOrigin: GetFormOrigin = ({ id, authority } = {}) => {
     };
   }
 
+  // Unknown origin values are not real routes; fall back to the dashboard.
+  if (origin !== DASHBOARD_ORIGIN) {
+    return {
+      pathname: `/${DASHBOARD_ORIGIN}`,
+    };
+  }
+
   return {
-    pathname: `/${origin}`,
+    pathname: `/${DASHBOARD_ORIGIN}`,
   };
 };

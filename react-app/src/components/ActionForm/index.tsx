@@ -975,7 +975,21 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
         throw Error(`${error?.message || error}`);
       }
 
-      const formOrigins = getFormOrigin({ authority, id });
+      // New-submission routes (e.g. CEntra) have no :authority/:id route params.
+      // Prefer submitted form values so post-submit navigation can open package details
+      // instead of an unmatched path or a dashboard revalidation race.
+      const resolvedId =
+        id ?? (typeof formData.id === "string" && formData.id.trim() ? formData.id : undefined);
+      const resolvedAuthority = (authority ??
+        (typeof formData.authority === "string" && formData.authority.trim()
+          ? formData.authority
+          : undefined)) as Authority | undefined;
+      const formOrigins =
+        !authority && resolvedId && resolvedAuthority
+          ? {
+              pathname: `/details/${encodeURIComponent(resolvedAuthority)}/${encodeURIComponent(resolvedId)}`,
+            }
+          : getFormOrigin({ authority: resolvedAuthority, id: resolvedId });
 
       banner({
         ...bannerPostSubmission,
@@ -984,15 +998,18 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
 
       const timeOnPageSec = (Date.now() - startTimePage) / 1000;
 
-      sendGAEvent("submission_submit_click", { package_type: formData.event, package_id: id });
+      sendGAEvent("submission_submit_click", {
+        package_type: formData.event,
+        package_id: resolvedId,
+      });
       sendGAEvent("submit_page_exit", {
         submission_type: formData.event,
         time_on_page_sec: timeOnPageSec,
       });
       if (formData.event == "upload-subsequent-documents") {
-        sendGAEvent("upload-subsequent-documents", { package_id: id });
+        sendGAEvent("upload-subsequent-documents", { package_id: resolvedId });
       } else if (formData.event == "withdraw-package") {
-        sendGAEvent("withdraw-package", { package_id: id });
+        sendGAEvent("withdraw-package", { package_id: resolvedId });
       }
 
       if (isDraftMode) {

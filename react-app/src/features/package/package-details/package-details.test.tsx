@@ -322,6 +322,10 @@ describe("package details", () => {
     expect(screen.getByText("March 25, 2026")).toBeInTheDocument();
     expect(screen.queryByText("Proposed Effective Date")).not.toBeInTheDocument();
     expect(screen.queryByText("CE_HARDSHIP_EXCEPTION")).not.toBeInTheDocument();
+    expect(screen.queryByText("Formal RAI Response Date")).not.toBeInTheDocument();
+    expect(screen.queryByText("Final Disposition Date")).not.toBeInTheDocument();
+    expect(screen.queryByText("Approved Effective Date")).not.toBeInTheDocument();
+    expect(screen.queryByText("CPOC")).not.toBeInTheDocument();
   });
 
   it("shows CEntra draft request type and submission date from saved draft data", async () => {
