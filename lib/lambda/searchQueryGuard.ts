@@ -11,6 +11,8 @@ const DISALLOWED_SEARCH_KEYS = new Set([
   "script_score",
   "scripted_metric",
   "runtime_mappings",
+  // Suggesters ignore the query, including its authorization filters.
+  "suggest",
   "wrapper",
 ]);
 
