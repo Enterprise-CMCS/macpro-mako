@@ -47,9 +47,14 @@ export function getEscalationRecipients(
   group: MailboxGroup,
   emails: EmailAddresses,
 ): EscalationRecipients {
-  if (!isProductionStage(stage)) {
+  // seatoolMissingRecordTo overrides the production mailboxes when set, so
+  // production can be routed to a test inbox without editing osgEmail or
+  // chipInbox, which other package notification emails depend on.
+  // when confident that the override is working, remove this property in the emailAddresses
+  const overrideTo = asEmailList(emails.seatoolMissingRecordTo);
+  if (overrideTo.length > 0 || !isProductionStage(stage)) {
     return {
-      to: asEmailList(emails.seatoolMissingRecordTo),
+      to: overrideTo,
       cc: [],
     };
   }

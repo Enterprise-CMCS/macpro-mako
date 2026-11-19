@@ -161,6 +161,38 @@ describe("handleMspStatusUpdated", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
+  it("uses payload authority for CHIP status without overwriting package details", async () => {
+    const chipPackage = {
+      authority: "CHIP SPA",
+      subject: "Newer CHIP subject",
+      description: "Newer CHIP description",
+      types: [{ SPA_TYPE_ID: 1, SPA_TYPE_NAME: "Administration" }],
+      subTypes: [{ TYPE_ID: 2, TYPE_NAME: "Reporting" }],
+    } as const;
+    await handleMspStatusUpdated(
+      createContext({
+        event: { ...event, authority: "CHIP SPA" } as SmartOnemacEvent,
+        existence: {
+          mainById: packageById(chipPackage),
+          mainBySpaWaiverId: packageSearch(chipPackage),
+          changelogById: emptySearch,
+        },
+      }),
+    );
+
+    const updates = updateItemSpy.mock.calls[0][3];
+    expect(updates).toMatchObject({
+      seatoolStatus: SEATOOL_STATUS.PENDING,
+      stateStatus: "Under Review",
+      operationType: "MSP_STATUS_UPDATED",
+    });
+    expect(updates).not.toHaveProperty("subject");
+    expect(updates).not.toHaveProperty("description");
+    expect(updates).not.toHaveProperty("types");
+    expect(updates).not.toHaveProperty("subTypes");
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
   it("retains an active type and clears its subtypes when SMART sends a null subtype", async () => {
     const typeOnlyEvent = {
       ...event,

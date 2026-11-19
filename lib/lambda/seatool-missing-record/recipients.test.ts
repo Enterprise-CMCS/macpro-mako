@@ -19,6 +19,11 @@ const emails: EmailAddresses = {
   dpoApprover: ["dpo-approver@example.com"],
 };
 
+const productionEmails: EmailAddresses = {
+  ...emails,
+  seatoolMissingRecordTo: undefined,
+};
+
 const namedStaffEmails = [
   "ken.taylor@cms.hhs.gov",
   "angela.corbin@cms.hhs.gov",
@@ -60,22 +65,53 @@ describe("seatool missing-record recipients", () => {
   );
 
   it("uses osg/chip To lists and secret helpdesk/DPO CCs in production", () => {
-    expect(getEscalationRecipients("production", "medicaid-spa", emails)).toEqual({
+    expect(getEscalationRecipients("production", "medicaid-spa", productionEmails)).toEqual({
       to: ["osg@cms.hhs.gov"],
       cc: ["seatool-helpdesk@example.com", "dpo-approver@example.com"],
     });
-    expect(getEscalationRecipients("production", "waiver", emails)).toEqual({
+    expect(getEscalationRecipients("production", "waiver", productionEmails)).toEqual({
       to: ["osg@cms.hhs.gov"],
       cc: ["seatool-helpdesk@example.com", "dpo-approver@example.com"],
     });
-    expect(getEscalationRecipients("production", "chip-spa", emails)).toEqual({
+    expect(getEscalationRecipients("production", "chip-spa", productionEmails)).toEqual({
       to: ["chip.inbox@cms.hhs.gov"],
       cc: ["seatool-helpdesk@example.com", "dpo-approver@example.com"],
     });
-    expect(flattenedAddresses("production")).not.toEqual(
+    expect(flattenedAddresses("production", productionEmails)).not.toEqual(
       expect.arrayContaining(["dpo-internal@cms.hhs.gov"]),
     );
   });
+
+  it("routes production only to seatoolMissingRecordTo when the override is set", () => {
+    for (const group of groups) {
+      expect(getEscalationRecipients("production", group, emails)).toEqual({
+        to: ["missing-record-dev@example.com"],
+        cc: [],
+      });
+    }
+
+    const addresses = flattenedAddresses("production");
+    expect(addresses).not.toEqual(expect.arrayContaining(["osg@cms.hhs.gov"]));
+    expect(addresses).not.toEqual(expect.arrayContaining(["chip.inbox@cms.hhs.gov"]));
+    expect(addresses).not.toEqual(
+      expect.arrayContaining(["seatool-helpdesk@example.com", "dpo-approver@example.com"]),
+    );
+  });
+
+  it.each([[[]], [[" "]], [""]])(
+    "falls back to production mailboxes when the override is empty (%j)",
+    (overrideValue) => {
+      const secret = {
+        ...emails,
+        seatoolMissingRecordTo: overrideValue,
+      } as unknown as EmailAddresses;
+
+      expect(getEscalationRecipients("production", "chip-spa", secret)).toEqual({
+        to: ["chip.inbox@cms.hhs.gov"],
+        cc: ["seatool-helpdesk@example.com", "dpo-approver@example.com"],
+      });
+    },
+  );
 
   it("returns empty lists when the secret keys are missing", () => {
     const withoutEscalationFields: EmailAddresses = {
@@ -96,7 +132,7 @@ describe("seatool missing-record recipients", () => {
   });
 
   it("does not hardcode named CMS staff emails", () => {
-    const addresses = flattenedAddresses("production").join(" ").toLowerCase();
+    const addresses = flattenedAddresses("production", productionEmails).join(" ").toLowerCase();
 
     for (const namedEmail of namedStaffEmails) {
       expect(addresses).not.toContain(namedEmail);
