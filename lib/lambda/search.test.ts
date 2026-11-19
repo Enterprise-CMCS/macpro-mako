@@ -175,6 +175,26 @@ describe("getSearchData Handler", () => {
       { aggs: { everything: { global: {}, aggs: { ids: { terms: { field: "_id" } } } } } },
     ],
     ["aggregations alias", { aggregations: { everything: { global: {} } } }],
+    [
+      "term suggestion despite a match-none query",
+      {
+        query: { match_none: {} },
+        suggest: {
+          states: {
+            text: "CA",
+            term: {
+              field: "state.keyword",
+              suggest_mode: "always",
+              min_word_length: 1,
+              prefix_length: 0,
+              max_edits: 1,
+              size: 5,
+              shard_size: 5,
+            },
+          },
+        },
+      },
+    ],
     ["script fields", { script_fields: { t: { script: { source: "return 1+3" } } } }],
     [
       "nested script query",
