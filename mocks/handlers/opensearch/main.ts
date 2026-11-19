@@ -77,7 +77,7 @@ export const errorOSMainMultiDocumentHandler = http.post<PathParams, GetMultiIte
 const handleMainSearch = async ({ request }: { request: Request }) => {
   const { query } = await request.json();
 
-  if (query?.match_all?.id == "throw-error") {
+  if (query?.match_all?.id == "throw-error" || JSON.stringify(query).includes('"throw-error"')) {
     return new HttpResponse("Internal server error", { status: 500 });
   }
 
