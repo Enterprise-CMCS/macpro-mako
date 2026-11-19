@@ -22,7 +22,9 @@ permissions:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    # Pin away from ubuntu-latest: GitHub is moving that label to 26.04, and
+    # Playwright <1.61 has no chromium builds for ubuntu26.04-x64.
+    runs-on: ubuntu-24.04
     env:
       JSON_ARTIFACT_ID: json-accessibility-report
       HTML_ARTIFACT_ID: html-accessibility-report
