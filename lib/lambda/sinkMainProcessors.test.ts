@@ -417,7 +417,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
     });
   });
 
-  it.each(["--mako--init-centra--aws.onemac.centra.events", "aws.onemac.centra.events"])(
+  it.each(["--mako--init-centra--aws.onemac.migration.cdc", "aws.onemac.migration.cdc"])(
     "indexes a CEntra submission from %s and deletes the matching draft",
     async (topic) => {
       await insertOneMacRecordsFromKafkaIntoMako([centraKafkaRecord(topic)], topic);
@@ -450,7 +450,7 @@ describe("insertOneMacRecordsFromKafkaIntoMako", () => {
   );
 
   it("does not delete a draft when indexing CEntra subsequent documents", async () => {
-    const topic = "aws.onemac.centra.events";
+    const topic = "aws.onemac.migration.cdc";
     await insertOneMacRecordsFromKafkaIntoMako(
       [centraKafkaRecord(topic, "ce-subsequent-documents")],
       topic,

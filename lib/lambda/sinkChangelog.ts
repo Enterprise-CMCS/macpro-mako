@@ -27,7 +27,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
       const topic = getTopic(topicPartition);
       switch (topic) {
         case "aws.onemac.migration.cdc":
-        case "aws.onemac.centra.events":
           // await legacyAdminChanges(
           //   event.records[topicPartition],
           //   topicPartition,

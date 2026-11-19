@@ -22,19 +22,6 @@ describe("sinkMain handler", () => {
     expect(spiedOnProcessAndIndex).toBeCalledWith([], "aws.onemac.migration.cdc-0");
   });
 
-  it.each(["aws.onemac.centra.events-0", "--mako--init-centra--aws.onemac.centra.events-0"])(
-    "handles %s by indexing OneMAC records",
-    async (topicPartition) => {
-      const spiedOnProcessAndIndex = vi
-        .spyOn(sinkMainProcessors, "insertOneMacRecordsFromKafkaIntoMako")
-        .mockImplementation(vi.fn());
-
-      await handler(createKafkaEvent({ [topicPartition]: [] }), {} as Context, vi.fn());
-
-      expect(spiedOnProcessAndIndex).toBeCalledWith([], topicPartition);
-    },
-  );
-
   it("handles aws.seatool.ksql.onemac.three.agg.State_Plan topic successfully", async () => {
     const spiedOnProcessAndIndex = vi
       .spyOn(sinkMainProcessors, "insertNewSeatoolRecordsFromKafkaIntoMako")

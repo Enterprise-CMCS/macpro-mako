@@ -8,7 +8,6 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as userService from "../user-management/userManagementService";
 import { submit } from "./index";
 
-const CENTRA_TOPIC = "aws.onemac.centra.events";
 const CDC_TOPIC = "aws.onemac.migration.cdc";
 
 const ceFile = {
@@ -77,7 +76,6 @@ describe("CEntra submit", () => {
 
   beforeEach(() => {
     process.env.topicName = CDC_TOPIC;
-    process.env.centraTopicName = CENTRA_TOPIC;
     mockedProducer.send.mockResolvedValue([{ partition: 0, offset: "1" }]);
     mockedProducer.connect.mockResolvedValue(undefined);
   });
@@ -88,12 +86,11 @@ describe("CEntra submit", () => {
     }
   });
 
-  it("publishes an initial record only to the centra topic", async () => {
+  it("publishes an initial record to the migration CDC topic", async () => {
     const result = await submit(submitEvent(ceRecordBody()));
 
     expect(result.statusCode).toBe(200);
-    expect(topicsSent()).toEqual([CENTRA_TOPIC]);
-    expect(topicsSent()).not.toContain(CDC_TOPIC);
+    expect(topicsSent()).toEqual([CDC_TOPIC]);
 
     const message = mockedProducer.send.mock.calls[0][0].messages[0];
     expect(message.key).toBe("MD-CE-26-001");
@@ -111,14 +108,14 @@ describe("CEntra submit", () => {
     });
   });
 
-  it("publishes subsequent documents only to the centra topic", async () => {
+  it("publishes subsequent documents to the migration CDC topic", async () => {
     const itemExists = vi.spyOn(packageApi, "itemExists").mockResolvedValue(true);
     restorers.push(() => itemExists.mockRestore());
 
     const result = await submit(submitEvent(ceSubsequentBody()));
 
     expect(result.statusCode).toBe(200);
-    expect(topicsSent()).toEqual([CENTRA_TOPIC]);
+    expect(topicsSent()).toEqual([CDC_TOPIC]);
     expect(JSON.parse(mockedProducer.send.mock.calls[0][0].messages[0].value)).toMatchObject({
       event: "ce-subsequent-documents",
       operationType: "CE_SUBSEQUENT_DOCUMENTS",
@@ -132,7 +129,6 @@ describe("CEntra submit", () => {
 
     expect(result.statusCode).toBe(200);
     expect(topicsSent()).toContain(CDC_TOPIC);
-    expect(topicsSent()).not.toContain(CENTRA_TOPIC);
   });
 
   it("rejects a submitter who is not authorized for the package state", async () => {
@@ -171,15 +167,6 @@ describe("CEntra submit", () => {
 
   it("rejects subsequent documents when the package does not exist", async () => {
     const result = await submit(submitEvent(ceSubsequentBody()));
-
-    expect(result.statusCode).toBe(500);
-    expect(mockedProducer.send).not.toHaveBeenCalled();
-  });
-
-  it("does not publish when centraTopicName is missing", async () => {
-    delete process.env.centraTopicName;
-
-    const result = await submit(submitEvent(ceRecordBody()));
 
     expect(result.statusCode).toBe(500);
     expect(mockedProducer.send).not.toHaveBeenCalled();

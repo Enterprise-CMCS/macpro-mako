@@ -22,7 +22,6 @@ export const handler: Handler<KafkaEvent> = async (event) => {
 
         switch (topic) {
           case "aws.onemac.migration.cdc":
-          case "aws.onemac.centra.events":
             return insertOneMacRecordsFromKafkaIntoMako(records, topicPartition);
 
           case "aws.seatool.ksql.onemac.three.agg.State_Plan":

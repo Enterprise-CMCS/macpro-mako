@@ -153,15 +153,15 @@ describe("syncing Changelog events", () => {
     expect(sendAttachmentArchiveRebuildRequest).not.toHaveBeenCalled();
   });
 
-  it("indexes centra events and queues archive rebuilds for the stage topic", async () => {
+  it("indexes CEntra events on the stage CDC topic and queues archive rebuilds", async () => {
     hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(true);
-    const centraTopic = "--mako--init-centra--aws.onemac.centra.events";
-    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = [TOPIC, centraTopic].join(",");
+    const stageCdcTopic = "--mako--init-centra--aws.onemac.migration.cdc";
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = stageCdcTopic;
 
     const event = createKafkaEvent({
-      [`${centraTopic}-0`]: [
+      [`${stageCdcTopic}-0`]: [
         createKafkaRecord({
-          topic: `${centraTopic}-0`,
+          topic: `${stageCdcTopic}-0`,
           key: Buffer.from("MD-CE-26-001").toString("base64"),
           value: convertObjToBase64(centraChangelogRecord()),
           offset: 7,
@@ -189,17 +189,15 @@ describe("syncing Changelog events", () => {
     );
   });
 
-  it("indexes the shared centra topic without queueing an ephemeral archive rebuild", async () => {
+  it("indexes CEntra on the shared CDC topic without queueing an ephemeral archive rebuild", async () => {
     hasAttachmentArchiveRebuildQueueConfigured.mockReturnValue(true);
-    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME = [
-      TOPIC,
-      "--mako--init-centra--aws.onemac.centra.events",
-    ].join(",");
+    process.env.ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME =
+      "--mako--init-centra--aws.onemac.migration.cdc";
 
     const event = createKafkaEvent({
-      "aws.onemac.centra.events-0": [
+      "aws.onemac.migration.cdc-0": [
         createKafkaRecord({
-          topic: "aws.onemac.centra.events-0",
+          topic: "aws.onemac.migration.cdc-0",
           key: Buffer.from("MD-CE-26-001").toString("base64"),
           value: convertObjToBase64(centraChangelogRecord()),
           offset: 3,

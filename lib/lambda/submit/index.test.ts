@@ -1,4 +1,4 @@
-import { produceCentraMessage, produceMessage } from "libs/api/kafka";
+import { produceMessage } from "libs/api/kafka";
 import { getRequestContext, NOT_FOUND_ITEM_ID } from "mocks";
 import { events, uploadSubsequentDocuments } from "mocks/data/submit/base";
 import { APIGatewayEvent } from "shared-types";
@@ -8,7 +8,6 @@ import { submit } from "./index";
 
 vi.mock("libs/api/kafka", () => ({
   produceMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
-  produceCentraMessage: vi.fn(() => Promise.resolve([{ partition: 0, offset: "1" }])),
 }));
 
 describe("submit Lambda function", () => {
@@ -73,7 +72,6 @@ describe("submit Lambda function", () => {
           expect.any(String),
           expect.any(String),
         );
-        expect(produceCentraMessage).not.toHaveBeenCalled();
       },
     );
   });

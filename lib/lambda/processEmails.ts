@@ -21,6 +21,9 @@ import { retry } from "shared-utils/retry";
 import { sendUserRoleEmails } from "./processUserRoleEmails";
 import { adjustTimestamp } from "./utils";
 
+/** CEntra shares migration.cdc; OneMAC must not send confirmation mail for these events. */
+const CENTRA_EMAIL_SKIP_EVENTS = new Set(["ce-record-submitted", "ce-subsequent-documents"]);
+
 class TemporaryError extends Error {
   constructor(message: string) {
     super(message);
@@ -228,6 +231,15 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
 
   if (parsedValue.origin !== "mako") {
     console.log("Kafka event is not of mako origin. Doing nothing.");
+    return;
+  }
+
+  // CEntra events share migration.cdc with SPA/waiver traffic. OneMAC does not send
+  // confirmation emails for them; downstream systems notify using submitter fields.
+  if (CENTRA_EMAIL_SKIP_EVENTS.has(parsedValue.event)) {
+    console.log(
+      `CEntra event ${parsedValue.event} has no OneMAC email support. Doing nothing.`,
+    );
     return;
   }
 

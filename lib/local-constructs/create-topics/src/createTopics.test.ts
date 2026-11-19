@@ -76,7 +76,7 @@ describe("handler", () => {
     (topics.createTopics as vi.Mock).mockResolvedValue(undefined);
     const topicsWithRetention = [
       {
-        topic: "aws.onemac.centra.events",
+        topic: "aws.onemac.migration.cdc",
         numPartitions: 1,
         replicationFactor: 3,
         configEntries: [{ name: "retention.ms", value: "-1" }],

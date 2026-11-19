@@ -1,12 +1,9 @@
 import { APIGatewayEvent } from "aws-lambda";
-import { produceCentraMessage, produceMessage } from "libs/api/kafka";
+import { produceMessage } from "libs/api/kafka";
 import { response } from "libs/handler-lib";
-import { CE_EVENT } from "shared-types";
 import { BaseSchemas } from "shared-types/events";
 
 import { submissionPayloads } from "./submissionPayloads";
-
-const CENTRA_EVENTS = new Set<string>([CE_EVENT.RECORD_SUBMITTED, CE_EVENT.SUBSEQUENT_DOCUMENTS]);
 
 export const submit = async (event: APIGatewayEvent) => {
   if (!event.body) {
@@ -38,15 +35,7 @@ export const submit = async (event: APIGatewayEvent) => {
     const eventBody = await submissionPayloads[body.event](event);
     const payload = JSON.stringify(eventBody);
 
-    if (CENTRA_EVENTS.has(body.event)) {
-      const centraTopicName = process.env.centraTopicName;
-      if (!centraTopicName) {
-        throw new Error("centraTopicName is not configured");
-      }
-      await produceCentraMessage(centraTopicName, body.id, payload);
-    } else {
-      await produceMessage(process.env.topicName as string, body.id, payload);
-    }
+    await produceMessage(process.env.topicName as string, body.id, payload);
 
     return response({
       statusCode: 200,

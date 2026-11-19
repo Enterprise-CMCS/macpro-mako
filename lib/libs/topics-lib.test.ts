@@ -28,10 +28,10 @@ describe("topics-lib test", () => {
     expect(mockedAdmin.createPartitions).toBeCalledTimes(1);
   });
 
-  it("forwards infinite retention when creating the centra topic", async () => {
+  it("forwards retention config entries when creating topics", async () => {
     await createTopics("broker:9092", [
       {
-        topic: "aws.onemac.centra.events",
+        topic: "aws.onemac.migration.cdc",
         numPartitions: 1,
         configEntries: [{ name: "retention.ms", value: "-1" }],
       },
@@ -40,7 +40,7 @@ describe("topics-lib test", () => {
     expect(mockedAdmin.createTopics).toHaveBeenCalledWith({
       topics: [
         expect.objectContaining({
-          topic: "aws.onemac.centra.events",
+          topic: "aws.onemac.migration.cdc",
           numPartitions: 1,
           configEntries: [{ name: "retention.ms", value: "-1" }],
         }),
