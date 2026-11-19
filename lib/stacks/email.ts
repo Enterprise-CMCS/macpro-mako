@@ -11,6 +11,7 @@ import {
   awsLambdaFunctionName,
   truncateAwsName,
 } from "../config/lambda-function-name";
+import { emailLookupSecretArn } from "./email-lookup-secret";
 
 interface EmailServiceStackProps extends cdk.StackProps {
   project: string;
@@ -134,15 +135,8 @@ export class Email extends cdk.NestedStack {
               resources: [`${openSearchDomainArn}/*`],
             }),
             new cdk.aws_iam.PolicyStatement({
-              actions: [
-                "ses:SendEmail",
-                "ses:SendRawEmail",
-                "ses:ListIdentities",
-                "ses:ListConfigurationSets",
-                "sns:Subscribe",
-                "sns:Publish",
-                "s3:PutObject",
-              ],
+              effect: cdk.aws_iam.Effect.ALLOW,
+              actions: ["ses:SendEmail"],
               resources: ["*"],
             }),
             new cdk.aws_iam.PolicyStatement({
@@ -153,7 +147,9 @@ export class Email extends cdk.NestedStack {
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
               actions: ["secretsmanager:DescribeSecret", "secretsmanager:GetSecretValue"],
-              resources: [`arn:aws:secretsmanager:${this.region}:${this.account}:secret:*`],
+              resources: [
+                emailLookupSecretArn(this.region, this.account, emailAddressLookupSecretName),
+              ],
             }),
             new cdk.aws_iam.PolicyStatement({
               effect: cdk.aws_iam.Effect.ALLOW,
