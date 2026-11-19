@@ -26,6 +26,15 @@ describe("draft attachment helpers", () => {
     ]);
   });
 
+  it("returns CEntra attachment order and default labels", () => {
+    expect(getDraftAttachmentKeyOrder("ce-record-submitted")).toEqual(["ceTemplate", "other"]);
+    expect(getDraftAttachmentDefaultLabel("ce-record-submitted", "ceTemplate")).toBe("Template");
+    expect(getDraftAttachmentDefaultLabel("ce-record-submitted", "other")).toBe(
+      "Other Supporting Documentation",
+    );
+    expect(getDraftAttachmentKeyOrder("ce-subsequent-documents")).toEqual(["ceTemplate", "other"]);
+  });
+
   it("returns no label or ordering for events without attachment sections", () => {
     expect(getDraftAttachmentKeyOrder("split-spa")).toEqual([]);
     expect(getDraftAttachmentDefaultLabel("split-spa", "anything")).toBeUndefined();

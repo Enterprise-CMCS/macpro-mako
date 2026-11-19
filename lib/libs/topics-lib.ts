@@ -1,10 +1,16 @@
 import { Kafka } from "kafkajs";
 import * as _ from "lodash";
 
+interface TopicConfigEntry {
+  name: string;
+  value: string;
+}
+
 interface TopicConfig {
   topic: string;
   numPartitions: number;
-  // Add other properties as needed
+  replicationFactor?: number;
+  configEntries?: TopicConfigEntry[];
 }
 
 export async function createTopics(brokerString: string, topicsConfig: TopicConfig[]) {

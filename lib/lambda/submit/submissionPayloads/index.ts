@@ -2,6 +2,8 @@ import { appK } from "./app-k";
 import { capitatedAmendment } from "./capitated-amendment";
 import { capitatedInitial } from "./capitated-initial";
 import { capitatedRenewal } from "./capitated-renewal";
+import { ceRecordSubmitted } from "./ce-record-submitted";
+import { ceSubsequentDocuments } from "./ce-subsequent-documents";
 import { contractingAmendment } from "./contracting-amendment";
 import { contractingInitial } from "./contracting-initial";
 import { contractingRenewal } from "./contracting-renewal";
@@ -31,5 +33,7 @@ export const submissionPayloads = {
   "toggle-withdraw-rai": toggleWithdrawRai,
   "respond-to-rai": respondToRai,
   "app-k": appK,
+  "ce-record-submitted": ceRecordSubmitted,
+  "ce-subsequent-documents": ceSubsequentDocuments,
   "upload-subsequent-documents": uploadSubsequentDocuments,
 };

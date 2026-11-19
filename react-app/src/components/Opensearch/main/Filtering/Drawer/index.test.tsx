@@ -42,6 +42,7 @@ describe("OsFilterDrawer", () => {
       [
         "State",
         "Authority",
+        "Request Type",
         "Status",
         "RAI Withdraw Enabled",
         "Initial Submission",
@@ -54,6 +55,14 @@ describe("OsFilterDrawer", () => {
         expect(button).toBeInTheDocument();
         expect(button.getAttribute("data-state")).toEqual("closed");
       });
+    });
+    it("opens the Request Type filter", async () => {
+      const { user } = setup([], "spas");
+      await user.click(screen.getByRole("button", { name: "Open filter panel" }));
+      await user.click(screen.getByRole("button", { name: "Request Type" }));
+      expect(
+        screen.getByRole("button", { name: "Select all Request Type options" }),
+      ).toBeInTheDocument();
     });
     it("should handle clicking the Reset button", async () => {
       const { user } = setup(

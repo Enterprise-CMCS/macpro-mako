@@ -1,5 +1,6 @@
 import * as Heroicons from "@heroicons/react/24/outline";
 import { Link } from "react-router";
+import { CE_HARDSHIP_EXCEPTION_LABEL, CE_HARDSHIP_KIND_LABELS } from "shared-types";
 
 import * as C from "@/components";
 import { Button } from "@/components";
@@ -114,6 +115,24 @@ export const Welcome = () => {
             <h2 className="text-2xl font-bold">New and Notable</h2>
             <CardWithTopBorder className="">
               <div className="space-y-8 py-5 pl-6 pr-6 md:pr-20">
+                <article className="space-y-2">
+                  <h3 className="font-bold">Community Engagement Short-Term Hardship Exception</h3>
+                  <p>
+                    State users can submit a Community Engagement Short-Term Hardship Exception from
+                    the Medicaid SPA submission flow. Choose {CE_HARDSHIP_KIND_LABELS.CE_SADE},{" "}
+                    {CE_HARDSHIP_KIND_LABELS.CE_UNEMPLOYMENT}, or {CE_HARDSHIP_KIND_LABELS.CE_NEA},
+                    and enter a submission ID in the format SS-CE-YY-### (for example,
+                    MD-CE-26-001). Submitted requests appear on the SPAs dashboard as{" "}
+                    {CE_HARDSHIP_EXCEPTION_LABEL} with a Request Type.
+                  </p>
+                  <Link
+                    to="/faq/centra-id-format"
+                    target={FAQ_TAB}
+                    className="inline-block underline text-[#0071bc]"
+                  >
+                    View Community Engagement FAQs
+                  </Link>
+                </article>
                 <article className="space-y-2">
                   <h3 className="font-bold">Saving Draft Packages</h3>
                   <p>

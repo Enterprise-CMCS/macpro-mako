@@ -31,7 +31,7 @@ import {
 
 import { Dashboard, dashboardLoader } from "./index";
 
-const spaHits = getFilteredHits(["Medicaid SPA", "CHIP SPA"]);
+const spaHits = getFilteredHits(["Medicaid SPA", "CHIP SPA", "CE_HARDSHIP_EXCEPTION"]);
 const waiverHits = getFilteredHits(["1915(b)", "1915(c)"]);
 const verifyColumns = (table, hasActions: boolean, isWaiver: boolean, hitCount: number) => {
   let columnCount = 8;
@@ -47,7 +47,9 @@ const verifyColumns = (table, hasActions: boolean, isWaiver: boolean, hitCount: 
     expect(within(table).getByText("Waiver Number", { selector: "th>div" })).toBeInTheDocument();
     expect(within(table).getByText("Action Type", { selector: "th>div" })).toBeInTheDocument();
   } else {
+    columnCount += 1;
     expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
+    expect(within(table).getByText("Request Type", { selector: "th>div" })).toBeInTheDocument();
   }
   expect(within(table).getByText("Status", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Initial Submission", { selector: "th>div" })).toBeInTheDocument();

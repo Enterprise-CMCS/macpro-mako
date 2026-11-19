@@ -2,6 +2,7 @@ import { http, HttpResponse, PathParams } from "msw";
 import { opensearch } from "shared-types";
 import { getAvailableActions, isCmsWriteUser } from "shared-utils";
 
+import { getCentraItem } from "../../data/centra-session";
 import items from "../../data/items";
 import { mockUseGetUser } from "../../index";
 import { PackageActionsRequestBody } from "../../index.d";
@@ -15,7 +16,7 @@ const defaultApiPackageActionsHandler = http.post<PathParams, PackageActionsRequ
       return HttpResponse.json({ message: "Event body required" }, { status: 400 });
     }
 
-    const item = items[id];
+    const item = getCentraItem(id) || items[id];
     if (!item?._source?.state) {
       return HttpResponse.json({ message: "No record found for the given id" }, { status: 404 });
     }

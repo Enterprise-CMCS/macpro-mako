@@ -15,12 +15,17 @@ const testUsers = {
 const stateSubmitterAuthFile = "./playwright/.auth/state-user.json";
 const reviewerAuthFile = "./playwright/.auth/reviewer-user.json";
 
-const deploymentConfig = await getDeploymentConfig(stage, project);
-const password = await getSecret(deploymentConfig.devPasswordArn);
+const isMockedAgent = process.env.AGENT_MODE === "mocked" || process.env.PW_ENV === "mocked";
+const deploymentConfig = isMockedAgent ? null : await getDeploymentConfig(stage, project);
+const password =
+  isMockedAgent || !deploymentConfig ? "" : await getSecret(deploymentConfig.devPasswordArn);
 
 console.log(`[Local Setup] Stage: ${stage} | Project: ${project} | Base URL: ${baseURL.local}`);
 
 setup("auth", async () => {
+  if (isMockedAgent) {
+    return;
+  }
   await checkAuthPath(stateSubmitterAuthFile);
 
   await generateAuthFile({

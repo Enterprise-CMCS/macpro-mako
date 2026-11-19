@@ -1,8 +1,10 @@
 import { Kafka, Message, Producer } from "kafkajs";
 import { validateEnvVariable } from "shared-utils";
 
+const SUBMIT_KAFKA_CLIENT_ID = "submit";
+
 const kafka = new Kafka({
-  clientId: "submit",
+  clientId: SUBMIT_KAFKA_CLIENT_ID,
   brokers: process.env.brokerString ? process.env.brokerString.split(",") : [],
   retry: {
     initialRetryTime: 300,
@@ -13,7 +15,7 @@ const kafka = new Kafka({
   },
 });
 
-let producer: Producer;
+let producer: Producer | undefined;
 export function getProducer() {
   validateEnvVariable("brokerString");
   return kafka.producer();
@@ -24,8 +26,8 @@ export async function produceMessage(topic: string, key: string, value: string) 
   await producer.connect();
 
   const message: Message = {
-    key: key,
-    value: value,
+    key,
+    value,
     partition: 0,
     headers: { source: "mako" },
   };

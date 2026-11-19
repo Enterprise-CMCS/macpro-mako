@@ -1,4 +1,5 @@
 import { Action } from "shared-types/actions";
+import { Authority } from "shared-types/authority";
 import { describe, expect, it } from "vitest";
 
 import {
@@ -29,6 +30,11 @@ describe("getDashboardTabForAuthority", () => {
   it('should return "waivers" for "1915(c)"', () => {
     const result = getDashboardTabForAuthority("1915(c)" as any);
     expect(result).toBe("waivers");
+  });
+
+  it('should return "spas" for a CEntra package', () => {
+    expect(getDashboardTabForAuthority("CE_HARDSHIP_EXCEPTION" as any)).toBe("spas");
+    expect(getDashboardTabForAuthority(Authority.CE_HARDSHIP_EXCEPTION)).toBe("spas");
   });
 
   it("should throw an error for an invalid authority", () => {

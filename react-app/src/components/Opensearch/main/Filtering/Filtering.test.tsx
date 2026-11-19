@@ -143,7 +143,10 @@ describe("Visibility button", () => {
     await user.click(screen.getByRole("button", { name: "Export" }));
     expect(csvSpy).toHaveBeenCalledTimes(1);
     const [rowsArg, filenameArg] = csvSpy.mock.calls[0] ?? [[], ""];
-    expect(rowsArg).toHaveLength(12);
+    expect(rowsArg).toHaveLength(15);
+    expect(rowsArg.map((row) => row["SPA ID"])).toEqual(
+      expect.arrayContaining(["MD-CE-26-001", "MD-CE-26-002", "MD-CE-26-003"]),
+    );
     expect(rowsArg[0]).toEqual(
       expect.objectContaining({
         "SPA ID": expect.any(String),

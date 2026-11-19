@@ -79,4 +79,25 @@ describe("getFormOrigin", () => {
       pathname: `/dashboard`,
     });
   });
+
+  it("falls back to dashboard when details origin is missing id or authority", () => {
+    window.location.search = `?origin=details`;
+
+    expect(getFormOrigin()).toEqual({
+      pathname: `/dashboard`,
+    });
+
+    expect(getFormOrigin({ authority: "Medicaid SPA" as Authority })).toEqual({
+      pathname: `/dashboard`,
+      search: new URLSearchParams({ tab: "spas" }).toString(),
+    });
+  });
+
+  it("falls back to dashboard for unrecognized origin values", () => {
+    window.location.search = `?origin=not-a-real-route`;
+
+    expect(getFormOrigin()).toEqual({
+      pathname: `/dashboard`,
+    });
+  });
 });

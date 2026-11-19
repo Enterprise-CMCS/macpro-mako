@@ -2,6 +2,8 @@ import * as appK from "./app-k";
 import * as capitatedAmendment from "./capitated-amendment";
 import * as capitatedInitial from "./capitated-initial";
 import * as capitatedRenewal from "./capitated-renewal";
+import * as ceRecordSubmitted from "./ce-record-submitted";
+import * as ceSubsequentDocuments from "./ce-subsequent-documents";
 import * as contractingAmendment from "./contracting-amendment";
 import * as contractingInitial from "./contracting-initial";
 import * as contractingRenewal from "./contracting-renewal";
@@ -26,6 +28,8 @@ export const formSchemas = {
   "new-chip-submission": newChipSubmission.formSchema,
   "new-chip-details-submission": newChipDetailsSubmission.formSchema,
   "new-medicaid-submission": newMedicaidSubmission.formSchema,
+  "ce-record-submitted": ceRecordSubmitted.formSchema,
+  "ce-subsequent-documents": ceSubsequentDocuments.formSchema,
   "temporary-extension": temporaryExtension.formSchema,
   "withdraw-package": withdrawPackage.formSchema,
   "withdraw-package-chip": withdrawPackage.formSchemaChip,

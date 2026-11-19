@@ -34,6 +34,15 @@ export const CHECK_AUTHORITY: DrawerFilterableGroup = {
   value: [],
 };
 
+export const CHECK_REQUEST_TYPE: DrawerFilterableGroup = {
+  label: "Request Type",
+  field: "hardshipKind.keyword",
+  component: "multiCheck",
+  prefix: "must",
+  type: "terms",
+  value: [],
+};
+
 export const CHECK_CMSSTATUS: DrawerFilterableGroup = {
   label: "Status",
   field: "cmsStatus.keyword",

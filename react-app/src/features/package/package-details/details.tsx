@@ -12,6 +12,14 @@ import {
 import { OneMacUser } from "@/api/useGetUser";
 import { BLANK_VALUE } from "@/consts";
 import { convertStateAbbrToFullName } from "@/utils";
+import {
+  formatCentraSubmissionDate,
+  formatHardshipKindLabel,
+  formatPackageAuthorityLabel,
+  isCeHardshipException,
+  readCentraHardshipKind,
+  readCentraSubmissionDate,
+} from "@/utils/centra";
 
 type ReviewTeamListProps = {
   reviewTeam: opensearch.main.Document["reviewTeam"];
@@ -134,7 +142,12 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     },
     {
       label: "Authority",
-      value: submission.authority,
+      value: formatPackageAuthorityLabel(submission.authority),
+    },
+    {
+      label: "Request Type",
+      value: formatHardshipKindLabel(readCentraHardshipKind(submission)),
+      canView: isCeHardshipException(submission.authority),
     },
     {
       label: "Action Type",
@@ -211,7 +224,8 @@ export const getSubmissionDetails: GetLabelAndValueFromSubmission = (
     {
       label: "Formal RAI Response Date",
       value: submission.raiReceivedDate ? formatDateToET(submission.raiReceivedDate) : BLANK_VALUE,
-      canView: submission.actionType !== "Extend",
+      // CEntra has no RAI workflow; hide the empty field for that authority.
+      canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
     },
   ];
 };
@@ -222,11 +236,17 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
     value: submission.finalDispositionDate
       ? formatDateToUTC(submission.finalDispositionDate)
       : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
+    canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
   },
   {
-    label: "Proposed Effective Date",
+    label: isCeHardshipException(submission.authority)
+      ? "Submission Date"
+      : "Proposed Effective Date",
     value: (() => {
+      if (isCeHardshipException(submission.authority)) {
+        return formatCentraSubmissionDate(readCentraSubmissionDate(submission));
+      }
+
       const proposedDateFromDraftData = submission.draft?.data?.proposedEffectiveDate;
       const draftDateValue =
         typeof proposedDateFromDraftData === "string" ||
@@ -244,7 +264,7 @@ export const getApprovedAndEffectiveDetails: GetLabelAndValueFromSubmission = (s
     value: submission.approvedEffectiveDate
       ? formatDateToUTC(submission.approvedEffectiveDate)
       : BLANK_VALUE,
-    canView: submission.actionType !== "Extend",
+    canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
   },
 ];
 
@@ -280,7 +300,7 @@ export const getSubmittedByDetails: GetLabelAndValueFromSubmission = (submission
       {
         label: "CPOC",
         value: <p className="text-lg">{submission.leadAnalystName || BLANK_VALUE}</p>,
-        canView: submission.actionType !== "Extend",
+        canView: submission.actionType !== "Extend" && !isCeHardshipException(submission.authority),
       },
       {
         label: "SRT",

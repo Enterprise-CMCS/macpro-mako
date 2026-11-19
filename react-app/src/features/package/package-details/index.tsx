@@ -1,10 +1,11 @@
 import { useEffect, useMemo, useRef } from "react";
-import { Authority, opensearch } from "shared-types";
+import { Authority, CE_HARDSHIP_EXCEPTION_LABEL, opensearch } from "shared-types";
 
 import { useGetUser } from "@/api/useGetUser";
 import { DetailsSection, LoadingSpinner } from "@/components";
 import { useFeatureFlag } from "@/hooks/useFeatureFlag";
 import { sendGAEvent } from "@/utils";
+import { isCeHardshipException } from "@/utils/centra";
 import { isChipEligibilityPackage } from "@/utils/chipEligibility";
 
 import {
@@ -43,6 +44,10 @@ export const PackageDetails = ({ submission }: PackageDetailsProps) => {
   const title = useMemo(() => {
     if (isCHIPDetailsEnabled && isChipEligibilityPackage(submission)) {
       return "CHIP Eligibility SPA Package Details";
+    }
+
+    if (isCeHardshipException(submission.authority)) {
+      return `${CE_HARDSHIP_EXCEPTION_LABEL} Package Details`;
     }
 
     switch (submission.authority) {

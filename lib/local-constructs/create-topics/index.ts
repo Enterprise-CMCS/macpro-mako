@@ -21,12 +21,24 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../../config/bundling-config";
 
+export interface KafkaTopicConfigEntry {
+  name: string;
+  value: string;
+}
+
+export interface KafkaTopicDefinition {
+  topic: string;
+  numPartitions?: number;
+  replicationFactor?: number;
+  configEntries?: KafkaTopicConfigEntry[];
+}
+
 interface CreateTopicsProps {
   vpc: IVpc;
   privateSubnets: ISubnet[];
   securityGroups: ISecurityGroup[];
   brokerString: string;
-  topics: { topic: string }[];
+  topics: KafkaTopicDefinition[];
 }
 
 export class CreateTopics extends Construct {

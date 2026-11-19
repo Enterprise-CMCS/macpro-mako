@@ -117,6 +117,7 @@ export const arWithdrawPackage: ActionRule = {
   action: Action.WITHDRAW_PACKAGE,
   check: (checker, user) =>
     !checker.isTempExtension &&
+    !checker.authorityIs([Authority.CE_HARDSHIP_EXCEPTION]) &&
     !checker.hasStatus(finalDispositionStatuses) &&
     isStateUser(user) &&
     !checker.isPlaceholderStatus,
@@ -140,11 +141,18 @@ export const arUploadSubsequentDocuments: ActionRule = {
       return false;
     }
 
-    if (checker.needsIntake) {
+    if (checker.isTempExtension) {
       return false;
     }
 
-    if (checker.isTempExtension) {
+    if (
+      checker.authorityIs([Authority.CE_HARDSHIP_EXCEPTION]) &&
+      checker.hasStatus(SEATOOL_STATUS.SUBMITTED)
+    ) {
+      return true;
+    }
+
+    if (checker.needsIntake) {
       return false;
     }
 

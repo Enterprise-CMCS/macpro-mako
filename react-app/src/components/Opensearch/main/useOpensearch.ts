@@ -16,7 +16,7 @@ export const DEFAULT_FILTERS: Record<OsTab, Partial<OsUrlState>> = {
       {
         field: "authority.keyword",
         type: "terms",
-        value: ["Medicaid SPA", "CHIP SPA"],
+        value: ["Medicaid SPA", "CHIP SPA", "CE_HARDSHIP_EXCEPTION"],
         prefix: "must",
       },
     ],
@@ -198,6 +198,12 @@ export const useOsAggregate = () => {
             field: "authority.keyword",
             type: "terms",
             name: "authority.keyword",
+            size: 10,
+          },
+          {
+            field: "hardshipKind.keyword",
+            type: "terms",
+            name: "hardshipKind.keyword",
             size: 10,
           },
           {

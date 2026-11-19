@@ -73,6 +73,11 @@ describe("plan-types", () => {
     it("should render the page for a state user", async () => {
       await setup(<NewSubmissionInitialOptions />, "/new-submission");
       expect(screen.getByRole("heading", { name: "Submission Type" })).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Submit a new Medicaid or CHIP State Plan Amendment or Community Engagement Short-Term Hardship Exception",
+        ),
+      ).toBeInTheDocument();
     });
   });
 
@@ -80,6 +85,11 @@ describe("plan-types", () => {
     it("should render the page for a state user", async () => {
       await setup(<SPASubmissionOptions />, "/new-submission/spa");
       expect(screen.getByRole("heading", { name: "SPA Type" })).toBeInTheDocument();
+      expect(
+        screen.getByText(
+          "Submit a new Medicaid State Plan Amendment or Community Engagement Short-Term Hardship Exception",
+        ),
+      ).toBeInTheDocument();
     });
   });
 
@@ -87,6 +97,11 @@ describe("plan-types", () => {
     it("should render the page for a state user", async () => {
       await setup(<MedicaidSPASubmissionOptions />, "/new-submission/spa/medicaid");
       expect(screen.getByRole("heading", { name: "Medicaid SPA Type" })).toBeInTheDocument();
+      const centraCard = screen.getByRole("link", { name: /Additional Submissions/ });
+      expect(centraCard).toHaveAttribute(
+        "href",
+        "/new-submission/spa/medicaid/create/centra?origin=spas",
+      );
     });
   });
 

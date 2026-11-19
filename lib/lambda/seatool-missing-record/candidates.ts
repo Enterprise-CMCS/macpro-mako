@@ -82,6 +82,9 @@ export function mailboxGroupForAuthority(authority: Authority): MailboxGroup {
     case Authority["1915b"]:
     case Authority["1915c"]:
       return "waiver";
+    case Authority.CE_HARDSHIP_EXCEPTION:
+      // The search query also excludes this authority. parseAuthority drops both stored forms.
+      throw new Error("CE_HARDSHIP_EXCEPTION is excluded from SEA Tool missing-record escalation");
     default: {
       const exhaustive: never = authority;
       throw new Error(`Unexpected authority: ${exhaustive}`);
@@ -229,6 +232,7 @@ export function buildMissingRecordSearchQuery(from: number, size: number) {
           { term: { "origin.keyword": "SMART" } },
           { term: { "smartRecordType.keyword": SMART_RECORD_TYPE.RESERVATION } },
           { exists: { field: "changed_date" } },
+          { term: { "authority.keyword": "CE_HARDSHIP_EXCEPTION" } },
         ],
       },
     },

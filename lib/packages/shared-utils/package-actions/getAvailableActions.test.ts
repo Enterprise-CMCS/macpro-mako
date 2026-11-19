@@ -108,4 +108,24 @@ describe("getAvailableActions tests", () => {
     });
     expect(result).toEqual([Action.UPLOAD_SUBSEQUENT_DOCUMENTS, Action.WITHDRAW_PACKAGE]);
   });
+
+  it("returns only upload subsequent documents for a state user on a submitted CEntra package", () => {
+    const result = getAvailableActions(TEST_STATE_SUBMITTER_USER, {
+      ...TEST_MED_SPA_ITEM._source,
+      authority: "CE_HARDSHIP_EXCEPTION",
+      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+      initialIntakeNeeded: true,
+    });
+    expect(result).toEqual([Action.UPLOAD_SUBSEQUENT_DOCUMENTS]);
+  });
+
+  it("returns no actions for a CMS user on a submitted CEntra package", () => {
+    const result = getAvailableActions(TEST_REVIEWER_USER, {
+      ...TEST_MED_SPA_ITEM._source,
+      authority: "CE_HARDSHIP_EXCEPTION",
+      seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+      initialIntakeNeeded: true,
+    });
+    expect(result).toEqual([]);
+  });
 });

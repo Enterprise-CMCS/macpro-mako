@@ -66,6 +66,10 @@ export const router = (loginFlag = false) => {
               element: <F.MedicaidForm />,
             },
             {
+              path: "/new-submission/spa/medicaid/create/centra",
+              element: <F.CentraForm />,
+            },
+            {
               path: "/new-submission/spa/chip/create",
               element: <F.ChipForm />,
             },

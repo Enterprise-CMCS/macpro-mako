@@ -2,7 +2,11 @@ import { http, HttpResponse, PathParams } from "msw";
 
 import { getFilteredItemList } from "../../data/items";
 import { SearchQueryBody } from "../../index.d";
-import { getAggregations, getFilterValueAsStringArray } from "../search.utils";
+import {
+  applyMainSearchFilters,
+  getAggregations,
+  getFilterValueAsStringArray,
+} from "../search.utils";
 
 const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/search/:index",
@@ -17,12 +21,13 @@ const defaultApiSearchHandler = http.post<PathParams, SearchQueryBody>(
         getFilterValueAsStringArray(must, "terms", "authority.keyword") ||
         getFilterValueAsStringArray(must, "terms", "authority") ||
         [];
-      const itemList = getFilteredItemList(authorityValues);
-
       const isSpa =
-        authorityValues.includes("CHIP SPA") || authorityValues.includes("Medicaid SPA");
+        authorityValues.includes("CHIP SPA") ||
+        authorityValues.includes("Medicaid SPA") ||
+        authorityValues.includes("CE_HARDSHIP_EXCEPTION");
 
       const aggregations = getAggregations(aggs ?? {}, isSpa);
+      const itemList = applyMainSearchFilters(getFilteredItemList(authorityValues), query);
 
       return HttpResponse.json({
         took: 3,

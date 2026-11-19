@@ -33,7 +33,9 @@ export const submit = async (event: APIGatewayEvent) => {
 
   try {
     const eventBody = await submissionPayloads[body.event](event);
-    await produceMessage(process.env.topicName as string, body.id, JSON.stringify(eventBody));
+    const payload = JSON.stringify(eventBody);
+
+    await produceMessage(process.env.topicName as string, body.id, payload);
 
     return response({
       statusCode: 200,

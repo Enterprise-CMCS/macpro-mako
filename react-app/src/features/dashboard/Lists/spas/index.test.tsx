@@ -109,6 +109,7 @@ const defaultHits: opensearch.Hits<opensearch.main.Document> = {
 const getExpectedExportData = (useCmsStatus: boolean) => {
   return [
     {
+      "Request Type": BLANK_VALUE,
       ...PENDING_SUBMITTED_ITEM_EXPORT,
       Authority: pendingDoc.authority,
       "SPA ID": pendingDoc.id,
@@ -149,7 +150,10 @@ const getExpectedExportData = (useCmsStatus: boolean) => {
       "SPA ID": blankDoc.id,
       Status: useCmsStatus ? blankDoc.cmsStatus : blankDoc.stateStatus,
     },
-  ];
+  ].map((row) => ({
+    "Request Type": BLANK_VALUE,
+    ...row,
+  }));
 };
 
 const verifyColumns = (hasActions: boolean) => {
@@ -161,6 +165,7 @@ const verifyColumns = (hasActions: boolean) => {
   expect(within(table).getByText("SPA ID", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("State", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Authority", { selector: "th>div" })).toBeInTheDocument();
+  expect(within(table).getByText("Request Type", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Status", { selector: "th>div" })).toBeInTheDocument();
   expect(within(table).getByText("Initial Submission", { selector: "th>div" })).toBeInTheDocument();
   expect(
@@ -170,7 +175,7 @@ const verifyColumns = (hasActions: boolean) => {
     within(table).getByText("Formal RAI Response", { selector: "th>div" }),
   ).toBeInTheDocument();
   expect(within(table).getByText("Submitted By", { selector: "th>div" })).toBeInTheDocument();
-  expect(table.firstElementChild.firstElementChild.childElementCount).toEqual(hasActions ? 9 : 8);
+  expect(table.firstElementChild.firstElementChild.childElementCount).toEqual(hasActions ? 10 : 9);
 
   // Check that the correct amount rows appear
   expect(screen.getAllByRole("row").length).toEqual(hitCount + 1); // add 1 for header
@@ -216,6 +221,8 @@ const verifyRow = (
   expect(cells[cellIndex].textContent).toEqual(doc.state || BLANK_VALUE); // State
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(doc.authority || BLANK_VALUE); // Authority
+  cellIndex++;
+  expect(cells[cellIndex].textContent).toEqual(BLANK_VALUE); // Request Type
   cellIndex++;
   expect(cells[cellIndex].textContent).toEqual(status); // Status
   cellIndex++;
@@ -495,5 +502,56 @@ describe("SpasList", () => {
       status: "Draft",
       makoChangedDate: "01/31/2024",
     });
+  });
+
+  it("shows CEntra authority and request type labels, including draft-only request type", async () => {
+    const submittedDoc = {
+      ...pendingDoc,
+      id: "MD-CE-26-001",
+      authority: "CE_HARDSHIP_EXCEPTION",
+      hardshipKind: "CE_UNEMPLOYMENT",
+    } as opensearch.main.Document;
+    const draftDoc = {
+      ...pendingDoc,
+      id: "MD-CE-26-002",
+      authority: "CE_HARDSHIP_EXCEPTION",
+      hardshipKind: undefined,
+      seatoolStatus: SEATOOL_STATUS.DRAFT,
+      draft: {
+        savedAt: "2026-03-06T00:00:00.000Z",
+        data: { hardshipKind: "CE_NEA" },
+      },
+    } as opensearch.main.Document;
+
+    cleanup();
+    await setup(
+      {
+        hits: [
+          { _id: submittedDoc.id, _source: submittedDoc },
+          { _id: draftDoc.id, _source: draftDoc },
+        ],
+        max_score: 2,
+        total: { value: 2, relation: "eq" },
+      } as opensearch.Hits<opensearch.main.Document>,
+      getDashboardQueryString({ tab: "spas" }),
+      TEST_STATE_SUBMITTER_USER,
+      false,
+    );
+
+    const table = within(screen.getByTestId("os-table"));
+    const submittedRow = table.getByText(submittedDoc.id).closest("tr");
+    const draftRow = table.getByText(draftDoc.id).closest("tr");
+
+    expect(submittedRow).not.toBeNull();
+    expect(draftRow).not.toBeNull();
+    expect(
+      within(submittedRow as HTMLElement).getByText("CE Hardship Exception"),
+    ).toBeInTheDocument();
+    expect(
+      within(submittedRow as HTMLElement).getByText("High Unemployment Requests"),
+    ).toBeInTheDocument();
+    expect(
+      within(draftRow as HTMLElement).getByText("National Emergencies Act Requests"),
+    ).toBeInTheDocument();
   });
 });

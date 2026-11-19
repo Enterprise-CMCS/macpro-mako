@@ -949,4 +949,76 @@ describe("Package Activity", () => {
       expect(message).toHaveClass("text-red-700");
     });
   });
+
+  it("renders CEntra submission and subsequent document activity", async () => {
+    const user = userEvent.setup();
+    const changelog = [
+      {
+        _id: "MD-CE-26-001-2",
+        _source: {
+          id: "MD-CE-26-001-2",
+          packageId: "MD-CE-26-001",
+          event: "ce-subsequent-documents",
+          timestamp: 1774483200000,
+          submitterName: "Riley Quinn",
+          additionalInformation: "Updated unemployment evidence",
+          attachments: [
+            {
+              filename: "evidence.pdf",
+              title: "Other Supporting Documentation",
+              bucket: ATTACHMENT_BUCKET_NAME,
+              key: "evidence-key",
+              uploadDate: 1774483200000,
+            },
+          ],
+        },
+      },
+      {
+        _id: "MD-CE-26-001-1",
+        _source: {
+          id: "MD-CE-26-001-1",
+          packageId: "MD-CE-26-001",
+          event: "ce-record-submitted",
+          timestamp: 1774396800000,
+          submitterName: "Riley Quinn",
+          additionalInformation: "Initial hardship request",
+          attachments: [
+            {
+              filename: "template.pdf",
+              title: "Template",
+              bucket: ATTACHMENT_BUCKET_NAME,
+              key: "template-key",
+              uploadDate: 1774396800000,
+            },
+          ],
+        },
+      },
+    ] as unknown as opensearch.changelog.ItemResult[];
+
+    await renderFormWithPackageSectionAsync(
+      <PackageActivities id="MD-CE-26-001" changelog={changelog} />,
+      "MD-CE-26-001",
+    );
+
+    expect(screen.getByText("Package Activity (2)")).toBeInTheDocument();
+    expect(
+      screen.getByText("Subsequent documentation uploaded By Riley Quinn"),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        "Community Engagement Short-Term Hardship Exception Submitted By Riley Quinn",
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText("Updated unemployment evidence")).toBeInTheDocument();
+    expect(screen.getByText("Other Supporting Documentation")).toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole("button", {
+        name: /Community Engagement Short-Term Hardship Exception Submitted By Riley Quinn/,
+      }),
+    );
+    expect(screen.getByText("Template")).toBeInTheDocument();
+    expect(screen.getByText("template.pdf")).toBeInTheDocument();
+    expect(screen.getByText("Initial hardship request")).toBeInTheDocument();
+  });
 });

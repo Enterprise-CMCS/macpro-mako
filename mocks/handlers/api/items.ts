@@ -1,6 +1,13 @@
 import { http, HttpResponse, PathParams } from "msw";
 import { opensearch, SEATOOL_STATUS } from "shared-types";
 
+import {
+  type CentraDraftBody,
+  deleteCentraDraft,
+  getCentraItem,
+  recordCentraDraft,
+  resetCentraSession,
+} from "../../data/centra-session";
 import items, { GET_ERROR_ITEM_ID } from "../../data/items";
 import type { DeleteDraftBody, GetItemBody, ItemExistsBody } from "../../index.d";
 
@@ -8,6 +15,7 @@ const deletedDraftIds = new Set<string>();
 
 export const resetApiItemsState = () => {
   deletedDraftIds.clear();
+  resetCentraSession();
 };
 
 const defaultApiItemHandler = http.post<PathParams, GetItemBody>(
@@ -19,7 +27,7 @@ const defaultApiItemHandler = http.post<PathParams, GetItemBody>(
       return new HttpResponse("Internal server error", { status: 500 });
     }
 
-    const item = items[id] || null;
+    const item = getCentraItem(id) || items[id] || null;
 
     if (!item) {
       return new HttpResponse(null, { status: 404 });
@@ -59,10 +67,13 @@ const defaultApiItemExistsHandler = http.post<PathParams, ItemExistsBody>(
     if (id == GET_ERROR_ITEM_ID) {
       return new HttpResponse("Internal server error", { status: 500 });
     }
-    const exists = !!items[id]?._source && !deletedDraftIds.has(id);
+    const centraItem = getCentraItem(id);
+    const staticItem = items[id];
+    const item = centraItem || staticItem;
+    const exists = !!item?._source && !item._source.deleted && !deletedDraftIds.has(id);
     return HttpResponse.json({
       exists,
-      ...(includeDrafts && exists ? { status: items[id]?._source?.seatoolStatus } : {}),
+      ...(includeDrafts && exists ? { status: item?._source?.seatoolStatus } : {}),
     });
   },
 );
@@ -74,14 +85,33 @@ export const errorApiItemExistsHandler = http.post(
 
 const defaultApiSaveDraftHandler = http.post(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/saveDraft",
-  () => HttpResponse.json({ message: "Draft saved" }),
+  async ({ request }) => {
+    const body = (await request.json()) as CentraDraftBody;
+    if (body?.event === "ce-record-submitted" || body?.authority === "CE_HARDSHIP_EXCEPTION") {
+      const saved = recordCentraDraft(body);
+      if (saved.conflict) {
+        return HttpResponse.json({ message: saved.message }, { status: 400 });
+      }
+      return HttpResponse.json({
+        message: saved.message,
+        id: saved.id,
+        seqNo: saved.seqNo,
+        primaryTerm: saved.primaryTerm,
+      });
+    }
+    return HttpResponse.json({ message: "Draft saved" });
+  },
 );
 
 const defaultApiDeleteDraftHandler = http.post<PathParams, DeleteDraftBody>(
   "https://test-domain.execute-api.us-east-1.amazonaws.com/mocked-tests/deleteDraft",
   async ({ request }) => {
     const { id } = await request.json();
-    const item = items[id];
+    const centraDraft = deleteCentraDraft(id);
+    if (centraDraft.ok) {
+      return HttpResponse.json({ message: centraDraft.message, id });
+    }
+    const item = getCentraItem(id) || items[id];
 
     if (!id) {
       return HttpResponse.json({ message: "Event body required" }, { status: 400 });

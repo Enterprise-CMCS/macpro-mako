@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import type { CeHardshipKindCode } from "../../centra";
 import { SeaTool } from "../../events";
 import type { SmartRecordType } from "../../smart";
 import { ItemResult as Changelog } from "../changelog";
@@ -9,6 +10,8 @@ import {
   capitatedAmendment,
   capitatedInitial,
   capitatedRenewal,
+  ceRecordSubmitted,
+  ceSubsequentDocuments,
   changedDate,
   contractingAmendment,
   contractingInitial,
@@ -52,6 +55,8 @@ export type SeatoolDocument = z.infer<seatool.Schema>;
 export type TemporaryExtensionDocument = z.infer<temporaryExtension.Schema>;
 export type ToggleWithdrawRaiDocument = z.infer<toggleWithdrawRai.Schema>;
 export type UploadSubsequentDocuments = z.infer<uploadSubsequentDocuments.Schema>;
+export type CeRecordSubmittedDocument = z.infer<ceRecordSubmitted.Schema>;
+export type CeSubsequentDocumentsDocument = z.infer<ceSubsequentDocuments.Schema>;
 export type WithdrawPackageDocument = z.infer<withdrawPackage.Schema>;
 export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
 
@@ -95,6 +100,12 @@ export type Document = AppkDocument &
     event?: string;
     correlationId?: string;
     operationType?: string;
+    /**
+     * CEntra request type. Optional on every package so other authorities stay valid.
+     * CEntra transform outputs are not intersected into Document: their literal
+     * authority would narrow `authority` on every record.
+     */
+    hardshipKind?: CeHardshipKindCode;
     spaWaiverId?: string;
     smartRecordType?: SmartRecordType;
     smartStatus?: string;
@@ -182,6 +193,8 @@ export const transforms = {
   "temporary-extension": temporaryExtension,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "upload-subsequent-documents": uploadSubsequentDocuments,
+  "ce-record-submitted": ceRecordSubmitted,
+  "ce-subsequent-documents": ceSubsequentDocuments,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
 };

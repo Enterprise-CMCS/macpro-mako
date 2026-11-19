@@ -9,7 +9,6 @@ import { join } from "path";
 
 import { commonBundlingOptions } from "../config/bundling-config";
 import { awsCognitoDomainPrefix, awsLambdaFunctionName } from "../config/lambda-function-name";
-
 interface DataStackProps extends cdk.NestedStackProps {
   project: string;
   stage: string;
@@ -65,6 +64,7 @@ export class Data extends cdk.NestedStack {
     } = props;
     const consumerGroupPrefix = `--${project}--${stage}--`;
     const smartOnemacTopic = `${topicNamespace}aws.mulesoft.onemac.events`;
+    const cdcTopic = `${topicNamespace}aws.onemac.migration.cdc`;
 
     let openSearchDomainEndpoint;
     let openSearchDomainArn;
@@ -348,7 +348,7 @@ export class Data extends cdk.NestedStack {
       securityGroups: [lambdaSecurityGroup],
       topics: [
         {
-          topic: `${topicNamespace}aws.onemac.migration.cdc`,
+          topic: cdcTopic,
         },
         {
           topic: smartOnemacTopic,
@@ -363,7 +363,7 @@ export class Data extends cdk.NestedStack {
         privateSubnets: privateSubnets,
         securityGroups: [lambdaSecurityGroup],
         brokerString,
-        topicPatternsToDelete: [`${topicNamespace}aws.onemac.migration.cdc`, smartOnemacTopic],
+        topicPatternsToDelete: [cdcTopic, smartOnemacTopic],
       });
     }
 
@@ -492,7 +492,7 @@ export class Data extends cdk.NestedStack {
           useVpc: true,
           environment: {
             ATTACHMENT_ARCHIVE_REBUILD_QUEUE_URL: attachmentArchiveRebuildQueue.queueUrl,
-            ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME: `${topicNamespace}aws.onemac.migration.cdc`,
+            ATTACHMENT_ARCHIVE_REBUILD_TRIGGER_TOPIC_NAME: cdcTopic,
             osDomain: `https://${openSearchDomainEndpoint}`,
             indexNamespace,
           },

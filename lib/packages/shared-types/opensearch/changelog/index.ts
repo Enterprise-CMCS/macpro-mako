@@ -1,5 +1,6 @@
 import { z } from "zod";
 
+import type { CeHardshipKindCode } from "../../centra";
 import {
   AggQuery,
   ExportHeaderOptions,
@@ -13,6 +14,8 @@ import {
   capitatedAmendment,
   capitatedInitial,
   capitatedRenewal,
+  ceRecordSubmitted,
+  ceSubsequentDocuments,
   contractingAmendment,
   contractingInitial,
   contractingRenewal,
@@ -45,6 +48,8 @@ export type RespondToRaiDocument = z.infer<respondToRai.Schema>;
 export type TemporaryExtensionDocument = z.infer<temporaryExtension.Schema>;
 export type ToggleWithdrawRaiDocument = z.infer<toggleWithdrawRai.Schema>;
 export type UploadSubsequentDocuments = z.infer<uploadSubsequentDocuments.Schema>;
+export type CeRecordSubmittedDocument = z.infer<ceRecordSubmitted.Schema>;
+export type CeSubsequentDocumentsDocument = z.infer<ceSubsequentDocuments.Schema>;
 export type WithdrawPackageDocument = z.infer<withdrawPackage.Schema>;
 export type WithdrawRaiDocument = z.infer<withdrawRai.Schema>;
 
@@ -70,6 +75,8 @@ export type Document = Omit<AppkDocument, "event"> &
     createdByUserId?: string | null;
     event:
       | "app-k"
+      | "ce-record-submitted"
+      | "ce-subsequent-documents"
       | "capitated-amendment"
       | "capitated-initial"
       | "capitated-renewal"
@@ -95,6 +102,7 @@ export type Document = Omit<AppkDocument, "event"> &
     originalSpaId?: string;
     originalSpaWaiverId?: string;
     operationType?: string;
+    hardshipKind?: CeHardshipKindCode;
     raiId?: string;
     raiName?: string;
     raiWithdrawnToggleDate?: string | number;
@@ -131,6 +139,8 @@ export const transforms = {
   "temporary-extension": temporaryExtension,
   "toggle-withdraw-rai": toggleWithdrawRai,
   "upload-subsequent-documents": uploadSubsequentDocuments,
+  "ce-record-submitted": ceRecordSubmitted,
+  "ce-subsequent-documents": ceSubsequentDocuments,
   "withdraw-package": withdrawPackage,
   "withdraw-rai": withdrawRai,
 };

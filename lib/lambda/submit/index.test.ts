@@ -1,3 +1,4 @@
+import { produceMessage } from "libs/api/kafka";
 import { getRequestContext, NOT_FOUND_ITEM_ID } from "mocks";
 import { events, uploadSubsequentDocuments } from "mocks/data/submit/base";
 import { APIGatewayEvent } from "shared-types";
@@ -66,6 +67,11 @@ describe("submit Lambda function", () => {
         const result = await submit(event);
         expect(result.statusCode).toEqual(200);
         expect(result.body).toEqual('{"message":"success"}');
+        expect(produceMessage).toHaveBeenCalledWith(
+          "test-topic",
+          expect.any(String),
+          expect.any(String),
+        );
       },
     );
   });

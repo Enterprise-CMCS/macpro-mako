@@ -19,6 +19,13 @@ describe("PackageCheck", () => {
         ...TEST_1915B_ITEM?._source,
       });
       expect(packageCheck.isSpa).toBe(false);
+      packageCheck = PackageCheck({
+        ...TEST_MED_SPA_ITEM?._source,
+        authority: "CE_HARDSHIP_EXCEPTION",
+      });
+      expect(packageCheck.isSpa).toBe(true);
+      expect(packageCheck.isWaiver).toBe(false);
+      expect(packageCheck.authorityIs([Authority.CE_HARDSHIP_EXCEPTION])).toBe(true);
     });
     it("checks if isWaiver", () => {
       let packageCheck = PackageCheck({

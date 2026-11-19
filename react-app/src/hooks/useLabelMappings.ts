@@ -1,4 +1,9 @@
 import { useMemo } from "react";
+import {
+  CE_HARDSHIP_EXCEPTION_AUTHORITY,
+  CE_HARDSHIP_EXCEPTION_LABEL,
+  CE_HARDSHIP_KIND_LABELS,
+} from "shared-types";
 
 export const SUB_TYPES = {
   New: "Initial",
@@ -70,6 +75,11 @@ export const STATES = {
 
 export const useLabelMapping = () => {
   return useMemo(() => {
-    return { ...STATES, ...SUB_TYPES } as Record<string, string>; // add other label mappings
+    return {
+      ...STATES,
+      ...SUB_TYPES,
+      [CE_HARDSHIP_EXCEPTION_AUTHORITY]: CE_HARDSHIP_EXCEPTION_LABEL,
+      ...CE_HARDSHIP_KIND_LABELS,
+    } as Record<string, string>;
   }, []);
 };

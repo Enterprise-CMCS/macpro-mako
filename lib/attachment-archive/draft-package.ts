@@ -11,6 +11,7 @@ const DRAFT_EVENT_FALLBACK: opensearch.changelog.Document["event"] = "new-medica
 const isDraftEvent = (event: unknown): event is opensearch.changelog.Document["event"] =>
   [
     "app-k",
+    "ce-record-submitted",
     "capitated-amendment",
     "capitated-initial",
     "capitated-renewal",

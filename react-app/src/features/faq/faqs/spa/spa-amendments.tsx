@@ -1,3 +1,40 @@
+import { CE_HARDSHIP_EXCEPTION_LABEL, CE_HARDSHIP_KIND_LABELS } from "shared-types";
+
+const faqLinks = [
+  {
+    text: "What format is used to enter a Community Engagement Short-Term Hardship Exception ID?",
+    href: "#centra-id-format",
+  },
+  {
+    text: "What are the attachments for a Community Engagement Short-Term Hardship Exception?",
+    href: "#centra-attachments",
+  },
+  {
+    text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
+    href: "#abp-spa-templates",
+  },
+  {
+    text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
+    href: "#abp-implementation-guides-spa",
+  },
+  {
+    text: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
+    href: "#mpc-spa-templates",
+  },
+  {
+    text: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
+    href: "#mpc-spa-implementation-guides",
+  },
+  {
+    text: "Where can I download CHIP eligibility SPA templates?",
+    href: "#chip-spa-templates",
+  },
+  {
+    text: "Where can I download CHIP eligibility SPA implementation guides?",
+    href: "#chip-spa-implementation-guides",
+  },
+];
+
 export const SpaAmendments = () => (
   <div className="w-full space-y-2">
     <p>
@@ -19,35 +56,16 @@ export const SpaAmendments = () => (
       additional information) status, will continue to be processed through MMDL.
     </p>
     <p>
+      Community Engagement Short-Term Hardship Exception requests are submitted in OneMAC from the
+      Medicaid SPA submission flow. Choose {CE_HARDSHIP_KIND_LABELS.CE_SADE},{" "}
+      {CE_HARDSHIP_KIND_LABELS.CE_UNEMPLOYMENT}, or {CE_HARDSHIP_KIND_LABELS.CE_NEA}. Submitted
+      requests appear on the SPAs dashboard as {CE_HARDSHIP_EXCEPTION_LABEL}.
+    </p>
+    <p>
       Templates and implementation guides for OneMAC SPAs can be downloaded from the respective FAQ:
     </p>
     <ul className="ml-8 list-disc space-y-2 text-primary" role="list">
-      {[
-        {
-          text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA templates?",
-          href: "#abp-spa-templates",
-        },
-        {
-          text: "Where can I download Medicaid Alternative Benefit Plan (ABP) SPA implementation guides?",
-          href: "#abp-implementation-guides-spa",
-        },
-        {
-          text: "Where can I download Medicaid Premiums and Cost Sharing SPA templates?",
-          href: "#mpc-spa-templates",
-        },
-        {
-          text: "Where can I download Medicaid Premiums and Cost Sharing SPA implementation guides?",
-          href: "#mpc-spa-implementation-guides",
-        },
-        {
-          text: "Where can I download CHIP eligibility SPA templates?",
-          href: "#chip-spa-templates",
-        },
-        {
-          text: "Where can I download CHIP eligibility SPA implementation guides?",
-          href: "#chip-spa-implementation-guides",
-        },
-      ].map(({ href, text }) => (
+      {faqLinks.map(({ href, text }) => (
         <li key={href}>
           <a
             href={href}
@@ -58,7 +76,7 @@ export const SpaAmendments = () => (
                 targetElement.scrollIntoView({ behavior: "smooth", block: "start" });
 
                 const buttonElement = targetElement.querySelector("button");
-                if (buttonElement.dataset.state === "closed") {
+                if (buttonElement?.dataset.state === "closed") {
                   buttonElement.click();
                 }
               }

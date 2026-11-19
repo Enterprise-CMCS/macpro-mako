@@ -99,6 +99,39 @@ describe("process emails Handler", () => {
     expect(sesSendSpy).toHaveBeenCalledTimes(2);
   });
 
+  it("skips CEntra events on migration.cdc without sending email", async () => {
+    const callback = vi.fn();
+    const mockEvent: KafkaEvent = {
+      records: {
+        "aws.onemac.migration.cdc-0": [
+          {
+            key: Buffer.from("MD-CE-26-001").toString("base64"),
+            value: Buffer.from(
+              JSON.stringify({
+                origin: "mako",
+                event: "ce-record-submitted",
+                authority: "CE_HARDSHIP_EXCEPTION",
+                hardshipKind: "CE_UNEMPLOYMENT",
+                submitterName: "Stateuser Tester",
+                submitterEmail: "mako.stateuser@gmail.com",
+              }),
+            ).toString("base64"),
+            headers: {},
+            timestamp: 1732645041557,
+            offset: "0",
+            partition: 0,
+            topic: "aws.onemac.migration.cdc",
+          } as unknown as KafkaRecord,
+        ],
+      },
+      eventSource: "",
+      bootstrapServers: "",
+    };
+
+    await handler(mockEvent, {} as Context, callback);
+    expect(sesSendSpy).toHaveBeenCalledTimes(0);
+  });
+
   it("should not be mako therefore not do an event", async () => {
     const callback = vi.fn();
     const mockEvent: KafkaEvent = {

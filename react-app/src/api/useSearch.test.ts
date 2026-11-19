@@ -16,7 +16,9 @@ describe("getMainExportData tests", () => {
       field: "id",
       order: "desc",
     });
-    expect(results).toEqual(getFilteredDocList(["Medicaid SPA", "CHIP SPA"]));
+    expect(results).toEqual(
+      getFilteredDocList(["Medicaid SPA", "CHIP SPA", "CE_HARDSHIP_EXCEPTION"]),
+    );
   });
 
   it("should return waiver items", async () => {

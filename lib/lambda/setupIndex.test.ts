@@ -66,6 +66,7 @@ describe("handler", () => {
         smartCpocContactId: { type: "keyword" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
+        hardshipKind: { type: "keyword" },
       },
     );
     expect(updateMappingSpy).toHaveBeenCalledWith(
@@ -76,6 +77,7 @@ describe("handler", () => {
         deleted: { type: "boolean" },
         makoChangedDate: { type: "date" },
         statusDate: { type: "date" },
+        hardshipKind: { type: "keyword" },
       },
     );
     expect(updateMappingSpy).toHaveBeenCalledWith(

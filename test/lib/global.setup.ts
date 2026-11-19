@@ -93,18 +93,24 @@ const isCi = Boolean(process.env.CI);
 const effectiveEnv = isCi ? "ci" : configuredEnv;
 const stage = process.env.STAGE_NAME || "main";
 const project = process.env.PROJECT;
-const deploymentOutput = await getDeploymentOutput(stage, project);
-
-let rootURL;
-
-if (isCi) {
-  process.env.PW_ENV = effectiveEnv;
-  rootURL = deploymentOutput.applicationEndpointUrl;
-} else {
-  rootURL = baseURL[effectiveEnv];
-}
+const isMockedAgent = process.env.AGENT_MODE === "mocked" || process.env.PW_ENV === "mocked";
 
 export default async function globalSetup() {
+  if (isMockedAgent) {
+    console.log("[Setup] Skipping deployed auth because AGENT_MODE=mocked.");
+    return;
+  }
+
+  const deploymentOutput = await getDeploymentOutput(stage, project);
+  let rootURL;
+
+  if (isCi) {
+    process.env.PW_ENV = effectiveEnv;
+    rootURL = deploymentOutput.applicationEndpointUrl;
+  } else {
+    rootURL = baseURL[effectiveEnv];
+  }
+
   const roles = Object.keys(envRoleUsers[effectiveEnv] || {});
   for (const role of roles) {
     await createStorageState(effectiveEnv, rootURL, role);

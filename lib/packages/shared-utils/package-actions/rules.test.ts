@@ -665,6 +665,15 @@ describe("package actions rules tests", () => {
       });
       expect(arWithdrawPackage.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
+    it("should return false for a CEntra package even when status is Pending", () => {
+      const check = PackageCheck({
+        ...TEST_MED_SPA_ITEM?._source,
+        authority: "CE_HARDSHIP_EXCEPTION",
+        actionType: "New",
+        seatoolStatus: SEATOOL_STATUS.PENDING,
+      });
+      expect(arWithdrawPackage.check(check, TEST_STATE_SUBMITTER_USER)).toBe(false);
+    });
   });
 
   describe("arUploadSubsequentDocuments rule tests", () => {
@@ -725,6 +734,26 @@ describe("package actions rules tests", () => {
         seatoolStatus: SEATOOL_STATUS.SUBMITTED,
       });
       expect(arUploadSubsequentDocuments.check(check, TEST_STATE_SUBMITTER_USER)).toBe(false);
+    });
+    it("should return true for a submitted CEntra package that still needs intake", () => {
+      const check = PackageCheck({
+        ...TEST_MED_SPA_ITEM?._source,
+        authority: "CE_HARDSHIP_EXCEPTION",
+        actionType: "New",
+        seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        initialIntakeNeeded: true,
+      });
+      expect(arUploadSubsequentDocuments.check(check, TEST_STATE_SUBMITTER_USER)).toBe(true);
+    });
+    it("should return false for a CMS user on a submitted CEntra package", () => {
+      const check = PackageCheck({
+        ...TEST_MED_SPA_ITEM?._source,
+        authority: "CE_HARDSHIP_EXCEPTION",
+        actionType: "New",
+        seatoolStatus: SEATOOL_STATUS.SUBMITTED,
+        initialIntakeNeeded: true,
+      });
+      expect(arUploadSubsequentDocuments.check(check, TEST_REVIEWER_USER)).toBe(false);
     });
   });
 });

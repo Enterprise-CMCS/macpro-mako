@@ -16,3 +16,5 @@ export * as toggleWithdrawRai from "./toggle-withdraw-rai";
 export * as respondToRai from "./respond-to-rai";
 export * as appK from "./app-k";
 export * as uploadSubsequentDocuments from "./upload-subsequent-documents";
+export * as ceRecordSubmitted from "./ce-record-submitted";
+export * as ceSubsequentDocuments from "./ce-subsequent-documents";

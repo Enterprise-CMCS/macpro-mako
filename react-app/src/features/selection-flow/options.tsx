@@ -5,7 +5,8 @@ import { ORIGIN, SPA_SUBMISSION_ORIGIN, WAIVER_SUBMISSION_ORIGIN } from "@/utils
 export const AUTHORITY_OPTIONS: OptionData[] = [
   {
     title: "State Plan Amendment (SPA)",
-    description: "Submit a new Medicaid or CHIP State Plan Amendment",
+    description:
+      "Submit a new Medicaid or CHIP State Plan Amendment or Community Engagement Short-Term Hardship Exception",
     to: "/new-submission/spa",
   },
   {
@@ -18,7 +19,8 @@ export const AUTHORITY_OPTIONS: OptionData[] = [
 export const SPA_OPTIONS: OptionData[] = [
   {
     title: "Medicaid SPA",
-    description: "Submit a new Medicaid State Plan Amendment",
+    description:
+      "Submit a new Medicaid State Plan Amendment or Community Engagement Short-Term Hardship Exception",
     to: "/new-submission/spa/medicaid",
   },
   {
@@ -27,6 +29,17 @@ export const SPA_OPTIONS: OptionData[] = [
     to: "/new-submission/spa/chip",
   },
 ];
+
+const CENTRA_SUBMISSION_OPTION: OptionData = {
+  title: "Additional Submissions",
+  description: "Community Engagement Short-Term Hardship Exception",
+  to: {
+    pathname: "/new-submission/spa/medicaid/create/centra",
+    search: new URLSearchParams({
+      [ORIGIN]: SPA_SUBMISSION_ORIGIN,
+    }).toString(),
+  },
+};
 
 export const useMedSpaOptions = (): OptionData[] => {
   const useMMDLCard = useFeatureFlag("MED_SPA_CARD");
@@ -54,6 +67,7 @@ export const useMedSpaOptions = (): OptionData[] => {
           }).toString(),
         },
       },
+      CENTRA_SUBMISSION_OPTION,
     ];
   }
   return [
@@ -73,6 +87,7 @@ export const useMedSpaOptions = (): OptionData[] => {
         }).toString(),
       },
     },
+    CENTRA_SUBMISSION_OPTION,
   ];
 };
 

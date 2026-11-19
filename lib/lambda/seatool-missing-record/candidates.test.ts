@@ -2,11 +2,14 @@ import { Authority, SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { describe, expect, it } from "vitest";
 
 import {
+  buildMissingRecordSearchQuery,
   groupCandidatesByMailbox,
   isIgnoredStatePackage,
   isMissingRecordCandidate,
+  mailboxGroupForAuthority,
   MissingRecordCandidate,
   MissingRecordSource,
+  parseAuthority,
   toMissingRecordCandidate,
 } from "./candidates";
 
@@ -69,6 +72,32 @@ describe("seatool missing-record candidates", () => {
         }),
       ),
     ).toBe(true);
+  });
+
+  it("excludes CEntra from the OpenSearch query and mailbox routing", () => {
+    expect(buildMissingRecordSearchQuery(0, 10).query.bool.must_not).toContainEqual({
+      term: { "authority.keyword": "CE_HARDSHIP_EXCEPTION" },
+    });
+    expect(parseAuthority("CE_HARDSHIP_EXCEPTION")).toBeUndefined();
+    expect(parseAuthority(Authority.CE_HARDSHIP_EXCEPTION)).toBeUndefined();
+    expect(() => mailboxGroupForAuthority(Authority.CE_HARDSHIP_EXCEPTION)).toThrow(
+      /CE_HARDSHIP_EXCEPTION/,
+    );
+  });
+
+  it("excludes CEntra hardship exceptions", () => {
+    expect(
+      toMissingRecordCandidate(
+        source({ id: "MD-CE-26-001", authority: "CE_HARDSHIP_EXCEPTION" }),
+        NOW,
+      ),
+    ).toBeUndefined();
+    expect(
+      toMissingRecordCandidate(
+        source({ id: "MD-CE-26-001", authority: Authority.CE_HARDSHIP_EXCEPTION }),
+        NOW,
+      ),
+    ).toBeUndefined();
   });
 
   it("excludes ZZ and ZT test state packages", () => {

@@ -34,6 +34,7 @@ export const handler: Handler = async (event, __, callback) => {
         smartCpocContactId: { type: "keyword" },
         statusDate: { type: "date" },
         submissionDate: { type: "date" },
+        hardshipKind: { type: "keyword" },
       },
     });
     await manageIndexResource({
@@ -44,6 +45,7 @@ export const handler: Handler = async (event, __, callback) => {
         deleted: { type: "boolean" },
         makoChangedDate: { type: "date" },
         statusDate: { type: "date" },
+        hardshipKind: { type: "keyword" },
       },
     });
     await manageIndexResource({
