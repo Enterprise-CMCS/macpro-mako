@@ -237,9 +237,7 @@ export async function processRecord(kafkaRecord: KafkaRecord, config: ProcessEma
   // CEntra events share migration.cdc with SPA/waiver traffic. OneMAC does not send
   // confirmation emails for them; downstream systems notify using submitter fields.
   if (CENTRA_EMAIL_SKIP_EVENTS.has(parsedValue.event)) {
-    console.log(
-      `CEntra event ${parsedValue.event} has no OneMAC email support. Doing nothing.`,
-    );
+    console.log(`CEntra event ${parsedValue.event} has no OneMAC email support. Doing nothing.`);
     return;
   }
 

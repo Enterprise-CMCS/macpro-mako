@@ -727,10 +727,7 @@ export class Data extends cdk.NestedStack {
             },
             {
               function: lambdaFunctions.sinkChangelog.functionName,
-              topics: [
-                "aws.onemac.migration.cdc",
-                `${topicNamespace}aws.onemac.migration.cdc`,
-              ],
+              topics: ["aws.onemac.migration.cdc", `${topicNamespace}aws.onemac.migration.cdc`],
             },
             {
               function: lambdaFunctions.sinkTypes.functionName,
