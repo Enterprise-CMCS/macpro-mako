@@ -49,7 +49,11 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
         !checker.hasEnabledRaiWithdraw &&
         isCmsWriteUser(user) &&
         !checker.hasStatus(finalDispositionStatuses) &&
-        !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
+        !checker.hasStatus([
+          SEATOOL_STATUS.PENDING_CONCURRENCE,
+          SEATOOL_STATUS.PENDING_APPROVAL,
+          SEATOOL_STATUS.PENDING_DISAPPROVAL,
+        ]) &&
         !checker.isPlaceholderStatus
       );
     }
@@ -62,7 +66,11 @@ export const arEnableWithdrawRaiResponse: ActionRule = {
       checker.isInSecondClock &&
       isCmsWriteUser(user) &&
       !checker.hasStatus(finalDispositionStatuses) &&
-      !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL])
+      !checker.hasStatus([
+        SEATOOL_STATUS.PENDING_CONCURRENCE,
+        SEATOOL_STATUS.PENDING_APPROVAL,
+        SEATOOL_STATUS.PENDING_DISAPPROVAL,
+      ])
     );
   },
 };
@@ -76,7 +84,11 @@ export const arDisableWithdrawRaiResponse: ActionRule = {
     checker.hasEnabledRaiWithdraw &&
     isCmsWriteUser(user) &&
     !checker.hasStatus(finalDispositionStatuses) &&
-    !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]),
+    !checker.hasStatus([
+      SEATOOL_STATUS.PENDING_CONCURRENCE,
+      SEATOOL_STATUS.PENDING_APPROVAL,
+      SEATOOL_STATUS.PENDING_DISAPPROVAL,
+    ]),
 };
 
 export const arWithdrawRaiResponse: ActionRule = {
@@ -89,7 +101,11 @@ export const arWithdrawRaiResponse: ActionRule = {
       // safety; prevent bad status from causing overwrite,
       // update: needed to allow subsequent RAI responses
       // !checker.hasRaiWithdrawal &&
-      !checker.hasStatus([SEATOOL_STATUS.PENDING_CONCURRENCE, SEATOOL_STATUS.PENDING_APPROVAL]) &&
+      !checker.hasStatus([
+        SEATOOL_STATUS.PENDING_CONCURRENCE,
+        SEATOOL_STATUS.PENDING_APPROVAL,
+        SEATOOL_STATUS.PENDING_DISAPPROVAL,
+      ]) &&
       checker.hasEnabledRaiWithdraw &&
       isStateUser(user) &&
       !checker.isLocked

@@ -33,7 +33,13 @@ export const handler = authenticatedMiddy({
   setToContext: true,
   eventSchema: itemExistsEventSchema,
 })
-  .use(fetchPackage({ allowNotFound: true, setToContext: true }))
+  .use(
+    fetchPackage({
+      allowNotFound: true,
+      allowHiddenSmartReservations: true,
+      setToContext: true,
+    }),
+  )
   .use(canViewPackage())
   .handler(
     async (event: ItemExistsEvent, context: ContextWithPackage & ContextWithAuthenticatedUser) => {

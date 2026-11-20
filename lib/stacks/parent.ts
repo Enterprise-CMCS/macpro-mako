@@ -102,6 +102,8 @@ export class ParentStack extends cdk.Stack {
       devPasswordArn: props.devPasswordArn,
       sharedOpenSearchDomainArn: props.sharedOpenSearchDomainArn,
       sharedOpenSearchDomainEndpoint: props.sharedOpenSearchDomainEndpoint,
+      bigmacErrorQueueUrl: props.bigmacErrorQueueUrl,
+      bigmacErrorQueueArn: props.bigmacErrorQueueArn,
     });
 
     const apiStack = new Stacks.Api(this, "api", {

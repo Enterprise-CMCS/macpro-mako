@@ -3,7 +3,25 @@ import { NOT_FOUND_ITEM_ID, TEST_ITEM_ID } from "mocks";
 import items from "mocks/data/items";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
+import { transformMspManualRecordCreated } from "../../../lambda/smart/mspManualRecordCreated";
 import { checkIdentifierUsage } from "./checkIdentifierUsage";
+
+const smartReservation = transformMspManualRecordCreated({
+  spaWaiverId: "a0ncp000006Wdh7AAC",
+  id: "AL-26-0817-0001",
+  correlationId: "fb6c75a4-c545-4f81-bb7b-a2e8609c978f",
+  origin: "SMART",
+  authority: "Medicaid SPA",
+  status: "Intake Needed",
+  createdAt: "2026-08-17T16:54:33.000Z",
+  createdByUserId: "005cp00000Jqq9HAAR",
+  createdByName: "Alice Jones",
+  createdByEmail: "alice.j@globalalliantinc.com",
+  operationType: "MSP_MANUAL_RECORD_CREATED",
+  creationContext: "MANUAL",
+  state: "Alabama",
+  initialSubmissionDate: "2026-08-17",
+})!;
 
 // Mock the opensearch-lib
 vi.mock("libs/opensearch-lib", () => ({
@@ -290,13 +308,11 @@ describe("checkIdentifierUsage", () => {
     });
   });
 
-  it("should handle SMART origin", async () => {
+  it("should block a non-deleted SMART reservation ID", async () => {
     const smartItem = {
       ...items[TEST_ITEM_ID],
-      _source: {
-        ...items[TEST_ITEM_ID]._source,
-        origin: "SMART",
-      },
+      _id: smartReservation.id,
+      _source: smartReservation,
     };
 
     vi.mocked(opensearchLib.search).mockResolvedValue({
@@ -306,11 +322,12 @@ describe("checkIdentifierUsage", () => {
       },
     });
 
-    const result = await checkIdentifierUsage("MD-SMART-123");
+    const result = await checkIdentifierUsage(smartReservation.id);
 
     expect(result).toEqual({
       exists: true,
       origin: "SMART",
     });
+    expect(smartReservation.deleted).toBe(false);
   });
 });
