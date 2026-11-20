@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 
-import { assertSafeSearchQuery, findUnsupportedSearchKey } from "./searchQueryGuard";
+import {
+  assertSafeSearchQuery,
+  findUnsupportedSearchKey,
+  UnsupportedSearchQueryError,
+} from "./searchQueryGuard";
 
 describe("search query guard", () => {
   it("allows the dashboard query shape", () => {
@@ -28,5 +32,13 @@ describe("search query guard", () => {
     );
     expect(findUnsupportedSearchKey({ aggs: { everything: { Global: {} } } })).toBe("global");
     expect(findUnsupportedSearchKey({ sort: [{ _script: { order: "asc" } }] })).toBe("_script");
+  });
+
+  it.each(["suggest", "Suggest"])("rejects the %s option that bypasses query filters", (key) => {
+    expect(() =>
+      assertSafeSearchQuery({
+        [key]: { states: { text: "CA", term: { field: "state.keyword" } } },
+      }),
+    ).toThrow(UnsupportedSearchQueryError);
   });
 });
