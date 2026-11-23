@@ -83,9 +83,19 @@ export const mockedAdmin = {
   createPartitions: vi.fn(),
   deleteTopics: vi.fn(),
   fetchTopicMetadata: vi.fn().mockReturnValue(topicMetaData),
-  fetchTopicOffsets: vi.fn().mockResolvedValue([{ offset: "100" }]),
+  fetchTopicOffsets: vi.fn().mockResolvedValue([
+    { partition: 0, offset: "100" },
+    { partition: 1, offset: "200" },
+  ]),
   describeConfigs: vi.fn().mockResolvedValue(describeConfigs),
-  fetchOffsets: vi.fn().mockResolvedValue([{ partitions: [{ offset: "100" }] }]),
+  fetchOffsets: vi.fn().mockResolvedValue([
+    {
+      partitions: [
+        { partition: 0, offset: "100" },
+        { partition: 1, offset: "200" },
+      ],
+    },
+  ]),
   disconnect: vi.fn(),
 };
 

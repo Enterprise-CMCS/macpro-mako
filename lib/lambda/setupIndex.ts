@@ -18,6 +18,7 @@ export const handler: Handler = async (event, __, callback) => {
         createdByUserId: { type: "keyword" },
         deleted: { type: "boolean" },
         finalDispositionDate: { type: "date" },
+        makoChangedDate: { type: "date" },
         proposedDate: { type: "date" },
         raiId: { type: "keyword" },
         raiName: { type: "keyword" },

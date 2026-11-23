@@ -1,45 +1,43 @@
 import { SFNClient, StartExecutionCommand } from "@aws-sdk/client-sfn";
 import { Handler } from "aws-lambda";
-import { FAILED, send, SUCCESS } from "cfn-response-async";
 
-export const handler: Handler = async (event, context, callback) => {
-  console.log("request:", JSON.stringify(event, undefined, 2));
-  const response = {
-    statusCode: 200,
+type RunReindexEvent = {
+  RequestType: "Create" | "Update" | "Delete";
+  PhysicalResourceId?: string;
+  ResourceProperties: {
+    stateMachine: string;
   };
-  let errorResponse = null;
-  try {
-    if (event.RequestType == "Create") {
-      const stepFunctionsClient = new SFNClient({
-        region: process.env.region,
-      });
-      const stateMachineArn = event.ResourceProperties.stateMachine;
+};
 
-      const startExecutionCommand = new StartExecutionCommand({
-        stateMachineArn: stateMachineArn,
+export const handler: Handler<RunReindexEvent> = async (event) => {
+  console.log("request:", JSON.stringify(event, undefined, 2));
+
+  if (event.RequestType === "Create") {
+    const stepFunctionsClient = new SFNClient({
+      region: process.env.region,
+    });
+    const stateMachineArn = event.ResourceProperties.stateMachine;
+
+    const execution = await stepFunctionsClient.send(
+      new StartExecutionCommand({
+        stateMachineArn,
         input: JSON.stringify({
           cfnEvent: event,
-          cfnContext: context,
         }),
-      });
+      }),
+    );
 
-      const execution = await stepFunctionsClient.send(startExecutionCommand);
-      console.log(`State machine execution started: ${execution.executionArn}`);
-      console.log(
-        "The state machine is now in charge of this resource, and will notify of success or failure upon completion.",
-      );
-    } else if (event.RequestType == "Update") {
-      await send(event, context, SUCCESS, {}, "static");
-    } else if (event.RequestType == "Delete") {
-      // need to delete all triggers here  to do
-      await send(event, context, SUCCESS, {}, "static");
-    }
-  } catch (error) {
-    console.log(error);
-    response.statusCode = 500;
-    errorResponse = error;
-    await send(event, context, FAILED, {}, "static");
-  } finally {
-    callback(errorResponse, response);
+    console.log(`State machine execution started: ${execution.executionArn}`);
+
+    return {
+      PhysicalResourceId: execution.executionArn,
+      Data: {
+        ExecutionArn: execution.executionArn,
+      },
+    };
   }
+
+  return {
+    PhysicalResourceId: event.PhysicalResourceId || "static",
+  };
 };

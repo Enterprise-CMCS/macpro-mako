@@ -25,6 +25,7 @@ export * as runSeatoolStatusMismatchReport from "./runSeatoolStatusMismatchRepor
 export * as validateAttachmentArchive from "./validateAttachmentArchive";
 export * as processEmails from "./processEmails";
 export * as runReindex from "./runReindex";
+export * as checkReindexComplete from "./checkReindexComplete";
 export * as search from "./search";
 export * as saveDraft from "./saveDraft";
 export * as setupIndex from "./setupIndex";

@@ -106,4 +106,38 @@ describe("Lambda Handler", () => {
       ready: false,
     });
   });
+
+  it("should require every partition to catch up before reporting ready", async () => {
+    mockedAdmin.fetchTopicOffsets.mockResolvedValueOnce([
+      { partition: 0, offset: "100" },
+      { partition: 1, offset: "200" },
+    ]);
+    mockedAdmin.fetchOffsets.mockResolvedValueOnce([
+      {
+        partitions: [
+          { partition: 0, offset: "100" },
+          { partition: 1, offset: "-1" },
+        ],
+      },
+    ]);
+
+    const event = {
+      triggers: [
+        {
+          function: TEST_FUNCTION_NAME,
+          topics: [TEST_TOPIC_NAME],
+        },
+      ],
+      brokerString: "broker1,broker2",
+    };
+
+    await handler(event, {} as Context, callback);
+
+    expect(callback).toHaveBeenCalledWith(null, {
+      statusCode: 200,
+      stable: true,
+      current: false,
+      ready: false,
+    });
+  });
 });
