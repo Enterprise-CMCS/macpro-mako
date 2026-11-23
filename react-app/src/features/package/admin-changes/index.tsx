@@ -82,7 +82,7 @@ export const AdminChange = ({ adminActivity }: AdminChangeProps) => {
           AC_LegacyAdminChange,
         ];
       case "split-spa":
-        return ["Package Added", AC_LegacyAdminChange];
+        return [adminActivity.changeType || "Package Added", AC_LegacyAdminChange];
       case "update-id":
         return ["Manual Update", AC_LegacyAdminChange];
       case "update-values":

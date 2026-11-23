@@ -114,4 +114,46 @@ describe("Admin Features test", () => {
     expect(screen.getByRole("heading", { level: 2, name: "Change Reason" })).toBeInTheDocument();
     expect(screen.getByText("No information submitted")).toBeInTheDocument();
   });
+
+  it.each([
+    { authority: "CHIP SPA", changeType: "Manual Update", label: "Manual Update" },
+    { authority: "Medicaid SPA", changeType: undefined, label: "Package Added" },
+  ])(
+    "renders a SMART $authority split as $label with its reason and timestamp",
+    ({ authority, changeType, label }) => {
+      const changeMade = "OH-26-1123-A was manually added to OneMAC.";
+      const changeReason =
+        "This package was added to OneMAC from SMART. Package was split from SPA OH-26-1123 by Example CMS User. Reason: Separate the eligibility provisions";
+      const activity = [
+        {
+          _id: "OH-26-1123-A-smart-split-smart-child",
+          _index: "test-changelog",
+          _source: {
+            id: "OH-26-1123-A-smart-split-smart-child",
+            packageId: "OH-26-1123-A",
+            authority,
+            event: "split-spa",
+            changeType,
+            operationType: "MSP_SPLIT_SPA_CREATED",
+            isAdminChange: true,
+            timestamp: Date.parse("2026-11-23T18:00:00.000Z"),
+            changeMade,
+            changeReason,
+          },
+        },
+      ] as ItemResult[];
+
+      renderWithQueryClient(<AdminPackageActivities changelog={activity} />);
+
+      expect(
+        screen.getByRole("button", {
+          name: new RegExp(`${label}\\s*-\\s*Mon, Nov 23 2026, 01:00:00 PM EST`),
+        }),
+      ).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 2, name: "Change Made" })).toBeInTheDocument();
+      expect(screen.getByRole("heading", { level: 2, name: "Change Reason" })).toBeInTheDocument();
+      expect(screen.getByText(changeMade)).toBeInTheDocument();
+      expect(screen.getByText(changeReason)).toBeInTheDocument();
+    },
+  );
 });

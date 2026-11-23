@@ -45,6 +45,7 @@ const completedSplitDocument = (
     _source: {
       id: SPLIT_ID,
       origin: "SMART",
+      authority: "Medicaid SPA",
       smartRecordType: SMART_RECORD_TYPE.PACKAGE,
       spaWaiverId: SPLIT_EXTERNAL_ID,
       splitSpaId: SPLIT_ID,

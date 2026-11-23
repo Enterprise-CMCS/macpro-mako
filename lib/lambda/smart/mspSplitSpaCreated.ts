@@ -1,20 +1,24 @@
 import { getPackageChangelog } from "libs/api/package";
 import * as os from "libs/opensearch-lib";
-import { ErrorType, logError } from "libs/sink-lib";
 import { getDomainAndNamespace } from "libs/utils";
 import { opensearch, SMART_RECORD_TYPE } from "shared-types";
 import { isHiddenSmartReservation } from "shared-utils";
 import { z } from "zod";
 
 import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
-import { publishSmartIngestError } from "./publishSmartIngestError";
+import {
+  getSearchHits,
+  getTimestampInMilliseconds,
+  reportSmartValidationFailure as reportValidationFailure,
+  SearchHit,
+} from "./smartEventHelpers";
 
 const requiredString = z.string().trim().min(1);
 const requiredCorrelationId = z.string().trim();
 
 const smartSplitSpaCreatedSchema = z
   .object({
-    authority: z.literal("Medicaid SPA"),
+    authority: z.enum(["Medicaid SPA", "CHIP SPA"]),
     correlationId: requiredCorrelationId,
     createdAt: requiredString.refine((value) => !Number.isNaN(Date.parse(value)), {
       message: "createdAt must be a valid datetime",
@@ -57,14 +61,17 @@ const smartSplitSpaCreatedSchema = z
         path: ["splitSpaId"],
       });
     }
+
+    if (event.originalSpaWaiverId === event.splitSpaWaiverId) {
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "originalSpaWaiverId and splitSpaWaiverId must differ",
+        path: ["splitSpaWaiverId"],
+      });
+    }
   });
 
 export type SmartSplitSpaCreatedEvent = z.infer<typeof smartSplitSpaCreatedSchema>;
-
-interface SearchHit<TDocument> {
-  _id: string;
-  _source: TDocument;
-}
 
 interface ParentPackage extends SearchHit<opensearch.main.Document> {
   found: true;
@@ -97,8 +104,13 @@ const hasConflictingCorrelationId = (
   event: SmartSplitSpaCreatedEvent,
 ): boolean => {
   const storedCorrelationId = document.correlationId?.trim();
+  // Assignment and other later events can refresh correlationId. It identifies
+  // this split only while the stored operation still describes the split.
   return Boolean(
-    storedCorrelationId && event.correlationId && storedCorrelationId !== event.correlationId,
+    document.operationType === event.operationType &&
+      storedCorrelationId &&
+      event.correlationId &&
+      storedCorrelationId !== event.correlationId,
   );
 };
 
@@ -108,45 +120,14 @@ const isMatchingCompletedSplit = (
 ): boolean =>
   document.origin === "SMART" &&
   document.smartRecordType === SMART_RECORD_TYPE.PACKAGE &&
+  document.authority === event.authority &&
   document.id.toUpperCase() === event.splitSpaId.toUpperCase() &&
   document.splitSpaId?.toUpperCase() === event.splitSpaId.toUpperCase() &&
   document.spaWaiverId === event.splitSpaWaiverId &&
   document.splitSpaWaiverId === event.splitSpaWaiverId &&
   document.originalSpaId?.toUpperCase() === event.originalSpaId.toUpperCase() &&
   document.originalSpaWaiverId === event.originalSpaWaiverId &&
-  document.operationType === event.operationType &&
   !hasConflictingCorrelationId(document, event);
-
-const getSearchHits = <TDocument>(result: unknown): SearchHit<TDocument>[] => {
-  const hits = (result as { hits?: { hits?: unknown } } | undefined)?.hits?.hits;
-  return Array.isArray(hits) ? (hits as SearchHit<TDocument>[]) : [];
-};
-
-const reportValidationFailure = async (
-  context: SmartOnemacEventContext,
-  error: Error | z.ZodError,
-): Promise<void> => {
-  const { event, topicPartition, kafkaKey, kafkaOffset, kafkaTimestamp } = context;
-  logError({
-    type: ErrorType.VALIDATION,
-    error,
-    metadata: {
-      topicPartition,
-      id: event.id,
-      operationType: event.operationType,
-    },
-  });
-  await publishSmartIngestError({
-    errorCode: "VALIDATION",
-    topicPartition,
-    kafkaKey: kafkaKey ?? event.id,
-    kafkaOffset,
-    kafkaTimestamp,
-    correlationId: event.correlationId,
-    error,
-    payload: event,
-  });
-};
 
 const findParentPackage = async (
   event: SmartSplitSpaCreatedEvent,
@@ -209,9 +190,76 @@ const findParentPackage = async (
   };
 };
 
+// Child-specific snapshots may arrive before the split that makes the package
+// visible. Keep those projections while filling the remaining fields from the
+// parent; reservation defaults are not authoritative business data.
+const reservationProjections = [
+  {
+    timestamp: "smartStatusChangedAt",
+    fields: [
+      "seatoolStatus",
+      "cmsStatus",
+      "stateStatus",
+      "smartStatus",
+      "statusDate",
+      "finalDispositionDate",
+      "initialIntakeNeeded",
+      "locked",
+      "secondClock",
+      "raiRequestedDate",
+      "raiReceivedDate",
+      "raiWithdrawnDate",
+      "raiWithdrawEnabled",
+    ],
+  },
+  {
+    timestamp: "smartAssignmentChangedAt",
+    fields: [
+      "smartSrtRoster",
+      "leadAnalystName",
+      "leadAnalystEmail",
+      "leadAnalystOfficerId",
+      "smartCpocContactId",
+      "reviewTeam",
+    ],
+  },
+  {
+    timestamp: "smartPackageDetailsChangedAt",
+    fields: [
+      "subject",
+      "description",
+      "types",
+      "subTypes",
+      "submissionDate",
+      "proposedDate",
+      "approvedEffectiveDate",
+      "state",
+    ],
+  },
+] as const;
+
+const getReservationProjection = (
+  reservation: opensearch.main.Document | undefined,
+): Record<string, unknown> => {
+  const updates: Record<string, unknown> = {};
+  if (!reservation) return updates;
+
+  for (const { timestamp, fields } of reservationProjections) {
+    if (getTimestampInMilliseconds(reservation[timestamp]) === undefined) continue;
+    updates[timestamp] = reservation[timestamp];
+    for (const field of fields) {
+      if (Object.prototype.hasOwnProperty.call(reservation, field)) {
+        updates[field] = reservation[field];
+      }
+    }
+  }
+  return updates;
+};
+
 const buildSplitPackage = (
   event: SmartSplitSpaCreatedEvent,
   parent: ParentPackage,
+  reservation?: opensearch.main.Document,
 ): SplitPackageDocument => {
   const {
     adminChangeType: _adminChangeType,
@@ -225,7 +273,11 @@ const buildSplitPackage = (
     origin: _origin,
     originalSpaId: _originalSpaId,
     originalSpaWaiverId: _originalSpaWaiverId,
+    smartAssignmentChangedAt: _smartAssignmentChangedAt,
+    smartPackageDetailsChangedAt: _smartPackageDetailsChangedAt,
+    smartPackageDetailsPreviousId: _smartPackageDetailsPreviousId,
     smartRecordType: _smartRecordType,
+    smartStatusChangedAt: _smartStatusChangedAt,
     spaWaiverId: _spaWaiverId,
     splitReason: _splitReason,
     splitSpaId: _splitSpaId,
@@ -242,6 +294,8 @@ const buildSplitPackage = (
   // event creates a new package; it does not independently transition status.
   return {
     ...parentFields,
+    statusDate: timestamp,
+    ...getReservationProjection(reservation),
     id: splitSpaId,
     deleted: false,
     origin: "SMART",
@@ -254,9 +308,14 @@ const buildSplitPackage = (
     originalSpaWaiverId: event.originalSpaWaiverId,
     splitReason: event.splitReason,
     operationType: event.operationType,
-    makoChangedDate: timestamp,
-    changedDate: timestamp,
-    statusDate: timestamp,
+    makoChangedDate: Math.max(
+      timestamp,
+      getTimestampInMilliseconds(reservation?.makoChangedDate) ?? timestamp,
+    ),
+    changedDate: Math.max(
+      timestamp,
+      getTimestampInMilliseconds(reservation?.changedDate) ?? timestamp,
+    ),
     timestamp,
     idToBeUpdated: originalSpaId,
     isAdminChange: true,
@@ -264,6 +323,24 @@ const buildSplitPackage = (
     changeMade,
     changeReason,
   };
+};
+
+const promoteSplitReservation = async (
+  event: SmartSplitSpaCreatedEvent,
+  parent: ParentPackage,
+  reservation: NonNullable<Awaited<ReturnType<typeof os.getItem>>>,
+): Promise<void> => {
+  const { domain, index } = getDomainAndNamespace("main");
+  const document = buildSplitPackage(event, parent, reservation._source);
+  if (typeof reservation._seq_no === "number" && typeof reservation._primary_term === "number") {
+    await os.updateItem(domain, index, event.splitSpaId.toUpperCase(), document, {
+      ifSeqNo: reservation._seq_no,
+      ifPrimaryTerm: reservation._primary_term,
+    });
+    return;
+  }
+
+  await os.updateItem(domain, index, event.splitSpaId.toUpperCase(), document);
 };
 
 const validateTargetAvailability = (
@@ -282,6 +359,13 @@ const validateTargetAvailability = (
   const existingTarget = context.existence.mainById;
   if (!existingTarget) {
     return undefined;
+  }
+
+  if (
+    existingTarget._source?.deleted === true ||
+    (existingTarget._source?.authority && existingTarget._source.authority !== event.authority)
+  ) {
+    return new Error("splitSpaId requires a non-deleted package with matching authority");
   }
 
   if (existingTarget._source?.spaWaiverId !== event.splitSpaWaiverId) {
@@ -308,7 +392,7 @@ const validateTargetAvailability = (
 const persistSplitPackage = async (
   context: SmartOnemacEventContext,
   event: SmartSplitSpaCreatedEvent,
-  document: SplitPackageDocument,
+  parent: ParentPackage,
 ): Promise<Error | undefined> => {
   const { domain, index } = getDomainAndNamespace("main");
   const existingTarget = context.existence.mainById;
@@ -318,22 +402,28 @@ const persistSplitPackage = async (
       return undefined;
     }
 
-    await os.updateItem(domain, index, event.splitSpaId.toUpperCase(), document);
+    await promoteSplitReservation(event, parent, existingTarget);
     return undefined;
   }
 
-  const result = await os.createItem(domain, index, document);
+  const result = await os.createItem(domain, index, buildSplitPackage(event, parent));
   if (result.created) {
     return undefined;
   }
 
   const racedTarget = await os.getItem(domain, index, event.splitSpaId.toUpperCase());
   if (racedTarget?._source) {
+    const availabilityError = validateTargetAvailability(
+      { ...context, existence: { ...context.existence, mainById: racedTarget } },
+      event,
+    );
+    if (availabilityError) return availabilityError;
+
     if (
       isHiddenSmartReservation(racedTarget._source) &&
       racedTarget._source.spaWaiverId === event.splitSpaWaiverId
     ) {
-      await os.updateItem(domain, index, event.splitSpaId.toUpperCase(), document);
+      await promoteSplitReservation(event, parent, racedTarget);
       return undefined;
     }
 
@@ -348,24 +438,6 @@ const persistSplitPackage = async (
 const getActivitySuffix = (originalSpaId: string, changelogId: string): string => {
   const prefix = `${originalSpaId}-`;
   return changelogId.startsWith(prefix) ? changelogId.slice(prefix.length) : changelogId;
-};
-
-const getTimestampInMilliseconds = (value: unknown): number | undefined => {
-  if (typeof value === "number" && Number.isFinite(value)) {
-    return value < 1e12 ? value * 1000 : value;
-  }
-
-  if (typeof value !== "string" || value.trim() === "") {
-    return undefined;
-  }
-
-  const numericValue = Number(value);
-  if (Number.isFinite(numericValue)) {
-    return numericValue < 1e12 ? numericValue * 1000 : numericValue;
-  }
-
-  const parsedValue = Date.parse(value);
-  return Number.isNaN(parsedValue) ? undefined : parsedValue;
 };
 
 const persistSplitActivity = async (
@@ -394,6 +466,9 @@ const persistSplitActivity = async (
     timestamp,
     isAdminChange: true,
     adminChangeType: "split-spa",
+    ...(event.authority === "CHIP SPA" ? { changeType: "Manual Update" } : {}),
+    authority: event.authority,
+    operationType: event.operationType,
     changeMade,
     changeReason,
     additionalInformation: event.splitReason,
@@ -433,13 +508,13 @@ export const handleMspSplitSpaCreated = async (context: SmartOnemacEventContext)
   if (
     !parentResolution ||
     parentResolution.parent._source.deleted === true ||
-    parentResolution.parent._source.authority !== "Medicaid SPA" ||
+    parentResolution.parent._source.authority !== event.authority ||
     isHiddenSmartReservation(parentResolution.parent._source)
   ) {
     await reportValidationFailure(
       context,
       new Error(
-        "originalSpaWaiverId/originalSpaId did not resolve to the requested visible Medicaid SPA",
+        `originalSpaWaiverId/originalSpaId did not resolve to the requested visible ${event.authority}`,
       ),
     );
     return;
@@ -453,8 +528,7 @@ export const handleMspSplitSpaCreated = async (context: SmartOnemacEventContext)
     });
   }
 
-  const splitPackage = buildSplitPackage(event, parent);
-  const persistenceError = await persistSplitPackage(context, event, splitPackage);
+  const persistenceError = await persistSplitPackage(context, event, parent);
   if (persistenceError) {
     await reportValidationFailure(context, persistenceError);
     return;
