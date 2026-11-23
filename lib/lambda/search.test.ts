@@ -1,6 +1,6 @@
 import { APIGatewayEvent, APIGatewayProxyEventPathParameters } from "aws-lambda";
 import * as osLib from "libs/opensearch-lib";
-import { getRequestContext, helpDeskUser, testStateSubmitter } from "mocks";
+import { getRequestContext, helpDeskUser, noRoleUser, testStateSubmitter } from "mocks";
 import { SMART_RECORD_TYPE } from "shared-types";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -137,5 +137,121 @@ describe("getSearchData Handler", () => {
     expect(query.query.bool.must).toContainEqual(originAllowlist);
     expect(JSON.stringify(originAllowlist)).toContain(SMART_RECORD_TYPE.PACKAGE);
     expect(JSON.stringify(originAllowlist)).not.toContain(SMART_RECORD_TYPE.RESERVATION);
+  });
+
+  it("should nest the caller query under the enforced state filter", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({
+        query: { match_all: {} },
+        aggs: { "state.keyword": { terms: { field: "state.keyword" } } },
+      }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(testStateSubmitter),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(200);
+    const query = searchSpy.mock.calls
+      .map(([, , searchQuery]) => searchQuery)
+      .find((searchQuery) => JSON.stringify(searchQuery).includes("origin.keyword")) as {
+      query?: { match_all?: unknown; bool?: { must?: unknown[] } };
+      aggs?: unknown;
+    };
+    expect(query.query?.match_all).toBeUndefined();
+    expect(query.query?.bool?.must).toEqual(
+      expect.arrayContaining([
+        { match_all: {} },
+        { terms: { state: ["va", "oh", "sc", "co", "ga", "md"] } },
+      ]),
+    );
+    expect(query.aggs).toEqual({ "state.keyword": { terms: { field: "state.keyword" } } });
+  });
+
+  it.each([
+    [
+      "global aggregation",
+      { aggs: { everything: { global: {}, aggs: { ids: { terms: { field: "_id" } } } } } },
+    ],
+    ["aggregations alias", { aggregations: { everything: { global: {} } } }],
+    [
+      "term suggestion despite a match-none query",
+      {
+        query: { match_none: {} },
+        suggest: {
+          states: {
+            text: "CA",
+            term: {
+              field: "state.keyword",
+              suggest_mode: "always",
+              min_word_length: 1,
+              prefix_length: 0,
+              max_edits: 1,
+              size: 5,
+              shard_size: 5,
+            },
+          },
+        },
+      },
+    ],
+    ["script fields", { script_fields: { t: { script: { source: "return 1+3" } } } }],
+    [
+      "nested script query",
+      { query: { bool: { must: [{ script: { script: { source: "return true" } } }] } } },
+    ],
+    ["scripted metric", { aggs: { leak: { scripted_metric: { map_script: "state" } } } }],
+    ["query wrapper", { query: { wrapper: { query: "e30=" } } }],
+    [
+      "terms lookup",
+      { query: { terms: { state: { index: "main", id: "other-state", path: "state" } } } },
+    ],
+  ])("should reject a %s before searching", async (_label, body) => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ size: 1, track_total_hits: true, ...body }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(testStateSubmitter),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual({ message: "Query contains unsupported clauses" });
+    expect(
+      searchSpy.mock.calls.some(([, searchIndex]) => String(searchIndex).includes("main")),
+    ).toBe(false);
+  });
+
+  it("should reject searches against non-package indices", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} } }),
+      pathParameters: { index: "main,users" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(testStateSubmitter),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(400);
+    expect(JSON.parse(res.body)).toEqual({ message: "Index is not searchable" });
+    expect(searchSpy).not.toHaveBeenCalled();
+  });
+
+  it("should deny search when the user has no active role", async () => {
+    const searchSpy = vi.spyOn(osLib, "search");
+    const event = {
+      body: JSON.stringify({ query: { match_all: {} } }),
+      pathParameters: { index: "main" } as APIGatewayProxyEventPathParameters,
+      requestContext: getRequestContext(noRoleUser),
+    } as APIGatewayEvent;
+
+    const res = await handler(event);
+
+    expect(res.statusCode).toEqual(403);
+    expect(JSON.parse(res.body)).toEqual({ message: "Not authorized to search" });
+    expect(
+      searchSpy.mock.calls.some(([, searchIndex]) => String(searchIndex).includes("main")),
+    ).toBe(false);
   });
 });

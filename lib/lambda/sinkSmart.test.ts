@@ -502,13 +502,14 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("creates a hidden CHIP reservation for CHIPSPA_MANUAL_RECORD_UPDATED", async () => {
+  it("creates a hidden CHIP reservation for MSP_MANUAL_RECORD_CREATED", async () => {
     const payload = {
       ...smartEvent,
       id: "CA-26-1001",
       spaWaiverId: "a0nTESTCHIP261001",
       authority: "CHIP SPA",
-      operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+      operationType: "MSP_MANUAL_RECORD_CREATED",
+      creationContext: "MANUAL",
     };
 
     await expect(
@@ -524,7 +525,7 @@ describe("SMART operation dispatch", () => {
         origin: "SMART",
         smartRecordType: SMART_RECORD_TYPE.RESERVATION,
         spaWaiverId: payload.spaWaiverId,
-        operationType: "CHIPSPA_MANUAL_RECORD_UPDATED",
+        operationType: "MSP_MANUAL_RECORD_CREATED",
       }),
     );
     expect(updateItemSpy).not.toHaveBeenCalled();
@@ -937,7 +938,7 @@ describe("SMART operation dispatch", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("consumes CHIPSPA_ASSIGNMENT_UPDATED using the complete assignment roster", async () => {
+  it("consumes MSP_ASSIGNMENT_UPDATED for CHIP using the complete assignment roster", async () => {
     const packageId = "CA-26-1001";
     const externalId = "a0nTESTCHIP261001";
     const assignmentPayload = {
@@ -945,7 +946,7 @@ describe("SMART operation dispatch", () => {
       id: packageId,
       spaWaiverId: externalId,
       authority: "CHIP SPA",
-      operationType: "CHIPSPA_ASSIGNMENT_UPDATED",
+      operationType: "MSP_ASSIGNMENT_UPDATED",
       srtAssignmentId: "chip-cpoc-assignment",
       srtMember: [
         {
@@ -1004,8 +1005,93 @@ describe("SMART operation dispatch", () => {
         leadAnalystName: "CHIP CPOC",
         smartCpocContactId: "chip-cpoc-contact",
         reviewTeam: [{ name: "CHIP SRT", email: "chip.srt@example.com" }],
-        operationType: "CHIPSPA_ASSIGNMENT_UPDATED",
+        operationType: "MSP_ASSIGNMENT_UPDATED",
       }),
+    );
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it("consumes MSP_ADMINISTRATIVE_FIELD_UPDATED for CHIP package details", async () => {
+    const packageId = "CA-26-1105-CHIP";
+    const externalId = "a0nTESTCHIP261105";
+    const statusChangedAt = "2026-11-05T17:00:00.123Z";
+    const packageDetailsPayload = {
+      ...smartEvent,
+      id: packageId,
+      spaWaiverId: externalId,
+      authority: "CHIP SPA",
+      operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+      statusChangedAt,
+      state: "California",
+      initialSubmissionDate: "2026-11-05",
+      subject: "Updated CHIP subject",
+      description: "Updated CHIP description",
+      proposedEffectiveDate: "2027-01-31",
+      approvedEffectiveDate: "2026-12-01",
+      typeSelections: [
+        {
+          typeSelectionId: "chip-eligibility-magi",
+          type: "Eligibility",
+          subType: "MAGI",
+          isTypeActive: true,
+          isSubTypeActive: true,
+        },
+      ],
+    };
+    const existingPackage = {
+      id: packageId,
+      origin: "OneMAC",
+      authority: "CHIP SPA",
+      state: "CA",
+      seatoolStatus: "Pending",
+      deleted: false,
+      spaWaiverId: externalId,
+      submissionDate: "2026-11-04T05:00:00.000Z",
+      subject: "Existing CHIP subject",
+      description: "Existing CHIP description",
+    };
+    getItemSpy.mockResolvedValue({
+      found: true,
+      _id: packageId,
+      _source: existingPackage,
+    } as Awaited<ReturnType<typeof os.getItem>>);
+    searchSpy
+      .mockResolvedValueOnce({
+        hits: { hits: [{ _id: packageId, _source: existingPackage }] },
+      } as Awaited<ReturnType<typeof os.search>>)
+      .mockResolvedValueOnce({ hits: { hits: [] } });
+
+    await expect(
+      invokeHandler(createSmartEvent(createSmartRecord(packageDetailsPayload))),
+    ).resolves.toBeUndefined();
+
+    expect(updateItemSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/main$/),
+      packageId,
+      expect.objectContaining({
+        subject: "Updated CHIP subject",
+        description: "Updated CHIP description",
+        submissionDate: "2026-11-05T05:00:00.000Z",
+        proposedDate: "2027-01-31T05:00:00.000Z",
+        approvedEffectiveDate: "2026-12-01T05:00:00.000Z",
+        smartPackageDetailsChangedAt: statusChangedAt,
+        operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+      }),
+    );
+    expect(updateItemSpy.mock.calls[0][3]).not.toHaveProperty("origin");
+    expect(bulkUpdateDataSpy).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.stringMatching(/changelog$/),
+      [
+        expect.objectContaining({
+          packageId,
+          event: "update-values",
+          changeMade: "Initial Submission Date changed from 2026-11-04 to 2026-11-05",
+          operationType: "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+        }),
+      ],
+      { throwOnBulkError: true },
     );
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
