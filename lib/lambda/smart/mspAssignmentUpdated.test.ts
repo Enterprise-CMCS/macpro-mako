@@ -353,9 +353,55 @@ describe("handleMspAssignmentUpdated", () => {
     expect(updateItemSpy).not.toHaveBeenCalled();
   });
 
-  it("rejects conflicting snapshots at the same timestamp", async () => {
+  it.each(["Medicaid SPA", "CHIP SPA"])(
+    "ignores identical %s replays when OpenSearch returns roster fields in a different order",
+    async (authority) => {
+      const storedPackage = {
+        authority,
+        smartAssignmentChangedAt: CREATED_AT,
+        smartSrtRoster: members.map(({ fullName, ...member }) => ({ fullName, ...member })),
+      };
+      getItemSpy.mockResolvedValue(packageById(storedPackage));
+
+      await handleMspAssignmentUpdated(
+        createContext({
+          event: { ...event, authority },
+          existence: {
+            mainById: packageById(storedPackage),
+            mainBySpaWaiverId: packageSearch(storedPackage),
+            changelogById: emptySearch,
+          },
+        }),
+      );
+
+      expect(updateItemSpy).not.toHaveBeenCalled();
+      expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+    },
+  );
+
+  it("ignores identical replayed snapshots with a different roster member order", async () => {
     getItemSpy.mockResolvedValue(
-      packageById({ smartAssignmentChangedAt: CREATED_AT, smartSrtRoster: [] }),
+      packageById({
+        smartAssignmentChangedAt: CREATED_AT,
+        smartSrtRoster: [...members].reverse(),
+      }),
+    );
+
+    await handleMspAssignmentUpdated(createContext());
+
+    expect(updateItemSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    { difference: "removed members", roster: [] },
+    {
+      difference: "changed member values",
+      roster: members.map((member) => ({ ...member, email: "changed@example.com" })),
+    },
+  ])("rejects conflicting snapshots with $difference at the same timestamp", async ({ roster }) => {
+    getItemSpy.mockResolvedValue(
+      packageById({ smartAssignmentChangedAt: CREATED_AT, smartSrtRoster: roster }),
     );
     await handleMspAssignmentUpdated(createContext());
     expect(updateItemSpy).not.toHaveBeenCalled();
