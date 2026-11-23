@@ -21,8 +21,10 @@ if (ldClientId === undefined) {
 }
 
 const initializeApp = async () => {
-  // Start the MSW server if in the DEV environment and the mocked flag is on
-  if (import.meta.env.DEV && import.meta.env.MODE === "mocked") {
+  // Start the MSW server if in the DEV environment and the mocked flag is on.
+  // E2E sets globalThis.__MAKO_E2E__ so @msw/playwright owns requests via context.route
+  // and auth comes from Playwright storage state instead of auto-login.
+  if (import.meta.env.DEV && import.meta.env.MODE === "mocked" && !globalThis.__MAKO_E2E__) {
     await import("../mockServiceWorker.js?worker");
 
     const { mockedWorker } = await import("mocks/browser");

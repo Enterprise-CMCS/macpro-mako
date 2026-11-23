@@ -1,4 +1,8 @@
 declare global {
+  // Set by Playwright e2e fixtures via context.addInitScript
+  // eslint-disable-next-line no-var
+  var __MAKO_E2E__: boolean | undefined;
+
   interface Window {
     dataLayer: any[];
     gtag: (...args: any[]) => void;

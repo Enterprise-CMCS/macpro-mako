@@ -1,154 +1,135 @@
-import { defineConfig, devices, PlaywrightTestConfig } from "@playwright/test";
+import { defineConfig, devices, type PlaywrightTestConfig } from "@playwright/test";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-import { getDeploymentOutput } from "./lib/auth.secrets";
-import { baseURL } from "./lib/baseURLs";
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
+import { mockEnvVariables } from "../bin/cli/src/lib/consts";
 
-const ENV = process.env.PW_ENV || "local";
-const stage = process.env.STAGE_NAME || "main";
-const project = process.env.PROJECT;
-const deploymentOutput = await getDeploymentOutput(stage, project);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const isCI = !!process.env.CI;
+const isDeployed = process.env.E2E_TIER === "deployed" || !!process.env.E2E_BASE_URL;
 
-let rootURL;
+const MOCKED_BASE_URL = "http://localhost:5000";
+const AUTH_DIR = path.join(__dirname, ".auth");
 
-if (process.env.CI) {
-  process.env.PW_ENV = "ci";
-  rootURL = deploymentOutput.applicationEndpointUrl;
-} else {
-  rootURL = baseURL[ENV];
+/** Strip surrounding quotes from mockEnvVariables values for process.env. */
+function unquoteEnv(vars: Record<string, string>): Record<string, string> {
+  return Object.fromEntries(
+    Object.entries(vars).map(([key, value]) => [key, value.replace(/^"(.*)"$/, "$1")]),
+  );
 }
 
-console.log(rootURL);
+function resolveBaseURL(): string {
+  if (isDeployed) {
+    const baseUrl = process.env.E2E_BASE_URL;
+    if (!baseUrl) {
+      throw new Error("E2E_BASE_URL is required for the deployed e2e tier");
+    }
+    return baseUrl.replace(/\/$/, "");
+  }
+  return MOCKED_BASE_URL;
+}
+
+const mockedEnv = unquoteEnv(mockEnvVariables);
 
 export default defineConfig({
-  testDir: "./",
+  testDir: "./e2e",
   testMatch: "**/*.spec.ts",
-  testIgnore: ["**/*.test.{ts,tsx}", "**/smoke/**/*.spec.ts"],
-  globalSetup: "./lib/global.setup.ts",
-  globalTeardown: "./lib/global.teardown.ts",
-  // need to find a reasonable timeout less than 30s
-  // timeout: 10_000,
-  /* Run tests in files in parallel */
   fullyParallel: true,
-  /* Fail the build on CI if you accidentally left test.only in the source code. */
-  forbidOnly: !!process.env.CI,
-  /* Retry on CI only */
-  // retries: process.env.CI ? 2 : 0,
-  retries: 0,
-  // Limit the number of failures on CI to save resources
-  // maxFailures: process.env.CI ? 10 : undefined,
-  /* Opt out of parallel tests on CI. */
-  workers: 1,
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  // reporter: [["dot"], ["html"]],
-  reporter: process.env.CI
+  forbidOnly: isCI,
+  retries: isCI ? 1 : 0,
+  workers: isCI ? 2 : undefined,
+  timeout: isDeployed ? 120_000 : 30_000,
+  expect: { timeout: 10_000 },
+  // Agents replay from cache in CI; local runs can override with --run-agents=missing.
+  // @ts-expect-error runAgents is supported at runtime in Playwright 1.58+
+  runAgents: "none",
+  reporter: isCI
     ? [
+        ["blob"],
         ["github"],
-        [
-          "html",
-          {
-            outputFolder: "./playwright-reports/html-report",
-            open: "never",
-          },
-        ],
-        ["json", { outputFile: "./playwright-reports/playwright-summary.json" }],
       ]
-    : [["dot"]],
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
+    : [
+        ["list"],
+        ["html", { open: "never" }],
+      ],
   use: {
-    /* Base URL to use in actions like `await page.goto('/')`. */
-    // baseURL,
     ...devices["Desktop Chrome"],
-    /* Collect trace for test failures. See https://playwright.dev/docs/trace-viewer */
-    trace: "retain-on-failure",
-    /* Save the videos for test failures. See https://playwright.dev/docs/videos */
-    video: "retain-on-failure",
-    // video: "on",
-    // storageState: "./playwright/.auth/state-user.json",
+    baseURL: resolveBaseURL(),
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
+    video: "off",
+    testIdAttribute: "data-testid",
   },
-  /* Configure projects for major browsers */
-  // Note: we can test on multiple browsers and resolutions defined here
-
+  webServer: isDeployed
+    ? undefined
+    : {
+        command: "bun run e2e:serve",
+        cwd: path.join(__dirname, "../react-app"),
+        url: MOCKED_BASE_URL,
+        reuseExistingServer: !isCI,
+        timeout: 120_000,
+        env: {
+          ...process.env,
+          ...mockedEnv,
+          // Prefer Cognito tokens from Playwright storage state; keep a default for non-E2E.
+          VITE_MOCK_USER_USERNAME: "cd400c39-9e7c-4341-b62f-234e2ecb339d",
+        },
+      },
   projects: [
     {
-      name: "local-setup",
-      testMatch: /local\.setup\.ts/,
-    },
-    {
-      name: "ci-setup",
-      testMatch: /ci\.setup\.ts/,
-    },
-    {
-      name: "val-setup",
-      testMatch: /val\.setup\.ts/,
-    },
-    {
-      name: "eua-setup",
-      testMatch: /eua\.setup\.ts/,
-    },
-    {
-      name: "mfa-setup",
-      testMatch: /mfa\.setup\.ts/,
-    },
-    {
-      name: "smoke-test",
-      testMatch: /smoke\.setup\.ts/,
-    },
-    {
-      name: "local",
+      name: "mocked-setup",
+      testMatch: /setup\/auth\.setup\.ts/,
       use: {
-        baseURL: baseURL.local,
-        storageState: "./playwright/.auth/state-user.json",
+        baseURL: MOCKED_BASE_URL,
+        serviceWorkers: "block",
       },
-      dependencies: ["local-setup"],
     },
     {
-      name: "ci",
+      name: "mocked",
+      dependencies: ["mocked-setup"],
+      testMatch: /journeys\/.*\.spec\.ts/,
+      grepInvert: /@quarantine/,
       use: {
-        baseURL: deploymentOutput.applicationEndpointUrl,
-        storageState: "./playwright/.auth/state-user.json",
+        baseURL: MOCKED_BASE_URL,
+        storageState: path.join(AUTH_DIR, "mocked", "state-submitter.json"),
+        serviceWorkers: "block",
       },
-      dependencies: ["ci-setup"],
     },
     {
-      name: "val",
+      name: "deployed-setup",
+      testMatch: /setup\/auth\.setup\.ts/,
       use: {
-        baseURL: baseURL.val,
-        storageState: "./playwright/.auth/state-user.json",
+        baseURL: resolveBaseURL(),
       },
-      dependencies: ["val-setup"],
     },
     {
-      name: "eua-user",
+      name: "deployed-create",
+      dependencies: ["deployed-setup"],
+      testMatch: /journeys\/02-submit-medicaid-spa\.spec\.ts/,
+      grepInvert: /@quarantine/,
       use: {
-        baseURL: baseURL.prod,
-        storageState: "./playwright/.auth/eua-user.json",
+        baseURL: resolveBaseURL(),
+        storageState: path.join(AUTH_DIR, "deployed", "state-submitter.json"),
       },
-      dependencies: ["eua-setup"],
     },
     {
-      name: "mfa-user",
+      name: "deployed-read",
+      dependencies: ["deployed-create"],
+      testMatch: /journeys\/(01-sign-in|03-submission-records|05-attachment-downloads)\.spec\.ts/,
+      grepInvert: /@quarantine/,
       use: {
-        baseURL: baseURL.prod,
-        storageState: "./playwright/.auth/zzState-user.json",
+        baseURL: resolveBaseURL(),
+        storageState: path.join(AUTH_DIR, "deployed", "state-submitter.json"),
       },
-      dependencies: ["mfa-setup"],
     },
     {
-      name: "smoke-tests",
-      testMatch: "**/smoke/**/*.spec.ts",
+      name: "deployed-mutate",
+      dependencies: ["deployed-read"],
+      testMatch: /journeys\/04-package-actions\.spec\.ts/,
+      grepInvert: /@quarantine/,
       use: {
-        baseURL: baseURL.prod,
-      },
-      dependencies: ["smoke-test"],
-    },
-    {
-      name: "shared",
-      testMatch: "e2e/specs/**/*.spec.ts",
-      use: {
-        baseURL: rootURL,
+        baseURL: resolveBaseURL(),
+        storageState: path.join(AUTH_DIR, "deployed", "state-submitter.json"),
       },
     },
   ],

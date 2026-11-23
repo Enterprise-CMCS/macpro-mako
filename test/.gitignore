@@ -1,6 +1,9 @@
-
 playwright-reports
+playwright-report
+blob-report
+all-blob-reports
 test-results
 .auth
+.state
 playwright
 local/

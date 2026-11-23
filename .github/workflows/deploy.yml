@@ -265,6 +265,7 @@ jobs:
 
   e2e:
     runs-on: ubuntu-latest
+    # Keep non-blocking until main has 10 consecutive green deployed runs (see test/README.md).
     continue-on-error: true
     needs:
       - init
@@ -273,18 +274,10 @@ jobs:
       name: ${{ needs.init.outputs.stage_name }}
     env:
       STAGE_NAME: ${{ needs.init.outputs.stage_name }}
-      JSON_ARTIFACT_ID: json-playwright-report
-      HTML_ARTIFACT_ID: html-playwright-report
+      JSON_ARTIFACT_ID: json-playwright-report-deployed
+      HTML_ARTIFACT_ID: html-playwright-report-deployed
     if: github.ref != 'refs/heads/production' && github.ref != 'refs/heads/val' && !startsWith(github.ref, 'refs/heads/snyk-')
     steps:
-      - name: Set report name
-        id: variables
-        run: |
-          if [[ ${{ github.ref_name }} == 'main' ]]; then
-            echo "report_name=main" >> "$GITHUB_OUTPUT"
-          else
-            echo "report_name=${{ github.run_id }}" >> "$GITHUB_OUTPUT"
-          fi
       - name: Checkout
         uses: actions/checkout@v6
       - name: Setup
@@ -295,35 +288,57 @@ jobs:
           role-to-assume: ${{ secrets.AWS_OIDC_ROLE_TO_ASSUME }}
           aws-region: us-east-1
           role-duration-seconds: 10800
-      - name: Run e2e tests
+      - name: Run deployed e2e tests
         id: e2e-test
         env:
-          PLAYWRIGHT_HTML_ATTACHMENTS_BASE_URL: "./data/"
-        run: run e2e
-      - name: Rename Reports
+          CI: true
+        run: run e2e --deployed --stage "$STAGE_NAME"
+      - name: Prepare blob reports for merge
         if: ${{ !cancelled() }}
+        working-directory: test
         run: |
-          if [ -d "test/playwright-reports" ]; then
-            cd test/playwright-reports
-            mv playwright-summary.json ${{ steps.variables.outputs.report_name }}.json
-            mv html-report ${{ steps.variables.outputs.report_name }}
+          mkdir -p all-blob-reports playwright-reports
+          if [ -d blob-report ] && [ -n "$(ls -A blob-report 2>/dev/null)" ]; then
+            cp -R blob-report/. all-blob-reports/
           fi
+      - name: Merge reports
+        if: ${{ !cancelled() }}
+        working-directory: test
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-reports/html-report
+          PLAYWRIGHT_JSON_OUTPUT_NAME: playwright-reports/results.json
+        run: |
+          if [ -z "$(ls -A all-blob-reports 2>/dev/null)" ]; then
+            echo "No blob reports to merge"
+            echo '{"suites":[],"stats":{"expected":0,"unexpected":0,"flaky":0,"skipped":0}}' > playwright-reports/results.json
+            exit 0
+          fi
+          bun run e2e:merge-reports
       - name: Upload JSON Report
         uses: actions/upload-artifact@v6
         id: upload-json
         if: ${{ !cancelled() }}
         with:
           name: ${{ env.JSON_ARTIFACT_ID }}
-          path: test/playwright-reports/${{ steps.variables.outputs.report_name }}.json
+          path: test/playwright-reports/results.json
           retention-days: 30
+          if-no-files-found: ignore
       - name: Upload HTML Report
         uses: actions/upload-artifact@v6
         id: upload-html
         if: ${{ !cancelled() }}
         with:
           name: ${{ env.HTML_ARTIFACT_ID }}
-          path: test/playwright-reports/${{ steps.variables.outputs.report_name }}
+          path: test/playwright-reports/html-report
           retention-days: 30
+          if-no-files-found: ignore
+      - name: Flaky report
+        if: ${{ !cancelled() }}
+        working-directory: test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          E2E_JSON_REPORT: playwright-reports/results.json
+        run: bun run e2e:flaky-report
 
   cfn-nag:
     runs-on: ubuntu-latest

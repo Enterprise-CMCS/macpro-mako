@@ -12,6 +12,8 @@
     "e2e": {
       "cache": false,
       "env": [
+        "CI",
+        "E2E_BASE_URL",
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_SESSION_TOKEN",
@@ -22,12 +24,42 @@
     "e2e:ui": {
       "cache": false,
       "env": [
+        "CI",
+        "E2E_BASE_URL",
         "AWS_ACCESS_KEY_ID",
         "AWS_SECRET_ACCESS_KEY",
         "AWS_SESSION_TOKEN",
         "STAGE_NAME",
         "PROJECT"
       ]
+    },
+    "e2e:deployed": {
+      "cache": false,
+      "env": [
+        "CI",
+        "E2E_BASE_URL",
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
+    },
+    "e2e:deployed:ui": {
+      "cache": false,
+      "env": [
+        "CI",
+        "E2E_BASE_URL",
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_SESSION_TOKEN",
+        "STAGE_NAME",
+        "PROJECT"
+      ]
+    },
+    "e2e:quarantine": {
+      "cache": false,
+      "env": ["CI", "E2E_BASE_URL", "STAGE_NAME", "PROJECT"]
     },
     "test": {
       "cache": false,

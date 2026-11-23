@@ -6,18 +6,20 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "e2e": "playwright test --project=shared",
-    "e2e:ui": "playwright test --ui --project=shared",
-    "e2e:local": "playwright test --project=local",
-    "e2e:local:ui": "playwright test --ui --project=local"
+    "e2e": "playwright test --project=mocked",
+    "e2e:ui": "playwright test --ui --project=mocked",
+    "e2e:deployed": "playwright test --project=deployed-create --project=deployed-read --project=deployed-mutate",
+    "e2e:deployed:ui": "playwright test --ui --project=deployed-create --project=deployed-read --project=deployed-mutate",
+    "e2e:quarantine": "playwright test --project=mocked --test-list=quarantine.txt --repeat-each=5 --retries=0",
+    "e2e:merge-reports": "playwright merge-reports --reporter=html,json ./all-blob-reports",
+    "e2e:flaky-report": "bun scripts/flaky-report.ts"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@axe-core/playwright": "^4.8.3",
-    "@playwright/test": "^1.45.3",
-    "msw": "^2.7.3",
-    "playwright-msw": "^3.0.1",
-    "otpauth": "9.4.0"
+    "@msw/playwright": "^0.6.7",
+    "@playwright/test": "^1.65.1",
+    "eslint-plugin-playwright": "^2.12.2",
+    "msw": "^2.12.10"
   }
 }

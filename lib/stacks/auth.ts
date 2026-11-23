@@ -216,7 +216,7 @@ export class Auth extends cdk.NestedStack {
       this,
       "ManageUsers",
       userPool,
-      JSON.parse(readFileSync(join(__dirname, "../../test/users/app-users.json"), "utf8")),
+      JSON.parse(readFileSync(join(__dirname, "../users/app-users.json"), "utf8")),
       devPasswordArn,
     );
 

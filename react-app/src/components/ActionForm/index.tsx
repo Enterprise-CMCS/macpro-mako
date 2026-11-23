@@ -411,6 +411,9 @@ export const ActionForm = <Schema extends SchemaWithEnforcableProps>({
   }, [draftPackageIdForWarning, navigateAwayFromDraft]);
 
   useEffect(() => {
+    // Re-assert on setup so React Strict Mode's immediate cleanup→setup cycle
+    // does not leave this stuck false and abort post-submit polling/navigation.
+    isMountedRef.current = true;
     return () => {
       isMountedRef.current = false;
       if (draftConflictRevalidationTimeoutRef.current) {

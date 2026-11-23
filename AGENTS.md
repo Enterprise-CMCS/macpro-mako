@@ -65,7 +65,9 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 ### Testing
 
 - `./run test` — execute Vitest suites; add `--coverage`, `--ui`, or `--storybook` for alternate modes. Use `--run` to disable watch mode. Support file filtering: `./run test --run getReportUrl` or `./run test --run lib/lambda/specific.test.ts` (storybook mode prebuilds the UI and installs Playwright binaries).
-- `AGENT_MODE=mocked ./run e2e [--ui]` — run Playwright E2E specs; the CLI installs browser deps before invoking the proper Bun script.
+- `./run e2e` — mocked Playwright journeys (no AWS); pass `--ui`, `--shard`, `--grep`, `--run-agents`, `--test-list[-invert]`.
+- `./run e2e --deployed [--stage]` — deployed-tier journeys against the stage app; requires AWS credentials and sets `E2E_BASE_URL` from SSM.
+- Journey authoring: planner → `test/specs/*.md`, generator → `test/e2e/journeys/`; heal locally only; commit `page.perform` caches so CI can replay with `runAgents: 'none'`. See `test/README.md`.
 - `bun run lint` / `bun run format:check` — enforce ESLint and Prettier; prefer `bun run format:write` when you need to apply fixes.
 
 ### Documentation and support tooling
@@ -90,7 +92,7 @@ Prefer the root `./run` wrapper for day-to-day tasks. It validates `direnv`, Nod
 
 - Place unit tests as `*.test.ts(x)` beside source; rely on MSW fixtures in `mocks/` to isolate network calls.
 - Use `./run test --storybook` for visual and axe coverage; update snapshots only after confirming UI changes.
-- Playwright specs live in `test/e2e`; capture failing artifacts from `playwright-report/` when filing issues.
+- Playwright journeys live in `test/e2e/journeys`; capture failing artifacts from `test/playwright-reports/` or blob/HTML CI artifacts when filing issues.
 
 ## Commit & Pull Request Guidelines
 

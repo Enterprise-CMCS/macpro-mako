@@ -262,7 +262,7 @@ export class Data extends cdk.NestedStack {
         this,
         "ManageUsers",
         userPool,
-        JSON.parse(readFileSync(join(__dirname, "../../test/users/kibana-users.json"), "utf8")),
+        JSON.parse(readFileSync(join(__dirname, "../users/kibana-users.json"), "utf8")),
         devPasswordArn,
       );
 

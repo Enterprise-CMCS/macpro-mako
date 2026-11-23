@@ -2,6 +2,7 @@
 import { fixupPluginRules, includeIgnoreFile } from "@eslint/compat";
 import eslint from "@eslint/js";
 import eslintConfigPrettier from "eslint-config-prettier";
+import playwright from "eslint-plugin-playwright";
 import prettier from "eslint-plugin-prettier";
 import react from "eslint-plugin-react";
 import eslintReactHooks from "eslint-plugin-react-hooks";
@@ -72,6 +73,20 @@ export default tseslint.config(
           "ts-expect-error": true,
         },
       ],
+    },
+  },
+  {
+    files: ["test/**/*.{js,mjs,cjs,ts,tsx}"],
+    plugins: {
+      playwright,
+    },
+    rules: {
+      "playwright/prefer-web-first-assertions": "error",
+      "playwright/no-wait-for-timeout": "error",
+      "playwright/no-networkidle": "error",
+      "playwright/no-force-option": "error",
+      "playwright/no-raw-locators": "warn",
+      "playwright/no-skipped-test": "error",
     },
   },
 );

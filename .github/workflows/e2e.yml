@@ -1,0 +1,134 @@
+name: E2E
+
+on:
+  push:
+    branches:
+      - "*"
+      - "!skipci*"
+  schedule:
+    # Nightly quarantine soak (UTC)
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  actions: read
+
+jobs:
+  mocked:
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run mocked e2e (shard ${{ matrix.shard }}/2)
+        env:
+          CI: true
+        run: ./run e2e --shard=${{ matrix.shard }}/2 --test-list-invert quarantine.txt
+
+      - name: Upload blob report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: blob-report-${{ matrix.shard }}
+          path: test/blob-report
+          retention-days: 7
+          if-no-files-found: ignore
+
+  report:
+    if: ${{ !cancelled() && github.event_name != 'schedule' }}
+    needs: [mocked]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Download blob reports
+        uses: actions/download-artifact@v6
+        with:
+          pattern: blob-report-*
+          path: test/all-blob-reports
+          merge-multiple: true
+
+      - name: Merge reports
+        working-directory: test
+        env:
+          PLAYWRIGHT_HTML_OUTPUT_DIR: playwright-reports/html-report
+          PLAYWRIGHT_JSON_OUTPUT_NAME: playwright-reports/results.json
+        run: |
+          mkdir -p playwright-reports
+          if [ -z "$(ls -A all-blob-reports 2>/dev/null)" ]; then
+            echo "No blob reports to merge"
+            echo '{"suites":[],"stats":{"expected":0,"unexpected":0,"flaky":0,"skipped":0}}' > playwright-reports/results.json
+            exit 0
+          fi
+          bun run e2e:merge-reports
+
+      - name: Upload HTML report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: html-playwright-report
+          path: test/playwright-reports/html-report
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Upload JSON report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: json-playwright-report
+          path: test/playwright-reports/results.json
+          retention-days: 30
+          if-no-files-found: ignore
+
+      - name: Flaky report
+        if: ${{ !cancelled() }}
+        working-directory: test
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          E2E_JSON_REPORT: playwright-reports/results.json
+        run: bun run e2e:flaky-report
+
+  quarantine:
+    # Nightly soak of quarantined tests; non-blocking.
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Run quarantined tests
+        env:
+          CI: true
+        run: ./run e2e --test-list quarantine.txt --repeat-each=5 --retries=0
+
+      - name: Upload blob report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v6
+        with:
+          name: quarantine-blob-report
+          path: test/blob-report
+          retention-days: 7
+          if-no-files-found: ignore
