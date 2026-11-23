@@ -30,7 +30,7 @@ test.describe("Submit Medicaid SPA", () => {
     await page.getByRole("link", { name: /All Other Medicaid SPA Submissions/i }).click();
     await expect(page.getByRole("heading", { name: /Medicaid SPA Details/i })).toBeVisible();
 
-    await page.locator("#spa-id").fill(spaId);
+    await page.getByRole("textbox", { name: /SPA ID/i }).fill(spaId);
 
     await page.getByTestId("proposedEffectiveDate-datepicker").click();
     // Pick a day in the visible calendar month.

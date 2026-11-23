@@ -1,9 +1,9 @@
 import {
   getStatus,
+  type opensearch,
   SEATOOL_STATUS,
   statusToDisplayToCmsUser,
   statusToDisplayToStateUser,
-  type opensearch,
 } from "shared-types";
 
 import { ATTACHMENT_BUCKET_NAME, REGION } from "../../../mocks/consts";
@@ -37,9 +37,7 @@ export class BackendStore {
   archivePollCounts = new Map<string, number>();
 
   seedPackage(options: SeedPackageOptions = {}): PackageRecord {
-    const id = (
-      options.id ?? `MD-26-${String(this.packages.size + 1).padStart(4, "0")}-SEED`
-    )
+    const id = (options.id ?? `MD-26-${String(this.packages.size + 1).padStart(4, "0")}-SEED`)
       .trim()
       .toUpperCase();
     const status = options.status ?? SEATOOL_STATUS.SUBMITTED;
@@ -264,7 +262,11 @@ export class BackendStore {
   }
 
   fileBytesForUrl(url: string): { body: Buffer; contentType: string; filename: string } {
-    if (url.endsWith(".zip") || url.includes("archive-bucket") || url.includes("-attachments.zip")) {
+    if (
+      url.endsWith(".zip") ||
+      url.includes("archive-bucket") ||
+      url.includes("-attachments.zip")
+    ) {
       const filename = decodeURIComponent(url.split("/").pop() || "attachments.zip");
       return { body: ZIP_BYTES, contentType: "application/zip", filename };
     }

@@ -1,6 +1,7 @@
-import { defineConfig, devices, type PlaywrightTestConfig } from "@playwright/test";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import { defineConfig, devices, type PlaywrightTestConfig } from "@playwright/test";
 
 import { mockEnvVariables } from "../bin/cli/src/lib/consts";
 
@@ -43,15 +44,7 @@ export default defineConfig({
   // Agents replay from cache in CI; local runs can override with --run-agents=missing.
   // @ts-expect-error runAgents is supported at runtime in Playwright 1.58+
   runAgents: "none",
-  reporter: isCI
-    ? [
-        ["blob"],
-        ["github"],
-      ]
-    : [
-        ["list"],
-        ["html", { open: "never" }],
-      ],
+  reporter: isCI ? [["blob"], ["github"]] : [["list"], ["html", { open: "never" }]],
   use: {
     ...devices["Desktop Chrome"],
     baseURL: resolveBaseURL(),

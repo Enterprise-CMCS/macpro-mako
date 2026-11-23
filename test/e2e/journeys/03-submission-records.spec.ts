@@ -6,7 +6,7 @@ const isDeployed =
 
 test.describe("Submission records", () => {
   test("finds a package on the dashboard and opens package details", async ({ page, pkg }) => {
-    test.skip(!pkg.id, "No package id available (deployed create step may have failed)");
+    expect(pkg.id, "No package id available (deployed create step may have failed)").toBeTruthy();
     if (isDeployed) {
       test.slow();
     }

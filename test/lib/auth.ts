@@ -55,7 +55,8 @@ export async function buildMockedCognitoLocalStorage(
     [`CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.accessToken`]: accessToken,
     [`CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.clockDrift`]: "0",
     [`CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.idToken`]: idToken,
-    [`CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.refreshToken`]: refreshToken,
+    [`CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.refreshToken`]:
+      refreshToken,
     [`CognitoIdentityServiceProvider.${USER_POOL_CLIENT_ID}.${username}.userData`]: JSON.stringify({
       UserAttributes: user.UserAttributes,
       Username: username,

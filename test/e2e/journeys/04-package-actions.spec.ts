@@ -6,7 +6,7 @@ const isDeployed =
 
 test.describe("Package actions", () => {
   test("downloads an attachment and withdraws the package", async ({ page, pkg }) => {
-    test.skip(!pkg.id, "No package id available (deployed create step may have failed)");
+    expect(pkg.id, "No package id available (deployed create step may have failed)").toBeTruthy();
     if (isDeployed) {
       test.slow();
     }
@@ -22,7 +22,10 @@ test.describe("Package actions", () => {
     // Single-file download from Package Activity
     await expect(page.getByRole("heading", { name: /Package Activity/i })).toBeVisible();
     const result = await expectDownloadOrPopup(page, async () => {
-      await page.getByRole("button", { name: /cms-179\.pdf|spa-pages\.pdf/i }).first().click();
+      await page
+        .getByRole("button", { name: /cms-179\.pdf|spa-pages\.pdf/i })
+        .first()
+        .click();
     });
     expect(["download", "popup", "fallback"]).toContain(result.kind);
 

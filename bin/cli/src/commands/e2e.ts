@@ -60,9 +60,7 @@ async function resolveDeployedBaseUrl(stage: string): Promise<string> {
 
   const baseUrl = deploymentOutput.applicationEndpointUrl as string | undefined;
   if (!baseUrl) {
-    throw new Error(
-      `deployment-output for ${project}/${stage} is missing applicationEndpointUrl`,
-    );
+    throw new Error(`deployment-output for ${project}/${stage} is missing applicationEndpointUrl`);
   }
 
   return baseUrl;

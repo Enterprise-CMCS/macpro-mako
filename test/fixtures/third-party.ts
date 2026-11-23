@@ -7,8 +7,9 @@ import { featureFlags } from "shared-utils";
  * (which skips document polling when isMountedRef flips false).
  */
 export async function installThirdPartyStubs(page: Page): Promise<void> {
-  await page.route(/googletagmanager\.com|google-analytics\.com|www\.google-analytics\.com/, (route) =>
-    route.abort(),
+  await page.route(
+    /googletagmanager\.com|google-analytics\.com|www\.google-analytics\.com/,
+    (route) => route.abort(),
   );
 
   await page.route(/fonts\.googleapis\.com|fonts\.gstatic\.com/, async (route) => {

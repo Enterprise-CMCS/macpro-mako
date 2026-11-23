@@ -51,8 +51,7 @@ function extractAuthorityFilter(must: unknown): string[] | undefined {
   if (!must) return undefined;
   const rules = Array.isArray(must) ? must : [must];
   for (const rule of rules) {
-    const terms =
-      (rule as any)?.terms?.["authority.keyword"] || (rule as any)?.terms?.authority;
+    const terms = (rule as any)?.terms?.["authority.keyword"] || (rule as any)?.terms?.authority;
     if (Array.isArray(terms)) return terms.map(String);
   }
   return undefined;
@@ -91,10 +90,7 @@ export function createBackendHandlers(store: BackendStore) {
         store.upsertFromSubmit(body);
         return json({ message: "success" });
       } catch (error) {
-        return json(
-          { message: error instanceof Error ? error.message : "submit failed" },
-          500,
-        );
+        return json({ message: error instanceof Error ? error.message : "submit failed" }, 500);
       }
     }),
 
@@ -195,24 +191,28 @@ export function createBackendHandlers(store: BackendStore) {
     }),
 
     // S3 uploads are cross-origin; browsers send an OPTIONS preflight first.
-    http.options(/https:\/\/[^/]*s3[^/]*\.amazonaws\.com\/.*/, () =>
-      new HttpResponse(null, {
-        status: 204,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, PUT, POST, HEAD, OPTIONS",
-          "Access-Control-Allow-Headers": "*",
-        },
-      }),
+    http.options(
+      /https:\/\/[^/]*s3[^/]*\.amazonaws\.com\/.*/,
+      () =>
+        new HttpResponse(null, {
+          status: 204,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET, PUT, POST, HEAD, OPTIONS",
+            "Access-Control-Allow-Headers": "*",
+          },
+        }),
     ),
 
-    http.put(/https:\/\/[^/]*s3[^/]*\.amazonaws\.com\/.*/, () =>
-      new HttpResponse(null, {
-        status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-        },
-      }),
+    http.put(
+      /https:\/\/[^/]*s3[^/]*\.amazonaws\.com\/.*/,
+      () =>
+        new HttpResponse(null, {
+          status: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+          },
+        }),
     ),
 
     http.get(`${API}/checkIdentifierUsage`, ({ request }) => {
@@ -314,14 +314,16 @@ export function createBackendHandlers(store: BackendStore) {
         },
       });
     }),
-    http.post("https://events.launchdarkly.us/events/bulk/*", () =>
-      new HttpResponse(null, { status: 202 }),
+    http.post(
+      "https://events.launchdarkly.us/events/bulk/*",
+      () => new HttpResponse(null, { status: 202 }),
     ),
     http.post("https://events.launchdarkly.us/events/diagnostic/*", () =>
       HttpResponse.json({}, { status: 202 }),
     ),
-    http.options("https://events.launchdarkly.us/events/diagnostic/*", () =>
-      new HttpResponse(null, { status: 204 }),
+    http.options(
+      "https://events.launchdarkly.us/events/diagnostic/*",
+      () => new HttpResponse(null, { status: 204 }),
     ),
   ];
 

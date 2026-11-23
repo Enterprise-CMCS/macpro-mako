@@ -3,13 +3,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { defineNetworkFixture, type NetworkFixture } from "@msw/playwright";
-import { test as base, expect, type Page } from "@playwright/test";
+import { expect, type Page, test as base } from "@playwright/test";
 import type { AnyHandler } from "msw";
-
 import { featureFlags } from "shared-utils";
 
 import { setMockUserEnv } from "../lib/auth";
-import { createBackend, type BackendFixture, type SeedPackageOptions } from "./backend";
+import { type BackendFixture, createBackend, type SeedPackageOptions } from "./backend";
 import { installThirdPartyStubs } from "./third-party";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -66,6 +65,8 @@ export const test = base.extend<Fixtures>({
     { auto: true },
   ],
 
+  // Playwright fixtures with no dependencies use an empty destructure.
+  // eslint-disable-next-line no-empty-pattern -- intentional Playwright fixture shape
   backend: async ({}, use) => {
     const backend = createBackend();
     await use(backend);
@@ -230,10 +231,7 @@ export const test = base.extend<Fixtures>({
         const isZip = filename.endsWith(".zip") || url.includes("archive-bucket");
         const body = isZip
           ? Buffer.from("PK\u0005\u0006" + "\u0000".repeat(18))
-          : Buffer.from(
-              "%PDF-1.1\n1 0 obj<<>>endobj\ntrailer<< /Root 1 0 R >>\n%%EOF\n",
-              "utf8",
-            );
+          : Buffer.from("%PDF-1.1\n1 0 obj<<>>endobj\ntrailer<< /Root 1 0 R >>\n%%EOF\n", "utf8");
         await route.fulfill({
           status: 200,
           headers: {

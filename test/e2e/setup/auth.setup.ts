@@ -1,12 +1,12 @@
 import { test as setup } from "@playwright/test";
 
+import { installThirdPartyStubs } from "../../fixtures/third-party";
 import {
   loginDeployedStateSubmitter,
   setMockUserEnv,
   writeDeployedStorageState,
   writeMockedStorageState,
 } from "../../lib/auth";
-import { installThirdPartyStubs } from "../../fixtures/third-party";
 
 const isDeployed =
   process.env.E2E_TIER === "deployed" ||

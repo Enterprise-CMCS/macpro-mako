@@ -81,53 +81,56 @@ export const e2eCognitoHandlers = [
   }),
 
   // Amplify posts to cognito-idp with or without a trailing slash.
-  http.post<PathParams, any>(/https:\/\/cognito-idp\.[^/]*\.amazonaws\.com\/?/, async ({ request }) => {
-    const target = request.headers.get("x-amz-target");
-    const username = currentUsername();
-    const user = username ? findMockUser(username) : undefined;
+  http.post<PathParams, any>(
+    /https:\/\/cognito-idp\.[^/]*\.amazonaws\.com\/?/,
+    async ({ request }) => {
+      const target = request.headers.get("x-amz-target");
+      const username = currentUsername();
+      const user = username ? findMockUser(username) : undefined;
 
-    if (target === "AWSCognitoIdentityProviderService.GetUser") {
-      if (!user) return new HttpResponse("User not set", { status: 401 });
-      return HttpResponse.json({
-        Username: user.Username,
-        UserAttributes: user.UserAttributes,
-      });
-    }
+      if (target === "AWSCognitoIdentityProviderService.GetUser") {
+        if (!user) return new HttpResponse("User not set", { status: 401 });
+        return HttpResponse.json({
+          Username: user.Username,
+          UserAttributes: user.UserAttributes,
+        });
+      }
 
-    if (target === "AWSCognitoIdentityProviderService.InitiateAuth") {
-      if (!user) return new HttpResponse("User not set", { status: 401 });
-      const authTime = Date.now() / 1000;
-      const expTime = authTime + 1800;
-      return HttpResponse.json({
-        AuthenticationResult: {
-          AccessToken: await generateAccessToken(user, authTime, expTime),
-          IdToken: await generateIdToken(user, authTime, expTime),
-          RefreshToken: await generateRefreshToken(user),
-          ExpiresIn: 1800,
-          TokenType: "Bearer",
-        },
-      });
-    }
+      if (target === "AWSCognitoIdentityProviderService.InitiateAuth") {
+        if (!user) return new HttpResponse("User not set", { status: 401 });
+        const authTime = Date.now() / 1000;
+        const expTime = authTime + 1800;
+        return HttpResponse.json({
+          AuthenticationResult: {
+            AccessToken: await generateAccessToken(user, authTime, expTime),
+            IdToken: await generateIdToken(user, authTime, expTime),
+            RefreshToken: await generateRefreshToken(user),
+            ExpiresIn: 1800,
+            TokenType: "Bearer",
+          },
+        });
+      }
 
-    if (target === "AWSCognitoIdentityProviderService.GlobalSignOut") {
+      if (target === "AWSCognitoIdentityProviderService.GlobalSignOut") {
+        return HttpResponse.json({});
+      }
+
+      if (target === "AWSCognitoIdentityProviderService.AdminGetUser") {
+        const body = (await request.json()) as { Username?: string };
+        const found = body.Username ? findMockUser(body.Username) : user;
+        if (!found) return new HttpResponse("User not found", { status: 404 });
+        return HttpResponse.json({
+          Username: found.Username,
+          UserAttributes: found.UserAttributes,
+          UserStatus: "CONFIRMED",
+          Enabled: true,
+        });
+      }
+
+      // Keep Amplify happy for unhandled IDP calls during mocked e2e.
       return HttpResponse.json({});
-    }
-
-    if (target === "AWSCognitoIdentityProviderService.AdminGetUser") {
-      const body = (await request.json()) as { Username?: string };
-      const found = body.Username ? findMockUser(body.Username) : user;
-      if (!found) return new HttpResponse("User not found", { status: 404 });
-      return HttpResponse.json({
-        Username: found.Username,
-        UserAttributes: found.UserAttributes,
-        UserStatus: "CONFIRMED",
-        Enabled: true,
-      });
-    }
-
-    // Keep Amplify happy for unhandled IDP calls during mocked e2e.
-    return HttpResponse.json({});
-  }),
+    },
+  ),
 ];
 
 function joseBase64(value: object): string {
