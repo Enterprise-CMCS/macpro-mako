@@ -127,7 +127,11 @@ export const handleSmartAssignmentUpdated = async (
     return;
   }
   if (storedTimestamp === incomingTimestamp) {
-    if (JSON.stringify(document.smartSrtRoster) !== JSON.stringify(roster)) {
+    // OpenSearch may return roster fields in a different order on replay.
+    const storedRoster = document.smartSrtRoster
+      ? normalizedRoster(document.smartSrtRoster)
+      : undefined;
+    if (JSON.stringify(storedRoster) !== JSON.stringify(roster)) {
       await reportSmartValidationFailure(
         context,
         new Error("SMART assignment conflicts with an event at the same createdAt timestamp"),
