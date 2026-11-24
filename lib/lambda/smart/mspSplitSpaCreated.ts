@@ -92,30 +92,23 @@ const getSplitChangeReason = (
   return `This package was added to OneMAC from SMART. Package was split from SPA ${originalSpaId}${actorText}. Reason: ${splitReason}`;
 };
 
-const hasConflictingCorrelationId = (
-  document: opensearch.main.Document,
-  event: SmartSplitSpaCreatedEvent,
-): boolean => {
-  const storedCorrelationId = document.correlationId?.trim();
-  return Boolean(
-    storedCorrelationId && event.correlationId && storedCorrelationId !== event.correlationId,
-  );
-};
-
+// Assignment and other updates can replace operationType and correlationId,
+// including stale events that only refresh identity metadata. Recognize a
+// completed split by its stable parent/child identifiers instead.
 const isMatchingCompletedSplit = (
   document: opensearch.main.Document,
   event: SmartSplitSpaCreatedEvent,
 ): boolean =>
   document.origin === "SMART" &&
   document.smartRecordType === SMART_RECORD_TYPE.PACKAGE &&
+  document.deleted !== true &&
+  document.authority === event.authority &&
   document.id.toUpperCase() === event.splitSpaId.toUpperCase() &&
   document.splitSpaId?.toUpperCase() === event.splitSpaId.toUpperCase() &&
   document.spaWaiverId === event.splitSpaWaiverId &&
   document.splitSpaWaiverId === event.splitSpaWaiverId &&
   document.originalSpaId?.toUpperCase() === event.originalSpaId.toUpperCase() &&
-  document.originalSpaWaiverId === event.originalSpaWaiverId &&
-  document.operationType === event.operationType &&
-  !hasConflictingCorrelationId(document, event);
+  document.originalSpaWaiverId === event.originalSpaWaiverId;
 
 const getSearchHits = <TDocument>(result: unknown): SearchHit<TDocument>[] => {
   const hits = (result as { hits?: { hits?: unknown } } | undefined)?.hits?.hits;
