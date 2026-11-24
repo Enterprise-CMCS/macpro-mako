@@ -1,10 +1,14 @@
+import { Context } from "aws-lambda";
 import * as packageApi from "libs/api/package";
 import * as os from "libs/opensearch-lib";
 import * as sink from "libs/sink-lib";
+import { convertObjToBase64, createKafkaEvent, createKafkaRecord } from "mocks/helpers/kafka.utils";
 import { opensearch, SEATOOL_STATUS, SMART_RECORD_TYPE } from "shared-types";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
+import { handler as sinkSmart } from "../sinkSmart";
 import { SmartOnemacEventContext } from "./evaluateSmartPackageExistence";
+import { handleMspAssignmentUpdated } from "./mspAssignmentUpdated";
 import { handleMspSplitSpaCreated } from "./mspSplitSpaCreated";
 import { SmartOnemacEvent } from "./parseSmartOnemacEvent";
 import * as publishSmartIngestErrorModule from "./publishSmartIngestError";
@@ -46,6 +50,8 @@ const completedSplitDocument = (
       id: SPLIT_ID,
       origin: "SMART",
       smartRecordType: SMART_RECORD_TYPE.PACKAGE,
+      authority: "Medicaid SPA",
+      deleted: false,
       spaWaiverId: SPLIT_EXTERNAL_ID,
       splitSpaId: SPLIT_ID,
       splitSpaWaiverId: SPLIT_EXTERNAL_ID,
@@ -384,9 +390,21 @@ describe("handleMspSplitSpaCreated", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("rejects a stable replay when both nonempty correlation IDs conflict", async () => {
+  it.each([
+    "MSP_SPLIT_SPA_CREATED",
+    "MSP_ASSIGNMENT_UPDATED",
+    "MSP_STATUS_UPDATED",
+    "MSP_ADMINISTRATIVE_FIELD_UPDATED",
+  ])("accepts a split replay after %s refreshes event metadata", async (operationType) => {
     const correlatedEvent = { ...event, correlationId: "incoming-correlation-id" };
-    const completedPackage = completedSplitDocument({ correlationId: "different-correlation-id" });
+    const completedPackage = completedSplitDocument({
+      operationType,
+      correlationId: "different-correlation-id",
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      cmsStatus: "Approved",
+      stateStatus: "Approved",
+      reviewTeam: [{ name: "Current Reviewer", email: "reviewer@example.com" }],
+    });
 
     await handleMspSplitSpaCreated(
       createContext({
@@ -399,14 +417,100 @@ describe("handleMspSplitSpaCreated", () => {
       }),
     );
 
-    expect(publishSmartIngestErrorSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ errorCode: "VALIDATION" }),
-    );
-    expect(searchSpy).not.toHaveBeenCalled();
+    expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
     expect(createItemSpy).not.toHaveBeenCalled();
     expect(updateItemSpy).not.toHaveBeenCalled();
-    expect(bulkUpdateDataSpy).not.toHaveBeenCalled();
+    expect(bulkUpdateDataSpy).toHaveBeenCalledOnce();
+    expect(completedPackage?._source).toMatchObject({
+      operationType,
+      correlationId: "different-correlation-id",
+      seatoolStatus: SEATOOL_STATUS.APPROVED,
+      reviewTeam: [{ name: "Current Reviewer", email: "reviewer@example.com" }],
+    });
   });
+
+  it.each([false, true])(
+    "completes a split Kafka retry after an assignment update (stale: %s) without error reporting",
+    async (staleAssignment) => {
+      const splitEvent = { ...event, correlationId: "split-correlation-id" };
+      const document = completedSplitDocument({
+        correlationId: splitEvent.correlationId,
+        smartAssignmentChangedAt: staleAssignment ? CREATED_AT : undefined,
+      })!._source;
+      const currentPackage = (): NonNullable<Awaited<ReturnType<typeof os.getItem>>> => ({
+        found: true,
+        _index: "test-main",
+        _id: SPLIT_ID,
+        _score: 1,
+        _source: structuredClone(document),
+        sort: [],
+      });
+      getItemSpy.mockImplementation(async (_domain, _index, id) =>
+        id === SPLIT_ID ? currentPackage() : undefined,
+      );
+      updateItemSpy.mockImplementation(async (_domain, _index, id, updates) => {
+        if (id === SPLIT_ID) Object.assign(document, structuredClone(updates));
+      });
+      searchSpy.mockImplementation(async (_domain, index, query) => {
+        if (index === "test-changelog") return emptySearch;
+        const externalId = (query as { query?: { term?: { spaWaiverId?: string } } }).query?.term
+          ?.spaWaiverId;
+        return externalId === SPLIT_EXTERNAL_ID
+          ? { hits: { hits: [currentPackage()] } }
+          : parentSearchResult;
+      });
+      const assignmentEvent = {
+        ...splitEvent,
+        operationType: "MSP_ASSIGNMENT_UPDATED",
+        correlationId: "assignment-correlation-id",
+        createdAt: new Date(CREATED_AT_EPOCH - 1000).toISOString(),
+        srtMember: [],
+      };
+      await handleMspAssignmentUpdated(
+        createContext({
+          event: assignmentEvent,
+          existence: {
+            mainById: currentPackage(),
+            mainBySpaWaiverId: emptySearch,
+            changelogById: emptySearch,
+          },
+        }),
+      );
+      expect(document.correlationId).toBe(assignmentEvent.correlationId);
+      expect(document.operationType).toBe(
+        staleAssignment ? "MSP_SPLIT_SPA_CREATED" : "MSP_ASSIGNMENT_UPDATED",
+      );
+      updateItemSpy.mockClear();
+      const beforeReplay = structuredClone(document);
+      publishSmartIngestErrorSpy.mockRejectedValue(new Error("SQS AccessDenied"));
+
+      try {
+        await expect(
+          sinkSmart(
+            createKafkaEvent({
+              [TOPIC_PARTITION]: [
+                createKafkaRecord({
+                  topic: "aws.mulesoft.onemac.events",
+                  key: Buffer.from(ORIGINAL_ID).toString("base64"),
+                  value: convertObjToBase64(splitEvent),
+                }),
+              ],
+            }),
+            {} as Context,
+            vi.fn(),
+          ),
+        ).resolves.toBeUndefined();
+
+        expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
+        expect(createItemSpy).not.toHaveBeenCalled();
+        expect(updateItemSpy).not.toHaveBeenCalled();
+        expect(bulkUpdateDataSpy).toHaveBeenCalledOnce();
+        expect(document).toEqual(beforeReplay);
+      } finally {
+        publishSmartIngestErrorSpy.mockResolvedValue(undefined);
+      }
+    },
+  );
 
   it("accepts a matching completed split that wins a create race", async () => {
     createItemSpy.mockResolvedValueOnce({ created: false, reason: "version_conflict" });
@@ -419,11 +523,19 @@ describe("handleMspSplitSpaCreated", () => {
     expect(publishSmartIngestErrorSpy).not.toHaveBeenCalled();
   });
 
-  it("rejects a completed split ID that is linked to another original package", async () => {
-    const completedPackage = completedSplitDocument({
-      originalSpaId: "AL-26-2222",
-      originalSpaWaiverId: "a0ncp000006Different",
-    });
+  it.each([
+    { difference: "package ID", overrides: { id: "AL-26-2222" } },
+    { difference: "split ID", overrides: { splitSpaId: "AL-26-2222" } },
+    { difference: "split external ID", overrides: { splitSpaWaiverId: "another-external-id" } },
+    { difference: "original ID", overrides: { originalSpaId: "AL-26-2222" } },
+    {
+      difference: "original external ID",
+      overrides: { originalSpaWaiverId: "another-external-id" },
+    },
+    { difference: "authority", overrides: { authority: "CHIP SPA" } },
+    { difference: "deleted state", overrides: { deleted: true } },
+  ])("rejects a completed split with conflicting $difference", async ({ overrides }) => {
+    const completedPackage = completedSplitDocument(overrides);
 
     await handleMspSplitSpaCreated(
       createContext({
