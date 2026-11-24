@@ -1,3 +1,5 @@
+import { useFeatureFlag } from "@/hooks/useFeatureFlag";
+
 import { PdfLink, PdfList, Template } from "../utils";
 
 const getGuideDownloadName = (title: string) =>
@@ -103,6 +105,11 @@ export const CHP_NON_FIN_GUIDES: Template[] = [
     href: "/chp/IG_CS21_NonFinancialNonPaymentOfPremiums.pdf",
   },
   {
+    title: "CS 22",
+    text: "General Eligibility - Retroactive Eligibility for Children and/or Pregnant Women",
+    href: "/chp/IG_CS22_RetroactiveEligibilityforChildrenand-orPregnantWomen.pdf",
+  },
+  {
     title: "CS 23",
     text: "Non-Financial Requirements - Other Eligibility Standards Implementation Guide",
     href: "/chp/IG_CS23_NonFinancialRequirementOtherEligibilityStandards.pdf",
@@ -130,6 +137,11 @@ export const CHP_NON_FIN_GUIDES: Template[] = [
 ].map(withGuideDownloadName);
 
 export const ChipSpaImplementationGuides = () => {
+  const showCs22Forms = useFeatureFlag("CHIP_CS22_FORMS");
+  const nonFinancialGuides = showCs22Forms
+    ? CHP_NON_FIN_GUIDES
+    : CHP_NON_FIN_GUIDES.filter(({ title }) => title !== "CS 22");
+
   return (
     <div>
       <section className="space-y-2">
@@ -173,7 +185,7 @@ export const ChipSpaImplementationGuides = () => {
           <li className="space-y-2">
             <p>Non-Financial Eligibility</p>
             <PdfList
-              list={CHP_NON_FIN_GUIDES}
+              list={nonFinancialGuides}
               label="template"
               ulClassName="list-disc pl-6 space-y-2"
             />

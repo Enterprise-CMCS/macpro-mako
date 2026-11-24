@@ -15,3 +15,4 @@ export * from "./action-type";
 export * from "./legacy-event-type";
 export * from "./package-activity";
 export * from "./draft-attachments";
+export * from "./smart-record";

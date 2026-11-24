@@ -29,6 +29,17 @@ const defaultOSMainDocumentHandler = http.get(
         });
   },
 );
+const defaultOSMainCreateHandler = http.post(
+  `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_create/:id`,
+  async ({ params }) => {
+    const { id } = params;
+    if (id == GET_ERROR_ITEM_ID) {
+      return new HttpResponse("Internal server error", { status: 500 });
+    }
+
+    return HttpResponse.json({ result: "created", _id: id }, { status: 201 });
+  },
+);
 const defaultUpdateHandler = http.post(
   `https://vpc-opensearchdomain-mock-domain.us-east-1.es.amazonaws.com/test-namespace-main/_update/:id`,
   async ({ params }) => {
@@ -66,7 +77,7 @@ export const errorOSMainMultiDocumentHandler = http.post<PathParams, GetMultiIte
 const handleMainSearch = async ({ request }: { request: Request }) => {
   const { query } = await request.json();
 
-  if (query?.match_all?.id == "throw-error") {
+  if (query?.match_all?.id == "throw-error" || JSON.stringify(query).includes('"throw-error"')) {
     return new HttpResponse("Internal server error", { status: 500 });
   }
 
@@ -205,6 +216,7 @@ export const errorOSMainSearchHandler = http.post<PathParams, SearchQueryBody>(
 
 export const mainSearchHandlers = [
   defaultOSMainDocumentHandler,
+  defaultOSMainCreateHandler,
   defaultOSMainMultiDocumentHandler,
   defaultOSMainSearchHandler,
   defaultOSMainAndDraftSearchHandler,
