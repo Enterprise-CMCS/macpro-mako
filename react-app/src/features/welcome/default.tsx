@@ -141,7 +141,7 @@ export const Welcome = () => {
                     The CS 22 includes compliance attestations related to section 71112 of the
                     Working Families Tax Cut (WFTC) legislation. The new template has been added to
                     OneMAC. Section 71112 is effective January 1, 2027. The new CS 22 will be
-                    effective starting September 1, 2026.
+                    effective starting December 7, 2026.
                   </p>
                 </article>
                 <article className="space-y-2">
