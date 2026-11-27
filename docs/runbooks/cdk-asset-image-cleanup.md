@@ -6,6 +6,23 @@ This runbook covers stale security findings on images retained in the shared CDK
 
 Use this process only for image digests that are no longer referenced by active Lambda image functions or active ECS task definitions. Do not use it to remediate an image that is still deployed.
 
+## Remediating Deployed Images
+
+The ClamAV scanner and definition updater share one Lambda image. Attachment archive workers use a separate ECS image. Multiple CloudFormation environments can reference the same image digest, so merging a fix into one environment does not update the others.
+
+To remediate deployed images:
+
+1. Refresh the pinned Node 24 base image in `lib/local-constructs/clamav-scanning/Dockerfile` and the Bun Alpine image in `lib/attachment-archive/Dockerfile`. Keep the OS package upgrade steps so builds receive the patched Amazon Linux and Alpine packages.
+2. Update vulnerable archive dependencies and regenerate `lib/attachment-archive/bun.lockb`. This worker is excluded from the root workspace; updating only the root lockfile does not change its production dependencies. Validate the archive schemas and ZIP generation when upgrading Zod or archive dependencies.
+3. Increment `CACHE_BUST` in both Dockerfiles and the matching build arguments in `lib/local-constructs/clamav-scanning/index.ts` and `lib/stacks/api.ts`. Build and test both Linux AMD64 images before deployment.
+4. Inventory the Lambda resolved image digests and active ECS task definitions in each affected account and region. Use their CloudFormation ownership and `STAGE` tags to identify every environment that still references an affected digest.
+5. Deploy the patched revision to each environment that must remain active. Existing feature environments require their own deployment or an explicitly approved retirement. Follow normal promotion and approval requirements for `main`, `val`, and `production`.
+6. After Inspector refreshes, verify the replacement digests resolve the original findings. A successful build or merged PR alone does not establish that the deployed findings are resolved.
+
+Only after rollout should the old digests be considered for deletion. Also check published Lambda versions/aliases and running ECS tasks before deleting: the cleanup script checks current Lambda functions and active ECS task definitions, not those additional references.
+
+For a targeted old digest with HIGH, MEDIUM, or LOW findings, use `CRITICAL_ONLY=false` in both the report and approved delete commands below. The default critical-only filter will skip those images.
+
 ## Current OpenSSL Finding
 
 Inspector reported `CVE-2026-34182` on an inactive attachment archive worker image:

@@ -1,21 +1,22 @@
-FROM --platform=linux/amd64 oven/bun:1.1.20-alpine AS builder
+FROM --platform=linux/amd64 oven/bun:1.4.5-alpine AS builder
 
-# Increment CACHE_BUST to force Docker to pull a fresh base image (e.g., for security patches)
-ARG CACHE_BUST=2026-07-27-enospc-tmp-cleanup
+# Increment CACHE_BUST to rebuild the CDK asset and refresh OS packages.
+ARG CACHE_BUST=2026-11-24-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR /app
 
 COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+RUN bun install --frozen-lockfile --network-concurrency 8
 
 COPY . .
 
 RUN bun run build
 
-FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24
+# Pin the refreshed Node 24 runtime so cached builds cannot reuse an older base.
+FROM --platform=linux/amd64 public.ecr.aws/lambda/nodejs:24@sha256:d20c164c7208f5d3af9adf77c455e36784198495638053710d99be2394d5dbfc
 
-ARG CACHE_BUST=2026-07-27-enospc-tmp-cleanup
+ARG CACHE_BUST=2026-11-24-security-refresh
 LABEL cache.bust="${CACHE_BUST}"
 
 WORKDIR ${LAMBDA_TASK_ROOT}

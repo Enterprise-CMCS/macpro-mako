@@ -65,7 +65,7 @@ describe("Default Welcome", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "The CS 22 includes compliance attestations related to section 71112 of the Working Families Tax Cut (WFTC) legislation. The new template has been added to OneMAC. Section 71112 is effective January 1, 2027. The new CS 22 will be effective starting September 1, 2026.",
+        "The CS 22 includes compliance attestations related to section 71112 of the Working Families Tax Cut (WFTC) legislation. The new template has been added to OneMAC. Section 71112 is effective January 1, 2027. The new CS 22 will be effective starting December 7, 2026.",
       ),
     ).toBeInTheDocument();
     expect(screen.getByText("Updated CS 18 SPA form")).toBeInTheDocument();
